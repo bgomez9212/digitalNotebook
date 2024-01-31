@@ -1,18 +1,9 @@
-import { View, Text, StyleSheet } from "react-native";
+import { View, Text } from "react-native";
 
 export default function Home() {
   return (
-    <View style={styles.container}>
+    <View className="flex-1 items-center justify-center">
       <Text>Hello World!</Text>
     </View>
   );
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: "#fff",
-    alignItems: "center",
-    justifyContent: "center",
-  },
-});

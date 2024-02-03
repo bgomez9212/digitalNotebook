@@ -6,6 +6,8 @@ import {
 } from "firebase/auth";
 import { useState } from "react";
 import LandingButton from "../components/LandingButton";
+import tw from "../tailwind";
+import LandingLink from "../components/LandingLink";
 
 export default function Signup() {
   const firebaseAuth = auth;
@@ -49,62 +51,56 @@ export default function Signup() {
 
   if (displaySignup) {
     return (
-      <View className="flex-1 items-center justify-center bg-black">
+      <View style={tw`flex-1 items-center justify-center bg-black`}>
         <Image
           source={require("../assets/Notebook.png")}
           resizeMode="contain"
-          className="w-full mb-10"
+          style={tw`w-full mb-10`}
         />
         <TextInput
-          className="w-1/2 bg-white h-5 p-4"
+          style={tw`w-1/2 bg-white h-5 p-4`}
           onChangeText={(text) =>
             setCredentials({ ...credentials, email: text })
           }
           placeholder="email"
         />
         <TextInput
-          className="w-1/2 bg-white h-5 p-4 my-2"
+          style={tw`w-1/2 bg-white h-5 p-4 my-2`}
           onChangeText={(text) =>
             setCredentials({ ...credentials, password: text })
           }
           placeholder="password"
         />
-        <Pressable onPress={signup}>
-          <Text className="text-white">SIGN UP</Text>
-        </Pressable>
-        <Pressable onPress={() => setDisplaySignup(false)}>
-          <Text className="text-white">log in</Text>
-        </Pressable>
+        <LandingButton fn={signup} text={"SIGN UP"} />
+        <LandingLink fn={() => setDisplaySignup(false)} text={"log in"} />
       </View>
     );
   }
 
   if (!displaySignup) {
     return (
-      <View className="flex-1 items-center justify-center bg-black">
+      <View style={tw`flex-1 items-center justify-center bg-black`}>
         <Image
           source={require("../assets/Notebook.png")}
           resizeMode="contain"
-          className="w-full mb-10"
+          style={tw`w-full mb-10`}
         />
         <TextInput
-          className="w-1/2 bg-white h-5 p-4 mb-2"
+          style={tw`w-1/2 bg-white h-5 p-4 mb-2`}
           onChangeText={(text) =>
             setCredentials({ ...credentials, email: text })
           }
           placeholder="email"
         />
         <TextInput
-          className="w-1/2 bg-white h-5 p-4 mb-2"
+          style={tw`w-1/2 bg-white h-5 p-4 mb-2`}
           onChangeText={(text) =>
             setCredentials({ ...credentials, password: text })
           }
           placeholder="password"
         />
         <LandingButton fn={login} text={"LOGIN"} />
-        <Pressable onPress={() => setDisplaySignup(true)}>
-          <Text className="text-white">sign up</Text>
-        </Pressable>
+        <LandingLink fn={() => setDisplaySignup(true)} text={"sign up"} />
       </View>
     );
   }

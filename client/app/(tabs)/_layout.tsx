@@ -2,38 +2,43 @@ import { Tabs } from "expo-router";
 import { Entypo } from "@expo/vector-icons";
 import { FontAwesome } from "@expo/vector-icons";
 import { Ionicons } from "@expo/vector-icons";
+const blue = "#477CB9";
 export default function Layout() {
   return (
     <Tabs
       screenOptions={{
         headerStyle: {
-          backgroundColor: "#477CB9",
+          backgroundColor: blue,
         },
         headerTitleStyle: {
           color: "white",
         },
-        tabBarActiveTintColor: "#477CB9",
+        tabBarActiveTintColor: blue,
         tabBarShowLabel: false,
       }}
     >
       <Tabs.Screen
         name="Home"
         options={{
-          tabBarIcon: () => <Entypo name="home" size={24} color="black" />,
+          tabBarIcon: ({ color }) => (
+            <Entypo name="home" size={24} color={color} />
+          ),
         }}
       />
       <Tabs.Screen
         name="Search"
         options={{
-          tabBarIcon: () => (
-            <FontAwesome name="search" size={24} color="black" />
+          tabBarIcon: ({ color }) => (
+            <FontAwesome name="search" size={24} color={color} />
           ),
         }}
       />
       <Tabs.Screen
         name="Profile"
         options={{
-          tabBarIcon: () => <Ionicons name="person" size={24} color="black" />,
+          tabBarIcon: ({ color }) => (
+            <Ionicons name="person" size={24} color={color} />
+          ),
         }}
       />
     </Tabs>

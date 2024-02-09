@@ -78,7 +78,7 @@ export default function index() {
   }, []);
 
   if (userEmail) {
-    return <Redirect href="/(tabs)/tabHome" />;
+    return <Redirect href="/(tabs)/Home" />;
   }
 
   if (displaySignup) {

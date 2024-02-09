@@ -1,33 +1,46 @@
-import { View, Text, Image, TextInput, Button, Pressable } from "react-native";
+import {
+  View,
+  Image,
+  TextInput,
+  Button,
+  ActivityIndicator,
+} from "react-native";
 import { auth } from "../firebase";
 import {
   createUserWithEmailAndPassword,
+  onAuthStateChanged,
   signInWithEmailAndPassword,
+  signOut,
 } from "firebase/auth";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import LandingButton from "../components/LandingButton";
 import tw from "../tailwind";
 import LandingLink from "../components/LandingLink";
+import { Link, Redirect } from "expo-router";
 
-export default function Signup() {
+export default function index() {
   const firebaseAuth = auth;
   const [loading, setLoading] = useState(false);
-  const [credentials, setCredentials] = useState({ email: "", password: "" });
+  const [credentials, setCredentials] = useState({
+    email: "",
+    password: "",
+    confirmPassword: "",
+  });
   const [displaySignup, setDisplaySignup] = useState(false);
+  const [userEmail, setUserEmail] = useState(null);
 
   async function signup() {
     setLoading(true);
     try {
-      const response = await createUserWithEmailAndPassword(
+      await createUserWithEmailAndPassword(
         firebaseAuth,
         credentials.email,
         credentials.password
       );
-      console.log(response);
     } catch (err) {
       console.log(err);
     } finally {
-      setCredentials({ email: "", password: "" });
+      setCredentials({ email: "", password: "", confirmPassword: "" });
       setLoading(false);
     }
   }
@@ -35,18 +48,37 @@ export default function Signup() {
   async function login() {
     setLoading(true);
     try {
-      const response = await signInWithEmailAndPassword(
+      await signInWithEmailAndPassword(
         firebaseAuth,
         credentials.email,
         credentials.password
       );
-      console.log(response);
+      setCredentials({ email: "", password: "", confirmPassword: "" });
     } catch (err) {
       console.log(err);
     } finally {
-      setCredentials({ email: "", password: "" });
       setLoading(false);
     }
+  }
+  console.log("email", auth.currentUser?.email);
+
+  useEffect(() => {
+    const unsubscribe = onAuthStateChanged(firebaseAuth, (user) => {
+      if (user) {
+        // User is signed in, fetch user's email
+        setUserEmail(user.email);
+      } else {
+        // User is signed out
+        setUserEmail(null);
+      }
+    });
+
+    // Clean up subscription on unmount
+    return () => unsubscribe();
+  }, []);
+
+  if (userEmail) {
+    return <Redirect href="/(tabs)/tabHome" />;
   }
 
   if (displaySignup) {
@@ -59,6 +91,7 @@ export default function Signup() {
         />
         <TextInput
           style={tw`w-1/2 bg-white h-5 p-4`}
+          textContentType="emailAddress"
           onChangeText={(text) =>
             setCredentials({ ...credentials, email: text })
           }
@@ -66,12 +99,28 @@ export default function Signup() {
         />
         <TextInput
           style={tw`w-1/2 bg-white h-5 p-4 my-2`}
+          textContentType="password"
           onChangeText={(text) =>
             setCredentials({ ...credentials, password: text })
           }
           placeholder="password"
         />
-        <LandingButton fn={signup} text={"SIGN UP"} />
+        <TextInput
+          style={tw`w-1/2 bg-white h-5 p-4 mb-2`}
+          textContentType="password"
+          onChangeText={(text) =>
+            setCredentials({ ...credentials, confirmPassword: text })
+          }
+          placeholder="confirm password"
+        />
+        <LandingButton
+          disabled={
+            credentials.password !== credentials.confirmPassword ||
+            credentials.password.length <= 0
+          }
+          fn={signup}
+          text={"SIGN UP"}
+        />
         <LandingLink fn={() => setDisplaySignup(false)} text={"log in"} />
       </View>
     );
@@ -87,6 +136,7 @@ export default function Signup() {
         />
         <TextInput
           style={tw`w-1/2 bg-white h-5 p-4 mb-2`}
+          textContentType="emailAddress"
           onChangeText={(text) =>
             setCredentials({ ...credentials, email: text })
           }
@@ -94,12 +144,19 @@ export default function Signup() {
         />
         <TextInput
           style={tw`w-1/2 bg-white h-5 p-4 mb-2`}
+          textContentType="password"
           onChangeText={(text) =>
             setCredentials({ ...credentials, password: text })
           }
           placeholder="password"
         />
-        <LandingButton fn={login} text={"LOGIN"} />
+        {loading ? (
+          <ActivityIndicator></ActivityIndicator>
+        ) : (
+          <LandingButton disabled={false} fn={login} text={"LOGIN"} />
+        )}
+
+        <Button title="Sign Out" onPress={() => signOut(auth)}></Button>
         <LandingLink fn={() => setDisplaySignup(true)} text={"sign up"} />
       </View>
     );

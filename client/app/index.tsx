@@ -60,7 +60,6 @@ export default function index() {
       setLoading(false);
     }
   }
-  console.log("email", auth.currentUser?.email);
 
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(firebaseAuth, (user) => {
@@ -155,8 +154,6 @@ export default function index() {
         ) : (
           <LandingButton disabled={false} fn={login} text={"LOGIN"} />
         )}
-
-        <Button title="Sign Out" onPress={() => signOut(auth)}></Button>
         <LandingLink fn={() => setDisplaySignup(true)} text={"sign up"} />
       </View>
     );

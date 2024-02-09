@@ -16,8 +16,9 @@ import { useEffect, useState } from "react";
 import LandingButton from "../components/LandingButton";
 import tw from "../tailwind";
 import LandingLink from "../components/LandingLink";
+import { Link, Redirect } from "expo-router";
 
-export default function Signup() {
+export default function index() {
   const firebaseAuth = auth;
   const [loading, setLoading] = useState(false);
   const [credentials, setCredentials] = useState({
@@ -121,9 +122,13 @@ export default function Signup() {
     );
   }
 
+  // if (userEmail) {
+  //   return <Redirect href={"home"} />;
+  // }
+
   if (!displaySignup) {
     return (
-      <View style={tw`flex-1 items-center justify-center bg-black`}>
+      <View style={tw`flex-1 items-center justify-center bg-white`}>
         <Image
           source={require("../assets/Notebook.png")}
           resizeMode="contain"
@@ -150,6 +155,9 @@ export default function Signup() {
         ) : (
           <LandingButton disabled={false} fn={login} text={"LOGIN"} />
         )}
+        <Link style={tw`text-blue`} href="/(tabs)/tabHome">
+          Home you fukcing idiot
+        </Link>
         <Button title="Sign Out" onPress={() => signOut(auth)}></Button>
         <LandingLink fn={() => setDisplaySignup(true)} text={"sign up"} />
       </View>

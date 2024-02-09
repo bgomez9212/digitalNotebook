@@ -8,10 +8,9 @@ import { Redirect } from "expo-router";
 export default function Profile() {
   const [loggedIn, setLoggedIn] = useState(auth.currentUser?.email);
   function displayAlert() {
-    Alert.alert("Alert Title", "My Alert Msg", [
+    Alert.alert("Are you sure you want to sign out?", "", [
       {
         text: "Cancel",
-        onPress: () => console.log("Cancel Pressed"),
         style: "cancel",
       },
       { text: "Sign Out", onPress: appSignOut },

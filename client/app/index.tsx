@@ -37,9 +37,14 @@ export default function index() {
         credentials.email,
         credentials.password
       );
+      // Sign in the user after successful signup
+      await signInWithEmailAndPassword(
+        firebaseAuth,
+        credentials.email,
+        credentials.password
+      );
     } catch (err) {
       console.log(err);
-    } finally {
       setCredentials({ email: "", password: "", confirmPassword: "" });
       setLoading(false);
     }

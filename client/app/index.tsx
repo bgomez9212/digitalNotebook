@@ -86,13 +86,13 @@ export default function index() {
         <Image
           source={require("../assets/Notebook.png")}
           resizeMode="contain"
-          style={tw`w-full mb-10`}
+          style={tw`w-90 mb-10`}
         />
       </View>
       {displaySignup ? (
         <View style={tw`flex-1 items-center justify-center mb-30`}>
           <TextInput
-            style={tw`w-1/2 bg-white h-5 p-4`}
+            style={tw`w-60 bg-white h-10 p-4 mb-2 rounded`}
             textContentType="emailAddress"
             onChangeText={(text) =>
               setCredentials({ ...credentials, email: text })
@@ -100,7 +100,7 @@ export default function index() {
             placeholder="email"
           />
           <TextInput
-            style={tw`w-1/2 bg-white h-5 p-4 my-2`}
+            style={tw`w-60 bg-white h-10 p-4 mb-2 rounded`}
             textContentType="password"
             onChangeText={(text) =>
               setCredentials({ ...credentials, password: text })
@@ -108,7 +108,7 @@ export default function index() {
             placeholder="password"
           />
           <TextInput
-            style={tw`w-1/2 bg-white h-5 p-4 mb-2`}
+            style={tw`w-60 bg-white h-10 p-4 mb-2 rounded`}
             textContentType="password"
             onChangeText={(text) =>
               setCredentials({ ...credentials, confirmPassword: text })
@@ -128,7 +128,7 @@ export default function index() {
       ) : (
         <View style={tw`flex-1 items-center justify-center mb-30`}>
           <TextInput
-            style={tw`w-1/2 bg-white h-5 p-4 mb-2`}
+            style={tw`w-60 bg-white h-10 p-4 mb-2 rounded`}
             textContentType="emailAddress"
             onChangeText={(text) =>
               setCredentials({ ...credentials, email: text })
@@ -136,7 +136,7 @@ export default function index() {
             placeholder="email"
           />
           <TextInput
-            style={tw`w-1/2 bg-white h-5 p-4 mb-2`}
+            style={tw`w-60 bg-white h-10 p-4 mb-2 rounded`}
             textContentType="password"
             onChangeText={(text) =>
               setCredentials({ ...credentials, password: text })
@@ -144,7 +144,7 @@ export default function index() {
             placeholder="password"
           />
           {loading ? (
-            <ActivityIndicator></ActivityIndicator>
+            <ActivityIndicator style={tw`p-2`}></ActivityIndicator>
           ) : (
             <LandingButton disabled={false} fn={login} text={"LOGIN"} />
           )}

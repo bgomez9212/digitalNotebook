@@ -37,9 +37,14 @@ export default function index() {
         credentials.email,
         credentials.password
       );
+      // Sign in the user after successful signup
+      await signInWithEmailAndPassword(
+        firebaseAuth,
+        credentials.email,
+        credentials.password
+      );
     } catch (err) {
       console.log(err);
-    } finally {
       setCredentials({ email: "", password: "", confirmPassword: "" });
       setLoading(false);
     }
@@ -60,7 +65,6 @@ export default function index() {
       setLoading(false);
     }
   }
-  console.log("email", auth.currentUser?.email);
 
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(firebaseAuth, (user) => {
@@ -81,84 +85,85 @@ export default function index() {
     return <Redirect href="/(tabs)/Home" />;
   }
 
-  if (displaySignup) {
-    return (
-      <View style={tw`flex-1 items-center justify-center bg-black`}>
+  return (
+    <View style={tw`h-full bg-black`}>
+      <View style={tw`flex-1 items-center justify-center mt-55`}>
         <Image
           source={require("../assets/Notebook.png")}
           resizeMode="contain"
-          style={tw`w-full mb-10`}
+          style={tw`w-90 mb-10`}
         />
-        <TextInput
-          style={tw`w-1/2 bg-white h-5 p-4`}
-          textContentType="emailAddress"
-          onChangeText={(text) =>
-            setCredentials({ ...credentials, email: text })
-          }
-          placeholder="email"
-        />
-        <TextInput
-          style={tw`w-1/2 bg-white h-5 p-4 my-2`}
-          textContentType="password"
-          onChangeText={(text) =>
-            setCredentials({ ...credentials, password: text })
-          }
-          placeholder="password"
-        />
-        <TextInput
-          style={tw`w-1/2 bg-white h-5 p-4 mb-2`}
-          textContentType="password"
-          onChangeText={(text) =>
-            setCredentials({ ...credentials, confirmPassword: text })
-          }
-          placeholder="confirm password"
-        />
-        <LandingButton
-          disabled={
-            credentials.password !== credentials.confirmPassword ||
-            credentials.password.length <= 0
-          }
-          fn={signup}
-          text={"SIGN UP"}
-        />
-        <LandingLink fn={() => setDisplaySignup(false)} text={"log in"} />
       </View>
-    );
-  }
-
-  if (!displaySignup) {
-    return (
-      <View style={tw`flex-1 items-center justify-center bg-black`}>
-        <Image
-          source={require("../assets/Notebook.png")}
-          resizeMode="contain"
-          style={tw`w-full mb-10`}
-        />
-        <TextInput
-          style={tw`w-1/2 bg-white h-5 p-4 mb-2`}
-          textContentType="emailAddress"
-          onChangeText={(text) =>
-            setCredentials({ ...credentials, email: text })
-          }
-          placeholder="email"
-        />
-        <TextInput
-          style={tw`w-1/2 bg-white h-5 p-4 mb-2`}
-          textContentType="password"
-          onChangeText={(text) =>
-            setCredentials({ ...credentials, password: text })
-          }
-          placeholder="password"
-        />
-        {loading ? (
-          <ActivityIndicator></ActivityIndicator>
-        ) : (
-          <LandingButton disabled={false} fn={login} text={"LOGIN"} />
-        )}
-
-        <Button title="Sign Out" onPress={() => signOut(auth)}></Button>
-        <LandingLink fn={() => setDisplaySignup(true)} text={"sign up"} />
-      </View>
-    );
-  }
+      {displaySignup ? (
+        <View style={tw`flex-1 items-center justify-center mb-30`}>
+          <TextInput
+            style={tw`w-60 bg-white h-10 p-4 mb-2 rounded p-3`}
+            textContentType="emailAddress"
+            autoCapitalize="none"
+            onChangeText={(text) =>
+              setCredentials({ ...credentials, email: text })
+            }
+            placeholder="email"
+          />
+          <TextInput
+            style={tw`w-60 bg-white h-10 p-4 mb-2 rounded p-3`}
+            textContentType="password"
+            secureTextEntry={true}
+            autoCapitalize="none"
+            onChangeText={(text) =>
+              setCredentials({ ...credentials, password: text })
+            }
+            placeholder="password"
+          />
+          <TextInput
+            style={tw`w-60 bg-white h-10 p-4 mb-2 rounded p-3`}
+            textContentType="password"
+            secureTextEntry={true}
+            autoCapitalize="none"
+            onChangeText={(text) =>
+              setCredentials({ ...credentials, confirmPassword: text })
+            }
+            placeholder="confirm password"
+          />
+          <LandingButton
+            disabled={
+              credentials.password !== credentials.confirmPassword ||
+              credentials.password.length <= 0
+            }
+            fn={signup}
+            text={"SIGN UP"}
+          />
+          <LandingLink fn={() => setDisplaySignup(false)} text={"log in"} />
+        </View>
+      ) : (
+        <View style={tw`flex-1 items-center justify-center mb-30`}>
+          <TextInput
+            style={tw`w-60 bg-white h-10 p-4 mb-2 rounded p-3`}
+            textContentType="emailAddress"
+            autoCapitalize="none"
+            onChangeText={(text) =>
+              setCredentials({ ...credentials, email: text })
+            }
+            placeholder="email"
+          />
+          <TextInput
+            style={tw`w-60 bg-white h-10 p-4 mb-2 rounded p-3`}
+            textContentType="password"
+            autoCapitalize="none"
+            secureTextEntry={true}
+            onChangeText={(text) =>
+              setCredentials({ ...credentials, password: text })
+            }
+            placeholder="password"
+          />
+          {loading ? (
+            <ActivityIndicator style={tw`p-2`}></ActivityIndicator>
+          ) : (
+            <LandingButton disabled={false} fn={login} text={"LOGIN"} />
+          )}
+          <LandingLink fn={() => setDisplaySignup(true)} text={"sign up"} />
+        </View>
+      )}
+    </View>
+  );
 }

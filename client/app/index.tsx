@@ -97,24 +97,29 @@ export default function index() {
       {displaySignup ? (
         <View style={tw`flex-1 items-center justify-center mb-30`}>
           <TextInput
-            style={tw`w-60 bg-white h-10 p-4 mb-2 rounded`}
+            style={tw`w-60 bg-white h-10 p-4 mb-2 rounded p-3`}
             textContentType="emailAddress"
+            autoCapitalize="none"
             onChangeText={(text) =>
               setCredentials({ ...credentials, email: text })
             }
             placeholder="email"
           />
           <TextInput
-            style={tw`w-60 bg-white h-10 p-4 mb-2 rounded`}
+            style={tw`w-60 bg-white h-10 p-4 mb-2 rounded p-3`}
             textContentType="password"
+            secureTextEntry={true}
+            autoCapitalize="none"
             onChangeText={(text) =>
               setCredentials({ ...credentials, password: text })
             }
             placeholder="password"
           />
           <TextInput
-            style={tw`w-60 bg-white h-10 p-4 mb-2 rounded`}
+            style={tw`w-60 bg-white h-10 p-4 mb-2 rounded p-3`}
             textContentType="password"
+            secureTextEntry={true}
+            autoCapitalize="none"
             onChangeText={(text) =>
               setCredentials({ ...credentials, confirmPassword: text })
             }
@@ -133,16 +138,19 @@ export default function index() {
       ) : (
         <View style={tw`flex-1 items-center justify-center mb-30`}>
           <TextInput
-            style={tw`w-60 bg-white h-10 p-4 mb-2 rounded`}
+            style={tw`w-60 bg-white h-10 p-4 mb-2 rounded p-3`}
             textContentType="emailAddress"
+            autoCapitalize="none"
             onChangeText={(text) =>
               setCredentials({ ...credentials, email: text })
             }
             placeholder="email"
           />
           <TextInput
-            style={tw`w-60 bg-white h-10 p-4 mb-2 rounded`}
+            style={tw`w-60 bg-white h-10 p-4 mb-2 rounded p-3`}
             textContentType="password"
+            autoCapitalize="none"
+            secureTextEntry={true}
             onChangeText={(text) =>
               setCredentials({ ...credentials, password: text })
             }

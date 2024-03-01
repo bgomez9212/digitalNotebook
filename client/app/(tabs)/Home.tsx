@@ -4,11 +4,17 @@ import { useQuery } from "@tanstack/react-query";
 import axios from "axios";
 
 export default function Home() {
-  const { isPending, error, data } = useQuery({
-    queryKey: ["repoData"],
+  const {
+    isPending,
+    error,
+    data: events,
+  } = useQuery({
+    queryKey: ["events"],
     queryFn: () =>
-      axios.get("http://localhost:3000/api/hello").then((res) => res.data),
+      axios.get("http://localhost:3000/api/events").then((res) => res.data),
   });
+
+  console.log(events);
 
   // if (isPending) return 'Loading...'
   if (isPending) {
@@ -30,7 +36,7 @@ export default function Home() {
 
   return (
     <View style={tw`bg-black h-full flex justify-center items-center`}>
-      <Text style={tw`text-white`}>{data}</Text>
+      <Text style={tw`text-white`}>Hello World</Text>
     </View>
   );
 }

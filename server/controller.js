@@ -5,4 +5,8 @@ module.exports = {
     const result = await model.getEvents();
     res.send(result).status(200);
   },
+  sendHelloWorld: async (req, res) => {
+    const result = await model.sendHelloWorld();
+    res.send(result).status(200);
+  },
 };

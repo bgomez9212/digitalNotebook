@@ -7,10 +7,8 @@ export default function Home() {
   const { isPending, error, data } = useQuery({
     queryKey: ["repoData"],
     queryFn: () =>
-      axios.get("http://localhost:3000/api").then((res) => res.data),
+      axios.get("http://localhost:3000/api/hello").then((res) => res.data),
   });
-
-  console.log(data);
 
   // if (isPending) return 'Loading...'
   if (isPending) {

@@ -5,4 +5,7 @@ module.exports = {
     const { rows: results } = await pool.query(`SELECT * FROM events`);
     return results;
   },
+  sendHelloWorld: async () => {
+    return "Hello World";
+  },
 };

@@ -1,4 +1,4 @@
-import { View, Text, StyleSheet } from "react-native";
+import { View, Text, StyleSheet, Image } from "react-native";
 import { DataTable } from "react-native-paper";
 import tw from "../tailwind";
 import { useQuery } from "@tanstack/react-query";
@@ -36,19 +36,16 @@ export default function RecentMatchTable() {
     <DataTable style={tw`bg-white`}>
       <DataTable.Header>
         <View style={tw`flex-1 items-center justify-center py-3`}>
-          <Text>Promotion</Text>
-        </View>
-        <View style={tw`flex-2 items-center justify-center py-3 `}>
-          <Text>Event</Text>
-        </View>
-        <View style={tw`flex-1 items-center justify-center py-3`}>
-          <Text>Date</Text>
+          <Text>Most Recent Shows</Text>
         </View>
       </DataTable.Header>
       {events.map((event) => (
         <DataTable.Row key={event.id}>
           <View style={tw`flex-1 justify-center items-center`}>
-            <Text>{event.promotion_id}</Text>
+            <Image
+              style={tw`w-[90%] h-[90%]`}
+              source={require("../assets/aew-logo.jpg")}
+            />
           </View>
           <View style={tw`flex-2 justify-center items-center`}>
             <Text>{event.title}</Text>

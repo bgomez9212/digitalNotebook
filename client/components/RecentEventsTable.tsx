@@ -4,7 +4,7 @@ import tw from "../tailwind";
 import { useQuery } from "@tanstack/react-query";
 import axios from "axios";
 
-export default function RecentMatchTable() {
+export default function RecentEventTable() {
   const {
     isPending,
     error,
@@ -32,6 +32,7 @@ export default function RecentMatchTable() {
       </View>
     );
   }
+
   return (
     <DataTable style={tw`bg-white`}>
       <DataTable.Header>
@@ -48,10 +49,10 @@ export default function RecentMatchTable() {
             />
           </View>
           <View style={tw`flex-2 justify-center items-center`}>
-            <Text>{event.title}</Text>
+            <Text>{event.title.split("#")[0]}</Text>
           </View>
           <View style={tw`flex-1 justify-center items-center`}>
-            <Text>{event.date}</Text>
+            <Text>{event.date.slice(0, 10)}</Text>
           </View>
         </DataTable.Row>
       ))}

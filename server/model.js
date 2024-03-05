@@ -6,7 +6,7 @@ module.exports = {
       `SELECT events.id AS id, events.title, events.date, events.venue_id, promotions.name AS promotion_name
       FROM events
       JOIN promotions ON promotions.id = events.promotion_id
-      ORDER BY date ASC
+      ORDER BY date DESC
       LIMIT 5;`
     );
     return results;
@@ -66,6 +66,5 @@ module.exports = {
       }
     }
     return matchesArr;
-    return results;
   },
 };

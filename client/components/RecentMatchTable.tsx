@@ -1,4 +1,4 @@
-import { View, Text, StyleSheet, Image } from "react-native";
+import { View, Text, Image } from "react-native";
 import { DataTable } from "react-native-paper";
 import tw from "../tailwind";
 import { useQuery } from "@tanstack/react-query";

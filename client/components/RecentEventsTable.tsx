@@ -34,7 +34,7 @@ export default function RecentEventTable() {
   }
 
   return (
-    <DataTable style={tw`bg-white`}>
+    <DataTable style={tw`bg-white mt-32`}>
       <DataTable.Header>
         <View style={tw`flex-1 items-center justify-center py-3`}>
           <Text>Most Recent Shows</Text>
@@ -49,7 +49,7 @@ export default function RecentEventTable() {
             />
           </View>
           <View style={tw`flex-2 justify-center items-center`}>
-            <Text>{event.title.split("#")[0]}</Text>
+            <Text>{event.title.split(" #")[0]}</Text>
           </View>
           <View style={tw`flex-1 justify-center items-center`}>
             <Text>{event.date.slice(0, 10)}</Text>

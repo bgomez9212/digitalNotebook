@@ -33,10 +33,10 @@ module.exports = {
         SELECT matches.id FROM matches
         JOIN events ON matches.event_id = events.id
         WHERE events.date > $1::DATE
-        ORDER BY rating DESC, events.date DESC
+        ORDER BY matches.rating DESC, events.date DESC
         LIMIT 5
       )
-      ORDER BY date DESC, matches.id, team;
+      ORDER BY matches.rating DESC, date DESC, matches.id, team;
       `,
       [lastMonth]
     );

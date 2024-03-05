@@ -36,7 +36,7 @@ module.exports = {
         ORDER BY rating DESC, events.date DESC
         LIMIT 5
       )
-      ORDER BY date DESC;
+      ORDER BY date DESC, matches.id, team;
       `,
       [lastMonth]
     );
@@ -66,5 +66,6 @@ module.exports = {
       }
     }
     return matchesArr;
+    return results;
   },
 };

@@ -3,10 +3,10 @@ import { Text, View } from "react-native";
 import tw from "../../../tailwind";
 
 export default function EventPage() {
-  const { id } = useLocalSearchParams();
+  const { eventId } = useLocalSearchParams();
   return (
-    <View style={tw`flex-1 justify-center items-center`}>
-      <Text>Event {id}</Text>
+    <View style={tw`flex-1 justify-center items-center bg-black`}>
+      <Text style={tw`text-white`}>Event {eventId}</Text>
     </View>
   );
 }

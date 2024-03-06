@@ -1,4 +1,4 @@
-import { View, Text, Image } from "react-native";
+import { View, Text, Image, StyleSheet } from "react-native";
 import { DataTable } from "react-native-paper";
 import tw from "../tailwind";
 import { useQuery } from "@tanstack/react-query";
@@ -41,10 +41,10 @@ export default function RecentEventTable() {
         </View>
       </DataTable.Header>
       {events.map((event) => (
-        <DataTable.Row key={event.id}>
+        <DataTable.Row key={event.id} style={tw`h-fit p-2`}>
           <View style={tw`flex-1 justify-center items-center`}>
             <Image
-              style={tw`w-[90%] h-[90%]`}
+              style={tw`h-12 w-24`}
               source={require("../assets/aew-logo.jpg")}
             />
           </View>

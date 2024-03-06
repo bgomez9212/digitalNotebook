@@ -68,14 +68,14 @@ export default function TopRatedMatchesTable() {
           key={match.match_id}
           onPress={() => console.log(match.event_id)}
         >
-          <DataTable.Row style={tw`h-32`}>
+          <DataTable.Row style={tw`h-fit p-2`}>
             <View style={tw`flex-1 justify-center items-center`}>
               <Image
-                style={tw`w-[90%] h-[90%]`}
+                style={tw`w-24 h-12`}
                 source={require("../assets/aew-logo.jpg")}
               />
             </View>
-            <View style={tw`flex-2 justify-center items-center`}>
+            <View style={tw`flex-2 p-2 justify-center`}>
               <Text>{parseMatchData(match.wrestlers)}</Text>
             </View>
             <View style={tw`flex-1 justify-center items-center`}>

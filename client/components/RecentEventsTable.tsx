@@ -1,10 +1,10 @@
-import { View, Text, StyleSheet, Image } from "react-native";
+import { View, Text, Image, StyleSheet } from "react-native";
 import { DataTable } from "react-native-paper";
 import tw from "../tailwind";
 import { useQuery } from "@tanstack/react-query";
 import axios from "axios";
 
-export default function RecentMatchTable() {
+export default function RecentEventTable() {
   const {
     isPending,
     error,
@@ -32,26 +32,27 @@ export default function RecentMatchTable() {
       </View>
     );
   }
+
   return (
-    <DataTable style={tw`bg-white`}>
+    <DataTable style={tw`bg-white mt-32`}>
       <DataTable.Header>
         <View style={tw`flex-1 items-center justify-center py-3`}>
           <Text>Most Recent Shows</Text>
         </View>
       </DataTable.Header>
       {events.map((event) => (
-        <DataTable.Row key={event.id}>
+        <DataTable.Row key={event.id} style={tw`h-fit p-2`}>
           <View style={tw`flex-1 justify-center items-center`}>
             <Image
-              style={tw`w-[90%] h-[90%]`}
+              style={tw`h-12 w-24`}
               source={require("../assets/aew-logo.jpg")}
             />
           </View>
           <View style={tw`flex-2 justify-center items-center`}>
-            <Text>{event.title}</Text>
+            <Text>{event.title.split(" #")[0]}</Text>
           </View>
           <View style={tw`flex-1 justify-center items-center`}>
-            <Text>{event.date}</Text>
+            <Text>{event.date.slice(0, 10)}</Text>
           </View>
         </DataTable.Row>
       ))}

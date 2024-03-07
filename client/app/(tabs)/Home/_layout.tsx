@@ -1,6 +1,26 @@
-import { Stack } from "expo-router";
+import { useQuery } from "@tanstack/react-query";
+import axios from "axios";
+import { Stack, useGlobalSearchParams } from "expo-router";
+import { useEffect } from "react";
 const blue = "#477CB9";
 export default function Layout() {
+  const { eventId } = useGlobalSearchParams();
+  // useEffect(() => {
+  //   const {
+  //     isPending,
+  //     error,
+  //     data: eventName,
+  //   } = useQuery({
+  //     queryKey: ["eventName"],
+  //     queryFn: () => {
+  //       axios.get("http://localhost:3000/api/events", {
+  //         params: {
+  //           event_id: eventId
+  //         }
+  //       }).then((res) => res.data);
+  //     },
+  //   });
+  // }, [eventId]);
   return (
     <Stack>
       <Stack.Screen
@@ -14,7 +34,7 @@ export default function Layout() {
       <Stack.Screen
         name="[eventId]"
         options={{
-          title: "Event",
+          title: Array.isArray(eventId) ? "" : eventId,
           headerStyle: { backgroundColor: blue },
           headerTitleStyle: { color: "white" },
           headerTintColor: "white",

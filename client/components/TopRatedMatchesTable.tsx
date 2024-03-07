@@ -66,7 +66,7 @@ export default function TopRatedMatchesTable() {
       {matches.map((match) => (
         <TouchableOpacity
           key={match.match_id}
-          onPress={() => console.log(match.event_id)}
+          // onPress={() => console.log(match.event_id)}
         >
           <DataTable.Row style={tw`h-fit p-2`}>
             <View style={tw`flex-1 justify-center items-center`}>

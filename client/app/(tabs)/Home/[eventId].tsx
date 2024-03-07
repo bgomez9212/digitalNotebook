@@ -10,19 +10,18 @@ export default function EventPage() {
   const {
     isPending,
     error,
-    data: events,
+    data: event,
   } = useQuery({
     queryKey: ["event"],
     queryFn: () =>
       axios
-        .get("http://localhost:3000/api/events/", {
+        .get("http://localhost:3000/api/events/:id", {
           params: {
             id: eventId,
           },
         })
         .then((res) => res.data),
   });
-  console.log(events);
   if (isPending) {
     return (
       <View>
@@ -39,7 +38,7 @@ export default function EventPage() {
   }
   return (
     <View style={tw`flex-1 justify-center items-center bg-black`}>
-      <Text style={tw`text-white`}>Event {eventId}</Text>
+      <Text style={tw`text-white`}>{event[0].title}</Text>
     </View>
   );
 }

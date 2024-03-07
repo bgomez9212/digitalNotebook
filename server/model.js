@@ -3,7 +3,7 @@ const pool = require("./db.js");
 module.exports = {
   getEvent: async (eventId) => {
     const { rows: results } = await pool.query(
-      `SELECT * FROM events where id = $1`,
+      `SELECT *, TO_CHAR(events.date, 'YYYY-MM-DD') AS date FROM events where id = $1`,
       [eventId]
     );
     return results;

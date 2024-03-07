@@ -13,7 +13,7 @@ export default function Layout() {
             id: eventId,
           },
         })
-        .then((res) => setEventName(res.data[0].title))
+        .then((res) => setEventName(res.data.title))
         .catch((err) => console.log(err));
     } else {
       setEventName("-");

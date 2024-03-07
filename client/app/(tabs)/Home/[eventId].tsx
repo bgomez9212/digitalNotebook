@@ -38,7 +38,7 @@ export default function EventPage() {
   }
   return (
     <View style={tw`flex-1 justify-center items-center bg-black`}>
-      <Text style={tw`text-white`}>{event[0].title}</Text>
+      <Text style={tw`text-white`}>{event.title}</Text>
     </View>
   );
 }

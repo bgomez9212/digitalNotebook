@@ -11,7 +11,7 @@ export default function RecentEventTable() {
     error,
     data: events,
   } = useQuery({
-    queryKey: ["events"],
+    queryKey: ["recentEvents"],
     queryFn: () =>
       axios
         .get("http://localhost:3000/api/recentevents")

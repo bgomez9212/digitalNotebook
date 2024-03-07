@@ -11,7 +11,7 @@ export default function TopRatedMatchesTable() {
     error,
     data: matches,
   } = useQuery({
-    queryKey: ["matches"],
+    queryKey: ["topMatches"],
     queryFn: () =>
       axios.get("http://localhost:3000/api/topmatches").then((res) => res.data),
   });

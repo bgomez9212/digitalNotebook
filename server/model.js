@@ -1,18 +1,22 @@
 const pool = require("./db.js");
 
 module.exports = {
-  getEvents: async () => {
+  getEvent: async (eventId) => {
     const { rows: results } = await pool.query(
-      `SELECT events.id AS id, events.title, events.date, events.venue_id, promotions.name AS promotion_name
+      `SELECT * FROM events where id = $1`,
+      [eventId]
+    );
+    return results;
+  },
+  getRecentEvents: async () => {
+    const { rows: results } = await pool.query(
+      `SELECT events.id AS id, events.title, TO_CHAR(events.date, 'YYYY-MM-DD') AS date, events.venue_id, promotions.name AS promotion_name
       FROM events
       JOIN promotions ON promotions.id = events.promotion_id
       ORDER BY date DESC
       LIMIT 5;`
     );
     return results;
-  },
-  sendHelloWorld: async () => {
-    return "Hello World";
   },
   getTopRatedMatches: async () => {
     const date = new Date();

@@ -5,22 +5,7 @@ import { useEffect } from "react";
 const blue = "#477CB9";
 export default function Layout() {
   const { eventId } = useGlobalSearchParams();
-  // useEffect(() => {
-  //   const {
-  //     isPending,
-  //     error,
-  //     data: eventName,
-  //   } = useQuery({
-  //     queryKey: ["eventName"],
-  //     queryFn: () => {
-  //       axios.get("http://localhost:3000/api/events", {
-  //         params: {
-  //           event_id: eventId
-  //         }
-  //       }).then((res) => res.data);
-  //     },
-  //   });
-  // }, [eventId]);
+
   return (
     <Stack>
       <Stack.Screen

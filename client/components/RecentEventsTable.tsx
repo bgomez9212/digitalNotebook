@@ -13,7 +13,9 @@ export default function RecentEventTable() {
   } = useQuery({
     queryKey: ["events"],
     queryFn: () =>
-      axios.get("http://localhost:3000/api/events").then((res) => res.data),
+      axios
+        .get("http://localhost:3000/api/recentevents")
+        .then((res) => res.data),
   });
 
   // if (isPending) return 'Loading...'
@@ -57,7 +59,7 @@ export default function RecentEventTable() {
               <Text>{event.title.split(" #")[0]}</Text>
             </View>
             <View style={tw`flex-1 justify-center items-center`}>
-              <Text>{event.date.slice(0, 10)}</Text>
+              <Text>{event.date}</Text>
             </View>
           </DataTable.Row>
         </TouchableOpacity>

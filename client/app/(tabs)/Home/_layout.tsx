@@ -1,12 +1,10 @@
-import { useQuery, useQueryClient } from "@tanstack/react-query";
 import axios from "axios";
 import { Stack, useGlobalSearchParams } from "expo-router";
 import { useEffect, useState } from "react";
-
 const blue = "#477CB9";
 export default function Layout() {
-  const [eventName, setEventName] = useState("");
   const { eventId } = useGlobalSearchParams();
+  const [eventName, setEventName] = useState("-");
   useEffect(() => {
     if (eventId) {
       axios
@@ -18,9 +16,10 @@ export default function Layout() {
         .then((res) => setEventName(res.data[0].title))
         .catch((err) => console.log(err));
     } else {
-      setEventName("");
+      setEventName("-");
     }
   }, [eventId]);
+
   return (
     <Stack>
       <Stack.Screen

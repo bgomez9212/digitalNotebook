@@ -56,7 +56,7 @@ export default function RecentEventTable() {
               />
             </View>
             <View style={tw`flex-2 justify-center items-center`}>
-              <Text>{event.title.split(" #")[0]}</Text>
+              <Text>{event.title}</Text>
             </View>
             <View style={tw`flex-1 justify-center items-center`}>
               <Text>{event.date}</Text>

@@ -67,7 +67,7 @@ export default function EventPage() {
             source={require("../../../assets/aew-logo.jpg")}
             style={tw`w-full h-[200px] mt-4 border`}
           />
-          <View style={tw`mt-4 mb-16 items-center`}>
+          <View style={tw`mt-8 mb-8 items-center`}>
             <Text style={tw`text-white text-3xl`}>{event.title}</Text>
             <Text style={tw`text-white`}>{event.date}</Text>
             <Text style={tw`text-white`}>{event.venue_name}</Text>

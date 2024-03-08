@@ -55,6 +55,9 @@ module.exports = {
         matchObj.rating = currentPartObj.rating;
         matchObj.wrestler = [[currentPartObj.name]];
       }
+      if (i === matches.length - 1) {
+        matchesArr.push({ ...matchObj });
+      }
     }
     eventInfo[0].matches = matchesArr;
     // return matchesArr;

@@ -62,10 +62,10 @@ export default function EventPage() {
   return (
     <SafeAreaView style={tw`flex-1`}>
       <ScrollView>
-        <View style={tw`bg-black pb-100`}>
+        <View style={tw`bg-black`}>
           <Image
             source={require("../../../assets/aew-logo.jpg")}
-            style={tw`w-full h-1/8 mt-4 border`}
+            style={tw`w-full h-[200px] mt-4 border`}
           />
           <View style={tw`mt-4 mb-16 items-center`}>
             <Text style={tw`text-white text-3xl`}>{event.title}</Text>
@@ -75,7 +75,7 @@ export default function EventPage() {
           <DataTable>
             {event.matches.map((match) => (
               <TouchableOpacity key={match.match_number}>
-                <DataTable.Row style={tw`h-40 p-2`}>
+                <DataTable.Row style={tw`h-40 p-4`}>
                   <View style={tw`flex-4 justify-center`}>
                     <Text style={tw`text-white text-lg`}>
                       {parseMatchData(match.wrestler)}

@@ -4,6 +4,7 @@ import tw from "../tailwind";
 import { useQuery } from "@tanstack/react-query";
 import axios from "axios";
 import { useEffect } from "react";
+import { router } from "expo-router";
 
 export default function TopRatedMatchesTable() {
   const {
@@ -66,7 +67,7 @@ export default function TopRatedMatchesTable() {
       {matches.map((match) => (
         <TouchableOpacity
           key={match.match_id}
-          // onPress={() => console.log(match.event_id)}
+          onPress={() => router.push(`/(tabs)/Home/${match.event_id}`)}
         >
           <DataTable.Row style={tw`h-fit p-2`}>
             <View style={tw`flex-1 justify-center items-center`}>

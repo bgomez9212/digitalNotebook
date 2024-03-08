@@ -20,6 +20,7 @@ export default function Layout() {
       <Tabs.Screen
         name="Home"
         options={{
+          headerShown: false,
           tabBarIcon: ({ color }) => (
             <Entypo name="home" size={24} color={color} />
           ),

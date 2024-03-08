@@ -74,7 +74,10 @@ export default function EventPage() {
           </View>
           <DataTable>
             {event.matches.map((match) => (
-              <TouchableOpacity key={match.match_number}>
+              <TouchableOpacity
+                key={match.match_number}
+                onPress={() => console.log(match.id)}
+              >
                 <DataTable.Row style={tw`h-40 p-4`}>
                   <View style={tw`flex-4 justify-center`}>
                     <Text style={tw`text-white text-lg`}>

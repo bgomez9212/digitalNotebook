@@ -18,6 +18,7 @@ module.exports = {
     const { rows: matches } = await pool.query(
       `
       SELECT
+        matches.id,
         matches.match_number,
         matches.rating AS rating,
         participants.team,
@@ -33,6 +34,7 @@ module.exports = {
     // create separate match obj that will be pushed to matchesArr
     // start with first element of inputArr (arr)
     let matchObj = {
+      id: matches[0].id,
       match_number: matches[0].match_number,
       rating: matches[0].rating,
       wrestler: [[matches[0].name]],
@@ -51,6 +53,7 @@ module.exports = {
         }
       } else {
         matchesArr.push({ ...matchObj });
+        matchObj.id = currentPartObj.id;
         matchObj.match_number = currentPartObj.match_number;
         matchObj.rating = currentPartObj.rating;
         matchObj.wrestler = [[currentPartObj.name]];

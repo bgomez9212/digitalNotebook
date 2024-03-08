@@ -20,7 +20,7 @@ module.exports = {
       SELECT
         matches.id,
         matches.match_number,
-        matches.rating AS rating,
+        (matches.rating/matches.rating_count) AS rating,
         participants.team,
         wrestlers.name
       FROM matches
@@ -96,7 +96,7 @@ module.exports = {
         participants.match_id,
         participants.team,
         wrestlers.name,
-        matches.rating,
+        (matches.rating / matches.rating_count) AS rating,
         matches.event_id,
         events.date
       FROM participants
@@ -107,7 +107,7 @@ module.exports = {
         SELECT matches.id FROM matches
         JOIN events ON matches.event_id = events.id
         WHERE events.date > $1::DATE AND rating IS NOT NULL
-        ORDER BY matches.rating DESC, events.date DESC
+        ORDER BY rating DESC, events.date DESC
         LIMIT 5
       )
       ORDER BY matches.rating DESC, date DESC, matches.id, team;

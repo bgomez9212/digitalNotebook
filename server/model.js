@@ -103,7 +103,7 @@ module.exports = {
       WHERE match_id IN (
         SELECT matches.id FROM matches
         JOIN events ON matches.event_id = events.id
-        WHERE events.date > $1::DATE
+        WHERE events.date > $1::DATE AND rating IS NOT NULL
         ORDER BY matches.rating DESC, events.date DESC
         LIMIT 5
       )

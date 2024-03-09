@@ -1,4 +1,8 @@
-import { useLocalSearchParams } from "expo-router";
+import {
+  router,
+  useGlobalSearchParams,
+  useLocalSearchParams,
+} from "expo-router";
 import {
   Image,
   SafeAreaView,
@@ -68,6 +72,9 @@ export default function EventPage() {
       </View>
     );
   }
+  // function handlePress() {
+  //   router.navigate("./RatingModal");
+  // }
   return (
     <SafeAreaView style={tw`flex-1`}>
       <ScrollView>
@@ -85,7 +92,12 @@ export default function EventPage() {
             {event.matches.map((match) => (
               <TouchableOpacity
                 key={match.match_number}
-                onPress={() => console.log(match.id)}
+                onPress={() =>
+                  router.navigate({
+                    pathname: "./RatingModal",
+                    params: { id: match.id },
+                  })
+                }
               >
                 <DataTable.Row style={tw`h-40 p-4`}>
                   <View style={tw`flex-4 justify-center`}>

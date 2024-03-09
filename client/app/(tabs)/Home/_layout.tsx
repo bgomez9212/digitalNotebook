@@ -39,6 +39,12 @@ export default function Layout() {
           headerTintColor: "white",
         }}
       />
+      <Stack.Screen
+        name="RatingModal"
+        options={{
+          presentation: "modal",
+        }}
+      />
     </Stack>
   );
 }

@@ -8,9 +8,9 @@ export default function Layout() {
   useEffect(() => {
     if (eventId) {
       axios
-        .get("http://localhost:3000/api/events/:id", {
+        .get("http://localhost:3000/api/events/:event_id", {
           params: {
-            id: eventId,
+            event_id: eventId,
           },
         })
         .then((res) => setEventName(res.data.title))

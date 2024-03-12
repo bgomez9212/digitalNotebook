@@ -29,9 +29,9 @@ export default function EventPage() {
     queryKey: ["event"],
     queryFn: () =>
       axios
-        .get("http://localhost:3000/api/events/:id", {
+        .get("http://localhost:3000/api/events/:event_id", {
           params: {
-            id: eventId,
+            event_id: eventId,
           },
         })
         .then((res) => res.data),
@@ -107,7 +107,7 @@ export default function EventPage() {
                   </View>
                   <View style={tw`flex-1 justify-center`}>
                     <Text style={tw`text-white text-center text-xl`}>
-                      {match.rating}
+                      {match.rating ? match.rating : "submit a rating"}
                     </Text>
                   </View>
                 </DataTable.Row>

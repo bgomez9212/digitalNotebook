@@ -14,7 +14,7 @@ export default function RecentEventTable() {
     queryKey: ["recentEvents"],
     queryFn: () =>
       axios
-        .get("http://localhost:3000/api/recentevents")
+        .get("http://localhost:3000/api/events/recent")
         .then((res) => res.data),
   });
 

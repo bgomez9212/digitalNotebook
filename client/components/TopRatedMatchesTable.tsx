@@ -14,7 +14,9 @@ export default function TopRatedMatchesTable() {
   } = useQuery({
     queryKey: ["topMatches"],
     queryFn: () =>
-      axios.get("http://localhost:3000/api/topmatches").then((res) => res.data),
+      axios
+        .get("http://localhost:3000/api/matches/toprated")
+        .then((res) => res.data),
   });
 
   function parseMatchData(wrestlersArr) {

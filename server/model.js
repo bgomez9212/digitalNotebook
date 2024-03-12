@@ -55,7 +55,7 @@ module.exports = {
         matchesArr.push({ ...matchObj });
         matchObj.id = currentPartObj.id;
         matchObj.match_number = currentPartObj.match_number;
-        matchObj.rating = currentPartObj.rating;
+        matchObj.rating = Math.ceil(currentPartObj.rating * 100) / 100;
         matchObj.wrestler = [[currentPartObj.name]];
       }
       if (i === matches.length - 1) {
@@ -132,7 +132,7 @@ module.exports = {
         matchesArr.push({ ...matchObj });
         matchObj.event_id = matchData.event_id;
         matchObj.match_id = matchData.match_id;
-        matchObj.rating = matchData.rating;
+        matchObj.rating = Math.ceil(matchData.rating * 100) / 100;
         matchObj.wrestlers = [[matchData.name]];
       }
       if (results.indexOf(matchData) === results.length - 1) {

@@ -143,15 +143,28 @@ module.exports = {
   },
   getMatchInfo: async (match_id) => {
     const { rows: result } = await pool.query(
-      `SELECT participants.team, wrestlers.name
-      FROM matches
+      `
+      SELECT matches.id, participants.team, wrestlers.name
+        FROM matches
       JOIN participants ON matches.id = participants.match_id
       JOIN wrestlers ON participants.wrestler_id = wrestlers.id
-      WHERE matches.id = $1
-      ORDER BY participants.team ASC`,
+        WHERE matches.id = $1
+        ORDER BY participants.team ASC`,
       [match_id]
     );
-    function parseMatchData(resArr) {}
-    return result;
+    let matchObj = {
+      id: result[0].id,
+      teams: [],
+    };
+    for (let i = 0; i < result.length; i++) {
+      let currentWrestlerObj = result[i];
+      let team = currentWrestlerObj.team;
+      if (!matchObj.teams[team]) {
+        matchObj.teams[team] = [currentWrestlerObj.name];
+      } else {
+        matchObj.teams[team].push(currentWrestlerObj.name);
+      }
+    }
+    return matchObj;
   },
 };

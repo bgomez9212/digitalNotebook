@@ -6,12 +6,21 @@ import axios from "axios";
 export default function RatingModal() {
   const isPresented = router.canGoBack();
   const { id } = useLocalSearchParams();
-  // const {data: matchInfo, isPending, error} = useQuery({
-  //   queryKey: ["matchInfo"],
-  //   queryFn: () => (
-  //     axios.get()
-  //   )
-  // })
+  const {
+    isPending,
+    error,
+    data: matchInfo,
+  } = useQuery({
+    queryKey: ["matchInfo"],
+    queryFn: () =>
+      axios
+        .get("http://localhost:3000/api/matches/:match_id", {
+          params: {
+            match_id: id,
+          },
+        })
+        .then((res) => res.data),
+  });
   return (
     <View style={{ flex: 1, alignItems: "center", justifyContent: "center" }}>
       <Text>Match id:{id}</Text>

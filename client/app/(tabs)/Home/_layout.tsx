@@ -43,6 +43,7 @@ export default function Layout() {
         name="RatingModal"
         options={{
           presentation: "modal",
+          title: "Submit a Rating",
         }}
       />
     </Stack>

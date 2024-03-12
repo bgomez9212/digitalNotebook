@@ -107,10 +107,10 @@ module.exports = {
         SELECT matches.id FROM matches
         JOIN events ON matches.event_id = events.id
         WHERE events.date > $1::DATE AND rating IS NOT NULL
-        ORDER BY rating DESC, events.date DESC
+        ORDER BY (rating/rating_count) DESC, events.date DESC
         LIMIT 5
       )
-      ORDER BY matches.rating DESC, date DESC, matches.id, team;
+      ORDER BY (matches.rating / rating_count) DESC, date DESC, matches.id, team;
       `,
       [lastMonth]
     );
@@ -140,5 +140,18 @@ module.exports = {
       }
     }
     return matchesArr;
+  },
+  getMatchInfo: async (match_id) => {
+    const { rows: result } = await pool.query(
+      `SELECT participants.team, wrestlers.name
+      FROM matches
+      JOIN participants ON matches.id = participants.match_id
+      JOIN wrestlers ON participants.wrestler_id = wrestlers.id
+      WHERE matches.id = $1
+      ORDER BY participants.team ASC`,
+      [match_id]
+    );
+    function parseMatchData(resArr) {}
+    return result;
   },
 };

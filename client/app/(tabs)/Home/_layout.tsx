@@ -44,6 +44,8 @@ export default function Layout() {
         options={{
           presentation: "modal",
           title: "Submit a Rating",
+          headerStyle: { backgroundColor: blue },
+          headerTitleStyle: { color: "white" },
         }}
       />
     </Stack>

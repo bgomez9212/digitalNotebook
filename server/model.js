@@ -144,7 +144,7 @@ module.exports = {
   getMatchInfo: async (match_id) => {
     const { rows: result } = await pool.query(
       `
-      SELECT matches.id, participants.team, wrestlers.name
+      SELECT matches.id, participants.team, wrestlers.name, (matches.rating / matches.rating_count) AS rating, matches.rating_count
         FROM matches
       JOIN participants ON matches.id = participants.match_id
       JOIN wrestlers ON participants.wrestler_id = wrestlers.id
@@ -154,6 +154,8 @@ module.exports = {
     );
     let matchObj = {
       id: result[0].id,
+      rating: result[0].rating,
+      rating_count: result[0].rating_count,
       teams: [],
     };
     for (let i = 0; i < result.length; i++) {

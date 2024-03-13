@@ -90,53 +90,57 @@ module.exports = {
     let year = date.getFullYear();
     let lastMonth = `${year}-${month}-${day}`;
 
-    const matchesArr = [];
     const { rows: results } = await pool.query(
       `
       SELECT
         participants.match_id,
         participants.team,
         wrestlers.name,
-        (matches.rating / matches.rating_count) AS rating,
-        matches.event_id,
-        events.date
+        AVG(ratings.rating) AS rating,
+        matches.event_id
       FROM participants
       JOIN wrestlers ON participants.wrestler_id = wrestlers.id
       JOIN matches ON participants.match_id = matches.id
       JOIN events ON events.id = matches.event_id
-      WHERE match_id IN (
+      JOIN ratings ON ratings.match_id = matches.id
+      WHERE participants.match_id IN (
         SELECT matches.id FROM matches
         JOIN events ON matches.event_id = events.id
+        JOIN ratings ON ratings.match_id = matches.id
         WHERE events.date > $1::DATE AND rating IS NOT NULL
-        ORDER BY (rating/rating_count) DESC, events.date DESC
+        GROUP BY matches.id, events.date
+        ORDER BY (AVG(ratings.rating)) DESC, events.date DESC
         LIMIT 5
       )
-      ORDER BY (matches.rating / rating_count) DESC, date DESC, matches.id, team;
+      GROUP BY participants.match_id, participants.team, wrestlers.name, matches.event_id, events.date
+      ORDER BY rating DESC, participants.match_id, team;
       `,
       [lastMonth]
     );
+    let matchesArr = [];
     let matchObj = {
       event_id: results[0].event_id,
       match_id: results[0].match_id,
       rating: results[0].rating,
-      wrestlers: [[results[0].name]],
+      teams: [[results[0].name]],
     };
     // skip first entry since that is manually inserted
-    for (let matchData of results.slice(1, results.length)) {
-      if (matchObj.match_id === matchData.match_id) {
-        if (matchObj.wrestlers[matchData.team]) {
-          matchObj.wrestlers[matchData.team].push(matchData.name);
+    for (let i = 1; i < results.length; i++) {
+      const participantObj = results[i];
+      if (participantObj.match_id === matchObj.match_id) {
+        if (matchObj.teams[participantObj.team]) {
+          matchObj.teams[participantObj.team].push(participantObj.name);
         } else {
-          matchObj.wrestlers[matchData.team] = [matchData.name];
+          matchObj.teams[participantObj.team] = [participantObj.name];
         }
       } else {
         matchesArr.push({ ...matchObj });
-        matchObj.event_id = matchData.event_id;
-        matchObj.match_id = matchData.match_id;
-        matchObj.rating = Math.ceil(matchData.rating * 100) / 100;
-        matchObj.wrestlers = [[matchData.name]];
+        matchObj.event_id = participantObj.event_id;
+        matchObj.match_id = participantObj.match_id;
+        matchObj.rating = participantObj.rating;
+        matchObj.teams = [[participantObj.name]];
       }
-      if (results.indexOf(matchData) === results.length - 1) {
+      if (i === results.length - 1) {
         matchesArr.push({ ...matchObj });
       }
     }

@@ -19,13 +19,14 @@ module.exports = {
       `
       SELECT
         matches.id,
-        matches.match_number,
-        (matches.rating/matches.rating_count) AS rating,
+        AVG(ratings.rating) AS rating,
+        (SELECT (*) FROM ratings WHERE ratings.match_id = matches.id) AS rating_count,
         participants.team,
         wrestlers.name
       FROM matches
       JOIN participants ON participants.match_id = matches.id
       JOIN wrestlers ON wrestlers.id = participants.wrestler_id
+      JOIN ratings ON matches.id = ratings.match_id
       WHERE matches.event_id = $1
       ORDER BY matches.match_number, participants.team`,
       [eventId]
@@ -144,17 +145,24 @@ module.exports = {
   getMatchInfo: async (match_id) => {
     const { rows: result } = await pool.query(
       `
-      SELECT matches.id, participants.team, wrestlers.name, (matches.rating / matches.rating_count) AS rating, matches.rating_count
-        FROM matches
+      SELECT
+        matches.id,
+        participants.team,
+        wrestlers.name,
+        AVG(ratings.rating) AS rating,
+        (SELECT COUNT(*) FROM ratings WHERE ratings.match_id = matches.id) AS rating_count
+      FROM matches
       JOIN participants ON matches.id = participants.match_id
       JOIN wrestlers ON participants.wrestler_id = wrestlers.id
+      JOIN ratings ON matches.id = ratings.match_id
         WHERE matches.id = $1
-        ORDER BY participants.team ASC`,
+      GROUP BY matches.id, participants.team, wrestlers.name
+      ORDER BY participants.team ASC`,
       [match_id]
     );
     let matchObj = {
       id: result[0].id,
-      rating: result[0].rating,
+      rating: Math.ceil(result[0].rating * 100) / 100,
       rating_count: result[0].rating_count,
       teams: [],
     };

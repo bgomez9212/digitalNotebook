@@ -1,11 +1,10 @@
-import { View, Text } from "react-native";
-import { Link, router, useLocalSearchParams } from "expo-router";
-import { StatusBar } from "expo-status-bar";
+import { View, Text, ActivityIndicator } from "react-native";
+import { useLocalSearchParams } from "expo-router";
 import { useQuery } from "@tanstack/react-query";
 import axios from "axios";
 import tw from "../../../tailwind";
+
 export default function RatingModal() {
-  const isPresented = router.canGoBack();
   const { id } = useLocalSearchParams();
   const {
     isPending,
@@ -40,10 +39,34 @@ export default function RatingModal() {
     return match;
   }
 
+  if (isPending) {
+    return (
+      <View>
+        <ActivityIndicator />
+      </View>
+    );
+  }
+
+  if (error) {
+    return (
+      <View>
+        <Text>Error: {error.message}</Text>
+      </View>
+    );
+  }
+
   return (
-    <View style={tw`flex-1 items-center justify-center bg-black`}>
-      <Text style={tw`text-white text-xl`}>{parseMatchData(matchInfo)}</Text>
-      <StatusBar style="dark" />
+    <View
+      style={tw`flex-1 items-center justify-center bg-black before:content`}
+    >
+      <View style={tw`w-4/5`}>
+        <Text style={tw`text-white text-xl`}>{parseMatchData(matchInfo)}</Text>
+        <Text style={tw`text-white text-2xl`}>{matchInfo.rating}</Text>
+        <Text style={tw`text-white`}>
+          Based off of {matchInfo.rating_count} ratings
+        </Text>
+      </View>
     </View>
   );
 }
+// ★★★★★

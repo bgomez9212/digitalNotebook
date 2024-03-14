@@ -7,7 +7,10 @@ module.exports = {
         events.title AS title,
         TO_CHAR(events.date, 'YYYY-MM-DD') AS date,
         promotions.name AS promotion_name,
-        venues.name AS venue_name
+        venues.name AS venue_name,
+        venues.city,
+        venues.state,
+        venues.country
       FROM events
       JOIN promotions ON events.promotion_id = promotions.id
       JOIN venues ON events.venue_id = venues.id
@@ -26,9 +29,10 @@ module.exports = {
       JOIN participants ON participants.match_id = matches.id
       JOIN wrestlers ON wrestlers.id = participants.wrestler_id
       LEFT OUTER JOIN ratings ON ratings.match_id = matches.id
-      WHERE matches.event_id = 1
+      WHERE matches.event_id = $1
       GROUP BY matches.id, participants.team, wrestlers.name
-      ORDER BY matches.match_number, participants.team`
+      ORDER BY matches.match_number, participants.team`,
+      [eventId]
     );
     let matchArr = [];
     let matchObj = {
@@ -144,31 +148,39 @@ module.exports = {
       SELECT
         matches.id,
         participants.team,
-        wrestlers.name,
+        wrestlers.name AS wrestler_name,
         AVG(ratings.rating) AS rating,
-        (SELECT COUNT(*) FROM ratings WHERE ratings.match_id = matches.id) AS rating_count
+        (SELECT COUNT(*) FROM ratings WHERE ratings.match_id = matches.id) AS rating_count,
+        championships.name AS championship_name
       FROM matches
       JOIN participants ON matches.id = participants.match_id
       JOIN wrestlers ON participants.wrestler_id = wrestlers.id
-      JOIN ratings ON matches.id = ratings.match_id
+      LEFT OUTER JOIN ratings ON matches.id = ratings.match_id
+      LEFT OUTER JOIN matches_championships ON matches_championships.match_id = matches.id
+      LEFT OUTER JOIN championships ON matches_championships.championship_id = championships.id
         WHERE matches.id = $1
-      GROUP BY matches.id, participants.team, wrestlers.name
-      ORDER BY participants.team ASC`,
+      GROUP BY matches.id, participants.team, wrestlers.name, matches_championships.id, championships.name
+      ORDER BY participants.team ASC;`,
       [match_id]
     );
-    let matchObj = {
+    const matchObj = {
       id: result[0].id,
-      rating: Math.ceil(result[0].rating * 100) / 100,
-      rating_count: result[0].rating_count,
       teams: [],
+      championships: [],
+      rating: result[0].rating,
+      rating_count: result[0].rating_count,
     };
-    for (let i = 0; i < result.length; i++) {
-      let currentWrestlerObj = result[i];
-      let team = currentWrestlerObj.team;
-      if (!matchObj.teams[team]) {
-        matchObj.teams[team] = [currentWrestlerObj.name];
-      } else {
-        matchObj.teams[team].push(currentWrestlerObj.name);
+
+    for (const partObj of result) {
+      if (!matchObj.teams[partObj.team]) {
+        matchObj.teams[partObj.team] = [];
+      }
+      if (!matchObj.teams[partObj.team].includes(partObj.wrestler_name)) {
+        matchObj.teams[partObj.team].push(partObj.wrestler_name);
+      }
+
+      if (!matchObj.championships.flat().includes(partObj.championship_name)) {
+        matchObj.championships.push([partObj.championship_name]);
       }
     }
     return matchObj;

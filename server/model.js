@@ -14,57 +14,49 @@ module.exports = {
       WHERE events.id = $1`,
       [eventId]
     );
-    eventInfo[0].matches = [];
     const { rows: matches } = await pool.query(
       `
       SELECT
-        matches.id,
-        AVG(ratings.rating) AS rating,
-        (SELECT (*) FROM ratings WHERE ratings.match_id = matches.id) AS rating_count,
+        matches.id AS match_id,
         participants.team,
-        wrestlers.name
+        wrestlers.name,
+        AVG(ratings.rating) AS rating,
+        (SELECT count(*) FROM ratings WHERE ratings.match_id = matches.id) AS submissions
       FROM matches
       JOIN participants ON participants.match_id = matches.id
       JOIN wrestlers ON wrestlers.id = participants.wrestler_id
-      JOIN ratings ON matches.id = ratings.match_id
-      WHERE matches.event_id = $1
-      ORDER BY matches.match_number, participants.team`,
-      [eventId]
+      LEFT OUTER JOIN ratings ON ratings.match_id = matches.id
+      WHERE matches.event_id = 1
+      GROUP BY matches.id, participants.team, wrestlers.name
+      ORDER BY matches.match_number, participants.team`
     );
-    let matchesArr = [];
-    // create separate match obj that will be pushed to matchesArr
-    // start with first element of inputArr (arr)
+    let matchArr = [];
     let matchObj = {
-      id: matches[0].id,
-      match_number: matches[0].match_number,
+      match_id: matches[0].match_id,
+      teams: [[matches[0].name]],
       rating: matches[0].rating,
-      wrestler: [[matches[0].name]],
+      submissions: matches[0].submissions,
     };
-    // starting at index one
     for (let i = 1; i < matches.length; i++) {
-      // name iteration
-      const currentPartObj = matches[i];
-      // if the current iteration's match number matches the current match obj match number
-      if (currentPartObj.match_number === matchObj.match_number) {
-        // and if the current iterations team matches the matchObj wrestlers team
-        if (matchObj.wrestler[currentPartObj.team]) {
-          matchObj.wrestler[currentPartObj.team].push(currentPartObj.name);
+      let currentPartObj = matches[i];
+      if (currentPartObj.match_id === matchObj.match_id) {
+        if (matchObj.teams[currentPartObj.team]) {
+          matchObj.teams[currentPartObj.team].push(currentPartObj.name);
         } else {
-          matchObj.wrestler.push([currentPartObj.name]);
+          matchObj.teams[currentPartObj.team] = [currentPartObj.name];
         }
       } else {
-        matchesArr.push({ ...matchObj });
-        matchObj.id = currentPartObj.id;
-        matchObj.match_number = currentPartObj.match_number;
-        matchObj.rating = Math.ceil(currentPartObj.rating * 100) / 100;
-        matchObj.wrestler = [[currentPartObj.name]];
+        matchArr.push({ ...matchObj });
+        matchObj.match_id = currentPartObj.match_id;
+        matchObj.teams = [[currentPartObj.name]];
+        matchObj.rating = currentPartObj.rating;
+        matchObj.submissions = currentPartObj.rating;
       }
       if (i === matches.length - 1) {
-        matchesArr.push({ ...matchObj });
+        matchArr.push({ ...matchObj });
       }
     }
-    eventInfo[0].matches = matchesArr;
-    // return matchesArr;
+    eventInfo[0].matches = matchArr;
     return eventInfo;
   },
   getRecentEvents: async () => {

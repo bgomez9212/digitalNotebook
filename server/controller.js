@@ -15,6 +15,6 @@ module.exports = {
   },
   getMatchInfo: async (req, res) => {
     const result = await model.getMatchInfo(req.query.match_id);
-    res.send(result).status(200);
+    res.send(result[0]).status(200);
   },
 };

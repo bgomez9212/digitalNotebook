@@ -1,5 +1,42 @@
 const pool = require("./db.js");
 
+function parseMatchData(matchArr) {
+  let matchesArr = [];
+  const matchObj = {
+    match_id: matchArr[0].match_id,
+    teams: [],
+    championships: [],
+    rating: matchArr[0].rating,
+    rating_count: matchArr[0].rating_count,
+  };
+
+  for (const [i, partObj] of matchArr.entries()) {
+    if (partObj.match_id !== matchObj.match_id) {
+      matchesArr.push({ ...matchObj });
+      matchObj.match_id = partObj.match_id;
+      matchObj.teams = [];
+      matchObj.championships = [];
+      matchObj.rating = partObj.rating;
+      rating_count = partObj.rating_count;
+    }
+    if (!matchObj.teams[partObj.team]) {
+      matchObj.teams[partObj.team] = [];
+    }
+    if (!matchObj.teams[partObj.team].includes(partObj.wrestler_name)) {
+      matchObj.teams[partObj.team].push(partObj.wrestler_name);
+    }
+
+    if (!matchObj.championships.flat().includes(partObj.championship_name)) {
+      matchObj.championships.push([partObj.championship_name]);
+    }
+    if (i === matchArr.length - 1) {
+      matchesArr.push({ ...matchObj });
+    }
+  }
+
+  return matchesArr;
+}
+
 module.exports = {
   getEvent: async (eventId) => {
     const { rows: eventInfo } = await pool.query(
@@ -89,17 +126,19 @@ module.exports = {
     const { rows: results } = await pool.query(
       `
       SELECT
-        participants.match_id,
+        matches.id AS match_id,
         participants.team,
-        wrestlers.name,
+        wrestlers.name AS wrestler_name,
         AVG(ratings.rating) AS rating,
-        matches.event_id
-      FROM participants
+        (SELECT COUNT(*) FROM ratings WHERE ratings.match_id = matches.id) AS rating_count,
+        championships.name AS championship_name
+      FROM matches
+      JOIN participants ON matches.id = participants.match_id
       JOIN wrestlers ON participants.wrestler_id = wrestlers.id
-      JOIN matches ON participants.match_id = matches.id
-      JOIN events ON events.id = matches.event_id
-      JOIN ratings ON ratings.match_id = matches.id
-      WHERE participants.match_id IN (
+      LEFT OUTER JOIN ratings ON matches.id = ratings.match_id
+      LEFT OUTER JOIN matches_championships ON matches_championships.match_id = matches.id
+      LEFT OUTER JOIN championships ON matches_championships.championship_id = championships.id
+        WHERE matches.id IN (
         SELECT matches.id FROM matches
         JOIN events ON matches.event_id = events.id
         JOIN ratings ON ratings.match_id = matches.id
@@ -108,45 +147,18 @@ module.exports = {
         ORDER BY (AVG(ratings.rating)) DESC, events.date DESC
         LIMIT 5
       )
-      GROUP BY participants.match_id, participants.team, wrestlers.name, matches.event_id, events.date
+      GROUP BY matches.id, participants.team, wrestlers.name, championship_name, participants.match_id
       ORDER BY rating DESC, participants.match_id, team;
       `,
       [lastMonth]
     );
-    let matchesArr = [];
-    let matchObj = {
-      event_id: results[0].event_id,
-      match_id: results[0].match_id,
-      rating: results[0].rating,
-      teams: [[results[0].name]],
-    };
-    // skip first entry since that is manually inserted
-    for (let i = 1; i < results.length; i++) {
-      const participantObj = results[i];
-      if (participantObj.match_id === matchObj.match_id) {
-        if (matchObj.teams[participantObj.team]) {
-          matchObj.teams[participantObj.team].push(participantObj.name);
-        } else {
-          matchObj.teams[participantObj.team] = [participantObj.name];
-        }
-      } else {
-        matchesArr.push({ ...matchObj });
-        matchObj.event_id = participantObj.event_id;
-        matchObj.match_id = participantObj.match_id;
-        matchObj.rating = participantObj.rating;
-        matchObj.teams = [[participantObj.name]];
-      }
-      if (i === results.length - 1) {
-        matchesArr.push({ ...matchObj });
-      }
-    }
-    return matchesArr;
+    return parseMatchData(results);
   },
   getMatchInfo: async (match_id) => {
     const { rows: result } = await pool.query(
       `
       SELECT
-        matches.id,
+        matches.id AS match_id,
         participants.team,
         wrestlers.name AS wrestler_name,
         AVG(ratings.rating) AS rating,
@@ -163,26 +175,6 @@ module.exports = {
       ORDER BY participants.team ASC;`,
       [match_id]
     );
-    const matchObj = {
-      id: result[0].id,
-      teams: [],
-      championships: [],
-      rating: result[0].rating,
-      rating_count: result[0].rating_count,
-    };
-
-    for (const partObj of result) {
-      if (!matchObj.teams[partObj.team]) {
-        matchObj.teams[partObj.team] = [];
-      }
-      if (!matchObj.teams[partObj.team].includes(partObj.wrestler_name)) {
-        matchObj.teams[partObj.team].push(partObj.wrestler_name);
-      }
-
-      if (!matchObj.championships.flat().includes(partObj.championship_name)) {
-        matchObj.championships.push([partObj.championship_name]);
-      }
-    }
-    return matchObj;
+    return parseMatchData(result);
   },
 };

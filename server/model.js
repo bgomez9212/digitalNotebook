@@ -59,45 +59,22 @@ module.exports = {
       SELECT
         matches.id AS match_id,
         participants.team,
-        wrestlers.name,
+        wrestlers.name AS wrestler_name,
         AVG(ratings.rating) AS rating,
-        (SELECT count(*) FROM ratings WHERE ratings.match_id = matches.id) AS submissions
+        (SELECT COUNT(*) FROM ratings WHERE ratings.match_id = matches.id) AS rating_count,
+        championships.name AS championship_name
       FROM matches
-      JOIN participants ON participants.match_id = matches.id
-      JOIN wrestlers ON wrestlers.id = participants.wrestler_id
-      LEFT OUTER JOIN ratings ON ratings.match_id = matches.id
-      WHERE matches.event_id = $1
-      GROUP BY matches.id, participants.team, wrestlers.name
-      ORDER BY matches.match_number, participants.team`,
+      JOIN participants ON matches.id = participants.match_id
+      JOIN wrestlers ON participants.wrestler_id = wrestlers.id
+      LEFT OUTER JOIN ratings ON matches.id = ratings.match_id
+      LEFT OUTER JOIN matches_championships ON matches_championships.match_id = matches.id
+      LEFT OUTER JOIN championships ON matches_championships.championship_id = championships.id
+        WHERE matches.event_id = $1
+      GROUP BY matches.id, participants.team, wrestlers.name, matches_championships.id, championships.name
+      ORDER BY matches.match_number, participants.team ASC`,
       [eventId]
     );
-    let matchArr = [];
-    let matchObj = {
-      match_id: matches[0].match_id,
-      teams: [[matches[0].name]],
-      rating: matches[0].rating,
-      submissions: matches[0].submissions,
-    };
-    for (let i = 1; i < matches.length; i++) {
-      let currentPartObj = matches[i];
-      if (currentPartObj.match_id === matchObj.match_id) {
-        if (matchObj.teams[currentPartObj.team]) {
-          matchObj.teams[currentPartObj.team].push(currentPartObj.name);
-        } else {
-          matchObj.teams[currentPartObj.team] = [currentPartObj.name];
-        }
-      } else {
-        matchArr.push({ ...matchObj });
-        matchObj.match_id = currentPartObj.match_id;
-        matchObj.teams = [[currentPartObj.name]];
-        matchObj.rating = currentPartObj.rating;
-        matchObj.submissions = currentPartObj.rating;
-      }
-      if (i === matches.length - 1) {
-        matchArr.push({ ...matchObj });
-      }
-    }
-    eventInfo[0].matches = matchArr;
+    eventInfo[0].matches = parseMatchData(matches);
     return eventInfo;
   },
   getRecentEvents: async () => {
@@ -120,6 +97,10 @@ module.exports = {
 
     let day = date.getDate();
     let month = date.getMonth();
+    if (month === 0) {
+      month = 12; // December of the previous year
+      year--; // Adjust the year accordingly
+    }
     let year = date.getFullYear();
     let lastMonth = `${year}-${month}-${day}`;
 

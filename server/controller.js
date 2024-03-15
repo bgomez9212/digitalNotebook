@@ -17,4 +17,19 @@ module.exports = {
     const result = await model.getMatchInfo(req.query.match_id);
     res.send(result[0]).status(200);
   },
+  postRating: async (req, res) => {
+    const result = await model.postRating(
+      req.query.match_id,
+      req.query.user_id,
+      req.query.rating
+    );
+    res.sendStatus(201);
+  },
+  updateRating: async (req, res) => {
+    const result = await model.updateRating(
+      req.query.match_id,
+      req.query.user_id
+    );
+    res.sendStatus(200);
+  },
 };

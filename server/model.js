@@ -158,4 +158,12 @@ module.exports = {
     );
     return parseMatchData(result);
   },
+  postRating: async (match_id, user_id, rating) => {
+    // console.log("match: ", match_id, " user: ", user_id, " rating: ", rating);
+    const { rows: results } = await pool.query(
+      "INSERT INTO ratings (user_id, match_id, rating) VALUES ($1, $2, $3) ON CONFLICT DO NOTHING",
+      [user_id, match_id, rating]
+    );
+    return results;
+  },
 };

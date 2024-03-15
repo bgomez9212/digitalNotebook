@@ -33,7 +33,7 @@ function parseMatchData(matchArr) {
     }
 
     if (!matchObj.championships.flat().includes(partObj.championship_name)) {
-      matchObj.championships.push([partObj.championship_name]);
+      matchObj.championships.push(partObj.championship_name);
     }
 
     if (i === matchArr.length - 1) {

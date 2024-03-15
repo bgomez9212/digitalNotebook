@@ -28,7 +28,8 @@ module.exports = {
   updateRating: async (req, res) => {
     const result = await model.updateRating(
       req.query.match_id,
-      req.query.user_id
+      req.query.user_id,
+      req.query.rating
     );
     res.sendStatus(200);
   },

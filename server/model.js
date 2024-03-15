@@ -166,4 +166,11 @@ module.exports = {
     );
     return results;
   },
+  updateRating: async (match_id, user_id, rating) => {
+    const { rows: result } = await pool.query(
+      "UPDATE ratings SET rating = $1 WHERE user_id = $2 AND match_id = $3",
+      [rating, user_id, match_id]
+    );
+    return result;
+  },
 };

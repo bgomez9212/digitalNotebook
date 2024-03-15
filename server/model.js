@@ -5,7 +5,7 @@ function parseMatchData(matchArr) {
   const matchObj = {
     match_id: matchArr[0].match_id,
     event_id: matchArr[0].event_id,
-    teams: [],
+    participants: [],
     championships: [],
     rating: matchArr[0].rating,
     rating_count: matchArr[0].rating_count,
@@ -16,21 +16,26 @@ function parseMatchData(matchArr) {
       matchesArr.push({ ...matchObj });
       matchObj.match_id = partObj.match_id;
       matchObj.event_id = partObj.event_id;
-      matchObj.teams = [];
+      matchObj.participants = [];
       matchObj.championships = [];
       matchObj.rating = partObj.rating;
       rating_count = partObj.rating_count;
     }
-    if (!matchObj.teams[partObj.team]) {
-      matchObj.teams[partObj.team] = [];
+    if (!matchObj.participants[partObj.participants]) {
+      matchObj.participants[partObj.participants] = [];
     }
-    if (!matchObj.teams[partObj.team].includes(partObj.wrestler_name)) {
-      matchObj.teams[partObj.team].push(partObj.wrestler_name);
+    if (
+      !matchObj.participants[partObj.participants].includes(
+        partObj.wrestler_name
+      )
+    ) {
+      matchObj.participants[partObj.participants].push(partObj.wrestler_name);
     }
 
     if (!matchObj.championships.flat().includes(partObj.championship_name)) {
       matchObj.championships.push([partObj.championship_name]);
     }
+
     if (i === matchArr.length - 1) {
       matchesArr.push({ ...matchObj });
     }
@@ -61,7 +66,7 @@ module.exports = {
       SELECT
         matches.id AS match_id,
         matches.event_id AS event_id,
-        participants.team,
+        participants.team AS participants,
         wrestlers.name AS wrestler_name,
         AVG(ratings.rating) AS rating,
         (SELECT COUNT(*) FROM ratings WHERE ratings.match_id = matches.id) AS rating_count,
@@ -112,7 +117,7 @@ module.exports = {
       SELECT
         matches.id AS match_id,
         matches.event_id AS event_id,
-        participants.team,
+        participants.team AS participants,
         wrestlers.name AS wrestler_name,
         AVG(ratings.rating) AS rating,
         (SELECT COUNT(*) FROM ratings WHERE ratings.match_id = matches.id) AS rating_count,
@@ -145,7 +150,7 @@ module.exports = {
       SELECT
         matches.id AS match_id,
         matches.event_id AS event_id,
-        participants.team,
+        participants.team AS participants,
         wrestlers.name AS wrestler_name,
         AVG(ratings.rating) AS rating,
         (SELECT COUNT(*) FROM ratings WHERE ratings.match_id = matches.id) AS rating_count,
@@ -157,7 +162,7 @@ module.exports = {
       LEFT OUTER JOIN matches_championships ON matches_championships.match_id = matches.id
       LEFT OUTER JOIN championships ON matches_championships.championship_id = championships.id
         WHERE matches.id = $1
-      GROUP BY matches.id, participants.team, wrestlers.name, matches_championships.id, championships.name
+      GROUP BY matches.id, participants.team, wrestlers.name, championships.name
       ORDER BY participants.team ASC;`,
       [match_id]
     );

@@ -159,18 +159,10 @@ module.exports = {
     return parseMatchData(result);
   },
   postRating: async (match_id, user_id, rating) => {
-    // console.log("match: ", match_id, " user: ", user_id, " rating: ", rating);
     const { rows: results } = await pool.query(
-      "INSERT INTO ratings (user_id, match_id, rating) VALUES ($1, $2, $3) ON CONFLICT DO NOTHING",
+      "INSERT INTO ratings (user_id, match_id, rating) VALUES ($1, $2, $3) ON CONFLICT (match_id, user_id) DO UPDATE SET rating = $3",
       [user_id, match_id, rating]
     );
     return results;
-  },
-  updateRating: async (match_id, user_id, rating) => {
-    const { rows: result } = await pool.query(
-      "UPDATE ratings SET rating = $1 WHERE user_id = $2 AND match_id = $3",
-      [rating, user_id, match_id]
-    );
-    return result;
   },
 };

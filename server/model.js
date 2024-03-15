@@ -4,6 +4,7 @@ function parseMatchData(matchArr) {
   let matchesArr = [];
   const matchObj = {
     match_id: matchArr[0].match_id,
+    event_id: matchArr[0].event_id,
     teams: [],
     championships: [],
     rating: matchArr[0].rating,
@@ -14,6 +15,7 @@ function parseMatchData(matchArr) {
     if (partObj.match_id !== matchObj.match_id) {
       matchesArr.push({ ...matchObj });
       matchObj.match_id = partObj.match_id;
+      matchObj.event_id = partObj.event_id;
       matchObj.teams = [];
       matchObj.championships = [];
       matchObj.rating = partObj.rating;
@@ -58,6 +60,7 @@ module.exports = {
       `
       SELECT
         matches.id AS match_id,
+        matches.event_id AS event_id,
         participants.team,
         wrestlers.name AS wrestler_name,
         AVG(ratings.rating) AS rating,
@@ -108,6 +111,7 @@ module.exports = {
       `
       SELECT
         matches.id AS match_id,
+        matches.event_id AS event_id,
         participants.team,
         wrestlers.name AS wrestler_name,
         AVG(ratings.rating) AS rating,
@@ -140,6 +144,7 @@ module.exports = {
       `
       SELECT
         matches.id AS match_id,
+        matches.event_id AS event_id,
         participants.team,
         wrestlers.name AS wrestler_name,
         AVG(ratings.rating) AS rating,

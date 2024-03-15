@@ -3,7 +3,6 @@ import { DataTable } from "react-native-paper";
 import tw from "../tailwind";
 import { useQuery } from "@tanstack/react-query";
 import axios from "axios";
-import { useEffect } from "react";
 import { router } from "expo-router";
 
 export default function TopRatedMatchesTable() {
@@ -35,12 +34,6 @@ export default function TopRatedMatchesTable() {
     return match;
   }
 
-  // useEffect(() => {
-  //   for (let matchObj of matches) {
-  //     parseMatchData(matchObj.wrestlers);
-  //   }
-  // }, [matches]);
-
   // if (isPending) return 'Loading...'
   if (isPending) {
     return (
@@ -58,6 +51,12 @@ export default function TopRatedMatchesTable() {
       </View>
     );
   }
+
+  return (
+    <View>
+      <Text>Placeholder</Text>
+    </View>
+  );
 
   return (
     <DataTable style={tw`bg-white mt-16`}>

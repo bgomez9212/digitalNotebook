@@ -67,7 +67,9 @@ export default function TopRatedMatchesTable() {
                 </View>
               </View>
               <View style={tw`w-full`}>
-                <Text style={tw`text-right`}>{match.rating}</Text>
+                <Text
+                  style={tw`text-right`}
+                >{`${match.rating} (${match.rating_count})`}</Text>
               </View>
             </View>
           </DataTable.Row>

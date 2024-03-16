@@ -1,5 +1,14 @@
 const pool = require("./db.js");
 
+function formatData(obj) {
+  const matchObj = { ...obj };
+  matchObj.championships = obj.championships.join(" & ");
+  matchObj.participants = obj.participants
+    .map((participantsList, i) => participantsList.join(" & "))
+    .join(" vs. ");
+  return matchObj;
+}
+
 function parseMatchData(matchArr) {
   let matchesArr = [];
   const matchObj = {
@@ -41,7 +50,7 @@ function parseMatchData(matchArr) {
     }
   }
 
-  return matchesArr;
+  return matchesArr.map((match) => formatData(match));
 }
 
 module.exports = {
@@ -111,38 +120,41 @@ module.exports = {
     }
     let year = date.getFullYear();
     let lastMonth = `${year}-${month}-${day}`;
-
-    const { rows: results } = await pool.query(
-      `
-      SELECT
-        matches.id AS match_id,
-        matches.event_id AS event_id,
-        participants.team AS participants,
-        wrestlers.name AS wrestler_name,
-        AVG(ratings.rating) AS rating,
-        (SELECT COUNT(*) FROM ratings WHERE ratings.match_id = matches.id) AS rating_count,
-        championships.name AS championship_name
-      FROM matches
-      JOIN participants ON matches.id = participants.match_id
-      JOIN wrestlers ON participants.wrestler_id = wrestlers.id
-      LEFT OUTER JOIN ratings ON matches.id = ratings.match_id
-      LEFT OUTER JOIN matches_championships ON matches_championships.match_id = matches.id
-      LEFT OUTER JOIN championships ON matches_championships.championship_id = championships.id
-        WHERE matches.id IN (
-        SELECT matches.id FROM matches
-        JOIN events ON matches.event_id = events.id
-        JOIN ratings ON ratings.match_id = matches.id
-        WHERE events.date > $1::DATE AND rating IS NOT NULL
-        GROUP BY matches.id, events.date
-        ORDER BY (AVG(ratings.rating)) DESC, events.date DESC
-        LIMIT 5
-      )
-      GROUP BY matches.id, participants.team, wrestlers.name, championship_name, participants.match_id
-      ORDER BY rating DESC, participants.match_id, team;
-      `,
-      [lastMonth]
-    );
-    return parseMatchData(results);
+    try {
+      const { rows: results } = await pool.query(
+        `
+        SELECT
+          matches.id AS match_id,
+          matches.event_id AS event_id,
+          participants.team AS participants,
+          wrestlers.name AS wrestler_name,
+          AVG(ratings.rating) AS rating,
+          (SELECT COUNT(*) FROM ratings WHERE ratings.match_id = matches.id) AS rating_count,
+          championships.name AS championship_name
+        FROM matches
+        JOIN participants ON matches.id = participants.match_id
+        JOIN wrestlers ON participants.wrestler_id = wrestlers.id
+        LEFT OUTER JOIN ratings ON matches.id = ratings.match_id
+        LEFT OUTER JOIN matches_championships ON matches_championships.match_id = matches.id
+        LEFT OUTER JOIN championships ON matches_championships.championship_id = championships.id
+          WHERE matches.id IN (
+          SELECT matches.id FROM matches
+          JOIN events ON matches.event_id = events.id
+          JOIN ratings ON ratings.match_id = matches.id
+          WHERE events.date > $1::DATE AND rating IS NOT NULL
+          GROUP BY matches.id, events.date
+          ORDER BY (AVG(ratings.rating)) DESC, events.date DESC
+          LIMIT 5
+        )
+        GROUP BY matches.id, participants.team, wrestlers.name, championship_name, participants.match_id
+        ORDER BY rating DESC, participants.match_id, team;
+        `,
+        [lastMonth]
+      );
+      return parseMatchData(results);
+    } catch (err) {
+      throw err;
+    }
   },
   getMatchInfo: async (match_id) => {
     const { rows: result } = await pool.query(

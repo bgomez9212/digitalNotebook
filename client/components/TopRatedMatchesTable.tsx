@@ -18,22 +18,6 @@ export default function TopRatedMatchesTable() {
         .then((res) => res.data),
   });
 
-  function parseMatchData(wrestlersArr) {
-    let match = "";
-    for (let i = 0; i < wrestlersArr.length; i++) {
-      if (wrestlersArr[i].length > 1) {
-        let text = wrestlersArr[i].join(" & ");
-        match += text;
-      } else {
-        match += wrestlersArr[i][0];
-      }
-      if (i < wrestlersArr.length - 1) {
-        match += " vs ";
-      }
-    }
-    return match;
-  }
-
   // if (isPending) return 'Loading...'
   if (isPending) {
     return (
@@ -78,7 +62,7 @@ export default function TopRatedMatchesTable() {
               />
             </View>
             <View style={tw`flex-2 p-2 justify-center`}>
-              <Text>{parseMatchData(match.wrestlers)}</Text>
+              <Text>{match.wrestlers}</Text>
             </View>
             <View style={tw`flex-1 justify-center items-center`}>
               <Text>{match.rating}</Text>

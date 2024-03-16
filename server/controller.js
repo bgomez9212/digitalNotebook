@@ -10,8 +10,12 @@ module.exports = {
     res.send(result).status(200);
   },
   getTopRatedMatches: async (req, res) => {
-    const result = await model.getTopRatedMatches();
-    res.send(result).status(200);
+    try {
+      const result = await model.getTopRatedMatches();
+      res.send(result).status(200);
+    } catch (err) {
+      res.sendStatus(404);
+    }
   },
   getMatchInfo: async (req, res) => {
     const result = await model.getMatchInfo(req.query.match_id);

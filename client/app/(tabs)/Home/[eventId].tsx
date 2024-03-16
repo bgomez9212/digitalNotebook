@@ -85,16 +85,20 @@ export default function EventPage() {
                   })
                 }
               >
-                <DataTable.Row style={tw`h-40 p-4`}>
-                  <View style={tw`flex-4 justify-center`}>
-                    <Text style={tw`text-white text-lg`}>
-                      {match.participants}
-                    </Text>
-                  </View>
-                  <View style={tw`flex-1 justify-center`}>
-                    <Text style={tw`text-white text-center text-xl`}>
-                      {match.rating ? match.rating : "submit a rating"}
-                    </Text>
+                <DataTable.Row style={tw`p-4`}>
+                  <View style={tw`flex flex-col w-full`}>
+                    <View style={tw`py-4`}>
+                      <Text style={tw`text-white text-lg`}>
+                        {match.participants}
+                      </Text>
+                    </View>
+                    <View style={tw`w-full`}>
+                      <Text style={tw`text-white text-right`}>
+                        {match.rating
+                          ? `${match.rating} (${match.rating_count})`
+                          : "no ratings yet"}
+                      </Text>
+                    </View>
                   </View>
                 </DataTable.Row>
               </TouchableOpacity>

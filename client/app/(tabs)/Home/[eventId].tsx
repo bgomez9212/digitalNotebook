@@ -87,6 +87,13 @@ export default function EventPage() {
               >
                 <DataTable.Row style={tw`p-4`}>
                   <View style={tw`flex flex-col w-full`}>
+                    {match.championships && (
+                      <View style={tw`py-2`}>
+                        <Text style={tw`text-white text-sm text-center`}>
+                          {match.championships}
+                        </Text>
+                      </View>
+                    )}
                     <View style={tw`py-4`}>
                       <Text style={tw`text-white text-lg`}>
                         {match.participants}

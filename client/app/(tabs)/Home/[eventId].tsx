@@ -58,9 +58,6 @@ export default function EventPage() {
       </View>
     );
   }
-  // function handlePress() {
-  //   router.navigate("./RatingModal");
-  // }
   return (
     <SafeAreaView style={tw`flex-1`}>
       <ScrollView>

@@ -28,7 +28,7 @@ function parseMatchData(matchArr) {
       matchObj.participants = [];
       matchObj.championships = [];
       matchObj.rating = partObj.rating;
-      rating_count = partObj.rating_count;
+      matchObj.rating_count = partObj.rating_count;
     }
     if (!matchObj.participants[partObj.participants]) {
       matchObj.participants[partObj.participants] = [];
@@ -165,7 +165,7 @@ module.exports = {
         participants.team AS participants,
         wrestlers.name AS wrestler_name,
         AVG(ratings.rating) AS rating,
-        (SELECT COUNT(*) FROM ratings WHERE ratings.match_id = matches.id) AS rating_count,
+        COUNT(ratings.rating) OVER (PARTITION BY matches.id) AS rating_count,
         championships.name AS championship_name
       FROM matches
       JOIN participants ON matches.id = participants.match_id

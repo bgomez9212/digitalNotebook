@@ -48,7 +48,7 @@ export default function RecentEventTable() {
           key={event.id}
           onPress={() => router.push(`/(tabs)/Home/${event.id}`)}
         >
-          <DataTable.Row style={tw`h-fit p-2`}>
+          <DataTable.Row style={tw`p-2`}>
             <View style={tw`flex-1 justify-center items-center`}>
               <Image
                 style={tw`h-12 w-24`}

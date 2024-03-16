@@ -48,14 +48,14 @@ export default function TopRatedMatchesTable() {
           key={match.match_id}
           onPress={() => router.push(`/(tabs)/Home/${match.event_id}`)}
         >
-          <DataTable.Row>
-            <View style={tw`w-full items-center py-2`}>
+          <DataTable.Row style={tw`p-0`}>
+            <View style={tw`w-full items-center py-2 px-3`}>
               {match.championships && (
                 <View>
                   <Text>{match.championships}</Text>
                 </View>
               )}
-              <View style={tw`flex flex-row py-2 items-center`}>
+              <View style={tw`flex flex-row py-4 items-center`}>
                 <View style={tw`flex-1`}>
                   <Image
                     style={tw`w-24 h-12`}
@@ -67,7 +67,7 @@ export default function TopRatedMatchesTable() {
                 </View>
               </View>
               <View style={tw`w-full`}>
-                <Text style={tw`text-right pr-3`}>{match.rating}</Text>
+                <Text style={tw`text-right`}>{match.rating}</Text>
               </View>
             </View>
           </DataTable.Row>

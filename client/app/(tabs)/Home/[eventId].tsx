@@ -43,21 +43,7 @@ export default function EventPage() {
       setUserUid(user.uid);
     }
   });
-  function parseMatchData(wrestlersArr) {
-    let match = "";
-    for (let i = 0; i < wrestlersArr.length; i++) {
-      if (wrestlersArr[i].length > 1) {
-        let text = wrestlersArr[i].join(" & ");
-        match += text;
-      } else {
-        match += wrestlersArr[i][0];
-      }
-      if (i < wrestlersArr.length - 1) {
-        match += " vs ";
-      }
-    }
-    return match;
-  }
+
   if (isPending) {
     return (
       <View>
@@ -91,7 +77,7 @@ export default function EventPage() {
           <DataTable>
             {event.matches.map((match) => (
               <TouchableOpacity
-                key={match.match_number}
+                key={match.match_id}
                 onPress={() =>
                   router.navigate({
                     pathname: "./RatingModal",
@@ -102,7 +88,7 @@ export default function EventPage() {
                 <DataTable.Row style={tw`h-40 p-4`}>
                   <View style={tw`flex-4 justify-center`}>
                     <Text style={tw`text-white text-lg`}>
-                      {parseMatchData(match.wrestler)}
+                      {match.participants}
                     </Text>
                   </View>
                   <View style={tw`flex-1 justify-center`}>

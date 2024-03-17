@@ -11,14 +11,14 @@ import {
 import { auth } from "../firebase";
 import {
   createUserWithEmailAndPassword,
-  onAuthStateChanged,
   signInWithEmailAndPassword,
 } from "firebase/auth";
-import { useState } from "react";
+import { useContext, useState } from "react";
 import LandingButton from "../components/LandingButton";
 import tw from "../tailwind";
 import LandingLink from "../components/LandingLink";
 import { Redirect } from "expo-router";
+import AuthContext from "../Context/authContext";
 
 export default function index() {
   const firebaseAuth = auth;
@@ -29,7 +29,6 @@ export default function index() {
     confirmPassword: "",
   });
   const [displaySignup, setDisplaySignup] = useState(false);
-  const [userEmail, setUserEmail] = useState(null);
 
   async function signup() {
     setLoading(true);
@@ -68,17 +67,9 @@ export default function index() {
     }
   }
 
-  onAuthStateChanged(firebaseAuth, (user) => {
-    if (user) {
-      // User is signed in, fetch user's email
-      setUserEmail(user.email);
-    } else {
-      // User is signed out
-      setUserEmail(null);
-    }
-  });
+  const userId = useContext(AuthContext);
 
-  if (userEmail) {
+  if (userId) {
     return <Redirect href="/(tabs)/Home" />;
   }
 

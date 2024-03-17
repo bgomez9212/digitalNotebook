@@ -6,7 +6,6 @@ import tw from "../../../tailwind";
 
 export default function RatingModal() {
   const { id } = useLocalSearchParams();
-  console.log(id);
   const {
     isPending,
     error,

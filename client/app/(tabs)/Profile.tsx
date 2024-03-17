@@ -2,11 +2,11 @@ import { Alert, Pressable, Text, View } from "react-native";
 import tw from "../../tailwind";
 import { signOut } from "firebase/auth";
 import { auth } from "../../firebase";
-import { useState } from "react";
+import { useContext, useState } from "react";
 import { Redirect } from "expo-router";
+import AuthContext from "../../Context/authContext";
 // TODO Put Signout button here
 export default function Profile() {
-  const [loggedIn, setLoggedIn] = useState(auth.currentUser?.email);
   function displayAlert() {
     Alert.alert("Are you sure you want to sign out?", "", [
       {
@@ -18,10 +18,10 @@ export default function Profile() {
   }
   function appSignOut() {
     signOut(auth);
-    setLoggedIn(null);
   }
 
-  if (!loggedIn) {
+  const userId = useContext(AuthContext);
+  if (!userId) {
     return <Redirect href="../../" />;
   }
 

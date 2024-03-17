@@ -1,8 +1,4 @@
-import {
-  router,
-  useGlobalSearchParams,
-  useLocalSearchParams,
-} from "expo-router";
+import { router, useLocalSearchParams } from "expo-router";
 import {
   Image,
   SafeAreaView,
@@ -15,11 +11,8 @@ import tw from "../../../tailwind";
 import { useQuery } from "@tanstack/react-query";
 import axios from "axios";
 import { DataTable } from "react-native-paper";
-import { getAuth, onAuthStateChanged } from "firebase/auth";
-import { useState } from "react";
 
 export default function EventPage() {
-  const [userUid, setUserUid] = useState("");
   const { eventId } = useLocalSearchParams();
   const {
     isPending,
@@ -35,13 +28,6 @@ export default function EventPage() {
           },
         })
         .then((res) => res.data),
-  });
-  // get user uid to store their ratings
-  const auth = getAuth();
-  onAuthStateChanged(auth, (user) => {
-    if (user) {
-      setUserUid(user.uid);
-    }
   });
 
   if (isPending) {

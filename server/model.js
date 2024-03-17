@@ -165,7 +165,7 @@ module.exports = {
         participants.team AS participants,
         wrestlers.name AS wrestler_name,
         AVG(ratings.rating) AS rating,
-        COUNT(ratings.rating) OVER (PARTITION BY matches.id) AS rating_count,
+        (SELECT COUNT(*) FROM ratings WHERE match_id = $1) AS rating_count,
         championships.name AS championship_name
       FROM matches
       JOIN participants ON matches.id = participants.match_id

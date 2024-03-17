@@ -78,7 +78,7 @@ export default function EventPage() {
                 onPress={() =>
                   router.navigate({
                     pathname: "./RatingModal",
-                    params: { id: match.id },
+                    params: { id: match.match_id },
                   })
                 }
               >

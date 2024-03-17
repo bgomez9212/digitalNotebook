@@ -6,6 +6,7 @@ import tw from "../../../tailwind";
 
 export default function RatingModal() {
   const { id } = useLocalSearchParams();
+  console.log(id);
   const {
     isPending,
     error,
@@ -21,23 +22,6 @@ export default function RatingModal() {
         })
         .then((res) => res.data),
   });
-
-  function parseMatchData(matchObj) {
-    let match = "";
-    for (let i = 0; i < matchObj.teams.length; i++) {
-      const currentArr = matchObj.teams[i];
-      console.log(currentArr);
-      if (currentArr.length > 1) {
-        match += currentArr.toString().split(",").join(" & ");
-      } else {
-        match += currentArr[0];
-      }
-      if (i < matchObj.teams.length - 1) {
-        match += " vs. ";
-      }
-    }
-    return match;
-  }
 
   if (isPending) {
     return (
@@ -56,14 +40,15 @@ export default function RatingModal() {
   }
 
   return (
-    <View
-      style={tw`flex-1 items-center justify-center bg-black before:content`}
-    >
+    <View style={tw`flex-1 items-center justify-center bg-black`}>
       <View style={tw`w-4/5`}>
-        <Text style={tw`text-white text-xl`}>{parseMatchData(matchInfo)}</Text>
-        <Text style={tw`text-white text-2xl`}>{matchInfo.rating}</Text>
-        <Text style={tw`text-white`}>
-          Based off of {matchInfo.rating_count} ratings
+        <Text style={tw`text-white text-xl pb-3`}>
+          {matchInfo.participants}
+        </Text>
+        <Text style={tw`text-white text-sm text-right`}>
+          {matchInfo.rating
+            ? `${matchInfo.rating} (${matchInfo.rating_count})`
+            : "submit the first rating"}
         </Text>
       </View>
     </View>

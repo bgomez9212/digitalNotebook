@@ -1,4 +1,4 @@
-import { useLocalSearchParams } from "expo-router";
+import { router, useLocalSearchParams } from "expo-router";
 import {
   Image,
   SafeAreaView,
@@ -10,7 +10,6 @@ import {
 import tw from "../../../tailwind";
 import { useQuery } from "@tanstack/react-query";
 import axios from "axios";
-import { useEffect } from "react";
 import { DataTable } from "react-native-paper";
 
 export default function EventPage() {
@@ -23,28 +22,14 @@ export default function EventPage() {
     queryKey: ["event"],
     queryFn: () =>
       axios
-        .get("http://localhost:3000/api/events/:id", {
+        .get("http://localhost:3000/api/events/:event_id", {
           params: {
-            id: eventId,
+            event_id: eventId,
           },
         })
         .then((res) => res.data),
   });
-  function parseMatchData(wrestlersArr) {
-    let match = "";
-    for (let i = 0; i < wrestlersArr.length; i++) {
-      if (wrestlersArr[i].length > 1) {
-        let text = wrestlersArr[i].join(" & ");
-        match += text;
-      } else {
-        match += wrestlersArr[i][0];
-      }
-      if (i < wrestlersArr.length - 1) {
-        match += " vs ";
-      }
-    }
-    return match;
-  }
+
   if (isPending) {
     return (
       <View>
@@ -74,17 +59,36 @@ export default function EventPage() {
           </View>
           <DataTable>
             {event.matches.map((match) => (
-              <TouchableOpacity key={match.match_number}>
-                <DataTable.Row style={tw`h-40 p-4`}>
-                  <View style={tw`flex-4 justify-center`}>
-                    <Text style={tw`text-white text-lg`}>
-                      {parseMatchData(match.wrestler)}
-                    </Text>
-                  </View>
-                  <View style={tw`flex-1 justify-center`}>
-                    <Text style={tw`text-white text-center text-xl`}>
-                      {match.rating}
-                    </Text>
+              <TouchableOpacity
+                key={match.match_id}
+                onPress={() =>
+                  router.navigate({
+                    pathname: "./RatingModal",
+                    params: { id: match.match_id },
+                  })
+                }
+              >
+                <DataTable.Row style={tw`p-4`}>
+                  <View style={tw`flex flex-col w-full`}>
+                    {match.championships && (
+                      <View style={tw`py-2`}>
+                        <Text style={tw`text-white text-sm text-center`}>
+                          {match.championships}
+                        </Text>
+                      </View>
+                    )}
+                    <View style={tw`py-4`}>
+                      <Text style={tw`text-white text-lg`}>
+                        {match.participants}
+                      </Text>
+                    </View>
+                    <View style={tw`w-full`}>
+                      <Text style={tw`text-white text-right`}>
+                        {match.rating
+                          ? `${match.rating} (${match.rating_count})`
+                          : "no ratings yet"}
+                      </Text>
+                    </View>
                   </View>
                 </DataTable.Row>
               </TouchableOpacity>

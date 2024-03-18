@@ -3,7 +3,6 @@ import { DataTable } from "react-native-paper";
 import tw from "../tailwind";
 import { useQuery } from "@tanstack/react-query";
 import axios from "axios";
-import { useEffect } from "react";
 import { router } from "expo-router";
 
 export default function TopRatedMatchesTable() {
@@ -14,30 +13,10 @@ export default function TopRatedMatchesTable() {
   } = useQuery({
     queryKey: ["topMatches"],
     queryFn: () =>
-      axios.get("http://localhost:3000/api/topmatches").then((res) => res.data),
+      axios
+        .get("http://localhost:3000/api/matches/toprated")
+        .then((res) => res.data),
   });
-
-  function parseMatchData(wrestlersArr) {
-    let match = "";
-    for (let i = 0; i < wrestlersArr.length; i++) {
-      if (wrestlersArr[i].length > 1) {
-        let text = wrestlersArr[i].join(" & ");
-        match += text;
-      } else {
-        match += wrestlersArr[i][0];
-      }
-      if (i < wrestlersArr.length - 1) {
-        match += " vs ";
-      }
-    }
-    return match;
-  }
-
-  // useEffect(() => {
-  //   for (let matchObj of matches) {
-  //     parseMatchData(matchObj.wrestlers);
-  //   }
-  // }, [matches]);
 
   // if (isPending) return 'Loading...'
   if (isPending) {
@@ -69,18 +48,29 @@ export default function TopRatedMatchesTable() {
           key={match.match_id}
           onPress={() => router.push(`/(tabs)/Home/${match.event_id}`)}
         >
-          <DataTable.Row style={tw`h-fit p-2`}>
-            <View style={tw`flex-1 justify-center items-center`}>
-              <Image
-                style={tw`w-24 h-12`}
-                source={require("../assets/aew-logo.jpg")}
-              />
-            </View>
-            <View style={tw`flex-2 p-2 justify-center`}>
-              <Text>{parseMatchData(match.wrestlers)}</Text>
-            </View>
-            <View style={tw`flex-1 justify-center items-center`}>
-              <Text>{match.rating}</Text>
+          <DataTable.Row style={tw`p-0`}>
+            <View style={tw`w-full items-center py-2 px-3`}>
+              {match.championships && (
+                <View>
+                  <Text style={tw`text-center`}>{match.championships}</Text>
+                </View>
+              )}
+              <View style={tw`flex flex-row py-4 items-center`}>
+                <View style={tw`flex-1`}>
+                  <Image
+                    style={tw`w-24 h-12`}
+                    source={require("../assets/aew-logo.jpg")}
+                  />
+                </View>
+                <View style={tw`flex-2.5`}>
+                  <Text>{match.participants}</Text>
+                </View>
+              </View>
+              <View style={tw`w-full`}>
+                <Text
+                  style={tw`text-right`}
+                >{`${match.rating} (${match.rating_count})`}</Text>
+              </View>
             </View>
           </DataTable.Row>
         </TouchableOpacity>

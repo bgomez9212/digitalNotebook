@@ -2,7 +2,6 @@ import {
   View,
   Image,
   TextInput,
-  Button,
   ActivityIndicator,
   KeyboardAvoidingView,
   TouchableWithoutFeedback,
@@ -12,15 +11,14 @@ import {
 import { auth } from "../firebase";
 import {
   createUserWithEmailAndPassword,
-  onAuthStateChanged,
   signInWithEmailAndPassword,
-  signOut,
 } from "firebase/auth";
-import { useEffect, useState } from "react";
+import { useContext, useState } from "react";
 import LandingButton from "../components/LandingButton";
 import tw from "../tailwind";
 import LandingLink from "../components/LandingLink";
-import { Link, Redirect } from "expo-router";
+import { Redirect } from "expo-router";
+import AuthContext from "../Context/authContext";
 
 export default function index() {
   const firebaseAuth = auth;
@@ -31,7 +29,6 @@ export default function index() {
     confirmPassword: "",
   });
   const [displaySignup, setDisplaySignup] = useState(false);
-  const [userEmail, setUserEmail] = useState(null);
 
   async function signup() {
     setLoading(true);
@@ -70,22 +67,9 @@ export default function index() {
     }
   }
 
-  useEffect(() => {
-    const unsubscribe = onAuthStateChanged(firebaseAuth, (user) => {
-      if (user) {
-        // User is signed in, fetch user's email
-        setUserEmail(user.email);
-      } else {
-        // User is signed out
-        setUserEmail(null);
-      }
-    });
+  const userId = useContext(AuthContext);
 
-    // Clean up subscription on unmount
-    return () => unsubscribe();
-  }, []);
-
-  if (userEmail) {
+  if (userId) {
     return <Redirect href="/(tabs)/Home" />;
   }
 

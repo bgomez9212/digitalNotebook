@@ -29,6 +29,10 @@ export default function RatingModal() {
 
   const { mutateAsync: addRatingMutation } = useMutation({
     mutationFn: addRating,
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["matchInfo"] });
+      queryClient.invalidateQueries({ queryKey: ["event"] });
+    },
   });
 
   async function addRating(ratingObj) {

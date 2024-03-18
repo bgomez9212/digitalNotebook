@@ -7,6 +7,7 @@ import {
   TouchableWithoutFeedback,
   Platform,
   Keyboard,
+  Text,
 } from "react-native";
 import { auth } from "../firebase";
 import {
@@ -22,16 +23,20 @@ import AuthContext from "../Context/authContext";
 
 export default function index() {
   const firebaseAuth = auth;
-  const [loading, setLoading] = useState(false);
+  const [uiState, setUiState] = useState({
+    displaySignup: false,
+    loading: false,
+    loginError: false,
+    signUpError: false,
+  });
   const [credentials, setCredentials] = useState({
     email: "",
     password: "",
     confirmPassword: "",
   });
-  const [displaySignup, setDisplaySignup] = useState(false);
 
   async function signup() {
-    setLoading(true);
+    setUiState({ ...uiState, loading: true });
     try {
       await createUserWithEmailAndPassword(
         firebaseAuth,
@@ -45,14 +50,12 @@ export default function index() {
         credentials.password
       );
     } catch (err) {
-      console.log(err);
-      setCredentials({ email: "", password: "", confirmPassword: "" });
-      setLoading(false);
+      setUiState({ ...uiState, signUpError: true, loading: false });
     }
   }
 
   async function login() {
-    setLoading(true);
+    setUiState({ ...uiState, loading: true });
     try {
       await signInWithEmailAndPassword(
         firebaseAuth,
@@ -61,12 +64,9 @@ export default function index() {
       );
       setCredentials({ email: "", password: "", confirmPassword: "" });
     } catch (err) {
-      console.log(err);
-    } finally {
-      setLoading(false);
+      setUiState({ ...uiState, loginError: true });
     }
   }
-
   const userId = useContext(AuthContext);
 
   if (userId) {
@@ -87,7 +87,7 @@ export default function index() {
               style={tw`w-90`}
             />
           </View>
-          {displaySignup ? (
+          {uiState.displaySignup ? (
             <View style={tw`items-center justify-start flex-2`}>
               <TextInput
                 style={tw`w-60 bg-white h-10 p-4 mb-2 rounded p-3`}
@@ -126,7 +126,13 @@ export default function index() {
                 fn={signup}
                 text={"SIGN UP"}
               />
-              <LandingLink fn={() => setDisplaySignup(false)} text={"log in"} />
+              {uiState.signUpError && (
+                <Text style={tw`text-red my-3`}>Email already in use</Text>
+              )}
+              <LandingLink
+                fn={() => setUiState({ ...uiState, displaySignup: false })}
+                text={"log in"}
+              />
             </View>
           ) : (
             <View style={tw`flex justify-start items-center flex-2`}>
@@ -149,12 +155,20 @@ export default function index() {
                 }
                 placeholder="password"
               />
-              {loading ? (
+              {uiState.loading ? (
                 <ActivityIndicator style={tw`p-2`}></ActivityIndicator>
               ) : (
                 <LandingButton disabled={false} fn={login} text={"LOGIN"} />
               )}
-              <LandingLink fn={() => setDisplaySignup(true)} text={"sign up"} />
+              {uiState.loginError && (
+                <Text style={tw`text-red my-3`}>
+                  Incorrect email or password
+                </Text>
+              )}
+              <LandingLink
+                fn={() => setUiState({ ...uiState, displaySignup: true })}
+                text={"sign up"}
+              />
             </View>
           )}
         </View>

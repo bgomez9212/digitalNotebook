@@ -52,7 +52,7 @@ export default function TopRatedMatchesTable() {
             <View style={tw`w-full items-center py-2 px-3`}>
               {match.championships && (
                 <View>
-                  <Text>{match.championships}</Text>
+                  <Text style={tw`text-center`}>{match.championships}</Text>
                 </View>
               )}
               <View style={tw`flex flex-row py-4 items-center`}>

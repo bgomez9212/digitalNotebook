@@ -32,6 +32,7 @@ export default function RatingModal() {
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["matchInfo"] });
       queryClient.invalidateQueries({ queryKey: ["event"] });
+      queryClient.invalidateQueries({ queryKey: ["topMatches"] });
     },
   });
 

@@ -1,17 +1,19 @@
 import { View, Text, ActivityIndicator, Pressable } from "react-native";
 import { Picker } from "@react-native-picker/picker";
 import { useLocalSearchParams } from "expo-router";
-import { useQuery } from "@tanstack/react-query";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import axios from "axios";
 import tw from "../../../tailwind";
-import { useState } from "react";
+import { useContext, useState } from "react";
+import AuthContext from "../../../Context/authContext";
 
 export default function RatingModal() {
+  const queryClient = useQueryClient();
   const [rating, setRating] = useState(2);
   const { id } = useLocalSearchParams();
   const {
-    isPending,
-    error,
+    isPending: matchInfoPending,
+    error: matchInfoError,
     data: matchInfo,
   } = useQuery({
     queryKey: ["matchInfo"],
@@ -25,7 +27,24 @@ export default function RatingModal() {
         .then((res) => res.data),
   });
 
-  if (isPending) {
+  const { mutateAsync: addRatingMutation } = useMutation({
+    mutationFn: addRating,
+  });
+
+  async function addRating(ratingObj) {
+    await axios
+      .post(`http://localhost:3000/api/ratings/:match_id`, {
+        match_id: Number(ratingObj.matchId),
+        user_id: ratingObj.userId,
+        rating: ratingObj.rating,
+      })
+      .then(() => console.log("success"))
+      .catch((err) => console.log(err));
+  }
+
+  const userId = useContext(AuthContext);
+
+  if (matchInfoPending) {
     return (
       <View>
         <ActivityIndicator />
@@ -33,10 +52,10 @@ export default function RatingModal() {
     );
   }
 
-  if (error) {
+  if (matchInfoError) {
     return (
       <View>
-        <Text>Error: {error.message}</Text>
+        <Text>Error: {matchInfoError.message}</Text>
       </View>
     );
   }
@@ -87,7 +106,9 @@ export default function RatingModal() {
         )}
       </View>
       <Pressable
-        onPress={() => console.log("rated", rating)}
+        onPress={async () => {
+          await addRatingMutation({ matchId: id, userId, rating });
+        }}
         style={tw`bg-blue w-1/4 p-4 items-center justify-center rounded-md`}
       >
         <Text style={tw`text-white text-lg`}>Submit</Text>

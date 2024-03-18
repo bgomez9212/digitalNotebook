@@ -23,9 +23,9 @@ module.exports = {
   },
   postRating: async (req, res) => {
     const result = await model.postRating(
-      req.query.match_id,
-      req.query.user_id,
-      req.query.rating
+      req.body.match_id,
+      req.body.user_id,
+      req.body.rating
     );
     res.sendStatus(201);
   },

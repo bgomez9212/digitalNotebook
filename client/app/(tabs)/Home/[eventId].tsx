@@ -11,6 +11,8 @@ import tw from "../../../tailwind";
 import { useQuery } from "@tanstack/react-query";
 import axios from "axios";
 import { DataTable } from "react-native-paper";
+import { LinearGradient } from "expo-linear-gradient";
+import MaskedView from "@react-native-masked-view/masked-view";
 
 export default function EventPage() {
   const { eventId } = useLocalSearchParams();
@@ -57,6 +59,15 @@ export default function EventPage() {
             <Text style={tw`text-white`}>{event.date}</Text>
             <Text style={tw`text-white`}>{event.venue_name}</Text>
           </View>
+          <MaskedView
+            style={tw`h-10 w-[36%]`}
+            maskElement={<Text style={tw`text-3xl`}>★★★★★</Text>}
+          >
+            <View style={tw`h-full flex flex-row`}>
+              <View style={tw`bg-yellow w-[50%] h-full`} />
+              <View style={tw`bg-grey w-[50%] h-full`} />
+            </View>
+          </MaskedView>
           <DataTable>
             {event.matches.map((match) => (
               <TouchableOpacity

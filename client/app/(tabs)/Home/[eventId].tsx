@@ -84,6 +84,7 @@ export default function EventPage() {
                       </Text>
                     </View>
                     <StarView
+                      display={"Total"}
                       rating={match.rating}
                       rating_count={match.rating_count}
                     />

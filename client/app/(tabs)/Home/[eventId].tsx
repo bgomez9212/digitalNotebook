@@ -11,6 +11,7 @@ import tw from "../../../tailwind";
 import { useQuery } from "@tanstack/react-query";
 import axios from "axios";
 import { DataTable } from "react-native-paper";
+import StarView from "../../../components/StarView";
 
 export default function EventPage() {
   const { eventId } = useLocalSearchParams();
@@ -82,13 +83,11 @@ export default function EventPage() {
                         {match.participants}
                       </Text>
                     </View>
-                    <View style={tw`w-full`}>
-                      <Text style={tw`text-white text-right`}>
-                        {match.rating
-                          ? `${match.rating} (${match.rating_count})`
-                          : "no ratings yet"}
-                      </Text>
-                    </View>
+                    <StarView
+                      display={"Total"}
+                      rating={match.rating}
+                      rating_count={match.rating_count}
+                    />
                   </View>
                 </DataTable.Row>
               </TouchableOpacity>

@@ -4,6 +4,7 @@ import tw from "../tailwind";
 import { useQuery } from "@tanstack/react-query";
 import axios from "axios";
 import { router } from "expo-router";
+import StarView from "./StarView";
 
 export default function TopRatedMatchesTable() {
   const {
@@ -66,11 +67,11 @@ export default function TopRatedMatchesTable() {
                   <Text>{match.participants}</Text>
                 </View>
               </View>
-              <View style={tw`w-full`}>
-                <Text
-                  style={tw`text-right`}
-                >{`${match.rating} (${match.rating_count})`}</Text>
-              </View>
+              <StarView
+                display="Home"
+                rating={match.rating}
+                rating_count={match.rating_count}
+              />
             </View>
           </DataTable.Row>
         </TouchableOpacity>

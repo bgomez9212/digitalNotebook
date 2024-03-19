@@ -6,6 +6,7 @@ import axios from "axios";
 import tw from "../../../tailwind";
 import { useContext, useState } from "react";
 import AuthContext from "../../../Context/authContext";
+import StarView from "../../../components/StarView";
 
 export default function RatingModal() {
   const queryClient = useQueryClient();
@@ -71,11 +72,11 @@ export default function RatingModal() {
         <Text style={tw`text-white text-xl pb-3`}>
           {matchInfo.participants}
         </Text>
-        <Text style={tw`text-white text-sm text-right`}>
-          {matchInfo.rating
-            ? `${matchInfo.rating} (${matchInfo.rating_count})`
-            : "submit the first rating"}
-        </Text>
+        <StarView
+          display="Total"
+          rating={matchInfo.rating}
+          rating_count={matchInfo.rating_count}
+        />
       </View>
       <Picker
         style={tw`w-1/2`}

@@ -127,7 +127,9 @@ export default function index() {
                 text={"SIGN UP"}
               />
               {uiState.signUpError && (
-                <Text style={tw`text-red my-3`}>Email already in use</Text>
+                <Text style={tw`text-red my-3 text-base`}>
+                  Email already in use
+                </Text>
               )}
               <LandingLink
                 fn={() => setUiState({ ...uiState, displaySignup: false })}
@@ -161,7 +163,7 @@ export default function index() {
                 <LandingButton disabled={false} fn={login} text={"LOGIN"} />
               )}
               {uiState.loginError && (
-                <Text style={tw`text-red my-3`}>
+                <Text style={tw`text-red my-3 text-base`}>
                   Incorrect email or password
                 </Text>
               )}

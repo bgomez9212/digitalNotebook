@@ -10,8 +10,10 @@ import StarView from "../../../components/StarView";
 
 export default function RatingModal() {
   const queryClient = useQueryClient();
+  const userId = useContext(AuthContext);
   const [rating, setRating] = useState(2);
   const { id } = useLocalSearchParams();
+
   const {
     isPending: matchInfoPending,
     error: matchInfoError,
@@ -28,6 +30,23 @@ export default function RatingModal() {
         .then((res) => res.data),
   });
 
+  const {
+    isPending: userRatingPending,
+    error: userRatingError,
+    data: userRating,
+  } = useQuery({
+    queryKey: ["userRating"],
+    queryFn: () =>
+      axios
+        .get("http://localhost:3000/api/ratings/:user_id/:match_id", {
+          params: {
+            user_id: userId,
+            match_id: id,
+          },
+        })
+        .then((res) => res.data),
+  });
+  console.log(userRating);
   const { mutateAsync: addRatingMutation } = useMutation({
     mutationFn: addRating,
     onSuccess: () => {
@@ -47,8 +66,6 @@ export default function RatingModal() {
       .then(() => console.log("success"))
       .catch((err) => console.log(err));
   }
-
-  const userId = useContext(AuthContext);
 
   if (matchInfoPending) {
     return (
@@ -74,6 +91,11 @@ export default function RatingModal() {
         </Text>
         <StarView
           display="Total"
+          rating={matchInfo.rating}
+          rating_count={matchInfo.rating_count}
+        />
+        <StarView
+          display="User"
           rating={matchInfo.rating}
           rating_count={matchInfo.rating_count}
         />

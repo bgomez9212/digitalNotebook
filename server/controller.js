@@ -29,4 +29,11 @@ module.exports = {
     );
     res.sendStatus(201);
   },
+  getUserRating: async (req, res) => {
+    const result = await model.getUserRating(
+      req.query.user_id,
+      req.query.match_id
+    );
+    res.send(result[0]).status(200);
+  },
 };

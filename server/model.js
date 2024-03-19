@@ -187,4 +187,11 @@ module.exports = {
     );
     return results;
   },
+  getUserRating: async (user_id, match_id) => {
+    const { rows: results } = await pool.query(
+      "SELECT rating FROM ratings WHERE user_id = $1 and match_id = $2",
+      [user_id, match_id]
+    );
+    return results;
+  },
 };

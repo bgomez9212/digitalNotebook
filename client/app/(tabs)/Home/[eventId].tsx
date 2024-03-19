@@ -88,11 +88,6 @@ export default function EventPage() {
                       rating={match.rating}
                       rating_count={match.rating_count}
                     />
-                    <StarView
-                      display={"User"}
-                      rating={match.rating}
-                      rating_count={match.rating_count}
-                    />
                   </View>
                 </DataTable.Row>
               </TouchableOpacity>

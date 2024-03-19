@@ -4,7 +4,7 @@ import tw from "../tailwind";
 export default function LandingLink({ fn, text }) {
   return (
     <Pressable onPress={fn}>
-      <Text style={tw`text-white underline`}>{text}</Text>
+      <Text style={tw`text-white underline text-base`}>{text}</Text>
     </Pressable>
   );
 }

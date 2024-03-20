@@ -2,7 +2,7 @@ import { Alert, Pressable, Text, View } from "react-native";
 import tw from "../../tailwind";
 import { signOut } from "firebase/auth";
 import { auth } from "../../firebase";
-import { useContext, useState } from "react";
+import { useContext } from "react";
 import { Redirect } from "expo-router";
 import AuthContext from "../../Context/authContext";
 // TODO Put Signout button here

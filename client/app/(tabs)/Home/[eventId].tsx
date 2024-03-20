@@ -1,12 +1,5 @@
 import { router, useLocalSearchParams } from "expo-router";
-import {
-  Image,
-  SafeAreaView,
-  ScrollView,
-  Text,
-  TouchableOpacity,
-  View,
-} from "react-native";
+import { Image, SafeAreaView, ScrollView, Text, View } from "react-native";
 import tw from "../../../tailwind";
 import { useQuery } from "@tanstack/react-query";
 import axios from "axios";

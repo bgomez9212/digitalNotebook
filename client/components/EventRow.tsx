@@ -36,7 +36,7 @@ export default function EventRow({ match }: { match: Match }) {
       onPress={() =>
         router.navigate({
           pathname: "./RatingModal",
-          params: { id: match.match_id },
+          params: { match_id: match.match_id },
         })
       }
     >
@@ -52,16 +52,20 @@ export default function EventRow({ match }: { match: Match }) {
           <View style={tw`py-4`}>
             <Text style={tw`text-white text-lg`}>{match.participants}</Text>
           </View>
-          <StarView
-            display={"Total"}
-            rating={match.rating}
-            rating_count={match.rating_count}
-          />
-          <StarView
-            display={"User"}
-            rating={userMatchRating}
-            rating_count={match.rating_count}
-          />
+          <View
+            style={tw`flex flex-row ${userMatchRating ? "justify-between" : "justify-end"}`}
+          >
+            <StarView
+              display={"User"}
+              rating={userMatchRating}
+              rating_count={match.rating_count}
+            />
+            <StarView
+              display={"Total"}
+              rating={match.rating}
+              rating_count={match.rating_count}
+            />
+          </View>
         </View>
       </DataTable.Row>
     </TouchableOpacity>

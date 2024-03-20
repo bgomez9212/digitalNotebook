@@ -12,8 +12,8 @@ export default function RatingModal() {
   const queryClient = useQueryClient();
   const userId = useContext(AuthContext);
   const [rating, setRating] = useState(2);
-  const { id } = useLocalSearchParams();
-
+  const { match_id } = useLocalSearchParams();
+  console.log(match_id);
   const {
     isPending: matchInfoPending,
     error: matchInfoError,
@@ -24,7 +24,7 @@ export default function RatingModal() {
       axios
         .get("http://localhost:3000/api/matches/:match_id", {
           params: {
-            match_id: id,
+            match_id: match_id,
           },
         })
         .then((res) => res.data),
@@ -41,7 +41,7 @@ export default function RatingModal() {
         .get("http://localhost:3000/api/ratings/:user_id/:match_id", {
           params: {
             user_id: userId,
-            match_id: id,
+            match_id: match_id,
           },
         })
         .then((res) => res.data),
@@ -50,19 +50,7 @@ export default function RatingModal() {
   const { mutateAsync: addRatingMutation } = useMutation({
     mutationFn: addRating,
     onSuccess: () => {
-      queryClient.invalidateQueries({
-        queryKey: [
-          "matchInfo",
-          "event",
-          "topMatches",
-          "userRating",
-          "userMatchData",
-        ],
-      });
-      queryClient.invalidateQueries({ queryKey: ["event"] });
-      queryClient.invalidateQueries({ queryKey: ["topMatches"] });
-      queryClient.invalidateQueries({ queryKey: ["userRating"] });
-      queryClient.invalidateQueries({ queryKey: ["userMatchData"] });
+      queryClient.invalidateQueries();
     },
   });
 
@@ -99,16 +87,20 @@ export default function RatingModal() {
         <Text style={tw`text-white text-xl pb-3`}>
           {matchInfo.participants}
         </Text>
-        <StarView
-          display="Total"
-          rating={matchInfo.rating}
-          rating_count={matchInfo.rating_count}
-        />
-        <StarView
-          display="User"
-          rating={userRating.rating}
-          rating_count={matchInfo.rating_count}
-        />
+        <View
+          style={tw`flex flex-row ${userRating ? "justify-between" : "justify-end"}`}
+        >
+          <StarView
+            display="User"
+            rating={userRating.rating}
+            rating_count={matchInfo.rating_count}
+          />
+          <StarView
+            display="Total"
+            rating={matchInfo.rating}
+            rating_count={matchInfo.rating_count}
+          />
+        </View>
       </View>
       <Picker
         style={tw`w-1/2`}
@@ -145,7 +137,7 @@ export default function RatingModal() {
       </View>
       <Pressable
         onPress={async () => {
-          await addRatingMutation({ matchId: id, userId, rating });
+          await addRatingMutation({ matchId: match_id, userId, rating });
         }}
         style={tw`bg-blue w-1/4 p-4 items-center justify-center rounded-md`}
       >
@@ -154,4 +146,3 @@ export default function RatingModal() {
     </View>
   );
 }
-// ★★★★★

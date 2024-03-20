@@ -14,7 +14,6 @@ export default function RatingModal() {
   const [rating, setRating] = useState(2);
   const { match_id } = useLocalSearchParams();
   const { event_title } = useLocalSearchParams();
-  console.log(event_title);
   const {
     isPending: matchInfoPending,
     error: matchInfoError,

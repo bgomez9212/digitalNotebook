@@ -16,7 +16,7 @@ export default function RatingModal() {
   const { event_title } = useLocalSearchParams();
   const [showPicker, setShowPicker] = useState(true);
   const {
-    isPending: matchInfoPending,
+    isFetching: matchInfoPending,
     error: matchInfoError,
     data: matchInfo,
   } = useQuery({
@@ -117,8 +117,8 @@ export default function RatingModal() {
 
   if (matchInfoPending) {
     return (
-      <View>
-        <ActivityIndicator />
+      <View style={tw`bg-black flex-1 justify-center items-center`}>
+        <ActivityIndicator color="white" />
       </View>
     );
   }

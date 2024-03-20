@@ -1,4 +1,4 @@
-import { router, useLocalSearchParams } from "expo-router";
+import { useLocalSearchParams } from "expo-router";
 import { Image, SafeAreaView, ScrollView, Text, View } from "react-native";
 import tw from "../../../tailwind";
 import { useQuery } from "@tanstack/react-query";

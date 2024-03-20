@@ -1,4 +1,4 @@
-import { View, Text, ActivityIndicator, Pressable } from "react-native";
+import { View, Text, ActivityIndicator, Pressable, Alert } from "react-native";
 import { Picker } from "@react-native-picker/picker";
 import { useLocalSearchParams } from "expo-router";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
@@ -84,6 +84,23 @@ export default function RatingModal() {
       queryClient.invalidateQueries();
     },
   });
+
+  function displayAlert() {
+    Alert.alert(
+      "Are you sure you want to remove your rating for this match?",
+      "",
+      [
+        {
+          text: "Cancel",
+          style: "cancel",
+        },
+        {
+          text: "Remove",
+          onPress: async () => deleteRatingMutation({ match_id, userId }),
+        },
+      ]
+    );
+  }
 
   useEffect(() => {
     if (userRating) {
@@ -197,7 +214,7 @@ export default function RatingModal() {
             <Text style={tw`text-white text-lg`}>Edit</Text>
           </Pressable>
           <Pressable
-            onPress={async () => deleteRatingMutation({ match_id, userId })}
+            onPress={displayAlert}
             style={tw`bg-red w-1/3 p-4 items-center justify-center rounded-md ml-10`}
           >
             <Text style={tw`text-white text-lg`}>Delete</Text>

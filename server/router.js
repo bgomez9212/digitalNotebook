@@ -9,5 +9,6 @@ router.get("/matches/topRated", controller.getTopRatedMatches);
 router.get("/matches/:match_id", controller.getMatchInfo);
 
 router.post("/ratings/:match_id", controller.postRating);
+router.get("/ratings/:user_id/:match_id", controller.getUserRating);
 
 module.exports = router;

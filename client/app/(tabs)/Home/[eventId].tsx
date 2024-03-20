@@ -1,18 +1,18 @@
 import { router, useLocalSearchParams } from "expo-router";
-import {
-  Image,
-  SafeAreaView,
-  ScrollView,
-  Text,
-  TouchableOpacity,
-  View,
-} from "react-native";
+import { Image, SafeAreaView, ScrollView, Text, View } from "react-native";
 import tw from "../../../tailwind";
 import { useQuery } from "@tanstack/react-query";
 import axios from "axios";
 import { DataTable } from "react-native-paper";
-import StarView from "../../../components/StarView";
-
+import EventRow from "../../../components/EventRow";
+type Match = {
+  match_id: number;
+  event_id: number;
+  participants: string[][];
+  championships: string[];
+  rating: number;
+  rating_count: number;
+};
 export default function EventPage() {
   const { eventId } = useLocalSearchParams();
   const {
@@ -59,38 +59,12 @@ export default function EventPage() {
             <Text style={tw`text-white`}>{event.venue_name}</Text>
           </View>
           <DataTable>
-            {event.matches.map((match) => (
-              <TouchableOpacity
+            {event.matches.map((match: Match) => (
+              <EventRow
                 key={match.match_id}
-                onPress={() =>
-                  router.navigate({
-                    pathname: "./RatingModal",
-                    params: { id: match.match_id },
-                  })
-                }
-              >
-                <DataTable.Row style={tw`p-4`}>
-                  <View style={tw`flex flex-col w-full`}>
-                    {match.championships && (
-                      <View style={tw`py-2`}>
-                        <Text style={tw`text-white text-sm text-center`}>
-                          {match.championships}
-                        </Text>
-                      </View>
-                    )}
-                    <View style={tw`py-4`}>
-                      <Text style={tw`text-white text-lg`}>
-                        {match.participants}
-                      </Text>
-                    </View>
-                    <StarView
-                      display={"Total"}
-                      rating={match.rating}
-                      rating_count={match.rating_count}
-                    />
-                  </View>
-                </DataTable.Row>
-              </TouchableOpacity>
+                match={match}
+                eventTitle={event.title}
+              />
             ))}
           </DataTable>
         </View>

@@ -60,7 +60,11 @@ export default function EventPage() {
           </View>
           <DataTable>
             {event.matches.map((match: Match) => (
-              <EventRow key={match.match_id} match={match} />
+              <EventRow
+                key={match.match_id}
+                match={match}
+                eventTitle={event.title}
+              />
             ))}
           </DataTable>
         </View>

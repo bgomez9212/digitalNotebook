@@ -16,7 +16,13 @@ type Match = {
   rating: number;
   rating_count: number;
 };
-export default function EventRow({ match }: { match: Match }) {
+export default function EventRow({
+  match,
+  eventTitle,
+}: {
+  match: Match;
+  eventTitle: string;
+}) {
   const userId = useContext(AuthContext);
   const { data: userMatchRating } = useQuery({
     queryKey: ["userMatchData", match.match_id],
@@ -36,7 +42,7 @@ export default function EventRow({ match }: { match: Match }) {
       onPress={() =>
         router.navigate({
           pathname: "./RatingModal",
-          params: { match_id: match.match_id },
+          params: { match_id: match.match_id, event_title: eventTitle },
         })
       }
     >

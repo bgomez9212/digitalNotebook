@@ -67,11 +67,13 @@ export default function TopRatedMatchesTable() {
                   <Text>{match.participants}</Text>
                 </View>
               </View>
-              <StarView
-                display="Home"
-                rating={match.rating}
-                rating_count={match.rating_count}
-              />
+              <View style={tw`items-end w-full`}>
+                <StarView
+                  display="Home"
+                  rating={match.rating}
+                  rating_count={match.rating_count}
+                />
+              </View>
             </View>
           </DataTable.Row>
         </TouchableOpacity>

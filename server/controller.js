@@ -37,11 +37,10 @@ module.exports = {
     res.send(result[0]).status(200);
   },
   deleteUserRating: async (req, res) => {
-    // const result = await model.deleteUserRating(
-    //   req.query.user_id,
-    //   req.query.match_id
-    // );
-    console.log(typeof req.query.match_id);
+    const result = await model.deleteUserRating(
+      req.query.user_id,
+      req.query.match_id
+    );
     res.sendStatus(204);
   },
 };

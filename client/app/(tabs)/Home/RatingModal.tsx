@@ -46,13 +46,23 @@ export default function RatingModal() {
         })
         .then((res) => res.data),
   });
-  console.log(userRating);
+
   const { mutateAsync: addRatingMutation } = useMutation({
     mutationFn: addRating,
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["matchInfo"] });
+      queryClient.invalidateQueries({
+        queryKey: [
+          "matchInfo",
+          "event",
+          "topMatches",
+          "userRating",
+          "userMatchData",
+        ],
+      });
       queryClient.invalidateQueries({ queryKey: ["event"] });
       queryClient.invalidateQueries({ queryKey: ["topMatches"] });
+      queryClient.invalidateQueries({ queryKey: ["userRating"] });
+      queryClient.invalidateQueries({ queryKey: ["userMatchData"] });
     },
   });
 
@@ -96,7 +106,7 @@ export default function RatingModal() {
         />
         <StarView
           display="User"
-          rating={matchInfo.rating}
+          rating={userRating.rating}
           rating_count={matchInfo.rating_count}
         />
       </View>

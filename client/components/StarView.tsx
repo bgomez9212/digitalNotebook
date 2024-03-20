@@ -71,7 +71,7 @@ export default function StarView({
   if (display === "User") {
     return (
       <View style={tw`w-full items-end`}>
-        {rating ? (
+        {rating && (
           <View style={tw`flex flex-row items-end flex flex-col`}>
             <View style={tw`w-25 rounded-md bg-blue`}>
               <MaskedView
@@ -84,12 +84,8 @@ export default function StarView({
                 </View>
               </MaskedView>
             </View>
-            <Text
-              style={tw`text-white pl-1 text-right`}
-            >{`${rating} (${rating_count})`}</Text>
+            <Text style={tw`text-white pl-1 text-right`}>{`${rating}`}</Text>
           </View>
-        ) : (
-          <Text style={tw`text-white`}>No ratings yet</Text>
         )}
       </View>
     );

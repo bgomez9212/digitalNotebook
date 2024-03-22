@@ -48,16 +48,14 @@ export default function TopRatedMatchesTable() {
         <TouchableOpacity
           key={match.match_id}
           onPress={() => router.push(`/(tabs)/Home/${match.event_id}`)}
-          style={tw`border-b-2 px-3 py-2`}
+          style={tw`border-b-2 px-3 border py-4`}
         >
           {match.championships && (
-            <View>
-              <Text style={tw`text-center text-white font-bold`}>
-                {match.championships}
-              </Text>
-            </View>
+            <Text style={tw`text-center text-gold font-bold pb-3`}>
+              {match.championships}
+            </Text>
           )}
-          <View style={tw`flex flex-row py-4 items-center`}>
+          <View style={tw`flex flex-row items-center`}>
             <View style={tw`flex-1`}>
               <Image
                 style={tw`w-24 h-12`}
@@ -65,15 +63,15 @@ export default function TopRatedMatchesTable() {
               />
             </View>
             <View style={tw`flex-2.5`}>
-              <Text style={tw`text-white font-bold`}>{match.participants}</Text>
+              <Text style={tw`text-white font-bold pb-3`}>
+                {match.participants}
+              </Text>
+              <StarView
+                display="Home"
+                rating={match.rating}
+                rating_count={match.rating_count}
+              />
             </View>
-          </View>
-          <View style={tw`items-end w-full`}>
-            <StarView
-              display="Home"
-              rating={match.rating}
-              rating_count={match.rating_count}
-            />
           </View>
         </TouchableOpacity>
       ))}

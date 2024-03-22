@@ -45,15 +45,15 @@ export default function StarView({
             maskElement={<Text style={tw`text-xl`}>★★★★★</Text>}
           >
             <View style={tw`h-full flex flex-row`}>
-              <View style={tw`bg-black w-[${starPercentage}%] h-full`} />
-              <View style={tw`bg-lightGrey w-[${emptyPercentage}%] h-full`} />
+              <View style={tw`bg-lightGrey w-[${starPercentage}%] h-full`} />
+              <View style={tw`bg-black w-[${emptyPercentage}%] h-full`} />
             </View>
           </MaskedView>
         </View>
-        <Text style={tw`text-black`}>{`${rating} (${rating_count})`}</Text>
+        <Text style={tw`text-white`}>{`${rating} (${rating_count})`}</Text>
       </View>
     ) : (
-      <Text style={tw`text-black pt-1`}>No ratings yet</Text>
+      <Text style={tw`text-white pt-1`}>No ratings yet</Text>
     );
   }
   if (display === "User") {

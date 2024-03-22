@@ -36,15 +36,15 @@ export default function RecentEventTable() {
   }
 
   return (
-    <View style={tw`bg-grey mt-16 w-[95%] rounded-md`}>
-      <View style={tw`flex-1 items-center justify-center py-3 border-b-2`}>
+    <View style={tw`bg-grey w-[95%] my-12 rounded-md`}>
+      <View style={tw`items-center justify-center py-3 border-b-2 my-2`}>
         <Text style={tw`text-white font-bold text-lg`}>Most Recent Shows</Text>
       </View>
       {events.map((event, index) => (
         <TouchableOpacity
           key={event.id}
           onPress={() => router.push(`/(tabs)/Home/${event.id}`)}
-          style={tw`w-full flex flex-row py-2 border-b-2 ${index === 4 && "border-b-0"}`}
+          style={tw`w-full flex flex-row py-2 border-b-2 ${index === 4 ? "border-b-0" : ""}`}
         >
           <View style={tw`p-2 flex flex-row w-full`}>
             <View style={tw`flex-2`}>

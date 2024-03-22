@@ -38,46 +38,45 @@ export default function TopRatedMatchesTable() {
   }
 
   return (
-    <DataTable style={tw`bg-white mt-16`}>
-      <DataTable.Header>
-        <View style={tw`flex-1 items-center justify-center py-3`}>
-          <Text>Top Rated Matches of the Month</Text>
-        </View>
-      </DataTable.Header>
+    <View style={tw`bg-grey w-[95%] rounded-md`}>
+      <View style={tw`items-center justify-center py-3 border-b-2`}>
+        <Text style={tw`text-white font-bold text-lg`}>
+          Top Matches of the Month
+        </Text>
+      </View>
       {matches.map((match) => (
         <TouchableOpacity
           key={match.match_id}
           onPress={() => router.push(`/(tabs)/Home/${match.event_id}`)}
+          style={tw`border-b-2 px-3 py-2`}
         >
-          <DataTable.Row style={tw`p-0`}>
-            <View style={tw`w-full items-center py-2 px-3`}>
-              {match.championships && (
-                <View>
-                  <Text style={tw`text-center`}>{match.championships}</Text>
-                </View>
-              )}
-              <View style={tw`flex flex-row py-4 items-center`}>
-                <View style={tw`flex-1`}>
-                  <Image
-                    style={tw`w-24 h-12`}
-                    source={require("../assets/aew-logo.jpg")}
-                  />
-                </View>
-                <View style={tw`flex-2.5`}>
-                  <Text>{match.participants}</Text>
-                </View>
-              </View>
-              <View style={tw`items-end w-full`}>
-                <StarView
-                  display="Home"
-                  rating={match.rating}
-                  rating_count={match.rating_count}
-                />
-              </View>
+          {match.championships && (
+            <View>
+              <Text style={tw`text-center text-white font-bold`}>
+                {match.championships}
+              </Text>
             </View>
-          </DataTable.Row>
+          )}
+          <View style={tw`flex flex-row py-4 items-center`}>
+            <View style={tw`flex-1`}>
+              <Image
+                style={tw`w-24 h-12`}
+                source={require("../assets/aew-logo.jpg")}
+              />
+            </View>
+            <View style={tw`flex-2.5`}>
+              <Text style={tw`text-white font-bold`}>{match.participants}</Text>
+            </View>
+          </View>
+          <View style={tw`items-end w-full`}>
+            <StarView
+              display="Home"
+              rating={match.rating}
+              rating_count={match.rating_count}
+            />
+          </View>
         </TouchableOpacity>
       ))}
-    </DataTable>
+    </View>
   );
 }

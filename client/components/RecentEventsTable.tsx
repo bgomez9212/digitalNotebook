@@ -1,5 +1,4 @@
 import { View, Text, Image, StyleSheet, TouchableOpacity } from "react-native";
-import { DataTable } from "react-native-paper";
 import tw from "../tailwind";
 import { useQuery } from "@tanstack/react-query";
 import axios from "axios";
@@ -41,25 +40,25 @@ export default function RecentEventTable() {
       <View style={tw`flex-1 items-center justify-center py-3 border-b-2`}>
         <Text style={tw`text-white font-bold text-lg`}>Most Recent Shows</Text>
       </View>
-      {events.map((event) => (
+      {events.map((event, index) => (
         <TouchableOpacity
           key={event.id}
           onPress={() => router.push(`/(tabs)/Home/${event.id}`)}
-          style={tw`w-full border-b-2 flex flex-row py-2`}
+          style={tw`w-full flex flex-row py-2 border-b-2 ${index === 4 && "border-b-0"}`}
         >
           <View style={tw`p-2 flex flex-row w-full`}>
-            <View style={tw`flex-1`}>
+            <View style={tw`flex-2`}>
               <Image
                 style={tw`h-12 w-24`}
                 source={require("../assets/aew-logo.jpg")}
               />
             </View>
-            <View style={tw`flex-2 justify-center items-center`}>
+            <View style={tw`flex-3 justify-center items-center`}>
               <Text style={tw`text-center text-white font-bold`}>
                 {event.title}
               </Text>
             </View>
-            <View style={tw`flex-1 justify-center items-center`}>
+            <View style={tw`flex-2 justify-center items-center`}>
               <Text style={tw`text-white font-bold`}>{event.date}</Text>
             </View>
           </View>

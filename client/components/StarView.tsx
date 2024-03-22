@@ -50,7 +50,9 @@ export default function StarView({
             </View>
           </MaskedView>
         </View>
-        <Text style={tw`text-white`}>{`${rating} (${rating_count})`}</Text>
+        <Text
+          style={tw`text-white text-xs`}
+        >{`${rating} (${rating_count})`}</Text>
       </View>
     ) : (
       <Text style={tw`text-white pt-1`}>No ratings yet</Text>

@@ -38,7 +38,7 @@ export default function StarView({
   }
   if (display === "Home") {
     return rating ? (
-      <View style={tw`flex flex-row items-center justify-end`}>
+      <View style={tw`flex flex-col items-end justify-end`}>
         <View style={tw`w-25 rounded-md`}>
           <MaskedView
             style={tw`h-7 w-full`}

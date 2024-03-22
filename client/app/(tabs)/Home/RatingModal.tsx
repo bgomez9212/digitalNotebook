@@ -16,7 +16,7 @@ export default function RatingModal() {
   const { event_title } = useLocalSearchParams();
   const [showPicker, setShowPicker] = useState(true);
   const {
-    isPending: matchInfoPending,
+    isFetching: matchInfoPending,
     error: matchInfoError,
     data: matchInfo,
   } = useQuery({
@@ -59,12 +59,14 @@ export default function RatingModal() {
       .catch((err) => console.log(err.message));
   }
 
-  const { mutateAsync: addRatingMutation } = useMutation({
-    mutationFn: addRating,
-    onSuccess: () => {
-      queryClient.invalidateQueries();
-    },
-  });
+  const { mutateAsync: addRatingMutation, isPending: addRatingPending } =
+    useMutation({
+      mutationFn: addRating,
+      onSuccess: () => {
+        queryClient.invalidateQueries();
+        setRating(2);
+      },
+    });
 
   async function deleteRating(ratingInfo) {
     await axios
@@ -117,8 +119,8 @@ export default function RatingModal() {
 
   if (matchInfoPending) {
     return (
-      <View>
-        <ActivityIndicator />
+      <View style={tw`bg-black flex-1 justify-center items-center`}>
+        <ActivityIndicator color="white" />
       </View>
     );
   }
@@ -189,12 +191,17 @@ export default function RatingModal() {
             )}
           </View>
           <Pressable
+            disabled={addRatingPending}
             onPress={async () => {
               await addRatingMutation({ matchId: match_id, userId, rating });
             }}
-            style={tw`bg-blue w-1/3 p-4 items-center justify-center rounded-md`}
+            style={tw`bg-blue w-1/3 h-14 items-center justify-center rounded-md`}
           >
-            <Text style={tw`text-white text-lg`}>Submit</Text>
+            {addRatingPending ? (
+              <ActivityIndicator />
+            ) : (
+              <Text style={tw`text-white text-lg`}>Submit</Text>
+            )}
           </Pressable>
           {userRating && showPicker && (
             <Pressable

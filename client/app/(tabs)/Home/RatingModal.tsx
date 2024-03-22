@@ -16,7 +16,7 @@ export default function RatingModal() {
   const { event_title } = useLocalSearchParams();
   const [showPicker, setShowPicker] = useState(true);
   const {
-    isPending: matchInfoPending,
+    isFetching: matchInfoPending,
     error: matchInfoError,
     data: matchInfo,
   } = useQuery({
@@ -64,10 +64,9 @@ export default function RatingModal() {
       mutationFn: addRating,
       onSuccess: () => {
         queryClient.invalidateQueries();
+        setRating(2);
       },
     });
-
-  console.log(addRatingPending);
 
   async function deleteRating(ratingInfo) {
     await axios

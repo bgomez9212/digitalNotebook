@@ -38,17 +38,17 @@ export default function TopRatedMatchesTable() {
   }
 
   return (
-    <View style={tw`bg-grey w-[95%] rounded-md`}>
+    <View style={tw`bg-grey w-[95%] mb-12 rounded-md`}>
       <View style={tw`items-center justify-center py-3 border-b-2`}>
         <Text style={tw`text-white font-bold text-lg`}>
           Top Matches of the Month
         </Text>
       </View>
-      {matches.map((match) => (
+      {matches.map((match, index) => (
         <TouchableOpacity
           key={match.match_id}
           onPress={() => router.push(`/(tabs)/Home/${match.event_id}`)}
-          style={tw`border-b-2 px-3 border py-4`}
+          style={tw`border-b-2 px-3 py-4 ${index === 4 ? "border-b-0" : ""}`}
         >
           {match.championships && (
             <Text style={tw`text-center text-gold font-bold pb-3`}>
@@ -58,8 +58,8 @@ export default function TopRatedMatchesTable() {
           <View style={tw`flex flex-row items-center`}>
             <View style={tw`flex-1`}>
               <Image
-                style={tw`w-24 h-12`}
-                source={require("../assets/aew-logo.jpg")}
+                style={tw`h-10 w-24`}
+                source={require("../assets/aew-logo.png")}
               />
             </View>
             <View style={tw`flex-2.5`}>

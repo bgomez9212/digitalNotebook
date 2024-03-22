@@ -37,7 +37,7 @@ export default function RecentEventTable() {
 
   return (
     <View style={tw`bg-grey w-[95%] my-12 rounded-md`}>
-      <View style={tw`items-center justify-center py-3 border-b-2 my-2`}>
+      <View style={tw`items-center justify-center py-3 border-b-2`}>
         <Text style={tw`text-white font-bold text-lg`}>Most Recent Shows</Text>
       </View>
       {events.map((event, index) => (
@@ -49,8 +49,8 @@ export default function RecentEventTable() {
           <View style={tw`p-2 flex flex-row w-full`}>
             <View style={tw`flex-2`}>
               <Image
-                style={tw`h-12 w-24`}
-                source={require("../assets/aew-logo.jpg")}
+                style={tw`h-10 w-24`}
+                source={require("../assets/aew-logo.png")}
               />
             </View>
             <View style={tw`flex-3 justify-center items-center`}>

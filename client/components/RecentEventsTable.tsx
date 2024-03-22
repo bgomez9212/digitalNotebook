@@ -37,33 +37,34 @@ export default function RecentEventTable() {
   }
 
   return (
-    <DataTable style={tw`bg-white mt-16`}>
-      <DataTable.Header>
-        <View style={tw`flex-1 items-center justify-center py-3`}>
-          <Text>Most Recent Shows</Text>
-        </View>
-      </DataTable.Header>
+    <View style={tw`bg-grey mt-16 w-[95%] rounded-md`}>
+      <View style={tw`flex-1 items-center justify-center py-3 border-b-2`}>
+        <Text style={tw`text-white font-bold text-lg`}>Most Recent Shows</Text>
+      </View>
       {events.map((event) => (
         <TouchableOpacity
           key={event.id}
           onPress={() => router.push(`/(tabs)/Home/${event.id}`)}
+          style={tw`w-full border-b-2 flex flex-row py-2`}
         >
-          <DataTable.Row style={tw`p-2`}>
-            <View style={tw`flex-1 justify-center items-center`}>
+          <View style={tw`p-2 flex flex-row w-full`}>
+            <View style={tw`flex-1`}>
               <Image
                 style={tw`h-12 w-24`}
                 source={require("../assets/aew-logo.jpg")}
               />
             </View>
             <View style={tw`flex-2 justify-center items-center`}>
-              <Text>{event.title}</Text>
+              <Text style={tw`text-center text-white font-bold`}>
+                {event.title}
+              </Text>
             </View>
             <View style={tw`flex-1 justify-center items-center`}>
-              <Text>{event.date}</Text>
+              <Text style={tw`text-white font-bold`}>{event.date}</Text>
             </View>
-          </DataTable.Row>
+          </View>
         </TouchableOpacity>
       ))}
-    </DataTable>
+    </View>
   );
 }

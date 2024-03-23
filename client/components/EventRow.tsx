@@ -46,34 +46,32 @@ export default function EventRow({
         })
       }
     >
-      <DataTable.Row style={tw`p-4`}>
-        <View style={tw`flex flex-col w-full`}>
-          {match.championships && (
-            <View style={tw`py-2`}>
-              <Text style={tw`text-white text-sm text-center`}>
-                {match.championships}
-              </Text>
-            </View>
-          )}
-          <View style={tw`py-4`}>
-            <Text style={tw`text-white text-lg`}>{match.participants}</Text>
+      <View style={tw`flex flex-col w-full py-4`}>
+        {match.championships && (
+          <View style={tw`py-2`}>
+            <Text style={tw`text-gold text-sm text-center`}>
+              {match.championships}
+            </Text>
           </View>
-          <View
-            style={tw`flex flex-row ${userMatchRating ? "justify-between" : "justify-end"}`}
-          >
-            <StarView
-              display={"User"}
-              rating={userMatchRating}
-              rating_count={match.rating_count}
-            />
-            <StarView
-              display={"Total"}
-              rating={match.rating}
-              rating_count={match.rating_count}
-            />
-          </View>
+        )}
+        <View style={tw`py-4`}>
+          <Text style={tw`text-white text-lg`}>{match.participants}</Text>
         </View>
-      </DataTable.Row>
+        <View
+          style={tw`flex flex-row ${userMatchRating ? "justify-between" : "justify-end"}`}
+        >
+          <StarView
+            display={"User"}
+            rating={userMatchRating}
+            rating_count={match.rating_count}
+          />
+          <StarView
+            display={"Total"}
+            rating={match.rating}
+            rating_count={match.rating_count}
+          />
+        </View>
+      </View>
     </TouchableOpacity>
   );
 }

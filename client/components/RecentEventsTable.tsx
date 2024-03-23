@@ -1,5 +1,4 @@
 import { View, Text, Image, StyleSheet, TouchableOpacity } from "react-native";
-import { DataTable } from "react-native-paper";
 import tw from "../tailwind";
 import { useQuery } from "@tanstack/react-query";
 import axios from "axios";
@@ -37,33 +36,34 @@ export default function RecentEventTable() {
   }
 
   return (
-    <DataTable style={tw`bg-white mt-16`}>
-      <DataTable.Header>
-        <View style={tw`flex-1 items-center justify-center py-3`}>
-          <Text>Most Recent Shows</Text>
-        </View>
-      </DataTable.Header>
-      {events.map((event) => (
+    <View style={tw`bg-grey w-[95%] my-12 rounded-md`}>
+      <View style={tw`items-center justify-center py-3 border-b-2`}>
+        <Text style={tw`text-white font-bold text-lg`}>Most Recent Shows</Text>
+      </View>
+      {events.map((event, index) => (
         <TouchableOpacity
           key={event.id}
           onPress={() => router.push(`/(tabs)/Home/${event.id}`)}
+          style={tw`w-full flex flex-row py-2 border-b-2 ${index === 4 ? "border-b-0" : ""}`}
         >
-          <DataTable.Row style={tw`p-2`}>
-            <View style={tw`flex-1 justify-center items-center`}>
+          <View style={tw`p-2 flex flex-row w-full`}>
+            <View style={tw`flex-2`}>
               <Image
-                style={tw`h-12 w-24`}
-                source={require("../assets/aew-logo.jpg")}
+                style={tw`h-10 w-24`}
+                source={require("../assets/aew-logo.png")}
               />
             </View>
+            <View style={tw`flex-3 justify-center items-center`}>
+              <Text style={tw`text-center text-white font-bold`}>
+                {event.title}
+              </Text>
+            </View>
             <View style={tw`flex-2 justify-center items-center`}>
-              <Text>{event.title}</Text>
+              <Text style={tw`text-white font-bold`}>{event.date}</Text>
             </View>
-            <View style={tw`flex-1 justify-center items-center`}>
-              <Text>{event.date}</Text>
-            </View>
-          </DataTable.Row>
+          </View>
         </TouchableOpacity>
       ))}
-    </DataTable>
+    </View>
   );
 }

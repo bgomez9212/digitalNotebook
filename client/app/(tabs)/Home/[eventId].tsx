@@ -50,7 +50,7 @@ export default function EventPage() {
       <ScrollView>
         <View style={tw`bg-black`}>
           <Image
-            source={require("../../../assets/aew-logo.jpg")}
+            source={require("../../../assets/aew-logo.png")}
             style={tw`w-full h-[200px] mt-4 border`}
           />
           <View style={tw`mt-8 mb-8 items-center`}>
@@ -58,7 +58,7 @@ export default function EventPage() {
             <Text style={tw`text-white`}>{event.date}</Text>
             <Text style={tw`text-white`}>{event.venue_name}</Text>
           </View>
-          <DataTable>
+          <View style={tw`px-3`}>
             {event.matches.map((match: Match) => (
               <EventRow
                 key={match.match_id}
@@ -66,7 +66,7 @@ export default function EventPage() {
                 eventTitle={event.title}
               />
             ))}
-          </DataTable>
+          </View>
         </View>
       </ScrollView>
     </SafeAreaView>

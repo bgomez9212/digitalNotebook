@@ -39,7 +39,7 @@ export default function StarView({
   if (display === "Home") {
     return rating ? (
       <View style={tw`flex flex-col items-end justify-end`}>
-        <View style={tw`w-25 rounded-md`}>
+        <View style={tw`w-24.5 rounded-md`}>
           <MaskedView
             style={tw`h-7 w-full`}
             maskElement={<Text style={tw`text-xl`}>★★★★★</Text>}

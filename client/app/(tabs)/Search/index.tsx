@@ -1,5 +1,5 @@
 import { Text, View } from "react-native";
-import tw from "../../tailwind";
+import tw from "../../../tailwind";
 
 export default function Profile() {
   return (

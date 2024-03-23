@@ -1,4 +1,3 @@
-import { useQueryClient } from "@tanstack/react-query";
 import axios from "axios";
 import { Stack, useGlobalSearchParams } from "expo-router";
 import { useEffect, useState } from "react";

@@ -26,7 +26,7 @@ const DropdownComponent = () => {
   };
 
   return (
-    <View style={tw`w-[95%]`}>
+    <View style={tw`w-100`}>
       <Dropdown
         style={tw`bg-grey h-10 px-3 border-2 rounded-md`}
         containerStyle={tw`bg-grey pl-[2.5%] border-0`}

@@ -4,26 +4,14 @@ import { Dropdown } from "react-native-element-dropdown";
 import tw from "../tailwind";
 
 const data = [
-  { label: "Wrestler(s)", value: "1" },
-  { label: "Event", value: "2" },
-  { label: "Date", value: "3" },
-  { label: "Championship", value: "4" },
+  { label: "Wrestler(s)", value: "wrestlers" },
+  { label: "Event", value: "events" },
+  { label: "Promotion", value: "promotions" },
+  { label: "Championship", value: "championships" },
 ];
 
-const DropdownComponent = () => {
-  const [value, setValue] = useState(null);
+const DropdownComponent = ({ searchParam, setSearchParam }) => {
   const [isFocus, setIsFocus] = useState(false);
-
-  const renderLabel = () => {
-    if (value || isFocus) {
-      return (
-        <Text style={[tw`bg-grey`, isFocus && { color: "blue" }]}>
-          Dropdown label
-        </Text>
-      );
-    }
-    return null;
-  };
 
   return (
     <View style={tw`w-full`}>
@@ -35,7 +23,6 @@ const DropdownComponent = () => {
         iconColor="white"
         selectedTextStyle={tw`text-white font-bold`}
         activeColor="darkGrey"
-        // inputSearchStyle={styles.inputSearchStyle}
         itemTextStyle={tw`text-white text-center`}
         data={data}
         maxHeight={300}
@@ -43,11 +30,11 @@ const DropdownComponent = () => {
         valueField="value"
         placeholder={!isFocus ? "Search By" : "..."}
         searchPlaceholder="Search..."
-        value={value}
+        value={searchParam}
         onFocus={() => setIsFocus(true)}
         onBlur={() => setIsFocus(false)}
         onChange={(item) => {
-          setValue(item.value);
+          setSearchParam(item.value);
           setIsFocus(false);
         }}
       />

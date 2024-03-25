@@ -46,7 +46,7 @@ export default function EventRow({
         })
       }
     >
-      <View style={tw`flex flex-col w-full py-4`}>
+      <View style={tw`flex flex-col w-full py-4 border-b-2 border-b-grey`}>
         {match.championships && (
           <View style={tw`py-2`}>
             <Text style={tw`text-gold text-sm text-center`}>

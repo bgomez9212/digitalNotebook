@@ -12,4 +12,6 @@ router.post("/ratings/:match_id", controller.postRating);
 router.get("/ratings/:user_id/:match_id", controller.getUserRating);
 router.delete("/ratings/:user_id/:match_id", controller.deleteUserRating);
 
+router.get("/search/:search_param/:search_text", controller.getSearchResults);
+
 module.exports = router;

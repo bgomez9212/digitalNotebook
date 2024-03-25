@@ -201,4 +201,18 @@ module.exports = {
     );
     return results;
   },
+  getSearchResults: async (search_param, search_text) => {
+    if (search_param === "wrestlers") {
+      return "WRESTLERS";
+    }
+    if (search_param === "events") {
+      return "EVENTS";
+    }
+    if (search_param === "promotions") {
+      return "PROMOTIONS";
+    }
+    if (search_param === "championships") {
+      return "CHAMPIONSHIPS";
+    }
+  },
 };

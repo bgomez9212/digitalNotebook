@@ -48,10 +48,10 @@ export default function EventPage() {
   return (
     <SafeAreaView style={tw`flex-1`}>
       <ScrollView>
-        <View style={tw`bg-black`}>
+        <View style={tw`bg-darkGrey`}>
           <Image
             source={require("../../../assets/aew-logo.png")}
-            style={tw`w-full h-[200px] mt-4 border`}
+            style={tw`w-full h-[200px] mt-4`}
           />
           <View style={tw`mt-8 mb-8 items-center`}>
             <Text style={tw`text-white text-3xl`}>{event.title}</Text>

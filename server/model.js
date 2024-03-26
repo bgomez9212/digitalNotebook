@@ -222,31 +222,25 @@ module.exports = {
         return results;
       }
       if (search_param === "events") {
-        if (search_param === "events") {
-          const { rows: results } = await pool.query(
-            `SELECT events.id AS event_id, events.title AS event_title, TO_CHAR(events.date, 'YYYY-MM-DD') AS date, venues.name AS venue_name, promotions.name AS promotion_name
+        const { rows: results } = await pool.query(
+          `SELECT events.id AS event_id, events.title AS event_title, TO_CHAR(events.date, 'YYYY-MM-DD') AS date, venues.name AS venue_name, promotions.name AS promotion_name
               FROM events
               JOIN venues ON events.venue_id = venues.id
               JOIN promotions ON events.promotion_id = promotions.id
               WHERE events.title ILIKE '%' || $1 || '%'
               ORDER BY events.date DESC`,
-            [search_text]
-          );
-          return results;
-        }
-      }
-      if (search_param === "promotions") {
-        const { rows: promotionId } = await pool.query(
-          `SELECT id FROM promotions WHERE name ILIKE $1`,
           [search_text]
         );
+        return results;
+      }
+      if (search_param === "promotions") {
         const { rows: events } = await pool.query(
           `SELECT events.id AS event_id, events.title AS event_title, TO_CHAR(events.date, 'YYYY-MM-DD') AS date, venues.name AS venue_name, promotions.name AS promotion_name
             FROM events
             JOIN venues ON events.venue_id = venues.id
             JOIN promotions ON events.promotion_id = promotions.id
-            WHERE promotion_id = $1`,
-          [promotionId[0].id]
+            WHERE promotions.name ILIKE $1`,
+          [search_text]
         );
         return events;
       }

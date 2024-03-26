@@ -24,7 +24,10 @@ export default function Profile() {
             search_text: userSearch.searchText,
           },
         })
-        .then((res) => res.data),
+        .then((res) => res.data)
+        .catch((err) => {
+          throw new Error(err);
+        }),
   });
   return (
     <View style={tw`flex-1 bg-darkGrey w-full pt-12 items-center border`}>
@@ -42,8 +45,9 @@ export default function Profile() {
           setSearchParam={setSearchParam}
         />
         <Pressable
-          style={tw`w-full mt-2 bg-blue h-10 justify-center items-center rounded-md`}
+          style={tw`w-full mt-2 bg-blue h-10 justify-center items-center rounded-md ${!userSearch.searchParam ? "opacity-50" : ""}`}
           onPress={() => refetch()}
+          disabled={!userSearch.searchParam}
         >
           <Text style={tw`text-lg font-bold text-white`}>Submit</Text>
         </Pressable>
@@ -51,8 +55,16 @@ export default function Profile() {
       <ScrollView>
         {isFetching ? (
           <ActivityIndicator />
+        ) : isError ? (
+          <Text style={tw`text-white`}>An Error has occurred</Text>
         ) : (
-          <Text style={tw`text-white font-bold`}>{data}</Text>
+          <View>
+            {data?.map((result) => (
+              <Text key={result.event_id} style={tw`text-white`}>
+                {result.event_title}
+              </Text>
+            ))}
+          </View>
         )}
       </ScrollView>
     </View>

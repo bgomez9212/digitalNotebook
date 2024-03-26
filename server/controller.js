@@ -44,10 +44,14 @@ module.exports = {
     res.sendStatus(204);
   },
   getSearchResults: async (req, res) => {
-    const result = await model.getSearchResults(
-      req.query.search_param,
-      req.query.search_text
-    );
-    res.send(result).status(200);
+    try {
+      const result = await model.getSearchResults(
+        req.query.search_param,
+        req.query.search_text
+      );
+      res.send(result).status(200);
+    } catch (err) {
+      res.status(500).send(err);
+    }
   },
 };

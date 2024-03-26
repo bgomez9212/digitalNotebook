@@ -202,17 +202,33 @@ module.exports = {
     return results;
   },
   getSearchResults: async (search_param, search_text) => {
-    if (search_param === "wrestlers") {
-      return "WRESTLERS";
-    }
-    if (search_param === "events") {
-      return "EVENTS";
-    }
-    if (search_param === "promotions") {
-      return "PROMOTIONS";
-    }
-    if (search_param === "championships") {
-      return "CHAMPIONSHIPS";
+    try {
+      if (search_param === "wrestlers") {
+        return "WRESTLERS";
+      }
+      if (search_param === "events") {
+        return "EVENTS";
+      }
+      if (search_param === "promotions") {
+        const { rows: promotionId } = await pool.query(
+          "SELECT id FROM promotions WHERE name ILIKE $1",
+          [search_text]
+        );
+        const { rows: events } = await pool.query(
+          `SELECT events.id AS event_id, events.title AS event_title, TO_CHAR(events.date, 'YYYY-MM-DD') AS date, venues.name AS venue_name, promotions.name AS promotion_name
+            FROM events
+            JOIN venues ON events.venue_id = venues.id
+            JOIN promotions ON events.promotion_id = promotions.id
+            WHERE promotion_id = $1`,
+          [promotionId[0].id]
+        );
+        return events;
+      }
+      if (search_param === "championships") {
+        return "CHAMPIONSHIPS";
+      }
+    } catch (err) {
+      throw new Error(err.message);
     }
   },
 };

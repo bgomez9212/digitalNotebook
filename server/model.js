@@ -204,24 +204,36 @@ module.exports = {
   getSearchResults: async (search_param, search_text) => {
     try {
       if (search_param === "wrestlers") {
-        return "WRESTLERS";
-      }
-      if (search_param === "events") {
-        const { rows: eventIds } = await pool.query(
-          `SELECT id FROM events WHERE title ILIKE '%' || $1 || '%'`,
+        const { rows: wrestlerId } = await pool.query(
+          `SELECT id FROM wrestlers WHERE name ILIKE '%' || $1 || '%'`,
           [search_text]
         );
-        const eventIdArr = eventIds.map((obj) => obj.id);
-        const { rows: results } = await pool.query(
-          `SELECT events.id AS event_id, events.title AS event_title, TO_CHAR(events.date, 'YYYY-MM-DD') AS date, venues.name AS venue_name, promotions.name AS promotion_name
-          FROM events
-          JOIN venues ON events.venue_id = venues.id
-          JOIN promotions ON events.promotion_id = promotions.id
-          WHERE events.id = ANY($1)
-          ORDER BY date DESC`,
-          [eventIdArr]
+
+        const { rows: matches } = await pool.query(
+          `SELECT match_id FROM participants WHERE wrestler_id = $1`,
+          [wrestlerId[0].id]
         );
+        const matchIdArr = matches.map((match) => match.match_id);
+        const { rows: results } = await pool.query(
+          `SELECT * FROM participants WHERE match_id = ANY($1)`,
+          [matchIdArr]
+        );
+        console.log(results);
         return results;
+      }
+      if (search_param === "events") {
+        if (search_param === "events") {
+          const { rows: results } = await pool.query(
+            `SELECT events.id AS event_id, events.title AS event_title, TO_CHAR(events.date, 'YYYY-MM-DD') AS date, venues.name AS venue_name, promotions.name AS promotion_name
+              FROM events
+              JOIN venues ON events.venue_id = venues.id
+              JOIN promotions ON events.promotion_id = promotions.id
+              WHERE events.title ILIKE '%' || $1 || '%'
+              ORDER BY events.date DESC`,
+            [search_text]
+          );
+          return results;
+        }
       }
       if (search_param === "promotions") {
         const { rows: promotionId } = await pool.query(

@@ -60,7 +60,7 @@ export default function Profile() {
           <Text style={tw`text-white`}>An Error has occurred</Text>
         ) : (
           <View>
-            {data.length ? (
+            {data?.length ? (
               data.map((result) => (
                 <Text key={result.event_id} style={tw`text-white`}>
                   {result.event_title}

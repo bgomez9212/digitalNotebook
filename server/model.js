@@ -209,8 +209,8 @@ module.exports = {
           participants.match_id AS match_id,
           matches.event_id AS event_id,
           wrestlers.name AS wrestler_name,
-          participants.team,
-          championships.name,
+          participants.team AS participants,
+          championships.name AS championship_name,
           AVG(ratings.rating) as rating,
           (SELECT COUNT(*) FROM ratings WHERE ratings.match_id = participants.match_id) AS rating_count
           FROM participants
@@ -228,8 +228,8 @@ module.exports = {
           ORDER BY match_id, team;`,
           [search_text]
         );
-        console.log(results);
-        return results;
+        const data = parseMatchData(results);
+        return data;
       }
       if (search_param === "events") {
         const { rows: results } = await pool.query(

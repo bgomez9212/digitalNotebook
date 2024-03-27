@@ -204,19 +204,29 @@ module.exports = {
   getSearchResults: async (search_param, search_text) => {
     try {
       if (search_param === "wrestlers") {
-        const { rows: wrestlerId } = await pool.query(
-          `SELECT id FROM wrestlers WHERE name ILIKE '%' || $1 || '%'`,
-          [search_text]
-        );
-
-        const { rows: matches } = await pool.query(
-          `SELECT match_id FROM participants WHERE wrestler_id = $1`,
-          [wrestlerId[0].id]
-        );
-        const matchIdArr = matches.map((match) => match.match_id);
         const { rows: results } = await pool.query(
-          `SELECT * FROM participants WHERE match_id = ANY($1)`,
-          [matchIdArr]
+          `SELECT
+          participants.match_id AS match_id,
+          matches.event_id AS event_id,
+          wrestlers.name AS wrestler_name,
+          participants.team,
+          championships.name,
+          AVG(ratings.rating) as rating,
+          (SELECT COUNT(*) FROM ratings WHERE ratings.match_id = participants.match_id) AS rating_count
+          FROM participants
+          JOIN wrestlers ON participants.wrestler_id = wrestlers.id
+          JOIN matches ON matches.id = participants.match_id
+          LEFT OUTER JOIN matches_championships ON matches_championships.match_id = participants.match_id
+          LEFT OUTER JOIN championships ON championships.id = matches_championships.championship_id
+          LEFT OUTER JOIN ratings ON ratings.match_id = participants.match_id
+          WHERE participants.match_id = ANY(
+            SELECT match_id FROM participants WHERE wrestler_id = (
+              SELECT id FROM wrestlers WHERE name ILIKE '%' || $1 || '%'
+              )
+            )
+          GROUP BY participants.match_id, matches.event_id, wrestlers.name, participants.team, championships.name, rating_count
+          ORDER BY match_id, team;`,
+          [search_text]
         );
         console.log(results);
         return results;

@@ -204,42 +204,83 @@ module.exports = {
   getSearchResults: async (search_param, search_text) => {
     try {
       if (search_param === "wrestlers") {
-        return "WRESTLERS";
-      }
-      if (search_param === "events") {
-        const { rows: eventIds } = await pool.query(
-          `SELECT id FROM events WHERE title ILIKE '%' || $1 || '%'`,
+        const { rows: results } = await pool.query(
+          `SELECT
+          participants.match_id AS match_id,
+          matches.event_id AS event_id,
+          wrestlers.name AS wrestler_name,
+          participants.team AS participants,
+          championships.name AS championship_name,
+          AVG(ratings.rating) as rating,
+          (SELECT COUNT(*) FROM ratings WHERE ratings.match_id = participants.match_id) AS rating_count
+          FROM participants
+          JOIN wrestlers ON participants.wrestler_id = wrestlers.id
+          JOIN matches ON matches.id = participants.match_id
+          LEFT OUTER JOIN matches_championships ON matches_championships.match_id = participants.match_id
+          LEFT OUTER JOIN championships ON championships.id = matches_championships.championship_id
+          LEFT OUTER JOIN ratings ON ratings.match_id = participants.match_id
+          WHERE participants.match_id = ANY(
+            SELECT match_id FROM participants WHERE wrestler_id = (
+              SELECT id FROM wrestlers WHERE name ILIKE '%' || $1 || '%'
+              )
+            )
+          GROUP BY participants.match_id, matches.event_id, wrestlers.name, participants.team, championships.name, rating_count
+          ORDER BY match_id, team;`,
           [search_text]
         );
-        const eventIdArr = eventIds.map((obj) => obj.id);
+        const data = parseMatchData(results);
+        return data;
+      }
+      if (search_param === "events") {
         const { rows: results } = await pool.query(
           `SELECT events.id AS event_id, events.title AS event_title, TO_CHAR(events.date, 'YYYY-MM-DD') AS date, venues.name AS venue_name, promotions.name AS promotion_name
-          FROM events
-          JOIN venues ON events.venue_id = venues.id
-          JOIN promotions ON events.promotion_id = promotions.id
-          WHERE events.id = ANY($1)
-          ORDER BY date DESC`,
-          [eventIdArr]
+              FROM events
+              JOIN venues ON events.venue_id = venues.id
+              JOIN promotions ON events.promotion_id = promotions.id
+              WHERE events.title ILIKE '%' || $1 || '%'
+              ORDER BY events.date DESC`,
+          [search_text]
         );
         return results;
       }
       if (search_param === "promotions") {
-        const { rows: promotionId } = await pool.query(
-          `SELECT id FROM promotions WHERE name ILIKE $1`,
-          [search_text]
-        );
         const { rows: events } = await pool.query(
           `SELECT events.id AS event_id, events.title AS event_title, TO_CHAR(events.date, 'YYYY-MM-DD') AS date, venues.name AS venue_name, promotions.name AS promotion_name
             FROM events
             JOIN venues ON events.venue_id = venues.id
             JOIN promotions ON events.promotion_id = promotions.id
-            WHERE promotion_id = $1`,
-          [promotionId[0].id]
+            WHERE promotions.name ILIKE $1`,
+          [search_text]
         );
         return events;
       }
       if (search_param === "championships") {
-        return "CHAMPIONSHIPS";
+        const { rows: results } = await pool.query(
+          `SELECT
+          participants.match_id AS match_id,
+          matches.event_id AS event_id,
+          wrestlers.name AS wrestler_name,
+          participants.team AS participants,
+          championships.name AS championship_name,
+          AVG(ratings.rating) as rating,
+          (SELECT COUNT(*) FROM ratings WHERE ratings.match_id = participants.match_id) AS rating_count
+          FROM participants
+          JOIN wrestlers ON participants.wrestler_id = wrestlers.id
+          JOIN matches ON matches.id = participants.match_id
+          LEFT OUTER JOIN matches_championships ON matches_championships.match_id = participants.match_id
+          LEFT OUTER JOIN championships ON championships.id = matches_championships.championship_id
+          LEFT OUTER JOIN ratings ON ratings.match_id = participants.match_id
+          WHERE matches.id = ANY(
+            SELECT match_id FROM matches_championships WHERE championship_id = ANY(
+              SELECT id FROM championships WHERE name ILIKE '%' || $1 || '%'
+              )
+            )
+          GROUP BY participants.match_id, matches.event_id, wrestlers.name, participants.team, championships.name, rating_count
+          ORDER BY match_id, team;`,
+          [search_text]
+        );
+        const data = parseMatchData(results);
+        return data;
       }
     } catch (err) {
       throw new Error(err.message);

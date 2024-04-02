@@ -6,9 +6,8 @@ import TopRatedMatchesTable from "../../../components/TopRatedMatchesTable";
 export default function Home() {
   return (
     <ScrollView>
-      <View style={tw`bg-darkGrey flex items-center`}>
+      <View style={tw`bg-darkGrey flex items-center min-h-200`}>
         <RecentMatchTable />
-        <View></View>
         <TopRatedMatchesTable />
       </View>
     </ScrollView>

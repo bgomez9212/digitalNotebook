@@ -1,5 +1,5 @@
 import { View, Text, Image, TouchableOpacity } from "react-native";
-import { DataTable } from "react-native-paper";
+import { ActivityIndicator, DataTable } from "react-native-paper";
 import tw from "../tailwind";
 import { useQuery } from "@tanstack/react-query";
 import axios from "axios";
@@ -21,18 +21,36 @@ export default function TopRatedMatchesTable() {
 
   // if (isPending) return 'Loading...'
   if (isPending) {
+    console.log("pending");
     return (
-      <View style={tw`bg-black h-full flex justify-center items-center`}>
-        <Text style={tw`text-white`}>Loading...</Text>
+      <View style={tw`bg-grey w-[95%] mb-12 rounded-md`}>
+        <View style={tw`items-center justify-center py-3 border-b-2`}>
+          <Text style={tw`text-white font-bold text-lg`}>
+            Top Matches of the Month
+          </Text>
+        </View>
+        <View style={tw`h-96 justify-center`}>
+          <ActivityIndicator color="#477CB9" />
+        </View>
       </View>
     );
   }
 
   // if (error) return 'An error has occurred: ' + error.message
   if (error) {
+    console.log(error);
     return (
-      <View style={tw`bg-black h-full flex justify-center items-center`}>
-        <Text style={tw`text-white`}>{error.message}</Text>
+      <View style={tw`bg-grey w-[95%] mb-12 rounded-md`}>
+        <View style={tw`items-center justify-center py-3 border-b-2`}>
+          <Text style={tw`text-white font-bold text-lg`}>
+            Top Matches of the Month
+          </Text>
+        </View>
+        <View style={tw`h-96 justify-center items-center`}>
+          <Text style={tw`text-white`}>
+            There seems to be a problem on our end
+          </Text>
+        </View>
       </View>
     );
   }

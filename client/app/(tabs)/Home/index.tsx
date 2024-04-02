@@ -12,9 +12,13 @@ export default function Home() {
     queryClient.invalidateQueries();
   }, []);
   return (
-    <ScrollView>
-      <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
-      <View style={tw`bg-darkGrey flex items-center min-h-200`}>
+    <ScrollView style={tw`bg-darkGrey`}>
+      <RefreshControl
+        refreshing={refreshing}
+        onRefresh={onRefresh}
+        tintColor="white"
+      />
+      <View style={tw`flex items-center min-h-200`}>
         <RecentMatchTable />
         <TopRatedMatchesTable />
       </View>

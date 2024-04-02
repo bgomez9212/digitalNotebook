@@ -19,26 +19,7 @@ export default function TopRatedMatchesTable() {
         .then((res) => res.data),
   });
 
-  // if (isPending) return 'Loading...'
-  if (isPending) {
-    console.log("pending");
-    return (
-      <View style={tw`bg-grey w-[95%] mb-12 rounded-md`}>
-        <View style={tw`items-center justify-center py-3 border-b-2`}>
-          <Text style={tw`text-white font-bold text-lg`}>
-            Top Matches of the Month
-          </Text>
-        </View>
-        <View style={tw`h-96 justify-center`}>
-          <ActivityIndicator color="#477CB9" />
-        </View>
-      </View>
-    );
-  }
-
-  // if (error) return 'An error has occurred: ' + error.message
-  if (error) {
-    console.log(error);
+  if (isPending || error) {
     return (
       <View style={tw`bg-grey w-[95%] mb-12 rounded-md`}>
         <View style={tw`items-center justify-center py-3 border-b-2`}>
@@ -47,9 +28,11 @@ export default function TopRatedMatchesTable() {
           </Text>
         </View>
         <View style={tw`h-96 justify-center items-center`}>
-          <Text style={tw`text-white`}>
-            There seems to be a problem on our end
-          </Text>
+          {isPending ? (
+            <ActivityIndicator color="#477CB9" />
+          ) : (
+            <Text style={tw`text-white`}>Error getting the top matches</Text>
+          )}
         </View>
       </View>
     );

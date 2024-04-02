@@ -1,4 +1,5 @@
-import { View, Text, Image, StyleSheet, TouchableOpacity } from "react-native";
+import { View, Text, Image, TouchableOpacity } from "react-native";
+import { ActivityIndicator } from "react-native-paper";
 import tw from "../tailwind";
 import { useQuery } from "@tanstack/react-query";
 import axios from "axios";
@@ -18,25 +19,27 @@ export default function RecentEventTable() {
   });
 
   // if (isPending) return 'Loading...'
-  if (isPending) {
+  if (isPending || error) {
     return (
-      <View style={tw`bg-black h-full flex justify-center items-center`}>
-        <Text style={tw`text-white`}>Loading...</Text>
-      </View>
-    );
-  }
-
-  // if (error) return 'An error has occurred: ' + error.message
-  if (error) {
-    return (
-      <View style={tw`bg-black h-full flex justify-center items-center`}>
-        <Text style={tw`text-white`}>{error.message}</Text>
+      <View style={tw`bg-grey w-[95%] mt-12 rounded-md`}>
+        <View style={tw`items-center justify-center py-3 border-b-2`}>
+          <Text style={tw`text-white font-bold text-lg`}>
+            Most Recent Shows
+          </Text>
+        </View>
+        <View style={tw`h-96 justify-center items-center`}>
+          {isPending ? (
+            <ActivityIndicator color="#477CB9" />
+          ) : (
+            <Text style={tw`text-white`}>Error getting the recent events</Text>
+          )}
+        </View>
       </View>
     );
   }
 
   return (
-    <View style={tw`bg-grey w-[95%] my-12 rounded-md`}>
+    <View style={tw`bg-grey w-[95%] mt-12 rounded-md`}>
       <View style={tw`items-center justify-center py-3 border-b-2`}>
         <Text style={tw`text-white font-bold text-lg`}>Most Recent Shows</Text>
       </View>

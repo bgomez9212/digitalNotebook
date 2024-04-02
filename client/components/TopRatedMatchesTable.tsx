@@ -1,5 +1,5 @@
 import { View, Text, Image, TouchableOpacity } from "react-native";
-import { ActivityIndicator, DataTable } from "react-native-paper";
+import { ActivityIndicator } from "react-native-paper";
 import tw from "../tailwind";
 import { useQuery } from "@tanstack/react-query";
 import axios from "axios";
@@ -21,7 +21,7 @@ export default function TopRatedMatchesTable() {
 
   if (isPending || error) {
     return (
-      <View style={tw`bg-grey w-[95%] mb-12 rounded-md`}>
+      <View style={tw`bg-grey w-[95%] my-12 rounded-md`}>
         <View style={tw`items-center justify-center py-3 border-b-2`}>
           <Text style={tw`text-white font-bold text-lg`}>
             Top Matches of the Month
@@ -39,7 +39,7 @@ export default function TopRatedMatchesTable() {
   }
 
   return (
-    <View style={tw`bg-grey w-[95%] mb-12 rounded-md`}>
+    <View style={tw`bg-grey w-[95%] my-12 rounded-md`}>
       <View style={tw`items-center justify-center py-3 border-b-2`}>
         <Text style={tw`text-white font-bold text-lg`}>
           Top Matches of the Month

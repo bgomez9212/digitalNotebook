@@ -6,7 +6,7 @@ import { useCallback, useState } from "react";
 import { useQueryClient } from "@tanstack/react-query";
 
 export default function Home() {
-  const [refreshing, setRefreshing] = useState(false);
+  const refreshing = false;
   const queryClient = useQueryClient();
   const onRefresh = useCallback(() => {
     queryClient.invalidateQueries();
@@ -18,7 +18,7 @@ export default function Home() {
         onRefresh={onRefresh}
         tintColor="white"
       />
-      <View style={tw`flex items-center min-h-200`}>
+      <View style={tw`flex items-center`}>
         <RecentMatchTable />
         <TopRatedMatchesTable />
       </View>

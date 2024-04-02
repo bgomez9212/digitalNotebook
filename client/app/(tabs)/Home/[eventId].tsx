@@ -45,6 +45,7 @@ export default function EventPage() {
       </View>
     );
   }
+  console.log(event);
   return (
     <SafeAreaView style={tw`flex-1`}>
       <ScrollView>
@@ -57,6 +58,9 @@ export default function EventPage() {
             <Text style={tw`text-white text-3xl`}>{event.title}</Text>
             <Text style={tw`text-white`}>{event.date}</Text>
             <Text style={tw`text-white`}>{event.venue_name}</Text>
+            <Text style={tw`text-white`}>
+              {event.city}, {event.state} ({event.country})
+            </Text>
           </View>
           <View style={tw`px-3`}>
             {event.matches.map((match: Match) => (

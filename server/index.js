@@ -9,6 +9,6 @@ app.use(express.json());
 
 app.use("/api", router);
 
-app.listen(process.env.SERVERPORT, "0.0.0.0", () => {
+app.listen(process.env.PORT, "0.0.0.0", () => {
   console.log(`Server running`);
 });

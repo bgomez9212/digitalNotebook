@@ -14,9 +14,7 @@ export default function TopRatedMatchesTable() {
   } = useQuery({
     queryKey: ["topMatches"],
     queryFn: () =>
-      axios
-        .get("http://localhost:3000/api/matches/toprated")
-        .then((res) => res.data),
+      axios.get(`${process.env.API_TOP_RATED}`).then((res) => res.data),
   });
 
   if (isPending || error) {

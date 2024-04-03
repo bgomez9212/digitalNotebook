@@ -28,7 +28,7 @@ export default function EventRow({
     queryKey: ["userMatchData", match.match_id],
     queryFn: () =>
       axios
-        .get("http://localhost:3000/api/ratings/:user_id/:match_id", {
+        .get(`${process.env.API_USER_RATING}`, {
           params: {
             user_id: userId,
             match_id: match.match_id,

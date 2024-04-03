@@ -13,9 +13,7 @@ export default function RecentEventTable() {
   } = useQuery({
     queryKey: ["recentEvents"],
     queryFn: () =>
-      axios
-        .get("http://localhost:3000/api/events/recent")
-        .then((res) => res.data),
+      axios.get(`${process.env.API_RECENT_EVENTS}`).then((res) => res.data),
   });
 
   // if (isPending) return 'Loading...'

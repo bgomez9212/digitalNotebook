@@ -18,7 +18,7 @@ export default function Profile() {
     enabled: false,
     queryFn: () =>
       axios
-        .get("http://localhost:3000/api/search/:search_param/:search_text", {
+        .get(`${process.env.API_SEARCH}`, {
           params: {
             search_param: userSearch.searchParam,
             search_text: userSearch.searchText,

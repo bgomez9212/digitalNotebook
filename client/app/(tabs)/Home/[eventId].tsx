@@ -23,7 +23,7 @@ export default function EventPage() {
     queryKey: ["event"],
     queryFn: () =>
       axios
-        .get("http://localhost:3000/api/events/:event_id", {
+        .get(`${process.env.API_EVENT}`, {
           params: {
             event_id: eventId,
           },
@@ -45,11 +45,11 @@ export default function EventPage() {
       </View>
     );
   }
-  console.log(event);
+
   return (
     <SafeAreaView style={tw`flex-1`}>
-      <ScrollView>
-        <View style={tw`bg-darkGrey`}>
+      <ScrollView style={tw`bg-darkGrey`}>
+        <View>
           <Image
             source={require("../../../assets/aew-logo.png")}
             style={tw`w-full h-[200px] mt-4`}

@@ -23,7 +23,7 @@ export default function RatingModal() {
     queryKey: ["matchInfo"],
     queryFn: () =>
       axios
-        .get("http://localhost:3000/api/matches/:match_id", {
+        .get(`${process.env.API_MATCH}`, {
           params: {
             match_id: match_id,
           },
@@ -39,7 +39,7 @@ export default function RatingModal() {
     queryKey: ["userRating"],
     queryFn: () =>
       axios
-        .get("http://localhost:3000/api/ratings/:user_id/:match_id", {
+        .get(`${process.env.API_USER_RATING}`, {
           params: {
             user_id: userId,
             match_id: match_id,
@@ -50,7 +50,7 @@ export default function RatingModal() {
 
   async function addRating(ratingObj) {
     await axios
-      .post(`http://localhost:3000/api/ratings/:match_id`, {
+      .post(`${process.env.API_POST_RATING}`, {
         match_id: ratingObj.matchId,
         user_id: ratingObj.userId,
         rating: ratingObj.rating,
@@ -70,7 +70,7 @@ export default function RatingModal() {
 
   async function deleteRating(ratingInfo) {
     await axios
-      .delete(`http://localhost:3000/api/ratings/:user_id/:match_id`, {
+      .delete(`${process.env.API_DELETE_RATING}`, {
         params: {
           user_id: ratingInfo.userId,
           match_id: ratingInfo.match_id,
@@ -143,11 +143,13 @@ export default function RatingModal() {
         <View
           style={tw`flex flex-row ${userRating ? "justify-between" : "justify-end"}`}
         >
-          <StarView
-            display="User"
-            rating={userRating.rating}
-            rating_count={matchInfo.rating_count}
-          />
+          {userRating && (
+            <StarView
+              display="User"
+              rating={userRating.rating}
+              rating_count={matchInfo.rating_count}
+            />
+          )}
           <StarView
             display="Total"
             rating={matchInfo.rating}

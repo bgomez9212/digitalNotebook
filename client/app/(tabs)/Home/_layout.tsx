@@ -8,7 +8,7 @@ export default function Layout() {
   useEffect(() => {
     if (eventId) {
       axios
-        .get("http://localhost:3000/api/events/:event_id", {
+        .get(`${process.env.API_EVENT}`, {
           params: {
             event_id: eventId,
           },
@@ -19,7 +19,6 @@ export default function Layout() {
       setEventName("-");
     }
   }, [eventId]);
-
   return (
     <Stack>
       <Stack.Screen

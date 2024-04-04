@@ -17,7 +17,7 @@ export default function TopRatedMatchesTable() {
       axios.get(`${process.env.API_TOP_RATED}`).then((res) => res.data),
   });
 
-  if (isPending || error) {
+  if (!matches) {
     return (
       <View style={tw`bg-grey w-[95%] my-12 rounded-md`}>
         <View style={tw`items-center justify-center py-3 border-b-2`}>
@@ -54,7 +54,7 @@ export default function TopRatedMatchesTable() {
               {match.championships}
             </Text>
           )}
-          <View style={tw`flex flex-row items-center`}>
+          <View style={tw`flex flex-row items-center border`}>
             <View style={tw`flex-1`}>
               <Image
                 style={tw`h-10 w-24`}
@@ -62,7 +62,7 @@ export default function TopRatedMatchesTable() {
               />
             </View>
             <View style={tw`flex-2.5`}>
-              <Text style={tw`text-white font-bold pb-3`}>
+              <Text style={tw`text-white ml-3 font-bold pb-3`}>
                 {match.participants}
               </Text>
               <StarView

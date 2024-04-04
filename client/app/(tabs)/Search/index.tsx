@@ -29,7 +29,6 @@ export default function Profile() {
           throw new Error(err);
         }),
   });
-  console.log(data);
   return (
     <View style={tw`flex-1 bg-darkGrey w-full pt-12 items-center border`}>
       <View style={tw`w-9/10 mb-12`}>

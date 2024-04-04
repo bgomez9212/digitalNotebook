@@ -20,7 +20,9 @@ export default function TopRatedMatchesTable() {
   if (isFetching || error) {
     return (
       <View style={tw`bg-grey w-[95%] my-12 rounded-md`}>
-        <View style={tw`items-center justify-center py-3 border-b-2`}>
+        <View
+          style={tw`items-center justify-center py-3 border-b-2 border-darkGrey`}
+        >
           <Text style={tw`text-white font-bold text-lg`}>
             Top Matches of the Month
           </Text>
@@ -38,7 +40,9 @@ export default function TopRatedMatchesTable() {
 
   return (
     <View style={tw`bg-grey w-[95%] my-12 rounded-md`}>
-      <View style={tw`items-center justify-center py-3 border-b-2`}>
+      <View
+        style={tw`items-center justify-center py-3 border-b-2 border-darkGrey`}
+      >
         <Text style={tw`text-white font-bold text-lg`}>
           Top Matches of the Month
         </Text>
@@ -47,7 +51,7 @@ export default function TopRatedMatchesTable() {
         <TouchableOpacity
           key={match.match_id}
           onPress={() => router.push(`/(tabs)/Home/${match.event_id}`)}
-          style={tw`border-b-2 px-3 py-4 ${index === 4 ? "border-b-0" : ""}`}
+          style={tw`border-b-2 border-darkGrey px-3 py-4 ${index === 4 ? "border-b-0" : ""}`}
         >
           {match.championships && (
             <Text style={tw`text-center text-gold font-bold pb-3`}>

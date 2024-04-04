@@ -8,7 +8,7 @@ import StarView from "./StarView";
 
 export default function TopRatedMatchesTable() {
   const {
-    isPending,
+    isFetching,
     error,
     data: matches,
   } = useQuery({
@@ -17,7 +17,7 @@ export default function TopRatedMatchesTable() {
       axios.get(`${process.env.API_TOP_RATED}`).then((res) => res.data),
   });
 
-  if (!matches) {
+  if (isFetching || error) {
     return (
       <View style={tw`bg-grey w-[95%] my-12 rounded-md`}>
         <View style={tw`items-center justify-center py-3 border-b-2`}>
@@ -26,7 +26,7 @@ export default function TopRatedMatchesTable() {
           </Text>
         </View>
         <View style={tw`h-96 justify-center items-center`}>
-          {isPending ? (
+          {isFetching ? (
             <ActivityIndicator color="#477CB9" />
           ) : (
             <Text style={tw`text-white`}>Error getting the top matches</Text>
@@ -54,7 +54,7 @@ export default function TopRatedMatchesTable() {
               {match.championships}
             </Text>
           )}
-          <View style={tw`flex flex-row items-center border`}>
+          <View style={tw`flex flex-row items-center`}>
             <View style={tw`flex-1`}>
               <Image
                 style={tw`h-10 w-24`}

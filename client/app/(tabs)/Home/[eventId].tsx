@@ -3,7 +3,7 @@ import { Image, SafeAreaView, ScrollView, Text, View } from "react-native";
 import tw from "../../../tailwind";
 import { useQuery } from "@tanstack/react-query";
 import axios from "axios";
-import { DataTable } from "react-native-paper";
+import { ActivityIndicator, DataTable } from "react-native-paper";
 import EventRow from "../../../components/EventRow";
 type Match = {
   match_id: number;
@@ -16,7 +16,7 @@ type Match = {
 export default function EventPage() {
   const { eventId } = useLocalSearchParams();
   const {
-    isPending,
+    isFetching,
     error,
     data: event,
   } = useQuery({
@@ -31,10 +31,10 @@ export default function EventPage() {
         .then((res) => res.data),
   });
 
-  if (isPending) {
+  if (isFetching) {
     return (
-      <View>
-        <Text>Loading...</Text>
+      <View style={tw`flex-1 justify-center bg-darkGrey`}>
+        <ActivityIndicator color="#477CB9" />
       </View>
     );
   }

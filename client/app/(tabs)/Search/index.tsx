@@ -32,7 +32,7 @@ export default function Profile() {
   console.log(data);
   return (
     <View style={tw`flex-1 bg-darkGrey w-full pt-12 items-center border`}>
-      <View style={tw`w-98 mb-12`}>
+      <View style={tw`w-9/10 mb-12`}>
         <TextInput
           style={tw`bg-white w-full h-10 mb-2 px-2 pb-2 rounded-md text-base`}
           value={userSearch.searchText}
@@ -67,7 +67,7 @@ export default function Profile() {
                 </Text>
               ))
             ) : (
-              <Text style={tw`text-white`}>No results</Text>
+              <Text style={tw`text-white`}></Text>
             )}
           </View>
         )}

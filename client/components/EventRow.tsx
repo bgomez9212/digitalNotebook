@@ -1,75 +1,33 @@
 import { router } from "expo-router";
-import { TouchableOpacity, View, Text } from "react-native";
-import { DataTable } from "react-native-paper";
+import { TouchableOpacity, View, Text, Image } from "react-native";
 import tw from "../tailwind";
-import StarView from "./StarView";
-import { useContext, useEffect, useState } from "react";
-import axios from "axios";
-import AuthContext from "../Context/authContext";
-import { useQuery } from "@tanstack/react-query";
 
-type Match = {
-  match_id: number;
-  event_id: number;
-  participants: string[][];
-  championships: string[];
-  rating: number;
-  rating_count: number;
-};
 export default function EventRow({
-  match,
-  eventTitle,
+  event,
+  index,
 }: {
-  match: Match;
-  eventTitle: string;
+  event: { id: number; title: string; date: string };
+  index: number;
 }) {
-  const userId = useContext(AuthContext);
-  const { data: userMatchRating } = useQuery({
-    queryKey: ["userMatchData", match.match_id],
-    queryFn: () =>
-      axios
-        .get(`${process.env.API_USER_RATING}`, {
-          params: {
-            user_id: userId,
-            match_id: match.match_id,
-          },
-        })
-        .then((res) => res.data.rating || null),
-  });
   return (
     <TouchableOpacity
-      key={match.match_id}
-      onPress={() =>
-        router.navigate({
-          pathname: "./RatingModal",
-          params: { match_id: match.match_id, event_title: eventTitle },
-        })
-      }
+      onPress={() => router.push(`/(tabs)/Home/${event.id}`)}
+      style={tw`w-full flex flex-row py-2 border-b-2 border-darkGrey ${index === 4 ? "border-b-0" : ""}`}
     >
-      <View style={tw`flex flex-col w-full py-4 border-b-2 border-b-grey`}>
-        {match.championships && (
-          <View style={tw`py-2`}>
-            <Text style={tw`text-gold text-sm text-center`}>
-              {match.championships}
-            </Text>
-          </View>
-        )}
-        <View style={tw`py-4`}>
-          <Text style={tw`text-white text-lg`}>{match.participants}</Text>
+      <View style={tw`p-2 flex flex-row w-full`}>
+        <View style={tw`flex-2`}>
+          <Image
+            style={tw`h-10 w-24`}
+            source={require("../assets/aew-logo.png")}
+          />
         </View>
-        <View
-          style={tw`flex flex-row ${userMatchRating ? "justify-between" : "justify-end"}`}
-        >
-          <StarView
-            display={"User"}
-            rating={userMatchRating}
-            rating_count={match.rating_count}
-          />
-          <StarView
-            display={"Total"}
-            rating={match.rating}
-            rating_count={match.rating_count}
-          />
+        <View style={tw`flex-3 justify-center items-center`}>
+          <Text style={tw`text-center text-white font-bold`}>
+            {event.title}
+          </Text>
+        </View>
+        <View style={tw`flex-2 justify-center items-center`}>
+          <Text style={tw`text-white font-bold`}>{event.date}</Text>
         </View>
       </View>
     </TouchableOpacity>

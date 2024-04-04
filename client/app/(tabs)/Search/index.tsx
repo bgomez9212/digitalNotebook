@@ -29,6 +29,7 @@ export default function Profile() {
           throw new Error(err);
         }),
   });
+  console.log(data);
   return (
     <View style={tw`flex-1 bg-darkGrey w-full pt-12 items-center border`}>
       <View style={tw`w-9/10 mb-12`}>
@@ -53,23 +54,19 @@ export default function Profile() {
         </Pressable>
       </View>
       <ScrollView>
-        {isFetching ? (
-          <ActivityIndicator />
-        ) : isError ? (
-          <Text style={tw`text-white`}>An Error has occurred</Text>
-        ) : (
-          <View>
-            {data?.length ? (
-              data.map((result) => (
-                <Text key={result.event_id} style={tw`text-white`}>
-                  {result.event_title}
-                </Text>
-              ))
-            ) : (
-              <Text style={tw`text-white`}></Text>
-            )}
-          </View>
-        )}
+        {isFetching && <ActivityIndicator />}
+        {isError && <Text style={tw`text-white`}>An Error has occurred</Text>}
+        <View>
+          {data?.length ? (
+            data.map((result) => (
+              <Text key={result.event_id} style={tw`text-white`}>
+                {result.event_title}
+              </Text>
+            ))
+          ) : (
+            <Text style={tw`text-white`}></Text>
+          )}
+        </View>
       </ScrollView>
     </View>
   );

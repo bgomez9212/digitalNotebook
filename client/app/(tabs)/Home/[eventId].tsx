@@ -4,7 +4,7 @@ import tw from "../../../tailwind";
 import { useQuery } from "@tanstack/react-query";
 import axios from "axios";
 import { ActivityIndicator, DataTable } from "react-native-paper";
-import EventRow from "../../../components/EventRow";
+import EventPageRow from "../../../components/EventPageRow";
 type Match = {
   match_id: number;
   event_id: number;
@@ -64,7 +64,7 @@ export default function EventPage() {
           </View>
           <View style={tw`px-3`}>
             {event.matches.map((match: Match) => (
-              <EventRow
+              <EventPageRow
                 key={match.match_id}
                 match={match}
                 eventTitle={event.title}

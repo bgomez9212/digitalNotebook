@@ -3,7 +3,7 @@ import { ActivityIndicator } from "react-native-paper";
 import tw from "../tailwind";
 import { useQuery } from "@tanstack/react-query";
 import axios from "axios";
-import { router } from "expo-router";
+import EventRow from "./EventRow";
 
 export default function RecentEventTable() {
   const {
@@ -38,32 +38,13 @@ export default function RecentEventTable() {
 
   return (
     <View style={tw`bg-grey w-[95%] mt-12 rounded-md`}>
-      <View style={tw`items-center justify-center py-3 border-b-2`}>
+      <View
+        style={tw`items-center justify-center py-3 border-b-2 border-darkGrey`}
+      >
         <Text style={tw`text-white font-bold text-lg`}>Most Recent Shows</Text>
       </View>
       {events.map((event, index) => (
-        <TouchableOpacity
-          key={event.id}
-          onPress={() => router.push(`/(tabs)/Home/${event.id}`)}
-          style={tw`w-full flex flex-row py-2 border-b-2 ${index === 4 ? "border-b-0" : ""}`}
-        >
-          <View style={tw`p-2 flex flex-row w-full`}>
-            <View style={tw`flex-2`}>
-              <Image
-                style={tw`h-10 w-24`}
-                source={require("../assets/aew-logo.png")}
-              />
-            </View>
-            <View style={tw`flex-3 justify-center items-center`}>
-              <Text style={tw`text-center text-white font-bold`}>
-                {event.title}
-              </Text>
-            </View>
-            <View style={tw`flex-2 justify-center items-center`}>
-              <Text style={tw`text-white font-bold`}>{event.date}</Text>
-            </View>
-          </View>
-        </TouchableOpacity>
+        <EventRow event={event} index={index} key={event.id} display="Table" />
       ))}
     </View>
   );

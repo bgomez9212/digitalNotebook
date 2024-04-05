@@ -5,6 +5,7 @@ import { useState } from "react";
 import { useQuery } from "@tanstack/react-query";
 import axios from "axios";
 import { ActivityIndicator } from "react-native-paper";
+import SearchResults from "../../../components/SearchResults";
 export default function Profile() {
   const [userSearch, setUserSearch] = useState({
     searchParam: null,
@@ -29,10 +30,9 @@ export default function Profile() {
           throw new Error(err);
         }),
   });
-  console.log(data);
   return (
     <View style={tw`flex-1 bg-darkGrey w-full pt-12 items-center border`}>
-      <View style={tw`w-98 mb-12`}>
+      <View style={tw`w-9/10 mb-12`}>
         <TextInput
           style={tw`bg-white w-full h-10 mb-2 px-2 pb-2 rounded-md text-base`}
           value={userSearch.searchText}
@@ -53,25 +53,13 @@ export default function Profile() {
           <Text style={tw`text-lg font-bold text-white`}>Submit</Text>
         </Pressable>
       </View>
-      <ScrollView>
-        {isFetching ? (
-          <ActivityIndicator />
-        ) : isError ? (
-          <Text style={tw`text-white`}>An Error has occurred</Text>
-        ) : (
-          <View>
-            {data?.length ? (
-              data.map((result) => (
-                <Text key={result.event_id} style={tw`text-white`}>
-                  {result.event_title}
-                </Text>
-              ))
-            ) : (
-              <Text style={tw`text-white`}>No results</Text>
-            )}
-          </View>
-        )}
-      </ScrollView>
+      {isFetching ? (
+        <ActivityIndicator />
+      ) : isError ? (
+        <Text style={tw`text-white`}>There seems to be an error</Text>
+      ) : (
+        <SearchResults results={data} searchType={userSearch.searchParam} />
+      )}
     </View>
   );
 }

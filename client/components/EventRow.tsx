@@ -1,7 +1,6 @@
 import { router } from "expo-router";
 import { TouchableOpacity, View, Text, Image } from "react-native";
 import tw from "../tailwind";
-// ${index === 4 ? "border-b-0" : ""}
 export default function EventRow({
   event,
   index,

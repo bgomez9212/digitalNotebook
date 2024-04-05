@@ -1,18 +1,24 @@
 import { router } from "expo-router";
 import { TouchableOpacity, View, Text, Image } from "react-native";
 import tw from "../tailwind";
-
+// ${index === 4 ? "border-b-0" : ""}
 export default function EventRow({
   event,
   index,
+  display,
 }: {
   event: { id: number; title: string; date: string };
   index: number;
+  display: "Table" | "Search";
 }) {
   return (
     <TouchableOpacity
       onPress={() => router.push(`/(tabs)/Home/${event.id}`)}
-      style={tw`w-full flex flex-row py-2 border-b-2 border-darkGrey ${index === 4 ? "border-b-0" : ""}`}
+      style={tw`${
+        display === "Table"
+          ? `w-full flex flex-row py-2 border-b-2 border-darkGrey ${index === 4 ? "border-b-0" : ""}`
+          : `w-full flex flex-row py-2 border-b-2 border-grey`
+      }`}
     >
       <View style={tw`p-2 flex flex-row w-full`}>
         <View style={tw`flex-2`}>

@@ -10,8 +10,8 @@ import { useQuery } from "@tanstack/react-query";
 type Match = {
   match_id: number;
   event_id: number;
-  participants: string[][];
-  championships: string[];
+  participants: string;
+  championships: string;
   rating: number;
   rating_count: number;
 };

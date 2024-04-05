@@ -44,7 +44,7 @@ export default function RecentEventTable() {
         <Text style={tw`text-white font-bold text-lg`}>Most Recent Shows</Text>
       </View>
       {events.map((event, index) => (
-        <EventRow event={event} index={index} key={event.id} />
+        <EventRow event={event} index={index} key={event.id} display="Table" />
       ))}
     </View>
   );

@@ -228,7 +228,10 @@ module.exports = {
           ORDER BY match_id, team;`,
           [search_text]
         );
-        const data = parseMatchData(results);
+        const data = {
+          search_param: search_param,
+          results: parseMatchData(results),
+        };
         return data;
       }
       if (search_param === "events") {
@@ -241,7 +244,8 @@ module.exports = {
               ORDER BY events.date DESC`,
           [search_text]
         );
-        return results;
+        const data = { search_param, search_param, results: results };
+        return data;
       }
       if (search_param === "promotions") {
         const { rows: events } = await pool.query(
@@ -252,7 +256,8 @@ module.exports = {
             WHERE promotions.name ILIKE $1`,
           [search_text]
         );
-        return events;
+        const data = { search_param: search_param, results: events };
+        return data;
       }
       if (search_param === "championships") {
         const { rows: results } = await pool.query(
@@ -279,7 +284,10 @@ module.exports = {
           ORDER BY match_id, team;`,
           [search_text]
         );
-        const data = parseMatchData(results);
+        const data = {
+          search_param: search_param,
+          results: parseMatchData(results),
+        };
         return data;
       }
     } catch (err) {

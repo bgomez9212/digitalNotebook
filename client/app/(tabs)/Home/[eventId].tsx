@@ -5,14 +5,7 @@ import { useQuery } from "@tanstack/react-query";
 import axios from "axios";
 import { ActivityIndicator, DataTable } from "react-native-paper";
 import EventPageRow from "../../../components/EventPageRow";
-type Match = {
-  match_id: number;
-  event_id: number;
-  participants: string[][];
-  championships: string[];
-  rating: number;
-  rating_count: number;
-};
+import { Match } from "../../../types/types";
 export default function EventPage() {
   const { eventId } = useLocalSearchParams();
   const {

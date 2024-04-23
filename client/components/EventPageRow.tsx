@@ -6,15 +6,7 @@ import { useContext } from "react";
 import axios from "axios";
 import AuthContext from "../Context/authContext";
 import { useQuery } from "@tanstack/react-query";
-
-type Match = {
-  match_id: number;
-  event_id: number;
-  participants: string;
-  championships: string;
-  rating: number;
-  rating_count: number;
-};
+import { Match } from "../types/types";
 export default function EventPageRow({
   match,
   eventTitle,

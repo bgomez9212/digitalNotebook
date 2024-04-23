@@ -60,7 +60,7 @@ export default function EventPage() {
               <EventPageRow
                 key={match.match_id}
                 match={match}
-                eventTitle={event.title}
+                eventTitle={null}
               />
             ))}
           </View>

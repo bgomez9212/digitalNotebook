@@ -37,7 +37,7 @@ export default function RecentEventTable() {
   }
 
   return (
-    <View style={tw`bg-grey w-[95%] mt-12 rounded-md`}>
+    <View style={tw`bg-grey w-[95%] mt-12 rounded-md px-2`}>
       <View
         style={tw`items-center justify-center py-3 border-b-2 border-darkGrey`}
       >

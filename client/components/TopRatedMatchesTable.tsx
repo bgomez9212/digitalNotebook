@@ -53,6 +53,9 @@ export default function TopRatedMatchesTable() {
           onPress={() => router.push(`/(tabs)/Home/${match.event_id}`)}
           style={tw`border-b-2 border-darkGrey px-3 py-4 ${index === 4 ? "border-b-0" : ""}`}
         >
+          <View style={tw`w-full items-center pb-2`}>
+            <Text style={tw`text-white`}>{match.event_title}</Text>
+          </View>
           {match.championships && (
             <Text style={tw`text-center text-gold font-bold pb-3`}>
               {match.championships}

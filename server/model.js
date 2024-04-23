@@ -128,6 +128,7 @@ module.exports = {
         SELECT
           matches.id AS match_id,
           matches.event_id AS event_id,
+          events.title AS event_title,
           participants.team AS participants,
           wrestlers.name AS wrestler_name,
           AVG(ratings.rating) AS rating,
@@ -138,6 +139,7 @@ module.exports = {
         JOIN wrestlers ON participants.wrestler_id = wrestlers.id
         LEFT OUTER JOIN ratings ON matches.id = ratings.match_id
         LEFT OUTER JOIN matches_championships ON matches_championships.match_id = matches.id
+        LEFT OUTER JOIN events ON events.id = matches.event_id
         LEFT OUTER JOIN championships ON matches_championships.championship_id = championships.id
           WHERE matches.id IN (
           SELECT matches.id FROM matches
@@ -148,7 +150,7 @@ module.exports = {
           ORDER BY (AVG(ratings.rating)) DESC, events.date DESC
           LIMIT 5
         )
-        GROUP BY matches.id, participants.team, wrestlers.name, championship_name, participants.match_id
+        GROUP BY matches.id, participants.team, wrestlers.name, championship_name, participants.match_id, events.title
         ORDER BY rating DESC, participants.match_id, team;
         `,
         [lastMonth]

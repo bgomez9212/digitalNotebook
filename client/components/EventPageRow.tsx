@@ -29,6 +29,7 @@ export default function EventPageRow({
   });
   return (
     <TouchableOpacity
+      style={tw`border-b-2 border-grey py-4`}
       key={match.match_id}
       onPress={() =>
         router.navigate({
@@ -37,15 +38,20 @@ export default function EventPageRow({
         })
       }
     >
-      <View style={tw`flex flex-col w-full py-4 border-b-2 border-b-grey`}>
+      {eventTitle && (
+        <View style={tw`w-full flex items-center`}>
+          <Text style={tw`text-white`}>{eventTitle}</Text>
+        </View>
+      )}
+      <View style={tw`flex flex-col w-full`}>
         {match.championships && (
-          <View style={tw`py-2`}>
+          <View style={tw``}>
             <Text style={tw`text-gold text-sm text-center`}>
               {match.championships}
             </Text>
           </View>
         )}
-        <View style={tw`py-4`}>
+        <View style={tw`py-2`}>
           <Text style={tw`text-white text-lg`}>{match.participants}</Text>
         </View>
         <View

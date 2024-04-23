@@ -19,7 +19,7 @@ export default function SearchResults({ data }) {
     (data.search_param === "promotions" || data.search_param === "events")
   ) {
     return (
-      <ScrollView>
+      <ScrollView style={tw`w-9.5/10`}>
         {data.results.map((result, i) => (
           <EventRow key={result.id} event={result} index={i} display="Search" />
         ))}
@@ -31,9 +31,13 @@ export default function SearchResults({ data }) {
     (data.search_param === "wrestlers" || data.search_param === "championships")
   ) {
     return (
-      <ScrollView style={tw`w-9/10`} showsVerticalScrollIndicator={false}>
+      <ScrollView style={tw`w-9.5/10`} showsVerticalScrollIndicator={false}>
         {data.results.map((result, i) => (
-          <EventPageRow key={result.match_id} match={result} eventTitle="" />
+          <EventPageRow
+            key={result.match_id}
+            match={result}
+            eventTitle={result.event_title}
+          />
         ))}
       </ScrollView>
     );

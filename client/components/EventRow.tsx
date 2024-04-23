@@ -19,19 +19,19 @@ export default function EventRow({
           : `w-full flex flex-row py-2 border-b-2 border-grey`
       }`}
     >
-      <View style={tw`p-2 flex flex-row w-full`}>
+      <View style={tw`py-2 flex flex-row w-full`}>
         <View style={tw`flex-2`}>
           <Image
             style={tw`h-10 w-24`}
             source={require("../assets/aew-logo.png")}
           />
         </View>
-        <View style={tw`flex-3 justify-center items-center`}>
+        <View style={tw`flex-3 justify-center`}>
           <Text style={tw`text-center text-white font-bold`}>
             {event.title}
           </Text>
         </View>
-        <View style={tw`flex-2 justify-center items-center`}>
+        <View style={tw`flex-2 justify-center items-end`}>
           <Text style={tw`text-white font-bold`}>{event.date}</Text>
         </View>
       </View>

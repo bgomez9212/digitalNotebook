@@ -5,8 +5,27 @@ import { auth } from "../../firebase";
 import { useContext } from "react";
 import { Redirect } from "expo-router";
 import AuthContext from "../../Context/authContext";
+import { useQuery } from "@tanstack/react-query";
+import axios from "axios";
 // TODO Put Signout button here
 export default function Profile() {
+  const user = useContext(AuthContext);
+  const {
+    data: userRatings,
+    isError,
+    isLoading,
+  } = useQuery({
+    queryKey: ["userRatings"],
+    queryFn: () =>
+      axios
+        .get(process.env.API_USER_RATINGS, {
+          params: {
+            user_id: user,
+          },
+        })
+        .then((res) => res.data),
+  });
+
   function displayAlert() {
     Alert.alert("Are you sure you want to sign out?", "", [
       {
@@ -26,7 +45,7 @@ export default function Profile() {
   }
 
   return (
-    <View style={tw`h-full flex justify-center items-center bg-black`}>
+    <View style={tw``}>
       <Pressable
         style={tw`h-20 w-40 bg-blue flex justify-center items-center`}
         onPress={displayAlert}

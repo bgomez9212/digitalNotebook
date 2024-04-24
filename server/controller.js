@@ -54,4 +54,12 @@ module.exports = {
       res.status(500).send(err);
     }
   },
+  getUserRatings: async (req, res) => {
+    try {
+      const results = await model.getUserRatings(req.query.user_id);
+      res.send(results).status(200);
+    } catch (err) {
+      res.send(err).status(500);
+    }
+  },
 };

@@ -15,6 +15,7 @@ function parseMatchData(matchArr) {
     match_id: matchArr[0].match_id,
     event_id: matchArr[0].event_id,
     event_title: matchArr[0].event_title,
+    promotion: matchArr[0].promotion_name,
     participants: [],
     championships: [],
     rating: matchArr[0].rating,
@@ -301,5 +302,36 @@ module.exports = {
       console.log(err);
       throw new Error(err.message);
     }
+  },
+  getUserRatings: async (user_id) => {
+    const { rows: userRatings } = await pool.query(
+      `SELECT
+        matches.id AS match_id,
+        matches.event_id AS event_id,
+        events.title AS event_title,
+        events.date AS event_date,
+        participants.team AS participants,
+        wrestlers.name AS wrestler_name,
+        AVG(ratings.rating) AS rating,
+        (SELECT COUNT(*) FROM ratings WHERE ratings.match_id = matches.id) AS rating_count,
+        championships.name AS championship_name,
+        promotions.name AS promotion_name
+      FROM matches
+      JOIN participants ON matches.id = participants.match_id
+      JOIN wrestlers ON participants.wrestler_id = wrestlers.id
+      LEFT OUTER JOIN ratings ON matches.id = ratings.match_id
+      LEFT OUTER JOIN matches_championships ON matches_championships.match_id = matches.id
+      LEFT OUTER JOIN events ON events.id = matches.event_id
+      LEFT OUTER JOIN championships ON matches_championships.championship_id = championships.id
+      LEFT OUTER JOIN promotions ON events.promotion_id = promotions.id
+        WHERE matches.id IN (
+        SELECT ratings.match_id FROM ratings WHERE ratings.user_id = $1
+      )
+      GROUP BY matches.id, participants.team, wrestlers.name, championship_name, participants.match_id, events.title, promotions.name, events.date
+      ORDER BY events.date DESC, participants.match_id, team;`,
+      [user_id]
+    );
+    const results = parseMatchData(userRatings);
+    return results;
   },
 };

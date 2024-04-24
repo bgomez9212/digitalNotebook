@@ -50,7 +50,7 @@ export default function TopRatedMatchesTable() {
       </View>
       {matches.map((match, i) => (
         <MatchRow
-          key={match.id}
+          key={match.match_id}
           match={match}
           eventTitle={match.event_title}
           display="Home"

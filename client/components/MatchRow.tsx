@@ -14,7 +14,7 @@ export default function MatchRow({
   hideBottomBorder,
 }: {
   match: Match;
-  eventTitle: string;
+  eventTitle?: string;
   display: "Home" | "Else";
   hideBottomBorder: boolean;
 }) {

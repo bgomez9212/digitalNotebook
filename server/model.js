@@ -269,6 +269,7 @@ module.exports = {
           `SELECT
           participants.match_id AS match_id,
           matches.event_id AS event_id,
+          events.title AS event_title,
           wrestlers.name AS wrestler_name,
           participants.team AS participants,
           championships.name AS championship_name,
@@ -280,12 +281,13 @@ module.exports = {
           LEFT OUTER JOIN matches_championships ON matches_championships.match_id = participants.match_id
           LEFT OUTER JOIN championships ON championships.id = matches_championships.championship_id
           LEFT OUTER JOIN ratings ON ratings.match_id = participants.match_id
+          LEFT OUTER JOIN events ON matches.event_id = events.id
           WHERE matches.id = ANY(
             SELECT match_id FROM matches_championships WHERE championship_id = ANY(
               SELECT id FROM championships WHERE name ILIKE '%' || $1 || '%'
               )
             )
-          GROUP BY participants.match_id, matches.event_id, wrestlers.name, participants.team, championships.name, rating_count
+          GROUP BY participants.match_id, matches.event_id, wrestlers.name, participants.team, championships.name, rating_count, events.title
           ORDER BY match_id, team;`,
           [search_text]
         );

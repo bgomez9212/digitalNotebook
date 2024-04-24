@@ -309,6 +309,7 @@ module.exports = {
         matches.id AS match_id,
         matches.event_id AS event_id,
         events.title AS event_title,
+        events.date AS event_date,
         participants.team AS participants,
         wrestlers.name AS wrestler_name,
         AVG(ratings.rating) AS rating,
@@ -326,8 +327,8 @@ module.exports = {
         WHERE matches.id IN (
         SELECT ratings.match_id FROM ratings WHERE ratings.user_id = $1
       )
-      GROUP BY matches.id, participants.team, wrestlers.name, championship_name, participants.match_id, events.title, promotions.name
-      ORDER BY rating DESC, participants.match_id, team;`,
+      GROUP BY matches.id, participants.team, wrestlers.name, championship_name, participants.match_id, events.title, promotions.name, events.date
+      ORDER BY events.date DESC, participants.match_id, team;`,
       [user_id]
     );
     const results = parseMatchData(userRatings);

@@ -7,12 +7,16 @@ import axios from "axios";
 import AuthContext from "../Context/authContext";
 import { useQuery } from "@tanstack/react-query";
 import { Match } from "../types/types";
-export default function EventPageRow({
+export default function MatchRow({
   match,
   eventTitle,
+  display,
+  hideBottomBorder,
 }: {
   match: Match;
   eventTitle: string;
+  display: "Home" | "Else";
+  hideBottomBorder: boolean;
 }) {
   const userId = useContext(AuthContext);
   const { data: userMatchRating } = useQuery({
@@ -29,7 +33,7 @@ export default function EventPageRow({
   });
   return (
     <TouchableOpacity
-      style={tw`border-b-2 border-grey py-4`}
+      style={tw`${hideBottomBorder ? "" : "border-b-2"} ${display === "Else" ? "border-grey" : "border-black"} py-4`}
       key={match.match_id}
       onPress={() =>
         router.navigate({
@@ -40,7 +44,7 @@ export default function EventPageRow({
     >
       {eventTitle && (
         <View style={tw`w-full flex items-center`}>
-          <Text style={tw`text-white`}>{eventTitle}</Text>
+          <Text style={tw`text-white italic`}>{eventTitle}</Text>
         </View>
       )}
       <View style={tw`flex flex-col w-full`}>
@@ -63,7 +67,7 @@ export default function EventPageRow({
             rating_count={match.rating_count}
           />
           <StarView
-            display={"Total"}
+            display={display === "Home" ? "Home" : "Total"}
             rating={match.rating}
             rating_count={match.rating_count}
           />

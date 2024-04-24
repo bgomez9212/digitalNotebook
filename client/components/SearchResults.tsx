@@ -1,7 +1,7 @@
 import { ScrollView, Text } from "react-native";
 import tw from "../tailwind";
 import EventRow from "./EventRow";
-import EventPageRow from "./EventPageRow";
+import MatchRow from "./MatchRow";
 
 export default function SearchResults({ data }) {
   if (!data) {
@@ -33,10 +33,12 @@ export default function SearchResults({ data }) {
     return (
       <ScrollView style={tw`w-9.5/10`} showsVerticalScrollIndicator={false}>
         {data.results.map((result, i) => (
-          <EventPageRow
+          <MatchRow
             key={result.match_id}
             match={result}
             eventTitle={result.event_title}
+            display="Else"
+            hideBottomBorder={i === data.results.length - 1}
           />
         ))}
       </ScrollView>

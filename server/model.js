@@ -15,6 +15,7 @@ function parseMatchData(matchArr) {
     match_id: matchArr[0].match_id,
     event_id: matchArr[0].event_id,
     event_title: matchArr[0].event_title,
+    promotion: matchArr[0].promotion_name,
     participants: [],
     championships: [],
     rating: matchArr[0].rating,
@@ -312,7 +313,8 @@ module.exports = {
         wrestlers.name AS wrestler_name,
         AVG(ratings.rating) AS rating,
         (SELECT COUNT(*) FROM ratings WHERE ratings.match_id = matches.id) AS rating_count,
-        championships.name AS championship_name
+        championships.name AS championship_name,
+        promotions.name AS promotion_name
       FROM matches
       JOIN participants ON matches.id = participants.match_id
       JOIN wrestlers ON participants.wrestler_id = wrestlers.id
@@ -320,10 +322,11 @@ module.exports = {
       LEFT OUTER JOIN matches_championships ON matches_championships.match_id = matches.id
       LEFT OUTER JOIN events ON events.id = matches.event_id
       LEFT OUTER JOIN championships ON matches_championships.championship_id = championships.id
+      LEFT OUTER JOIN promotions ON events.promotion_id = promotions.id
         WHERE matches.id IN (
         SELECT ratings.match_id FROM ratings WHERE ratings.user_id = $1
       )
-      GROUP BY matches.id, participants.team, wrestlers.name, championship_name, participants.match_id, events.title
+      GROUP BY matches.id, participants.team, wrestlers.name, championship_name, participants.match_id, events.title, promotions.name
       ORDER BY rating DESC, participants.match_id, team;`,
       [user_id]
     );

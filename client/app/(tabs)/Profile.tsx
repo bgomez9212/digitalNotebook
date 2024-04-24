@@ -45,9 +45,9 @@ export default function Profile() {
   }
 
   return (
-    <View style={tw``}>
+    <View style={tw`flex-1 bg-darkGrey items-center`}>
       <Pressable
-        style={tw`h-20 w-40 bg-blue flex justify-center items-center`}
+        style={tw`h-15 w-30 bg-blue flex justify-center items-center rounded-xl mt-10`}
         onPress={displayAlert}
       >
         <Text style={tw`text-white text-lg`}>Sign Out</Text>

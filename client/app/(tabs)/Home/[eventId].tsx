@@ -4,15 +4,8 @@ import tw from "../../../tailwind";
 import { useQuery } from "@tanstack/react-query";
 import axios from "axios";
 import { ActivityIndicator, DataTable } from "react-native-paper";
-import EventPageRow from "../../../components/EventPageRow";
-type Match = {
-  match_id: number;
-  event_id: number;
-  participants: string[][];
-  championships: string[];
-  rating: number;
-  rating_count: number;
-};
+import MatchRow from "../../../components/MatchRow";
+import { Match } from "../../../types/types";
 export default function EventPage() {
   const { eventId } = useLocalSearchParams();
   const {
@@ -63,11 +56,12 @@ export default function EventPage() {
             </Text>
           </View>
           <View style={tw`px-3`}>
-            {event.matches.map((match: Match) => (
-              <EventPageRow
+            {event.matches.map((match: Match, i: number) => (
+              <MatchRow
                 key={match.match_id}
                 match={match}
-                eventTitle={event.title}
+                display="Else"
+                hideBottomBorder={i === event.matches.length - 1}
               />
             ))}
           </View>

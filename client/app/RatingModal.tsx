@@ -3,10 +3,10 @@ import { Picker } from "@react-native-picker/picker";
 import { useLocalSearchParams } from "expo-router";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import axios from "axios";
-import tw from "../../../tailwind";
+import tw from "../tailwind";
 import { useContext, useEffect, useState } from "react";
-import AuthContext from "../../../Context/authContext";
-import StarView from "../../../components/StarView";
+import AuthContext from "../Context/authContext";
+import StarView from "../components/StarView";
 
 export default function RatingModal() {
   const queryClient = useQueryClient();
@@ -208,7 +208,7 @@ export default function RatingModal() {
           {userRating && showPicker && (
             <Pressable
               onPress={cancelEdit}
-              style={tw`bg-grey w-1/3 p-4 items-center justify-center rounded-md mt-5`}
+              style={tw`bg-lightGrey w-1/3 p-4 items-center justify-center rounded-md mt-5`}
             >
               <Text style={tw`text-black text-lg`}>Cancel</Text>
             </Pressable>

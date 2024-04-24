@@ -58,7 +58,7 @@ export default function Profile() {
       ) : isError ? (
         <Text style={tw`text-white`}>There seems to be an error</Text>
       ) : (
-        <SearchResults results={data} searchType={userSearch.searchParam} />
+        <SearchResults data={data} />
       )}
     </View>
   );

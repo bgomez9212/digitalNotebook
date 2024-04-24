@@ -1,13 +1,13 @@
 import { ScrollView, Text } from "react-native";
 import tw from "../tailwind";
 import EventRow from "./EventRow";
-import EventPageRow from "./EventPageRow";
+import MatchRow from "./MatchRow";
 
-export default function SearchResults({ results, searchType }) {
-  if (!results) {
+export default function SearchResults({ data }) {
+  if (!data) {
     return null;
   }
-  if (!results.length) {
+  if (!data.results.length) {
     return (
       <ScrollView>
         <Text style={tw`text-white`}>No results</Text>
@@ -15,25 +15,31 @@ export default function SearchResults({ results, searchType }) {
     );
   }
   if (
-    results.length &&
-    (searchType === "promotions" || searchType === "events")
+    data.results.length &&
+    (data.search_param === "promotions" || data.search_param === "events")
   ) {
     return (
-      <ScrollView>
-        {results.map((result, i) => (
+      <ScrollView style={tw`w-9.5/10`}>
+        {data.results.map((result, i) => (
           <EventRow key={result.id} event={result} index={i} display="Search" />
         ))}
       </ScrollView>
     );
   }
   if (
-    results.length &&
-    (searchType === "wrestlers" || searchType === "championships")
+    data.results.length &&
+    (data.search_param === "wrestlers" || data.search_param === "championships")
   ) {
     return (
-      <ScrollView style={tw`w-9/10`} showsVerticalScrollIndicator={false}>
-        {results.map((result, i) => (
-          <EventPageRow key={result.match_id} match={result} eventTitle="" />
+      <ScrollView style={tw`w-9.5/10`} showsVerticalScrollIndicator={false}>
+        {data.results.map((result, i) => (
+          <MatchRow
+            key={result.match_id}
+            match={result}
+            eventTitle={result.event_title}
+            display="Else"
+            hideBottomBorder={i === data.results.length - 1}
+          />
         ))}
       </ScrollView>
     );

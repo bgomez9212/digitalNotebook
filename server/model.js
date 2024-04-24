@@ -14,6 +14,7 @@ function parseMatchData(matchArr) {
   const matchObj = {
     match_id: matchArr[0].match_id,
     event_id: matchArr[0].event_id,
+    event_title: matchArr[0].event_title,
     participants: [],
     championships: [],
     rating: matchArr[0].rating,
@@ -25,6 +26,7 @@ function parseMatchData(matchArr) {
       matchesArr.push({ ...matchObj });
       matchObj.match_id = partObj.match_id;
       matchObj.event_id = partObj.event_id;
+      matchObj.event_title = partObj.event_title;
       matchObj.participants = [];
       matchObj.championships = [];
       matchObj.rating = partObj.rating;
@@ -126,6 +128,7 @@ module.exports = {
         SELECT
           matches.id AS match_id,
           matches.event_id AS event_id,
+          events.title AS event_title,
           participants.team AS participants,
           wrestlers.name AS wrestler_name,
           AVG(ratings.rating) AS rating,
@@ -136,6 +139,7 @@ module.exports = {
         JOIN wrestlers ON participants.wrestler_id = wrestlers.id
         LEFT OUTER JOIN ratings ON matches.id = ratings.match_id
         LEFT OUTER JOIN matches_championships ON matches_championships.match_id = matches.id
+        LEFT OUTER JOIN events ON events.id = matches.event_id
         LEFT OUTER JOIN championships ON matches_championships.championship_id = championships.id
           WHERE matches.id IN (
           SELECT matches.id FROM matches
@@ -146,7 +150,7 @@ module.exports = {
           ORDER BY (AVG(ratings.rating)) DESC, events.date DESC
           LIMIT 5
         )
-        GROUP BY matches.id, participants.team, wrestlers.name, championship_name, participants.match_id
+        GROUP BY matches.id, participants.team, wrestlers.name, championship_name, participants.match_id, events.title
         ORDER BY rating DESC, participants.match_id, team;
         `,
         [lastMonth]
@@ -207,7 +211,7 @@ module.exports = {
         const { rows: results } = await pool.query(
           `SELECT
           participants.match_id AS match_id,
-          matches.event_id AS event_id,
+          events.title AS event_title,
           wrestlers.name AS wrestler_name,
           participants.team AS participants,
           championships.name AS championship_name,
@@ -219,16 +223,20 @@ module.exports = {
           LEFT OUTER JOIN matches_championships ON matches_championships.match_id = participants.match_id
           LEFT OUTER JOIN championships ON championships.id = matches_championships.championship_id
           LEFT OUTER JOIN ratings ON ratings.match_id = participants.match_id
+          LEFT OUTER JOIN events ON matches.event_id = events.id
           WHERE participants.match_id = ANY(
-            SELECT match_id FROM participants WHERE wrestler_id = (
+            SELECT DISTINCT match_id FROM participants WHERE wrestler_id = ANY(
               SELECT id FROM wrestlers WHERE name ILIKE '%' || $1 || '%'
               )
             )
-          GROUP BY participants.match_id, matches.event_id, wrestlers.name, participants.team, championships.name, rating_count
+          GROUP BY participants.match_id, matches.event_id, wrestlers.name, participants.team, championships.name, rating_count, events.title
           ORDER BY match_id, team;`,
           [search_text]
         );
-        const data = parseMatchData(results);
+        const data = {
+          search_param: search_param,
+          results: parseMatchData(results),
+        };
         return data;
       }
       if (search_param === "events") {
@@ -241,7 +249,8 @@ module.exports = {
               ORDER BY events.date DESC`,
           [search_text]
         );
-        return results;
+        const data = { search_param, search_param, results: results };
+        return data;
       }
       if (search_param === "promotions") {
         const { rows: events } = await pool.query(
@@ -252,13 +261,15 @@ module.exports = {
             WHERE promotions.name ILIKE $1`,
           [search_text]
         );
-        return events;
+        const data = { search_param: search_param, results: events };
+        return data;
       }
       if (search_param === "championships") {
         const { rows: results } = await pool.query(
           `SELECT
           participants.match_id AS match_id,
           matches.event_id AS event_id,
+          events.title AS event_title,
           wrestlers.name AS wrestler_name,
           participants.team AS participants,
           championships.name AS championship_name,
@@ -270,19 +281,24 @@ module.exports = {
           LEFT OUTER JOIN matches_championships ON matches_championships.match_id = participants.match_id
           LEFT OUTER JOIN championships ON championships.id = matches_championships.championship_id
           LEFT OUTER JOIN ratings ON ratings.match_id = participants.match_id
+          LEFT OUTER JOIN events ON matches.event_id = events.id
           WHERE matches.id = ANY(
             SELECT match_id FROM matches_championships WHERE championship_id = ANY(
               SELECT id FROM championships WHERE name ILIKE '%' || $1 || '%'
               )
             )
-          GROUP BY participants.match_id, matches.event_id, wrestlers.name, participants.team, championships.name, rating_count
+          GROUP BY participants.match_id, matches.event_id, wrestlers.name, participants.team, championships.name, rating_count, events.title
           ORDER BY match_id, team;`,
           [search_text]
         );
-        const data = parseMatchData(results);
+        const data = {
+          search_param: search_param,
+          results: parseMatchData(results),
+        };
         return data;
       }
     } catch (err) {
+      console.log(err);
       throw new Error(err.message);
     }
   },

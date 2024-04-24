@@ -6,21 +6,17 @@ import { useContext } from "react";
 import axios from "axios";
 import AuthContext from "../Context/authContext";
 import { useQuery } from "@tanstack/react-query";
-
-type Match = {
-  match_id: number;
-  event_id: number;
-  participants: string;
-  championships: string;
-  rating: number;
-  rating_count: number;
-};
-export default function EventPageRow({
+import { Match } from "../types/types";
+export default function MatchRow({
   match,
   eventTitle,
+  display,
+  hideBottomBorder,
 }: {
   match: Match;
-  eventTitle: string;
+  eventTitle?: string;
+  display: "Home" | "Else";
+  hideBottomBorder: boolean;
 }) {
   const userId = useContext(AuthContext);
   const { data: userMatchRating } = useQuery({
@@ -37,23 +33,29 @@ export default function EventPageRow({
   });
   return (
     <TouchableOpacity
+      style={tw`${hideBottomBorder ? "" : "border-b-2"} ${display === "Else" ? "border-grey" : "border-black"} py-4`}
       key={match.match_id}
       onPress={() =>
         router.navigate({
-          pathname: "./RatingModal",
+          pathname: "../../RatingModal",
           params: { match_id: match.match_id, event_title: eventTitle },
         })
       }
     >
-      <View style={tw`flex flex-col w-full py-4 border-b-2 border-b-grey`}>
+      {eventTitle && (
+        <View style={tw`w-full flex items-center`}>
+          <Text style={tw`text-white italic`}>{eventTitle}</Text>
+        </View>
+      )}
+      <View style={tw`flex flex-col w-full`}>
         {match.championships && (
-          <View style={tw`py-2`}>
+          <View style={tw``}>
             <Text style={tw`text-gold text-sm text-center`}>
               {match.championships}
             </Text>
           </View>
         )}
-        <View style={tw`py-4`}>
+        <View style={tw`py-2`}>
           <Text style={tw`text-white text-lg`}>{match.participants}</Text>
         </View>
         <View
@@ -65,7 +67,7 @@ export default function EventPageRow({
             rating_count={match.rating_count}
           />
           <StarView
-            display={"Total"}
+            display={display === "Home" ? "Home" : "Total"}
             rating={match.rating}
             rating_count={match.rating_count}
           />

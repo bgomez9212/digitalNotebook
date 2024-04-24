@@ -38,15 +38,6 @@ export default function Layout() {
           headerTintColor: "white",
         }}
       />
-      <Stack.Screen
-        name="RatingModal"
-        options={{
-          presentation: "modal",
-          title: "Submit a Rating",
-          headerStyle: { backgroundColor: blue },
-          headerTitleStyle: { color: "white" },
-        }}
-      />
     </Stack>
   );
 }

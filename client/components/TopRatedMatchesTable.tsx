@@ -5,6 +5,7 @@ import { useQuery } from "@tanstack/react-query";
 import axios from "axios";
 import { router } from "expo-router";
 import StarView from "./StarView";
+import MatchRow from "./MatchRow";
 
 export default function TopRatedMatchesTable() {
   const {
@@ -39,7 +40,7 @@ export default function TopRatedMatchesTable() {
   }
 
   return (
-    <View style={tw`bg-grey w-[95%] my-12 rounded-md`}>
+    <View style={tw`bg-grey w-[95%] my-12 rounded-md px-2`}>
       <View
         style={tw`items-center justify-center py-3 border-b-2 border-darkGrey`}
       >
@@ -47,36 +48,14 @@ export default function TopRatedMatchesTable() {
           Top Matches of the Month
         </Text>
       </View>
-      {matches.map((match, index) => (
-        <TouchableOpacity
+      {matches.map((match, i) => (
+        <MatchRow
           key={match.match_id}
-          onPress={() => router.push(`/(tabs)/Home/${match.event_id}`)}
-          style={tw`border-b-2 border-darkGrey px-3 py-4 ${index === 4 ? "border-b-0" : ""}`}
-        >
-          {match.championships && (
-            <Text style={tw`text-center text-gold font-bold pb-3`}>
-              {match.championships}
-            </Text>
-          )}
-          <View style={tw`flex flex-row items-center`}>
-            <View style={tw`flex-1`}>
-              <Image
-                style={tw`h-10 w-24`}
-                source={require("../assets/aew-logo.png")}
-              />
-            </View>
-            <View style={tw`flex-2.5`}>
-              <Text style={tw`text-white ml-3 font-bold pb-3`}>
-                {match.participants}
-              </Text>
-              <StarView
-                display="Home"
-                rating={match.rating}
-                rating_count={match.rating_count}
-              />
-            </View>
-          </View>
-        </TouchableOpacity>
+          match={match}
+          eventTitle={match.event_title}
+          display="Home"
+          hideBottomBorder={i === matches.length - 1}
+        />
       ))}
     </View>
   );

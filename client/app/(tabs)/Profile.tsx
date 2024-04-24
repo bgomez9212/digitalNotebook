@@ -57,7 +57,7 @@ export default function Profile() {
       <Text style={tw`text-xl text-white underline mb-10`}>
         Matches You Have Rated
       </Text>
-      <ScrollView style={tw`w-9/10`}>
+      <ScrollView showsVerticalScrollIndicator={false} style={tw`w-9/10`}>
         {isError ? (
           <Text>There seems to be an error..</Text>
         ) : isLoading ? (

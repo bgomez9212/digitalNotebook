@@ -129,7 +129,7 @@ export default function Profile() {
                 key={match.match_id}
                 match={match}
                 eventTitle={match.event_title}
-                display="Else"
+                display="Search"
                 hideBottomBorder={i === userRatings.length - 1}
               />
             ))

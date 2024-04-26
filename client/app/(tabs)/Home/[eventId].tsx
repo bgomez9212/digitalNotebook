@@ -60,7 +60,7 @@ export default function EventPage() {
               <MatchRow
                 key={match.match_id}
                 match={match}
-                display="Else"
+                display="Event"
                 hideBottomBorder={i === event.matches.length - 1}
               />
             ))}

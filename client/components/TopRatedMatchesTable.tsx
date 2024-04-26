@@ -52,7 +52,6 @@ export default function TopRatedMatchesTable() {
         <MatchRow
           key={match.match_id}
           match={match}
-          eventTitle={match.event_title}
           display="Home"
           hideBottomBorder={i === matches.length - 1}
         />

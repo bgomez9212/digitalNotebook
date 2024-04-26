@@ -9,13 +9,11 @@ import { useQuery } from "@tanstack/react-query";
 import { Match } from "../types/types";
 export default function MatchRow({
   match,
-  eventTitle,
   display,
   hideBottomBorder,
 }: {
   match: Match;
-  eventTitle?: string;
-  display: "Home" | "Else";
+  display: "Home" | "Search" | "Event";
   hideBottomBorder: boolean;
 }) {
   const userId = useContext(AuthContext);
@@ -31,48 +29,156 @@ export default function MatchRow({
         })
         .then((res) => res.data.rating || null),
   });
-  return (
-    <TouchableOpacity
-      style={tw`${hideBottomBorder ? "" : "border-b-2"} ${display === "Else" ? "border-grey" : "border-black"} py-4`}
-      key={match.match_id}
-      onPress={() =>
-        router.navigate({
-          pathname: "../../RatingModal",
-          params: { match_id: match.match_id, event_title: eventTitle },
-        })
-      }
-    >
-      {eventTitle && (
-        <View style={tw`w-full flex items-center`}>
-          <Text style={tw`text-white italic`}>{eventTitle}</Text>
-        </View>
-      )}
-      <View style={tw`flex flex-col w-full`}>
-        {match.championships && (
-          <View style={tw``}>
-            <Text style={tw`text-gold text-sm text-center`}>
-              {match.championships}
-            </Text>
+
+  if (display === "Home") {
+    return (
+      <TouchableOpacity
+        style={tw`${hideBottomBorder ? "" : "border-b-2"} border-black py-4`}
+        key={match.match_id}
+        onPress={() =>
+          router.navigate({
+            pathname: "../../RatingModal",
+            params: {
+              match_id: match.match_id,
+              event_title: match.event_title,
+            },
+          })
+        }
+      >
+        {match.event_title && (
+          <View style={tw`w-full flex-row items-center justify-between`}>
+            <Text style={tw`text-white italic`}>{match.event_title}</Text>
+            <Text style={tw`text-white italic`}>{match.date}</Text>
           </View>
         )}
-        <View style={tw`py-2`}>
-          <Text style={tw`text-white text-lg`}>{match.participants}</Text>
+        <View style={tw`flex flex-col w-full`}>
+          {match.championships && (
+            <View style={tw``}>
+              <Text style={tw`text-gold text-sm text-center`}>
+                {match.championships}
+              </Text>
+            </View>
+          )}
+          <View style={tw`py-2`}>
+            <Text style={tw`text-white text-lg`}>{match.participants}</Text>
+          </View>
+          <View
+            style={tw`flex flex-row ${userMatchRating ? "justify-between" : "justify-end"}`}
+          >
+            <StarView
+              display={"User"}
+              rating={userMatchRating}
+              rating_count={match.rating_count}
+            />
+            <StarView
+              display="Home"
+              rating={match.rating}
+              rating_count={match.rating_count}
+            />
+          </View>
         </View>
-        <View
-          style={tw`flex flex-row ${userMatchRating ? "justify-between" : "justify-end"}`}
-        >
-          <StarView
-            display={"User"}
-            rating={userMatchRating}
-            rating_count={match.rating_count}
-          />
-          <StarView
-            display={display === "Home" ? "Home" : "Total"}
-            rating={match.rating}
-            rating_count={match.rating_count}
-          />
+      </TouchableOpacity>
+    );
+  }
+
+  if (display === "Search") {
+    return (
+      <TouchableOpacity
+        style={tw`${hideBottomBorder ? "" : "border-b-2"} border-grey py-4`}
+        key={match.match_id}
+        onPress={() =>
+          router.navigate({
+            pathname: "../../RatingModal",
+            params: {
+              match_id: match.match_id,
+              event_title: match.event_title,
+            },
+          })
+        }
+      >
+        {match.event_title && (
+          <View style={tw`w-full flex-row items-center justify-between`}>
+            <Text style={tw`text-white italic`}>{match.event_title}</Text>
+            <Text style={tw`text-white italic`}>{match.date}</Text>
+          </View>
+        )}
+        <View style={tw`flex flex-col w-full`}>
+          {match.championships && (
+            <View style={tw``}>
+              <Text style={tw`text-gold text-sm text-center`}>
+                {match.championships}
+              </Text>
+            </View>
+          )}
+          <View style={tw`py-2`}>
+            <Text style={tw`text-white text-lg`}>{match.participants}</Text>
+          </View>
+          <View
+            style={tw`flex flex-row ${userMatchRating ? "justify-between" : "justify-end"}`}
+          >
+            <StarView
+              display={"User"}
+              rating={userMatchRating}
+              rating_count={match.rating_count}
+            />
+            <StarView
+              display="Total"
+              rating={match.rating}
+              rating_count={match.rating_count}
+            />
+          </View>
         </View>
-      </View>
-    </TouchableOpacity>
-  );
+      </TouchableOpacity>
+    );
+  }
+
+  if (display === "Event") {
+    return (
+      <TouchableOpacity
+        style={tw`${hideBottomBorder ? "" : "border-b-2"} border-grey py-4`}
+        key={match.match_id}
+        onPress={() =>
+          router.navigate({
+            pathname: "../../RatingModal",
+            params: {
+              match_id: match.match_id,
+              event_title: match.event_title,
+            },
+          })
+        }
+      >
+        {match.event_title && (
+          <View style={tw`w-full flex items-center`}>
+            <Text style={tw`text-white italic`}>{match.event_title}</Text>
+          </View>
+        )}
+        <View style={tw`flex flex-col w-full`}>
+          {match.championships && (
+            <View style={tw``}>
+              <Text style={tw`text-gold text-sm text-center`}>
+                {match.championships}
+              </Text>
+            </View>
+          )}
+          <View style={tw`py-2`}>
+            <Text style={tw`text-white text-lg`}>{match.participants}</Text>
+          </View>
+          <View
+            style={tw`flex flex-row ${userMatchRating ? "justify-between" : "justify-end"}`}
+          >
+            <StarView
+              display={"User"}
+              rating={userMatchRating}
+              rating_count={match.rating_count}
+            />
+            <StarView
+              display="Total"
+              rating={match.rating}
+              rating_count={match.rating_count}
+            />
+          </View>
+        </View>
+      </TouchableOpacity>
+    );
+  }
 }

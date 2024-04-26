@@ -45,16 +45,16 @@ export default function MatchRow({
           })
         }
       >
-        {match.event_title && (
-          <View style={tw`w-full flex-row items-center justify-between`}>
-            <Text style={tw`text-white italic`}>{match.event_title}</Text>
-            <Text style={tw`text-white italic`}>{match.date}</Text>
-          </View>
-        )}
         <View style={tw`flex flex-col w-full`}>
+          {match.event_title && (
+            <View style={tw`w-full flex-row items-center justify-between`}>
+              <Text style={tw`text-white italic`}>{match.event_title}</Text>
+              <Text style={tw`text-white italic`}>{match.date}</Text>
+            </View>
+          )}
           {match.championships && (
             <View style={tw``}>
-              <Text style={tw`text-gold text-sm text-center`}>
+              <Text style={tw`text-gold text-sm text-center pt-2`}>
                 {match.championships}
               </Text>
             </View>
@@ -96,16 +96,16 @@ export default function MatchRow({
           })
         }
       >
-        {match.event_title && (
-          <View style={tw`w-full flex-row items-center justify-between`}>
-            <Text style={tw`text-white italic`}>{match.event_title}</Text>
-            <Text style={tw`text-white italic`}>{match.date}</Text>
-          </View>
-        )}
         <View style={tw`flex flex-col w-full`}>
+          {match.event_title && (
+            <View style={tw`w-full flex-row items-center justify-between`}>
+              <Text style={tw`text-white italic`}>{match.event_title}</Text>
+              <Text style={tw`text-white italic`}>{match.date}</Text>
+            </View>
+          )}
           {match.championships && (
             <View style={tw``}>
-              <Text style={tw`text-gold text-sm text-center`}>
+              <Text style={tw`text-gold text-sm text-center pt-2`}>
                 {match.championships}
               </Text>
             </View>

@@ -60,43 +60,35 @@ export default function Profile() {
     useShadowColorFromDataset: false, // optional
   };
 
-  const data = [
-    {
-      name: "Seoul",
-      population: 21500000,
-      color: "rgba(131, 167, 234, 1)",
-      legendFontColor: "#7F7F7F",
-      legendFontSize: 15,
-    },
-    {
-      name: "Toronto",
-      population: 2800000,
-      color: "#F00",
-      legendFontColor: "#7F7F7F",
-      legendFontSize: 15,
-    },
-    {
-      name: "Beijing",
-      population: 527612,
-      color: "red",
-      legendFontColor: "#7F7F7F",
-      legendFontSize: 15,
-    },
-    {
-      name: "New York",
-      population: 8538000,
-      color: "#ffffff",
-      legendFontColor: "#7F7F7F",
-      legendFontSize: 15,
-    },
-    {
-      name: "Moscow",
-      population: 11920000,
-      color: "rgb(0, 0, 255)",
-      legendFontColor: "#7F7F7F",
-      legendFontSize: 15,
-    },
-  ];
+  function getPieChartData(data) {
+    if (!data) {
+      return [];
+    }
+
+    let promotionCount = {};
+    for (let matchObj of data) {
+      if (!promotionCount[matchObj.promotion]) {
+        promotionCount[matchObj.promotion] = 1;
+      } else {
+        promotionCount[matchObj.promotion] += 1;
+      }
+    }
+
+    return Object.keys(promotionCount).map((promotionName) => {
+      return {
+        promotionName: promotionName,
+        matchCount: promotionCount[promotionName],
+        color:
+          promotionName === "AEW"
+            ? "gold"
+            : promotionName === "WWE"
+              ? "grey"
+              : "red",
+      };
+    });
+  }
+
+  const pieChartData = getPieChartData(userRatings);
 
   return (
     <ScrollView nestedScrollEnabled={true}>
@@ -109,11 +101,11 @@ export default function Profile() {
         </Pressable>
         <PieChart
           style={tw`mb-10 flex justify-center items-center`}
-          data={data}
+          data={pieChartData}
           width={screenWidth}
           height={screenWidth}
           chartConfig={chartConfig}
-          accessor={"population"}
+          accessor={"matchCount"}
           backgroundColor={"transparent"}
           paddingLeft={"0"}
           hasLegend={false}

@@ -6,6 +6,7 @@ import axios from "axios";
 import { ActivityIndicator, DataTable } from "react-native-paper";
 import MatchRow from "../../../components/MatchRow";
 import { Match } from "../../../types/types";
+import * as All from "../../../assets";
 export default function EventPage() {
   const { eventId } = useLocalSearchParams();
   const {
@@ -44,14 +45,16 @@ export default function EventPage() {
       <ScrollView style={tw`bg-darkGrey`}>
         <View>
           <Image
-            source={require("../../../assets/aew-logo.png")}
+            source={All[`${event.promotion_name}`]}
             style={tw`w-full h-[200px] mt-4`}
           />
           <View style={tw`mt-8 mb-8 items-center`}>
-            <Text style={tw`text-white text-3xl`}>{event.title}</Text>
-            <Text style={tw`text-white`}>{event.date}</Text>
-            <Text style={tw`text-white`}>{event.venue_name}</Text>
-            <Text style={tw`text-white`}>
+            <Text style={tw`text-white text-3xl text-center pb-2`}>
+              {event.title}
+            </Text>
+            <Text style={tw`text-white pb-2`}>{event.date}</Text>
+            <Text style={tw`text-white pb-2`}>{event.venue_name}</Text>
+            <Text style={tw`text-white pb-2`}>
               {event.city}, {event.state} ({event.country})
             </Text>
           </View>
@@ -60,7 +63,7 @@ export default function EventPage() {
               <MatchRow
                 key={match.match_id}
                 match={match}
-                display="Else"
+                display="Event"
                 hideBottomBorder={i === event.matches.length - 1}
               />
             ))}

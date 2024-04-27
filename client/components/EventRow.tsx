@@ -1,12 +1,13 @@
 import { router } from "expo-router";
 import { TouchableOpacity, View, Text, Image } from "react-native";
 import tw from "../tailwind";
+import * as All from "../assets";
 export default function EventRow({
   event,
   index,
   display,
 }: {
-  event: { id: number; title: string; date: string };
+  event: { id: number; title: string; date: string; promotion_name: string };
   index: number;
   display: "Table" | "Search";
 }) {
@@ -19,11 +20,16 @@ export default function EventRow({
           : `w-full flex flex-row py-2 border-b-2 border-grey`
       }`}
     >
-      <View style={tw`py-2 flex flex-row w-full`}>
-        <View style={tw`flex-2`}>
+      <View style={tw`py-2 flex flex-row w-full items-center`}>
+        <View style={tw`flex-2 h-11`}>
           <Image
-            style={tw`h-10 w-24`}
-            source={require("../assets/aew-logo.png")}
+            style={{
+              flex: 1,
+              width: undefined,
+              height: undefined,
+              resizeMode: "cover",
+            }}
+            source={All[`${event.promotion_name}`]}
           />
         </View>
         <View style={tw`flex-3 justify-center`}>

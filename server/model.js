@@ -20,6 +20,7 @@ function parseMatchData(matchArr) {
     championships: [],
     rating: matchArr[0].rating,
     rating_count: matchArr[0].rating_count,
+    date: matchArr[0].date,
   };
 
   for (const [i, partObj] of matchArr.entries()) {
@@ -32,6 +33,8 @@ function parseMatchData(matchArr) {
       matchObj.championships = [];
       matchObj.rating = partObj.rating;
       matchObj.rating_count = partObj.rating_count;
+      matchObj.date = partObj.date;
+      matchObj.promotion = partObj.promotion_name;
     }
     if (!matchObj.participants[partObj.participants]) {
       matchObj.participants[partObj.participants] = [];
@@ -107,7 +110,7 @@ module.exports = {
         promotions.name AS promotion_name
       FROM events
       JOIN promotions ON promotions.id = events.promotion_id
-      ORDER BY date DESC
+      ORDER BY date DESC, id ASC
       LIMIT 5;`
     );
     return results;
@@ -130,6 +133,7 @@ module.exports = {
           matches.id AS match_id,
           matches.event_id AS event_id,
           events.title AS event_title,
+          TO_CHAR(events.date, 'YYYY-MM-DD') AS date,
           participants.team AS participants,
           wrestlers.name AS wrestler_name,
           AVG(ratings.rating) AS rating,
@@ -151,13 +155,14 @@ module.exports = {
           ORDER BY (AVG(ratings.rating)) DESC, events.date DESC
           LIMIT 5
         )
-        GROUP BY matches.id, participants.team, wrestlers.name, championship_name, participants.match_id, events.title
+        GROUP BY matches.id, participants.team, wrestlers.name, championship_name, participants.match_id, events.title, events.date
         ORDER BY rating DESC, participants.match_id, team;
         `,
         [lastMonth]
       );
       return parseMatchData(results);
     } catch (err) {
+      console.log(err);
       throw err;
     }
   },
@@ -213,6 +218,7 @@ module.exports = {
           `SELECT
           participants.match_id AS match_id,
           events.title AS event_title,
+          TO_CHAR(events.date, 'YYYY-MM-DD') AS date,
           wrestlers.name AS wrestler_name,
           participants.team AS participants,
           championships.name AS championship_name,
@@ -230,8 +236,8 @@ module.exports = {
               SELECT id FROM wrestlers WHERE name ILIKE '%' || $1 || '%'
               )
             )
-          GROUP BY participants.match_id, matches.event_id, wrestlers.name, participants.team, championships.name, rating_count, events.title
-          ORDER BY match_id, team;`,
+          GROUP BY participants.match_id, matches.event_id, wrestlers.name, participants.team, championships.name, rating_count, events.title, events.date
+          ORDER BY date DESC, match_id, team;`,
           [search_text]
         );
         const data = {
@@ -271,6 +277,7 @@ module.exports = {
           participants.match_id AS match_id,
           matches.event_id AS event_id,
           events.title AS event_title,
+          events.date AS date,
           wrestlers.name AS wrestler_name,
           participants.team AS participants,
           championships.name AS championship_name,
@@ -288,8 +295,8 @@ module.exports = {
               SELECT id FROM championships WHERE name ILIKE '%' || $1 || '%'
               )
             )
-          GROUP BY participants.match_id, matches.event_id, wrestlers.name, participants.team, championships.name, rating_count, events.title
-          ORDER BY match_id, team;`,
+          GROUP BY participants.match_id, matches.event_id, wrestlers.name, participants.team, championships.name, rating_count, events.title, events.date
+          ORDER BY date DESC, match_id, team;`,
           [search_text]
         );
         const data = {
@@ -309,7 +316,7 @@ module.exports = {
         matches.id AS match_id,
         matches.event_id AS event_id,
         events.title AS event_title,
-        events.date AS event_date,
+        TO_CHAR(events.date, 'YYYY-MM-DD') AS date,
         participants.team AS participants,
         wrestlers.name AS wrestler_name,
         AVG(ratings.rating) AS rating,

@@ -34,6 +34,7 @@ function parseMatchData(matchArr) {
       matchObj.rating = partObj.rating;
       matchObj.rating_count = partObj.rating_count;
       matchObj.date = partObj.date;
+      matchObj.promotion = partObj.promotion_name;
     }
     if (!matchObj.participants[partObj.participants]) {
       matchObj.participants[partObj.participants] = [];

@@ -12,7 +12,6 @@ import { ActivityIndicator } from "react-native-paper";
 import { PieChart } from "react-native-chart-kit";
 import { Dimensions } from "react-native";
 const screenWidth = Dimensions.get("window").width;
-const screenHeight = Dimensions.get("window").height;
 // TODO Put Signout button here
 export default function Profile() {
   const user = useContext(AuthContext);
@@ -59,7 +58,7 @@ export default function Profile() {
     barPercentage: 0.5,
     useShadowColorFromDataset: false, // optional
   };
-
+  console.log(userRatings);
   function getPieChartData(data) {
     if (!data) {
       return [];
@@ -89,6 +88,7 @@ export default function Profile() {
   }
 
   const pieChartData = getPieChartData(userRatings);
+  // console.log(pieChartData);
 
   return (
     <ScrollView nestedScrollEnabled={true}>
@@ -128,7 +128,6 @@ export default function Profile() {
               <MatchRow
                 key={match.match_id}
                 match={match}
-                eventTitle={match.event_title}
                 display="Search"
                 hideBottomBorder={i === userRatings.length - 1}
               />

@@ -36,7 +36,6 @@ export default function SearchResults({ data }) {
           <MatchRow
             key={result.match_id}
             match={result}
-            eventTitle={result.event_title}
             display="Search"
             hideBottomBorder={i === data.results.length - 1}
           />

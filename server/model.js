@@ -316,7 +316,7 @@ module.exports = {
         matches.id AS match_id,
         matches.event_id AS event_id,
         events.title AS event_title,
-        events.date AS event_date,
+        TO_CHAR(events.date, 'YYYY-MM-DD') AS date,
         participants.team AS participants,
         wrestlers.name AS wrestler_name,
         AVG(ratings.rating) AS rating,

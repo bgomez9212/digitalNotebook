@@ -58,7 +58,7 @@ export default function Profile() {
     barPercentage: 0.5,
     useShadowColorFromDataset: false, // optional
   };
-  console.log(userRatings);
+
   function getPieChartData(data) {
     if (!data) {
       return [];

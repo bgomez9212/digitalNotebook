@@ -109,7 +109,7 @@ module.exports = {
         promotions.name AS promotion_name
       FROM events
       JOIN promotions ON promotions.id = events.promotion_id
-      ORDER BY date DESC
+      ORDER BY date DESC, id ASC
       LIMIT 5;`
     );
     return results;

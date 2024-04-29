@@ -10,11 +10,11 @@ export default function RecentEvents() {
     isError,
     data: events,
   } = useQuery({
-    queryKey: ["recentEvents"],
+    queryKey: ["recentEventsExpanded"],
     queryFn: () =>
       axios
         .get(`${process.env.API_RECENT_EVENTS}`, {
-          params: { numOfResults: null },
+          params: { numOfResults: 30 },
         })
         .then((res) => res.data),
   });

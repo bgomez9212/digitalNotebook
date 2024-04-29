@@ -4,6 +4,7 @@ import tw from "../tailwind";
 import { useQuery } from "@tanstack/react-query";
 import axios from "axios";
 import EventRow from "./EventRow";
+import { router } from "expo-router";
 
 export default function RecentEventTable() {
   const {
@@ -13,7 +14,11 @@ export default function RecentEventTable() {
   } = useQuery({
     queryKey: ["recentEvents"],
     queryFn: () =>
-      axios.get(`${process.env.API_RECENT_EVENTS}`).then((res) => res.data),
+      axios
+        .get(`${process.env.API_RECENT_EVENTS}`, {
+          params: { numOfResults: 5 },
+        })
+        .then((res) => res.data),
   });
 
   // if (isPending) return 'Loading...'
@@ -43,9 +48,22 @@ export default function RecentEventTable() {
       >
         <Text style={tw`text-white font-bold text-lg`}>Most Recent Shows</Text>
       </View>
-      {events.map((event, index) => (
-        <EventRow event={event} index={index} key={event.id} display="Table" />
+      {events.map((event, i) => (
+        <EventRow
+          event={event}
+          hideBorder={events.length - 1 === i}
+          key={event.id}
+          display="Table"
+        />
       ))}
+      <View style={tw`h-10 flex justify-center items-center`}>
+        <TouchableOpacity
+          onPress={() => router.push(`/(tabs)/Home/RecentEvents`)}
+          style={tw`px-20`}
+        >
+          <Text style={tw`text-blue font-bold underline`}>See More</Text>
+        </TouchableOpacity>
+      </View>
     </View>
   );
 }

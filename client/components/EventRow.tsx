@@ -4,11 +4,11 @@ import tw from "../tailwind";
 import * as All from "../assets";
 export default function EventRow({
   event,
-  index,
+  hideBorder,
   display,
 }: {
   event: { id: number; title: string; date: string; promotion_name: string };
-  index: number;
+  hideBorder: boolean;
   display: "Table" | "Search";
 }) {
   return (
@@ -16,7 +16,7 @@ export default function EventRow({
       onPress={() => router.push(`/(tabs)/Home/${event.id}`)}
       style={tw`${
         display === "Table"
-          ? `w-full flex flex-row py-2 border-b-2 border-darkGrey ${index === 4 ? "border-b-0" : ""}`
+          ? `w-full flex flex-row py-2 border-darkGrey border-b-2`
           : `w-full flex flex-row py-2 border-b-2 border-grey`
       }`}
     >

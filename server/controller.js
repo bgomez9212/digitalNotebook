@@ -6,7 +6,7 @@ module.exports = {
     res.send(result[0]).status(200);
   },
   getRecentEvents: async (req, res) => {
-    const result = await model.getRecentEvents();
+    const result = await model.getRecentEvents(req.query.numOfResults);
     res.send(result).status(200);
   },
   getTopRatedMatches: async (req, res) => {

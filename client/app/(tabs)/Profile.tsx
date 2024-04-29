@@ -60,8 +60,14 @@ export default function Profile() {
   };
 
   function getPieChartData(data) {
-    if (!data) {
-      return [];
+    if (!data.length) {
+      return [
+        {
+          promotionName: "you have not rated matches",
+          matchCount: 1,
+          color: "white",
+        },
+      ];
     }
 
     let promotionCount = {};
@@ -100,7 +106,7 @@ export default function Profile() {
           <Text style={tw`text-white text-lg`}>Sign Out</Text>
         </Pressable>
         <PieChart
-          style={tw`mb-10 flex justify-center items-center`}
+          style={tw`flex justify-center items-center`}
           data={pieChartData}
           width={screenWidth}
           height={screenWidth}
@@ -111,7 +117,12 @@ export default function Profile() {
           hasLegend={false}
           center={[screenWidth - 300, 0]}
         />
-        <Text style={tw`text-xl text-white underline mb-10`}>
+        {!userRatings.length && (
+          <Text style={tw`text-white`}>
+            This pie chart will fill when you have rated some matches
+          </Text>
+        )}
+        <Text style={tw`text-xl text-white underline my-10`}>
           Matches You Have Rated
         </Text>
         <ScrollView
@@ -123,6 +134,10 @@ export default function Profile() {
             <Text>There seems to be an error..</Text>
           ) : isLoading ? (
             <ActivityIndicator />
+          ) : !userRatings.length ? (
+            <Text style={tw`text-white text-center`}>
+              You haven't rated any matches yet.
+            </Text>
           ) : (
             userRatings.map((match, i) => (
               <MatchRow

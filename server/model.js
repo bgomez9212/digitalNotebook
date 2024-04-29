@@ -10,6 +10,9 @@ function formatData(obj) {
 }
 
 function parseMatchData(matchArr) {
+  if (!matchArr.length) {
+    return [];
+  }
   let matchesArr = [];
   const matchObj = {
     match_id: matchArr[0].match_id,

@@ -25,7 +25,12 @@ export default function PromotionsButtonsContainer() {
     >
       {promotions.map((promotion) => (
         <TouchableOpacity
-          onPress={() => router.push(`/(tabs)/Home/Promotions`)}
+          onPress={() =>
+            router.push({
+              pathname: `/(tabs)/Home/Promotions`,
+              params: { promotion: promotion.name },
+            })
+          }
           key={promotion.id}
           style={tw`w-[48%] h-15 justify-center items-center border border-blue my-2 rounded-md`}
         >

@@ -60,7 +60,7 @@ export default function Profile() {
   };
 
   function getPieChartData(data) {
-    if (!data.length) {
+    if (!data?.length) {
       return [
         {
           promotionName: "you have not rated matches",
@@ -95,6 +95,21 @@ export default function Profile() {
 
   const pieChartData = getPieChartData(userRatings);
   // console.log(pieChartData);
+  if (isError) {
+    return (
+      <View>
+        <Text>Error</Text>
+      </View>
+    );
+  }
+
+  if (isLoading) {
+    return (
+      <View style={tw`flex-1 bg-darkGrey justify-center items-center`}>
+        <ActivityIndicator color="#477CB9" />
+      </View>
+    );
+  }
 
   return (
     <ScrollView nestedScrollEnabled={true}>
@@ -117,7 +132,7 @@ export default function Profile() {
           hasLegend={false}
           center={[screenWidth - 300, 0]}
         />
-        {!userRatings.length && (
+        {!userRatings?.length && (
           <Text style={tw`text-white`}>
             This pie chart will fill when you have rated some matches
           </Text>

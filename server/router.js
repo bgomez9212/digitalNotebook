@@ -15,4 +15,6 @@ router.get("/ratings/:user_id", controller.getUserRatings);
 
 router.get("/search/:search_param/:search_text", controller.getSearchResults);
 
+router.get("/promotions", controller.getPromotions);
+
 module.exports = router;

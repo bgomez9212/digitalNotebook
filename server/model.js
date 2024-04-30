@@ -345,4 +345,10 @@ module.exports = {
     const results = parseMatchData(userRatings);
     return results;
   },
+  getPromotions: async () => {
+    const { rows: promotions } = await pool.query(
+      `SELECT id, name FROM promotions`
+    );
+    return promotions;
+  },
 };

@@ -56,6 +56,15 @@ export default function Layout() {
           headerTintColor: "white",
         }}
       />
+      <Stack.Screen
+        name="Promotions"
+        options={{
+          title: "Promotions",
+          headerStyle: { backgroundColor: blue },
+          headerTitleStyle: { color: "white" },
+          headerTintColor: "white",
+        }}
+      />
     </Stack>
   );
 }

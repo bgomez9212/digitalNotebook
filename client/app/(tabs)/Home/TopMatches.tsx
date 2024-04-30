@@ -1,8 +1,9 @@
 import { useQuery } from "@tanstack/react-query";
 import axios from "axios";
-import { ActivityIndicator, ScrollView, Text, View } from "react-native";
+import { ScrollView, Text, View } from "react-native";
 import tw from "../../../tailwind";
 import MatchRow from "../../../components/MatchRow";
+import { ActivityIndicator } from "react-native-paper";
 
 export default function TopMatches() {
   const {

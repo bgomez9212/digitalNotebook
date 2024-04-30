@@ -3,6 +3,7 @@ import axios from "axios";
 import { View, Text, ScrollView } from "react-native";
 import tw from "../../../tailwind";
 import EventRow from "../../../components/EventRow";
+import { ActivityIndicator } from "react-native-paper";
 
 export default function RecentEvents() {
   const {
@@ -18,9 +19,17 @@ export default function RecentEvents() {
         })
         .then((res) => res.data),
   });
-  if (isPending || isError) {
+
+  if (isPending) {
     return (
-      <View style={tw`flex-1 bg-darkGrey`}>
+      <View style={tw`flex-1 bg-darkGrey justify-center items-center`}>
+        <ActivityIndicator color="#477CB9" />
+      </View>
+    );
+  }
+  if (isError) {
+    return (
+      <View style={tw`flex-1 bg-darkGrey justify-center items-center`}>
         <Text style={tw`text-white`}>There seems to be a problem</Text>
       </View>
     );

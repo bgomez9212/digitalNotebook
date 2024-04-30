@@ -1,10 +1,9 @@
-import { View, Text, Image, TouchableOpacity } from "react-native";
+import { View, Text, TouchableOpacity } from "react-native";
 import { ActivityIndicator } from "react-native-paper";
 import tw from "../tailwind";
 import { useQuery } from "@tanstack/react-query";
 import axios from "axios";
 import { router } from "expo-router";
-import StarView from "./StarView";
 import MatchRow from "./MatchRow";
 
 export default function TopRatedMatchesTable() {
@@ -15,7 +14,13 @@ export default function TopRatedMatchesTable() {
   } = useQuery({
     queryKey: ["topMatches"],
     queryFn: () =>
-      axios.get(`${process.env.API_TOP_RATED}`).then((res) => res.data),
+      axios
+        .get(`${process.env.API_TOP_RATED}`, {
+          params: {
+            numOfMatches: 5,
+          },
+        })
+        .then((res) => res.data),
   });
 
   if (isFetching || error) {
@@ -53,9 +58,17 @@ export default function TopRatedMatchesTable() {
           key={match.match_id}
           match={match}
           display="Home"
-          hideBottomBorder={i === matches.length - 1}
+          hideBottomBorder={false}
         />
       ))}
+      <View style={tw`h-10 flex justify-center items-center`}>
+        <TouchableOpacity
+          onPress={() => router.push(`/(tabs)/Home/TopMatches`)}
+          style={tw`px-20`}
+        >
+          <Text style={tw`text-blue font-bold underline`}>See More</Text>
+        </TouchableOpacity>
+      </View>
     </View>
   );
 }

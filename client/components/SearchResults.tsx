@@ -21,7 +21,12 @@ export default function SearchResults({ data }) {
     return (
       <ScrollView style={tw`w-9.5/10`}>
         {data.results.map((result, i) => (
-          <EventRow key={result.id} event={result} index={i} display="Search" />
+          <EventRow
+            key={result.id}
+            event={result}
+            hideBorder={data.results.length - 1 === i}
+            display="Search"
+          />
         ))}
       </ScrollView>
     );

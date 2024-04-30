@@ -10,6 +10,9 @@ function formatData(obj) {
 }
 
 function parseMatchData(matchArr) {
+  if (!matchArr.length) {
+    return [];
+  }
   let matchesArr = [];
   const matchObj = {
     match_id: matchArr[0].match_id,
@@ -100,7 +103,7 @@ module.exports = {
     eventInfo[0].matches = parseMatchData(matches);
     return eventInfo;
   },
-  getRecentEvents: async () => {
+  getRecentEvents: async (numOfResults) => {
     const { rows: results } = await pool.query(
       `SELECT
         events.id AS id,
@@ -111,11 +114,12 @@ module.exports = {
       FROM events
       JOIN promotions ON promotions.id = events.promotion_id
       ORDER BY date DESC, id ASC
-      LIMIT 5;`
+      LIMIT $1;`,
+      [numOfResults]
     );
     return results;
   },
-  getTopRatedMatches: async () => {
+  getTopRatedMatches: async (numOfMatches) => {
     const date = new Date();
 
     let day = date.getDate();
@@ -153,12 +157,12 @@ module.exports = {
           WHERE events.date > $1::DATE AND rating IS NOT NULL
           GROUP BY matches.id, events.date
           ORDER BY (AVG(ratings.rating)) DESC, events.date DESC
-          LIMIT 5
+          LIMIT $2
         )
         GROUP BY matches.id, participants.team, wrestlers.name, championship_name, participants.match_id, events.title, events.date
         ORDER BY rating DESC, participants.match_id, team;
         `,
-        [lastMonth]
+        [lastMonth, numOfMatches]
       );
       return parseMatchData(results);
     } catch (err) {

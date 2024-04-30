@@ -38,6 +38,24 @@ export default function Layout() {
           headerTintColor: "white",
         }}
       />
+      <Stack.Screen
+        name="RecentEvents"
+        options={{
+          title: "Recent Events",
+          headerStyle: { backgroundColor: blue },
+          headerTitleStyle: { color: "white" },
+          headerTintColor: "white",
+        }}
+      />
+      <Stack.Screen
+        name="TopMatches"
+        options={{
+          title: "Top Matches",
+          headerStyle: { backgroundColor: blue },
+          headerTitleStyle: { color: "white" },
+          headerTintColor: "white",
+        }}
+      />
     </Stack>
   );
 }

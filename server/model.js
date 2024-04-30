@@ -119,7 +119,7 @@ module.exports = {
     );
     return results;
   },
-  getTopRatedMatches: async () => {
+  getTopRatedMatches: async (numOfMatches) => {
     const date = new Date();
 
     let day = date.getDate();
@@ -157,12 +157,12 @@ module.exports = {
           WHERE events.date > $1::DATE AND rating IS NOT NULL
           GROUP BY matches.id, events.date
           ORDER BY (AVG(ratings.rating)) DESC, events.date DESC
-          LIMIT 5
+          LIMIT $2
         )
         GROUP BY matches.id, participants.team, wrestlers.name, championship_name, participants.match_id, events.title, events.date
         ORDER BY rating DESC, participants.match_id, team;
         `,
-        [lastMonth]
+        [lastMonth, numOfMatches]
       );
       return parseMatchData(results);
     } catch (err) {

@@ -11,7 +11,7 @@ module.exports = {
   },
   getTopRatedMatches: async (req, res) => {
     try {
-      const result = await model.getTopRatedMatches();
+      const result = await model.getTopRatedMatches(req.query.numOfMatches);
       res.send(result).status(200);
     } catch (err) {
       res.sendStatus(404);

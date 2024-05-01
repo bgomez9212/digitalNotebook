@@ -260,7 +260,7 @@ module.exports = {
               ORDER BY events.date DESC`,
           [search_text]
         );
-        const data = { search_param, search_param, results: results };
+        const data = { search_param: search_param, results: results };
         return data;
       }
       if (search_param === "promotions") {
@@ -319,7 +319,7 @@ module.exports = {
           participants.match_id AS match_id,
           matches.event_id AS event_id,
           events.title AS event_title,
-          events.date AS date,
+          TO_CHAR(events.date, 'YYYY-MM-DD') AS date,
           wrestlers.name AS wrestler_name,
           participants.team AS participants,
           championships.name AS championship_name,
@@ -339,16 +339,19 @@ module.exports = {
               JOIN participants ON matches.id = participants.match_id
               JOIN wrestlers ON participants.wrestler_id = wrestlers.id
               WHERE wrestlers.name ILIKE ANY($1)
-          )
-          GROUP BY match_id
-          HAVING COUNT(match_id) > 1
             )
+            GROUP BY match_id
+            HAVING COUNT(match_id) = $2
+          )
           GROUP BY participants.match_id, matches.event_id, wrestlers.name, participants.team, championships.name, rating_count, events.title, events.date
           ORDER BY date DESC, match_id, team;`,
-          [wrestlersArr]
+          [wrestlersArr, wrestlersArr.length]
         );
-        const results = parseMatchData(matches);
-        console.log(results);
+        const data = {
+          search_param: search_param,
+          results: parseMatchData(matches),
+        };
+        return data;
       }
     } catch (err) {
       console.log(err);
@@ -393,34 +396,3 @@ module.exports = {
     return promotions;
   },
 };
-
-`SELECT
-          participants.match_id AS match_id,
-          matches.event_id AS event_id,
-          events.title AS event_title,
-          events.date AS date,
-          wrestlers.name AS wrestler_name,
-          participants.team AS participants,
-          championships.name AS championship_name,
-          AVG(ratings.rating) as rating,
-          (SELECT COUNT(*) FROM ratings WHERE ratings.match_id = participants.match_id) AS rating_count
-          FROM participants
-          JOIN wrestlers ON participants.wrestler_id = wrestlers.id
-          JOIN matches ON matches.id = participants.match_id
-          LEFT OUTER JOIN matches_championships ON matches_championships.match_id = participants.match_id
-          LEFT OUTER JOIN championships ON championships.id = matches_championships.championship_id
-          LEFT OUTER JOIN ratings ON ratings.match_id = participants.match_id
-          LEFT OUTER JOIN events ON matches.event_id = events.id
-          WHERE matches.id = ANY(
-            SELECT match_id FROM (
-              SELECT matches.id AS match_id
-              FROM matches
-              JOIN participants ON matches.id = participants.match_id
-              JOIN wrestlers ON participants.wrestler_id = wrestlers.id
-              WHERE wrestlers.name ILIKE ANY($1)
-          )
-          GROUP BY match_id
-          HAVING COUNT(match_id) > 1
-            )
-          GROUP BY participants.match_id, matches.event_id, wrestlers.name, participants.team, championships.name, rating_count, events.title, events.date
-          ORDER BY date DESC, match_id, team;`;

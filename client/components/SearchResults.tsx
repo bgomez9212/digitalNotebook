@@ -7,7 +7,7 @@ export default function SearchResults({ data }) {
   if (!data) {
     return null;
   }
-  if (!data.results.length) {
+  if (!data.results) {
     return (
       <ScrollView>
         <Text style={tw`text-white`}>No results</Text>
@@ -33,7 +33,9 @@ export default function SearchResults({ data }) {
   }
   if (
     data.results.length &&
-    (data.search_param === "wrestlers" || data.search_param === "championships")
+    (data.search_param === "wrestlers" ||
+      data.search_param === "championships" ||
+      data.search_param === "matches")
   ) {
     return (
       <ScrollView style={tw`w-9.5/10`} showsVerticalScrollIndicator={false}>

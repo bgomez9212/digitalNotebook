@@ -59,6 +59,12 @@ export default function Profile() {
     useShadowColorFromDataset: false, // optional
   };
 
+  const pieChartColors = {
+    AEW: "#C5AB57",
+    NJPW: "#FF0033",
+    WWE: "#E5E4E2",
+  };
+
   function getPieChartData(data) {
     if (!data?.length) {
       return [
@@ -69,7 +75,6 @@ export default function Profile() {
         },
       ];
     }
-
     let promotionCount = {};
     for (let matchObj of data) {
       if (!promotionCount[matchObj.promotion]) {
@@ -83,18 +88,13 @@ export default function Profile() {
       return {
         promotionName: promotionName,
         matchCount: promotionCount[promotionName],
-        color:
-          promotionName === "AEW"
-            ? "gold"
-            : promotionName === "WWE"
-              ? "grey"
-              : "red",
+        color: pieChartColors[promotionName],
       };
     });
   }
 
   const pieChartData = getPieChartData(userRatings);
-  // console.log(pieChartData);
+
   if (isError) {
     return (
       <View>
@@ -132,6 +132,18 @@ export default function Profile() {
           hasLegend={false}
           center={[screenWidth - 300, 0]}
         />
+
+        <View style={tw`flex-row w-9/10`}>
+          {pieChartData.map((promotion, i) => (
+            <View style={tw`flex-row items-center ${i === 0 ? "" : "ml-4"}`}>
+              <Text style={tw`text-white`} key={promotion.promotionName}>
+                {`${promotion.promotionName} (${promotion.matchCount})`}
+              </Text>
+              <View style={tw`h-3 w-3 bg-[${promotion.color}] ml-1`}></View>
+            </View>
+          ))}
+        </View>
+
         {!userRatings?.length && (
           <Text style={tw`text-white`}>
             This pie chart will fill when you have rated some matches

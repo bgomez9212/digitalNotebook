@@ -62,4 +62,12 @@ module.exports = {
       res.send(err).status(500);
     }
   },
+  getPromotions: async (req, res) => {
+    try {
+      const results = await model.getPromotions();
+      res.send(results).status(200);
+    } catch (err) {
+      res.send(err).status(500);
+    }
+  },
 };

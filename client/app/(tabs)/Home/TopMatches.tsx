@@ -39,11 +39,11 @@ export default function TopMatches() {
   }
 
   return (
-    <View style={tw`bg-darkGrey items-center`}>
+    <View style={tw`flex-1 bg-darkGrey items-center`}>
       <ScrollView style={tw`w-9.5/10`}>
         {matches.map((match, i) => (
           <MatchRow
-            key={match.id}
+            key={match.match_id}
             match={match}
             display="Search"
             hideBottomBorder={matches.length - 1 === i}

@@ -20,23 +20,26 @@ export default function PromotionsButtonsContainer() {
     return <ActivityIndicator color="#477CB9" />;
   }
   return (
-    <View
-      style={tw`w-[95%] mb-12 items-center justify-between flex-row flex-wrap`}
-    >
-      {promotions.map((promotion) => (
-        <TouchableOpacity
-          onPress={() =>
-            router.push({
-              pathname: `/(tabs)/Home/Promotions`,
-              params: { promotion: promotion.name },
-            })
-          }
-          key={promotion.id}
-          style={tw`w-[48%] h-15 justify-center items-center border border-blue my-2 rounded-md`}
-        >
-          <Text style={tw`text-white`}>{promotion.name}</Text>
-        </TouchableOpacity>
-      ))}
+    <View style={tw`mb-12 items-center`}>
+      <Text style={tw`text-white font-bold text-xl mb-6`}>Promotions</Text>
+      <View
+        style={tw`flex-wrap w-[95%] justify-between flex-row flex-wrap items-center`}
+      >
+        {promotions.map((promotion) => (
+          <TouchableOpacity
+            onPress={() =>
+              router.push({
+                pathname: `/(tabs)/Home/Promotions`,
+                params: { promotion_name: promotion.name },
+              })
+            }
+            key={promotion.id}
+            style={tw`w-[48%] h-15 justify-center items-center border border-blue my-2 rounded-md`}
+          >
+            <Text style={tw`text-white`}>{promotion.name}</Text>
+          </TouchableOpacity>
+        ))}
+      </View>
     </View>
   );
 }

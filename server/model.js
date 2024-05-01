@@ -217,39 +217,6 @@ module.exports = {
   },
   getSearchResults: async (search_param, search_text) => {
     try {
-      if (search_param === "wrestlers") {
-        const { rows: results } = await pool.query(
-          `SELECT
-          participants.match_id AS match_id,
-          events.title AS event_title,
-          TO_CHAR(events.date, 'YYYY-MM-DD') AS date,
-          wrestlers.name AS wrestler_name,
-          participants.team AS participants,
-          championships.name AS championship_name,
-          AVG(ratings.rating) as rating,
-          (SELECT COUNT(*) FROM ratings WHERE ratings.match_id = participants.match_id) AS rating_count
-          FROM participants
-          JOIN wrestlers ON participants.wrestler_id = wrestlers.id
-          JOIN matches ON matches.id = participants.match_id
-          LEFT OUTER JOIN matches_championships ON matches_championships.match_id = participants.match_id
-          LEFT OUTER JOIN championships ON championships.id = matches_championships.championship_id
-          LEFT OUTER JOIN ratings ON ratings.match_id = participants.match_id
-          LEFT OUTER JOIN events ON matches.event_id = events.id
-          WHERE participants.match_id = ANY(
-            SELECT DISTINCT match_id FROM participants WHERE wrestler_id = ANY(
-              SELECT id FROM wrestlers WHERE name ILIKE '%' || $1 || '%'
-              )
-            )
-          GROUP BY participants.match_id, matches.event_id, wrestlers.name, participants.team, championships.name, rating_count, events.title, events.date
-          ORDER BY date DESC, match_id, team;`,
-          [search_text]
-        );
-        const data = {
-          search_param: search_param,
-          results: parseMatchData(results),
-        };
-        return data;
-      }
       if (search_param === "events") {
         const { rows: results } = await pool.query(
           `SELECT events.id AS id, events.title AS title, TO_CHAR(events.date, 'YYYY-MM-DD') AS date, venues.name AS venue_name, promotions.name AS promotion_name
@@ -341,7 +308,7 @@ module.exports = {
               WHERE wrestlers.name ILIKE ANY($1)
             )
             GROUP BY match_id
-            HAVING COUNT(match_id) = $2
+            HAVING COUNT(match_id) >= $2
           )
           GROUP BY participants.match_id, matches.event_id, wrestlers.name, participants.team, championships.name, rating_count, events.title, events.date
           ORDER BY date DESC, match_id, team;`,

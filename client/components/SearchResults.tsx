@@ -14,10 +14,7 @@ export default function SearchResults({ data }) {
       </ScrollView>
     );
   }
-  if (
-    data.results.length &&
-    (data.search_param === "promotions" || data.search_param === "events")
-  ) {
+  if (data.results.length && data.search_param === "events") {
     return (
       <ScrollView style={tw`w-9.5/10`}>
         {data.results.map((result, i) => (
@@ -33,7 +30,7 @@ export default function SearchResults({ data }) {
   }
   if (
     data.results.length &&
-    (data.search_param === "wrestlers" || data.search_param === "championships")
+    (data.search_param === "championships" || data.search_param === "matches")
   ) {
     return (
       <ScrollView style={tw`w-9.5/10`} showsVerticalScrollIndicator={false}>

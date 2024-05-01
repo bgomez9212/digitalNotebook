@@ -4,9 +4,8 @@ import { Dropdown } from "react-native-element-dropdown";
 import tw from "../tailwind";
 
 const data = [
-  { label: "Wrestler", value: "wrestlers" },
+  { label: "Matches", value: "matches" },
   { label: "Event", value: "events" },
-  { label: "Promotion", value: "promotions" },
   { label: "Championship", value: "championships" },
 ];
 

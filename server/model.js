@@ -309,6 +309,26 @@ module.exports = {
         };
         return data;
       }
+      if (search_param === "matches") {
+        const wrestlersArr = search_text
+          .split(",")
+          .map((wrestler) => wrestler.trim())
+          .map((wrestler) => `%${wrestler}%`);
+        console.log("wrestlersArr ", wrestlersArr);
+        const { rows: matches } = await pool.query(
+          `SELECT match_id FROM (
+              SELECT matches.id AS match_id
+              FROM matches
+              JOIN participants ON matches.id = participants.match_id
+              JOIN wrestlers ON participants.wrestler_id = wrestlers.id
+              WHERE wrestlers.name ILIKE ANY(ARRAY['%Joe%', '%Swerve%'])
+          )
+          GROUP BY match_id
+          HAVING COUNT(match_id) > 1`
+        );
+        const res = matches.map((match) => getMatchInfo(match.match_id));
+        console.log(res);
+      }
     } catch (err) {
       console.log(err);
       throw new Error(err.message);

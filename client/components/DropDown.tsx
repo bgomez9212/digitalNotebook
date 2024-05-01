@@ -6,7 +6,7 @@ import tw from "../tailwind";
 const data = [
   { label: "Wrestler", value: "wrestlers" },
   { label: "Event", value: "events" },
-  { label: "Promotion", value: "promotions" },
+  { label: "Matches", value: "matches" },
   { label: "Championship", value: "championships" },
 ];
 

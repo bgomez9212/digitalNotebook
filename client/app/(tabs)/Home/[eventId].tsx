@@ -49,15 +49,11 @@ export default function EventPage() {
               flex: 1,
               width: undefined,
               height: 200,
-              resizeMode: `${event.promotion_name !== "NJPW" ? "contain" : "cover"}`,
+              resizeMode: "contain",
               marginTop: 4,
             }}
             src={photoLibrary[event.promotion_name]}
           />
-          {/* <Image
-            src={photoLibrary[event.promotion_name]}
-            style={tw`w-full h-[200px] mt-4`}
-          /> */}
           <View style={tw`mt-8 mb-8 items-center`}>
             <Text style={tw`text-white text-3xl text-center pb-2`}>
               {event.title}

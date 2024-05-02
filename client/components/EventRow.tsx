@@ -28,7 +28,7 @@ export default function EventRow({
               flex: 1,
               width: undefined,
               height: undefined,
-              resizeMode: "cover",
+              resizeMode: "contain",
             }}
             src={photoLibrary[event.promotion_name]}
           />

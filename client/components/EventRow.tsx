@@ -1,7 +1,8 @@
 import { router } from "expo-router";
 import { TouchableOpacity, View, Text, Image } from "react-native";
 import tw from "../tailwind";
-import * as All from "../assets";
+import { photoLibrary } from "../assets";
+
 export default function EventRow({
   event,
   hideBorder,
@@ -29,7 +30,7 @@ export default function EventRow({
               height: undefined,
               resizeMode: "cover",
             }}
-            source={All[`${event.promotion_name}`]}
+            src={photoLibrary[event.promotion_name]}
           />
         </View>
         <View style={tw`flex-3 justify-center`}>

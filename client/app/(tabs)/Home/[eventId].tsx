@@ -6,7 +6,7 @@ import axios from "axios";
 import { ActivityIndicator, DataTable } from "react-native-paper";
 import MatchRow from "../../../components/MatchRow";
 import { Match } from "../../../types/types";
-import * as All from "../../../assets";
+import { photoLibrary } from "../../../assets";
 export default function EventPage() {
   const { eventId } = useLocalSearchParams();
   const {
@@ -45,9 +45,19 @@ export default function EventPage() {
       <ScrollView style={tw`bg-darkGrey`}>
         <View>
           <Image
-            source={All[`${event.promotion_name}`]}
-            style={tw`w-full h-[200px] mt-4`}
+            style={{
+              flex: 1,
+              width: undefined,
+              height: 200,
+              resizeMode: `${event.promotion_name !== "NJPW" ? "contain" : "cover"}`,
+              marginTop: 4,
+            }}
+            src={photoLibrary[event.promotion_name]}
           />
+          {/* <Image
+            src={photoLibrary[event.promotion_name]}
+            style={tw`w-full h-[200px] mt-4`}
+          /> */}
           <View style={tw`mt-8 mb-8 items-center`}>
             <Text style={tw`text-white text-3xl text-center pb-2`}>
               {event.title}

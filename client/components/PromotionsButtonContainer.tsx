@@ -1,9 +1,10 @@
-import { Text, TouchableOpacity, View } from "react-native";
+import { Image, Text, TouchableOpacity, View } from "react-native";
 import tw from "../tailwind";
 import { useQuery } from "@tanstack/react-query";
 import axios from "axios";
 import { ActivityIndicator } from "react-native-paper";
 import { router } from "expo-router";
+import { photoLibrary } from "../assets";
 
 export default function PromotionsButtonsContainer() {
   const {
@@ -19,6 +20,7 @@ export default function PromotionsButtonsContainer() {
   if (isFetching) {
     return <ActivityIndicator color="#477CB9" />;
   }
+
   return (
     <View style={tw`mb-12 items-center`}>
       <Text style={tw`text-white font-bold text-xl mb-6`}>Promotions</Text>
@@ -34,9 +36,17 @@ export default function PromotionsButtonsContainer() {
               })
             }
             key={promotion.id}
-            style={tw`w-[48%] h-15 justify-center items-center border border-blue my-2 rounded-md`}
+            style={tw`w-[48%] h-15 justify-center items-center border border-grey my-2 rounded-md`}
           >
-            <Text style={tw`text-white`}>{promotion.name}</Text>
+            <Image
+              style={{
+                flex: 1,
+                width: 100,
+                height: 15,
+                resizeMode: "contain",
+              }}
+              src={photoLibrary[promotion.name]}
+            />
           </TouchableOpacity>
         ))}
       </View>

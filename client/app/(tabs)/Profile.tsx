@@ -133,16 +133,21 @@ export default function Profile() {
           center={[screenWidth - 300, 0]}
         />
 
-        <View style={tw`flex-row w-9/10`}>
-          {pieChartData.map((promotion, i) => (
-            <View style={tw`flex-row items-center ${i === 0 ? "" : "ml-4"}`}>
-              <Text style={tw`text-white`} key={promotion.promotionName}>
-                {`${promotion.promotionName} (${promotion.matchCount})`}
-              </Text>
-              <View style={tw`h-3 w-3 bg-[${promotion.color}] ml-1`}></View>
-            </View>
-          ))}
-        </View>
+        {userRatings?.length ? (
+          <View style={tw`flex-row w-9/10`}>
+            {pieChartData.map((promotion, i) => (
+              <View
+                key={promotion.promotionName}
+                style={tw`flex-row items-center ${i === 0 ? "" : "ml-4"}`}
+              >
+                <Text style={tw`text-white`} key={promotion.promotionName}>
+                  {`${promotion.promotionName} (${promotion.matchCount})`}
+                </Text>
+                <View style={tw`h-3 w-3 bg-[${promotion.color}] ml-1`}></View>
+              </View>
+            ))}
+          </View>
+        ) : null}
 
         {!userRatings?.length && (
           <Text style={tw`text-white`}>

@@ -11,7 +11,6 @@ export const photoLibrary = {
   NJPW: "https://drive.google.com/uc?export=view&id=1-4CXbv216ysiNjplQDXIEvPXgnykIBYf",
   NOAH: "https://drive.google.com/uc?export=view&id=1TBN-VXXR9zFrDl4mPR7ZXsY4YMW6L7Ci",
   NWA: "https://drive.google.com/uc?export=view&id=1L_cLxSTlcFd0GRmZCo0PVqdY5XPhFl5N",
-  NXT: "https://drive.google.com/uc?export=view&id=1rV-ZWMVKITfS7CuWVcFURsr85EazlR0a",
   ROH: "https://drive.google.com/uc?export=view&id=1wFk_Pr4BFiyVfrn6c6mllmAzHWZlUyYn",
   Stardom:
     "https://drive.google.com/uc?export=view&id=1TZcIob9KkrCeBSSIUXpxRAa0qbo008Pa",

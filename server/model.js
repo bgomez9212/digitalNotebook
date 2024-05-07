@@ -223,7 +223,7 @@ module.exports = {
               FROM events
               JOIN venues ON events.venue_id = venues.id
               JOIN promotions ON events.promotion_id = promotions.id
-              WHERE events.title ILIKE '%' || $1 || '%'
+              WHERE (promotions.name || ' ' || events.title) ILIKE '%' || $1 || '%'
               ORDER BY events.date DESC`,
           [search_text]
         );

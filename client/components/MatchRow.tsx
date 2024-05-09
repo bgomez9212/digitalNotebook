@@ -151,11 +151,6 @@ export default function MatchRow({
           })
         }
       >
-        {match.event_title && (
-          <View style={tw`w-full flex items-center`}>
-            <Text style={tw`text-white italic`}>{match.event_title}</Text>
-          </View>
-        )}
         <View style={tw`flex flex-col w-full`}>
           {match.championships && (
             <View style={tw``}>

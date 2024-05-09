@@ -84,6 +84,7 @@ module.exports = {
       SELECT
         matches.id AS match_id,
         matches.event_id AS event_id,
+        events.title AS event_title,
         participants.team AS participants,
         wrestlers.name AS wrestler_name,
         AVG(ratings.rating) AS rating,
@@ -92,11 +93,12 @@ module.exports = {
       FROM matches
       JOIN participants ON matches.id = participants.match_id
       JOIN wrestlers ON participants.wrestler_id = wrestlers.id
+      JOIN events ON matches.event_id = events.id
       LEFT OUTER JOIN ratings ON matches.id = ratings.match_id
       LEFT OUTER JOIN matches_championships ON matches_championships.match_id = matches.id
       LEFT OUTER JOIN championships ON matches_championships.championship_id = championships.id
         WHERE matches.event_id = $1
-      GROUP BY matches.id, participants.team, wrestlers.name, matches_championships.id, championships.name
+      GROUP BY matches.id, participants.team, wrestlers.name, matches_championships.id, championships.name, events.title
       ORDER BY matches.match_number, participants.team ASC`,
       [eventId]
     );

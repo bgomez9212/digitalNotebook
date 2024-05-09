@@ -132,10 +132,11 @@ export default function RatingModal() {
       </View>
     );
   }
-
+  console.log(matchInfo);
   return (
     <View style={tw`flex-1 items-center justify-center bg-black`}>
       <View style={tw`w-4/5`}>
+        <Text style={tw`text-gold pb-3`}>{matchInfo.championships}</Text>
         <Text style={tw`text-white text-xl pb-3`}>
           {matchInfo.participants}
         </Text>

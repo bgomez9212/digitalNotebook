@@ -243,6 +243,11 @@ module.exports = {
         return data;
       }
       if (search_param === "championships") {
+        if (search_text.indexOf("’") > -1) {
+          console.log(true);
+          search_text = search_text.split("’").join("'");
+        }
+        console.log(search_text);
         const { rows: results } = await pool.query(
           `SELECT
           participants.match_id AS match_id,

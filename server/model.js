@@ -151,14 +151,16 @@ module.exports = {
         LEFT OUTER JOIN events ON events.id = matches.event_id
         LEFT OUTER JOIN championships ON matches_championships.championship_id = championships.id
           WHERE matches.id IN (
-          SELECT matches.id FROM matches
-          JOIN events ON matches.event_id = events.id
-          JOIN ratings ON ratings.match_id = matches.id
-          WHERE events.date > $1::DATE AND rating IS NOT NULL
-          GROUP BY matches.id, events.date
-          ORDER BY (AVG(ratings.rating)) DESC, events.date DESC
-          LIMIT $2
-        )
+            SELECT matches.id FROM matches
+            JOIN events ON matches.event_id = events.id
+            JOIN ratings ON ratings.match_id = matches.id
+            WHERE events.date > $1::DATE
+              AND rating IS NOT NULL
+              AND (SELECT COUNT(*) FROM ratings WHERE ratings.match_id = matches.id) >= 10
+            GROUP BY matches.id, events.date
+            ORDER BY (AVG(ratings.rating)) DESC, events.date DESC
+            LIMIT $2
+          )
         GROUP BY matches.id, participants.team, wrestlers.name, championship_name, participants.match_id, events.title, events.date
         ORDER BY rating DESC, participants.match_id, team;
         `,

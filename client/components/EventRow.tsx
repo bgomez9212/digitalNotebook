@@ -12,9 +12,15 @@ export default function EventRow({
   hideBorder: boolean;
   display: "Table" | "Search";
 }) {
+  function openEvent() {
+    router.push({
+      pathname: `/(tabs)/Home/${event.id}`,
+      params: { eventName: event.title },
+    });
+  }
   return (
     <TouchableOpacity
-      onPress={() => router.push(`/(tabs)/Home/${event.id}`)}
+      onPress={openEvent}
       style={tw`${
         display === "Table"
           ? `w-full flex flex-row py-2 border-darkGrey border-b-2`

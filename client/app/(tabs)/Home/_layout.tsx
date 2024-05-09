@@ -3,22 +3,7 @@ import { Stack, useGlobalSearchParams } from "expo-router";
 import { useEffect, useState } from "react";
 const blue = "#477CB9";
 export default function Layout() {
-  const { eventId } = useGlobalSearchParams();
-  const [eventName, setEventName] = useState("-");
-  useEffect(() => {
-    if (eventId) {
-      axios
-        .get(`${process.env.API_EVENT}`, {
-          params: {
-            event_id: eventId,
-          },
-        })
-        .then((res) => setEventName(res.data.title))
-        .catch((err) => console.log(err));
-    } else {
-      setEventName("-");
-    }
-  }, [eventId]);
+  const { eventName } = useGlobalSearchParams() as { eventName: string };
   return (
     <Stack>
       <Stack.Screen

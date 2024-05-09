@@ -63,6 +63,7 @@ export default function Profile() {
     AEW: "#C5AB57",
     NJPW: "#FF0033",
     WWE: "#E5E4E2",
+    CMLL: "#003f91",
   };
 
   function getPieChartData(data) {

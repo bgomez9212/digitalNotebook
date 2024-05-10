@@ -72,7 +72,7 @@ export default function Landing() {
       keyboardVerticalOffset={-50}
     >
       <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
-        <View style={tw`h-full bg-black`}>
+        <View data-testid="landing-page" style={tw`h-full bg-black`}>
           <View style={tw`items-center justify-center flex-3`}>
             <Image
               source={require("../assets/Notebook.png")}

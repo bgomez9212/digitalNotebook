@@ -87,7 +87,7 @@ module.exports = {
         events.title AS event_title,
         participants.team AS participants,
         wrestlers.name AS wrestler_name,
-        AVG(ratings.rating) AS rating,
+        ROUND(AVG(ratings.rating)::numeric, 3) AS rating,
         (SELECT COUNT(*) FROM ratings WHERE ratings.match_id = matches.id) AS rating_count,
         championships.name AS championship_name
       FROM matches
@@ -142,7 +142,7 @@ module.exports = {
           TO_CHAR(events.date, 'YYYY-MM-DD') AS date,
           participants.team AS participants,
           wrestlers.name AS wrestler_name,
-          AVG(ratings.rating) AS rating,
+          ROUND(AVG(ratings.rating)::numeric, 3) AS rating,
           (SELECT COUNT(*) FROM ratings WHERE ratings.match_id = matches.id) AS rating_count,
           championships.name AS championship_name
         FROM matches
@@ -182,7 +182,7 @@ module.exports = {
         matches.event_id AS event_id,
         participants.team AS participants,
         wrestlers.name AS wrestler_name,
-        AVG(ratings.rating) AS rating,
+        ROUND(AVG(ratings.rating)::numeric, 3) AS rating,
         (SELECT COUNT(*) FROM ratings WHERE match_id = $1) AS rating_count,
         championships.name AS championship_name
       FROM matches
@@ -259,7 +259,7 @@ module.exports = {
           wrestlers.name AS wrestler_name,
           participants.team AS participants,
           championships.name AS championship_name,
-          AVG(ratings.rating) as rating,
+          ROUND(AVG(ratings.rating)::numeric, 3) as rating,
           (SELECT COUNT(*) FROM ratings WHERE ratings.match_id = participants.match_id) AS rating_count
           FROM participants
           JOIN wrestlers ON participants.wrestler_id = wrestlers.id
@@ -297,7 +297,7 @@ module.exports = {
           wrestlers.name AS wrestler_name,
           participants.team AS participants,
           championships.name AS championship_name,
-          AVG(ratings.rating) as rating,
+          ROUND(AVG(ratings.rating)::numeric, 3) as rating,
           (SELECT COUNT(*) FROM ratings WHERE ratings.match_id = participants.match_id) AS rating_count
           FROM participants
           JOIN wrestlers ON participants.wrestler_id = wrestlers.id

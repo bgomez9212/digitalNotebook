@@ -1,10 +1,6 @@
 import { Alert, Pressable, ScrollView, Text, View } from "react-native";
 import tw from "../../tailwind";
 import { signOut } from "firebase/auth";
-import { auth } from "../../firebase";
-import { useContext } from "react";
-import { Redirect } from "expo-router";
-import AuthContext from "../../Context/authContext";
 import { useQuery } from "@tanstack/react-query";
 import axios from "axios";
 import MatchRow from "../../components/MatchRow";
@@ -12,9 +8,11 @@ import { ActivityIndicator } from "react-native-paper";
 import { PieChart } from "react-native-chart-kit";
 import { Dimensions } from "react-native";
 const screenWidth = Dimensions.get("window").width;
-// TODO Put Signout button here
+import { getAuth } from "firebase/auth";
+import { router } from "expo-router";
 export default function Profile() {
-  const user = useContext(AuthContext);
+  const auth = getAuth();
+  const { uid } = auth.currentUser;
   const {
     data: userRatings,
     isError,
@@ -25,7 +23,7 @@ export default function Profile() {
       axios
         .get(process.env.API_USER_RATINGS, {
           params: {
-            user_id: user,
+            user_id: uid,
           },
         })
         .then((res) => res.data),
@@ -42,11 +40,7 @@ export default function Profile() {
   }
   function appSignOut() {
     signOut(auth);
-  }
-
-  const userId = useContext(AuthContext);
-  if (!userId) {
-    return <Redirect href="../../" />;
+    router.replace("../../");
   }
 
   const chartConfig = {

@@ -14,7 +14,7 @@ import {
   createUserWithEmailAndPassword,
   signInWithEmailAndPassword,
 } from "firebase/auth";
-import { useContext, useState } from "react";
+import { useState } from "react";
 import LandingButton from "../components/LandingButton";
 import tw from "../tailwind";
 import LandingLink from "../components/LandingLink";
@@ -66,11 +66,6 @@ export default function index() {
     } catch (err) {
       setUiState({ ...uiState, loginError: true });
     }
-  }
-  const userId = useContext(AuthContext);
-
-  if (userId) {
-    return <Redirect href="/(tabs)/Home" />;
   }
 
   return (

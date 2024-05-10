@@ -4,13 +4,14 @@ import { useLocalSearchParams } from "expo-router";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import axios from "axios";
 import tw from "../tailwind";
-import { useContext, useEffect, useState } from "react";
-import AuthContext from "../Context/authContext";
+import { useEffect, useState } from "react";
+import { getAuth } from "firebase/auth";
 import StarView from "../components/StarView";
 
 export default function RatingModal() {
+  const auth = getAuth();
+  const { uid } = auth.currentUser;
   const queryClient = useQueryClient();
-  const userId = useContext(AuthContext);
   const [rating, setRating] = useState(2);
   const { match_id } = useLocalSearchParams();
   const { event_title } = useLocalSearchParams();
@@ -41,7 +42,7 @@ export default function RatingModal() {
       axios
         .get(`${process.env.API_USER_RATING}`, {
           params: {
-            user_id: userId,
+            user_id: uid,
             match_id: match_id,
           },
         })
@@ -98,7 +99,7 @@ export default function RatingModal() {
         },
         {
           text: "Remove",
-          onPress: async () => deleteRatingMutation({ match_id, userId }),
+          onPress: async () => deleteRatingMutation({ match_id, uid }),
         },
       ]
     );
@@ -196,7 +197,7 @@ export default function RatingModal() {
           <Pressable
             disabled={addRatingPending}
             onPress={async () => {
-              await addRatingMutation({ matchId: match_id, userId, rating });
+              await addRatingMutation({ matchId: match_id, uid, rating });
             }}
             style={tw`bg-blue w-1/3 h-14 items-center justify-center rounded-md`}
           >

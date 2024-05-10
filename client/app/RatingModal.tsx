@@ -133,7 +133,7 @@ export default function RatingModal() {
       </View>
     );
   }
-  console.log(matchInfo);
+
   return (
     <View style={tw`flex-1 items-center justify-center bg-black`}>
       <View style={tw`w-4/5`}>

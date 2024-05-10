@@ -1,6 +1,4 @@
-import axios from "axios";
 import { Stack, useGlobalSearchParams } from "expo-router";
-import { useEffect, useState } from "react";
 const blue = "#477CB9";
 export default function Layout() {
   const { eventName } = useGlobalSearchParams() as { eventName: string };

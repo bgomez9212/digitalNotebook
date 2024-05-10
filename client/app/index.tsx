@@ -18,10 +18,8 @@ import { useState } from "react";
 import LandingButton from "../components/LandingButton";
 import tw from "../tailwind";
 import LandingLink from "../components/LandingLink";
-import { Redirect } from "expo-router";
-import AuthContext from "../Context/authContext";
 
-export default function index() {
+export default function Landing() {
   const firebaseAuth = auth;
   const [uiState, setUiState] = useState({
     displaySignup: false,

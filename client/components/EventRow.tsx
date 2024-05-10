@@ -36,7 +36,7 @@ export default function EventRow({
               height: undefined,
               resizeMode: "contain",
             }}
-            src={photoLibrary[event.promotion_name]}
+            source={photoLibrary[event.promotion_name]}
           />
         </View>
         <View style={tw`flex-3 justify-center`}>

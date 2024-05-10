@@ -52,7 +52,7 @@ export default function EventPage() {
               resizeMode: "contain",
               marginTop: 4,
             }}
-            src={photoLibrary[event.promotion_name]}
+            source={photoLibrary[event.promotion_name]}
           />
           <View style={tw`mt-8 mb-8 items-center`}>
             <Text style={tw`text-white text-3xl text-center pb-2`}>

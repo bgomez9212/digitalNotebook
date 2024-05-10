@@ -53,7 +53,7 @@ export default function RatingModal() {
     await axios
       .post(`${process.env.API_POST_RATING}`, {
         match_id: ratingObj.matchId,
-        user_id: ratingObj.userId,
+        user_id: ratingObj.uid,
         rating: ratingObj.rating,
       })
       .then(() => console.log("success"))

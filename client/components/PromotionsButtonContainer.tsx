@@ -45,7 +45,7 @@ export default function PromotionsButtonsContainer() {
                 height: 15,
                 resizeMode: "contain",
               }}
-              src={photoLibrary[promotion.name]}
+              source={photoLibrary[promotion.name]}
             />
           </TouchableOpacity>
         ))}

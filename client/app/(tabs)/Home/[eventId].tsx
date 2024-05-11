@@ -1,4 +1,4 @@
-import { useLocalSearchParams } from "expo-router";
+import { useGlobalSearchParams, useLocalSearchParams } from "expo-router";
 import { Image, SafeAreaView, ScrollView, Text, View } from "react-native";
 import tw from "../../../tailwind";
 import { useQuery } from "@tanstack/react-query";
@@ -52,7 +52,7 @@ export default function EventPage() {
               resizeMode: "contain",
               marginTop: 4,
             }}
-            src={photoLibrary[event.promotion_name]}
+            source={photoLibrary[event.promotion_name]}
           />
           <View style={tw`mt-8 mb-8 items-center`}>
             <Text style={tw`text-white text-3xl text-center pb-2`}>

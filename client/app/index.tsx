@@ -14,14 +14,12 @@ import {
   createUserWithEmailAndPassword,
   signInWithEmailAndPassword,
 } from "firebase/auth";
-import { useContext, useState } from "react";
+import { useState } from "react";
 import LandingButton from "../components/LandingButton";
 import tw from "../tailwind";
 import LandingLink from "../components/LandingLink";
-import { Redirect } from "expo-router";
-import AuthContext from "../Context/authContext";
 
-export default function index() {
+export default function Landing() {
   const firebaseAuth = auth;
   const [uiState, setUiState] = useState({
     displaySignup: false,
@@ -67,11 +65,6 @@ export default function index() {
       setUiState({ ...uiState, loginError: true });
     }
   }
-  const userId = useContext(AuthContext);
-
-  if (userId) {
-    return <Redirect href="/(tabs)/Home" />;
-  }
 
   return (
     <KeyboardAvoidingView
@@ -79,7 +72,7 @@ export default function index() {
       keyboardVerticalOffset={-50}
     >
       <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
-        <View style={tw`h-full bg-black`}>
+        <View data-testid="landing-page" style={tw`h-full bg-black`}>
           <View style={tw`items-center justify-center flex-3`}>
             <Image
               source={require("../assets/Notebook.png")}

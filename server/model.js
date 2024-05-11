@@ -84,19 +84,21 @@ module.exports = {
       SELECT
         matches.id AS match_id,
         matches.event_id AS event_id,
+        events.title AS event_title,
         participants.team AS participants,
         wrestlers.name AS wrestler_name,
-        AVG(ratings.rating) AS rating,
+        ROUND(AVG(ratings.rating)::numeric, 2) AS rating,
         (SELECT COUNT(*) FROM ratings WHERE ratings.match_id = matches.id) AS rating_count,
         championships.name AS championship_name
       FROM matches
       JOIN participants ON matches.id = participants.match_id
       JOIN wrestlers ON participants.wrestler_id = wrestlers.id
+      JOIN events ON matches.event_id = events.id
       LEFT OUTER JOIN ratings ON matches.id = ratings.match_id
       LEFT OUTER JOIN matches_championships ON matches_championships.match_id = matches.id
       LEFT OUTER JOIN championships ON matches_championships.championship_id = championships.id
         WHERE matches.event_id = $1
-      GROUP BY matches.id, participants.team, wrestlers.name, matches_championships.id, championships.name
+      GROUP BY matches.id, participants.team, wrestlers.name, matches_championships.id, championships.name, events.title
       ORDER BY matches.match_number, participants.team ASC`,
       [eventId]
     );
@@ -140,7 +142,7 @@ module.exports = {
           TO_CHAR(events.date, 'YYYY-MM-DD') AS date,
           participants.team AS participants,
           wrestlers.name AS wrestler_name,
-          AVG(ratings.rating) AS rating,
+          ROUND(AVG(ratings.rating)::numeric, 2) AS rating,
           (SELECT COUNT(*) FROM ratings WHERE ratings.match_id = matches.id) AS rating_count,
           championships.name AS championship_name
         FROM matches
@@ -151,14 +153,16 @@ module.exports = {
         LEFT OUTER JOIN events ON events.id = matches.event_id
         LEFT OUTER JOIN championships ON matches_championships.championship_id = championships.id
           WHERE matches.id IN (
-          SELECT matches.id FROM matches
-          JOIN events ON matches.event_id = events.id
-          JOIN ratings ON ratings.match_id = matches.id
-          WHERE events.date > $1::DATE AND rating IS NOT NULL
-          GROUP BY matches.id, events.date
-          ORDER BY (AVG(ratings.rating)) DESC, events.date DESC
-          LIMIT $2
-        )
+            SELECT matches.id FROM matches
+            JOIN events ON matches.event_id = events.id
+            JOIN ratings ON ratings.match_id = matches.id
+            WHERE events.date > $1::DATE
+              AND rating IS NOT NULL
+              AND (SELECT COUNT(*) FROM ratings WHERE ratings.match_id = matches.id) >= 10
+            GROUP BY matches.id, events.date
+            ORDER BY (AVG(ratings.rating)) DESC, events.date DESC
+            LIMIT $2
+          )
         GROUP BY matches.id, participants.team, wrestlers.name, championship_name, participants.match_id, events.title, events.date
         ORDER BY rating DESC, participants.match_id, team;
         `,
@@ -178,7 +182,7 @@ module.exports = {
         matches.event_id AS event_id,
         participants.team AS participants,
         wrestlers.name AS wrestler_name,
-        AVG(ratings.rating) AS rating,
+        ROUND(AVG(ratings.rating)::numeric, 2) AS rating,
         (SELECT COUNT(*) FROM ratings WHERE match_id = $1) AS rating_count,
         championships.name AS championship_name
       FROM matches
@@ -243,6 +247,9 @@ module.exports = {
         return data;
       }
       if (search_param === "championships") {
+        if (search_text.indexOf("’") > -1) {
+          search_text = search_text.split("’").join("'");
+        }
         const { rows: results } = await pool.query(
           `SELECT
           participants.match_id AS match_id,
@@ -252,7 +259,7 @@ module.exports = {
           wrestlers.name AS wrestler_name,
           participants.team AS participants,
           championships.name AS championship_name,
-          AVG(ratings.rating) as rating,
+          ROUND(AVG(ratings.rating)::numeric, 2) as rating,
           (SELECT COUNT(*) FROM ratings WHERE ratings.match_id = participants.match_id) AS rating_count
           FROM participants
           JOIN wrestlers ON participants.wrestler_id = wrestlers.id
@@ -290,7 +297,7 @@ module.exports = {
           wrestlers.name AS wrestler_name,
           participants.team AS participants,
           championships.name AS championship_name,
-          AVG(ratings.rating) as rating,
+          ROUND(AVG(ratings.rating)::numeric, 2) as rating,
           (SELECT COUNT(*) FROM ratings WHERE ratings.match_id = participants.match_id) AS rating_count
           FROM participants
           JOIN wrestlers ON participants.wrestler_id = wrestlers.id

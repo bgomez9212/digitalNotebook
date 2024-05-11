@@ -2,11 +2,11 @@ import { router } from "expo-router";
 import { TouchableOpacity, View, Text } from "react-native";
 import tw from "../tailwind";
 import StarView from "./StarView";
-import { useContext } from "react";
 import axios from "axios";
 import AuthContext from "../Context/authContext";
 import { useQuery } from "@tanstack/react-query";
 import { Match } from "../types/types";
+import { getAuth } from "firebase/auth";
 export default function MatchRow({
   match,
   display,
@@ -16,14 +16,15 @@ export default function MatchRow({
   display: "Home" | "Search" | "Event";
   hideBottomBorder: boolean;
 }) {
-  const userId = useContext(AuthContext);
+  const auth = getAuth();
+  const { uid } = auth.currentUser;
   const { data: userMatchRating } = useQuery({
     queryKey: ["userMatchData", match.match_id],
     queryFn: () =>
       axios
         .get(`${process.env.API_USER_RATING}`, {
           params: {
-            user_id: userId,
+            user_id: uid,
             match_id: match.match_id,
           },
         })
@@ -151,11 +152,6 @@ export default function MatchRow({
           })
         }
       >
-        {match.event_title && (
-          <View style={tw`w-full flex items-center`}>
-            <Text style={tw`text-white italic`}>{match.event_title}</Text>
-          </View>
-        )}
         <View style={tw`flex flex-col w-full`}>
           {match.championships && (
             <View style={tw``}>

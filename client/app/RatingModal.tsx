@@ -1,16 +1,17 @@
 import { View, Text, ActivityIndicator, Pressable, Alert } from "react-native";
 import { Picker } from "@react-native-picker/picker";
-import { useLocalSearchParams } from "expo-router";
+import { router, useLocalSearchParams } from "expo-router";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import axios from "axios";
 import tw from "../tailwind";
-import { useContext, useEffect, useState } from "react";
-import AuthContext from "../Context/authContext";
+import { useEffect, useState } from "react";
+import { getAuth } from "firebase/auth";
 import StarView from "../components/StarView";
 
 export default function RatingModal() {
+  const auth = getAuth();
+  const { uid } = auth.currentUser;
   const queryClient = useQueryClient();
-  const userId = useContext(AuthContext);
   const [rating, setRating] = useState(2);
   const { match_id } = useLocalSearchParams();
   const { event_title } = useLocalSearchParams();
@@ -41,7 +42,7 @@ export default function RatingModal() {
       axios
         .get(`${process.env.API_USER_RATING}`, {
           params: {
-            user_id: userId,
+            user_id: uid,
             match_id: match_id,
           },
         })
@@ -52,7 +53,7 @@ export default function RatingModal() {
     await axios
       .post(`${process.env.API_POST_RATING}`, {
         match_id: ratingObj.matchId,
-        user_id: ratingObj.userId,
+        user_id: ratingObj.uid,
         rating: ratingObj.rating,
       })
       .then(() => console.log("success"))
@@ -64,7 +65,8 @@ export default function RatingModal() {
       mutationFn: addRating,
       onSuccess: () => {
         queryClient.invalidateQueries();
-        setRating(2);
+        setRating(userRating.rating || 2);
+        router.back();
       },
     });
 
@@ -72,7 +74,7 @@ export default function RatingModal() {
     await axios
       .delete(`${process.env.API_DELETE_RATING}`, {
         params: {
-          user_id: ratingInfo.userId,
+          user_id: ratingInfo.uid,
           match_id: ratingInfo.match_id,
         },
       })
@@ -84,6 +86,7 @@ export default function RatingModal() {
     mutationFn: deleteRating,
     onSuccess: () => {
       queryClient.invalidateQueries();
+      router.back();
     },
   });
 
@@ -98,7 +101,7 @@ export default function RatingModal() {
         },
         {
           text: "Remove",
-          onPress: async () => deleteRatingMutation({ match_id, userId }),
+          onPress: async () => deleteRatingMutation({ match_id, uid }),
         },
       ]
     );
@@ -107,14 +110,16 @@ export default function RatingModal() {
   useEffect(() => {
     if (userRating) {
       setShowPicker(false);
+      setRating(userRating.rating);
     } else {
       setShowPicker(true);
+      setRating(2);
     }
   }, [userRating]);
 
   function cancelEdit() {
     setShowPicker(false);
-    setRating(2);
+    setRating(userRating.rating || 2);
   }
 
   if (matchInfoPending) {
@@ -136,6 +141,7 @@ export default function RatingModal() {
   return (
     <View style={tw`flex-1 items-center justify-center bg-black`}>
       <View style={tw`w-4/5`}>
+        <Text style={tw`text-gold pb-3`}>{matchInfo.championships}</Text>
         <Text style={tw`text-white text-xl pb-3`}>
           {matchInfo.participants}
         </Text>
@@ -195,7 +201,7 @@ export default function RatingModal() {
           <Pressable
             disabled={addRatingPending}
             onPress={async () => {
-              await addRatingMutation({ matchId: match_id, userId, rating });
+              await addRatingMutation({ matchId: match_id, uid, rating });
             }}
             style={tw`bg-blue w-1/3 h-14 items-center justify-center rounded-md`}
           >

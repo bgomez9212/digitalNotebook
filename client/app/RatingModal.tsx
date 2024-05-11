@@ -1,6 +1,6 @@
 import { View, Text, ActivityIndicator, Pressable, Alert } from "react-native";
 import { Picker } from "@react-native-picker/picker";
-import { useLocalSearchParams } from "expo-router";
+import { router, useLocalSearchParams } from "expo-router";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import axios from "axios";
 import tw from "../tailwind";
@@ -66,6 +66,7 @@ export default function RatingModal() {
       onSuccess: () => {
         queryClient.invalidateQueries();
         setRating(userRating.rating || 2);
+        router.back();
       },
     });
 
@@ -85,6 +86,7 @@ export default function RatingModal() {
     mutationFn: deleteRating,
     onSuccess: () => {
       queryClient.invalidateQueries();
+      router.back();
     },
   });
 

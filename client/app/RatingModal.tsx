@@ -65,7 +65,7 @@ export default function RatingModal() {
       mutationFn: addRating,
       onSuccess: () => {
         queryClient.invalidateQueries();
-        setRating(2);
+        setRating(userRating.rating || 2);
       },
     });
 
@@ -73,7 +73,7 @@ export default function RatingModal() {
     await axios
       .delete(`${process.env.API_DELETE_RATING}`, {
         params: {
-          user_id: ratingInfo.userId,
+          user_id: ratingInfo.uid,
           match_id: ratingInfo.match_id,
         },
       })
@@ -108,14 +108,16 @@ export default function RatingModal() {
   useEffect(() => {
     if (userRating) {
       setShowPicker(false);
+      setRating(userRating.rating);
     } else {
       setShowPicker(true);
+      setRating(2);
     }
   }, [userRating]);
 
   function cancelEdit() {
     setShowPicker(false);
-    setRating(2);
+    setRating(userRating.rating || 2);
   }
 
   if (matchInfoPending) {

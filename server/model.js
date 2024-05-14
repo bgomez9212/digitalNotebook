@@ -294,7 +294,7 @@ module.exports = {
           `SELECT
           participants.match_id AS match_id,
           matches.event_id AS event_id,
-          events.title AS event_title,
+          CONCAT(promotions.name, ' ', events.title) AS event_title,
           TO_CHAR(events.date, 'YYYY-MM-DD') AS date,
           wrestlers.name AS wrestler_name,
           participants.team AS participants,
@@ -308,6 +308,7 @@ module.exports = {
           LEFT OUTER JOIN championships ON championships.id = matches_championships.championship_id
           LEFT OUTER JOIN ratings ON ratings.match_id = participants.match_id
           LEFT OUTER JOIN events ON matches.event_id = events.id
+          LEFT OUTER JOIN promotions ON promotions.id = events.promotion_id
           WHERE matches.id = ANY(
             SELECT match_id FROM (
               SELECT matches.id AS match_id
@@ -319,7 +320,7 @@ module.exports = {
             GROUP BY match_id
             HAVING COUNT(match_id) >= $2
           )
-          GROUP BY participants.match_id, matches.event_id, wrestlers.name, participants.team, championships.name, rating_count, events.title, events.date
+          GROUP BY participants.match_id, matches.event_id, wrestlers.name, participants.team, championships.name, rating_count, events.title, events.date, promotions.name
           ORDER BY date DESC, match_id, team;`,
           [wrestlersArr, wrestlersArr.length]
         );

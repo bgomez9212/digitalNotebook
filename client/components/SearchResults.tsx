@@ -1,4 +1,4 @@
-import { ScrollView, Text } from "react-native";
+import { FlatList, Text, View } from "react-native";
 import tw from "../tailwind";
 import EventRow from "./EventRow";
 import MatchRow from "./MatchRow";
@@ -9,23 +9,25 @@ export default function SearchResults({ data }) {
   }
   if (!data.results.length) {
     return (
-      <ScrollView>
+      <View>
         <Text style={tw`text-white`}>No results</Text>
-      </ScrollView>
+      </View>
     );
   }
   if (data.results.length && data.search_param === "events") {
     return (
-      <ScrollView style={tw`w-9.5/10`}>
-        {data.results.map((result, i) => (
+      <FlatList
+        style={tw`w-9.5/10`}
+        data={data.results}
+        keyExtractor={(item) => item.id}
+        renderItem={({ item, index }) => (
           <EventRow
-            key={result.id}
-            event={result}
-            hideBorder={data.results.length - 1 === i}
+            event={item}
+            hideBorder={data.results.length - 1 === index}
             display="Search"
           />
-        ))}
-      </ScrollView>
+        )}
+      />
     );
   }
   if (
@@ -33,16 +35,19 @@ export default function SearchResults({ data }) {
     (data.search_param === "championships" || data.search_param === "matches")
   ) {
     return (
-      <ScrollView style={tw`w-9.5/10`} showsVerticalScrollIndicator={false}>
-        {data.results.map((result, i) => (
+      <FlatList
+        style={tw`w-9.5/10`}
+        showsVerticalScrollIndicator={false}
+        data={data.results}
+        keyExtractor={(item) => item.match_id}
+        renderItem={({ item, index }) => (
           <MatchRow
-            key={result.match_id}
-            match={result}
+            match={item}
             display="Search"
-            hideBottomBorder={i === data.results.length - 1}
+            hideBottomBorder={data.results.length - 1 === index}
           />
-        ))}
-      </ScrollView>
+        )}
+      />
     );
   }
 }

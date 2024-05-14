@@ -1,4 +1,11 @@
-import { Alert, Pressable, ScrollView, Text, View } from "react-native";
+import {
+  Alert,
+  FlatList,
+  Pressable,
+  ScrollView,
+  Text,
+  View,
+} from "react-native";
 import tw from "../../tailwind";
 import { signOut } from "firebase/auth";
 import { useQuery } from "@tanstack/react-query";
@@ -129,7 +136,7 @@ export default function Profile() {
         />
 
         {userRatings?.length ? (
-          <View style={tw`flex-row w-9/10`}>
+          <View style={tw`flex-row w-9/10 mb-10`}>
             {pieChartData.map((promotion, i) => (
               <View
                 key={promotion.promotionName}
@@ -176,6 +183,17 @@ export default function Profile() {
             ))
           )}
         </ScrollView>
+        {/* <FlatList
+          style={tw`w-9/10 h-[140] bg-darkGrey`}
+          data={userRatings}
+          renderItem={({ item, index }) => (
+            <MatchRow
+              match={item}
+              display="Search"
+              hideBottomBorder={userRatings.length - 1 === index}
+            />
+          )}
+        /> */}
       </View>
     </ScrollView>
   );

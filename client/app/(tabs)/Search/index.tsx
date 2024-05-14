@@ -1,4 +1,4 @@
-import { Pressable, ScrollView, Text, TextInput, View } from "react-native";
+import { Pressable, Text, TextInput, View } from "react-native";
 import tw from "../../../tailwind";
 import DropdownComponent from "../../../components/DropDown";
 import { useState } from "react";

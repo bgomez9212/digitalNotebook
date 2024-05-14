@@ -1,4 +1,4 @@
-import { View, Text, ScrollView } from "react-native";
+import { View, FlatList, Text } from "react-native";
 import tw from "../../../tailwind";
 import { useLocalSearchParams } from "expo-router";
 import { useQuery } from "@tanstack/react-query";
@@ -31,24 +31,36 @@ export default function Promotions() {
 
   if (isFetching) {
     return (
-      <View style={tw`flex-1 bg-darkGrey items-center justify-center`}>
+      <View style={tw`flex-1 bg-darkGrey justify-center items-center`}>
         <ActivityIndicator color="#477CB9" />
+      </View>
+    );
+  }
+  if (isError) {
+    return (
+      <View style={tw`flex-1 bg-darkGrey justify-center items-center`}>
+        <Text style={tw`text-white`}>There seems to be a problem</Text>
       </View>
     );
   }
 
   return (
     <View style={tw`flex-1 bg-darkGrey items-center`}>
-      <ScrollView style={tw`w-9.5/10`}>
-        {events.results.map((event, i) => (
-          <EventRow
-            event={event}
-            hideBorder={events.length - 1 === i}
-            key={event.id}
-            display="Search"
-          />
-        ))}
-      </ScrollView>
+      <FlatList
+        style={tw`w-9.5/10`}
+        data={events.results}
+        renderItem={({ item, index }) => {
+          return (
+            <EventRow
+              event={item}
+              hideBorder={events.length - 1 === index}
+              display="Search"
+            />
+          );
+        }}
+        keyExtractor={(item) => item.id}
+        showsVerticalScrollIndicator={false}
+      />
     </View>
   );
 }

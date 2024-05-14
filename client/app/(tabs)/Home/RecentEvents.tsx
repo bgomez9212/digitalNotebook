@@ -1,6 +1,6 @@
 import { useQuery } from "@tanstack/react-query";
 import axios from "axios";
-import { View, Text, ScrollView } from "react-native";
+import { View, Text, FlatList } from "react-native";
 import tw from "../../../tailwind";
 import EventRow from "../../../components/EventRow";
 import { ActivityIndicator } from "react-native-paper";
@@ -36,16 +36,19 @@ export default function RecentEvents() {
   }
   return (
     <View style={tw`bg-darkGrey items-center`}>
-      <ScrollView style={tw`w-9/10`}>
-        {events.map((event, i) => (
+      <FlatList
+        style={tw`w-9.5/10`}
+        data={events}
+        renderItem={({ item, index }) => (
           <EventRow
-            event={event}
-            hideBorder={events.length - 1 === i}
-            key={event.id}
+            event={item}
+            hideBorder={events.length - 1 === index}
             display="Search"
           />
-        ))}
-      </ScrollView>
+        )}
+        keyExtractor={(item) => item.id}
+        showsVerticalScrollIndicator={false}
+      />
     </View>
   );
 }

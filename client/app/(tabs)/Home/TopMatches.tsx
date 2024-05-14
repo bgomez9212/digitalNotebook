@@ -1,6 +1,6 @@
 import { useQuery } from "@tanstack/react-query";
 import axios from "axios";
-import { ScrollView, Text, View } from "react-native";
+import { FlatList, Text, View } from "react-native";
 import tw from "../../../tailwind";
 import MatchRow from "../../../components/MatchRow";
 import { ActivityIndicator } from "react-native-paper";
@@ -40,16 +40,18 @@ export default function TopMatches() {
 
   return (
     <View style={tw`flex-1 bg-darkGrey items-center`}>
-      <ScrollView style={tw`w-9.5/10`}>
-        {matches.map((match, i) => (
+      <FlatList
+        style={tw`w-9.5/10`}
+        data={matches}
+        renderItem={({ item, index }) => (
           <MatchRow
-            key={match.match_id}
-            match={match}
+            match={item}
             display="Search"
-            hideBottomBorder={matches.length - 1 === i}
+            hideBottomBorder={matches.length - 1 === index}
           />
-        ))}
-      </ScrollView>
+        )}
+        keyExtractor={(item) => item.match_id}
+      />
     </View>
   );
 }

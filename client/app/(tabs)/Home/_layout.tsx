@@ -1,7 +1,11 @@
 import { Stack, useGlobalSearchParams } from "expo-router";
 const blue = "#477CB9";
 export default function Layout() {
-  const { eventName } = useGlobalSearchParams() as { eventName: string };
+  const { eventName, promotion_name } = useGlobalSearchParams() as {
+    eventName: string;
+    promotion_name: string;
+  };
+  // const { promotion_name } = useLocalSearchParams();
   return (
     <Stack>
       <Stack.Screen
@@ -42,7 +46,7 @@ export default function Layout() {
       <Stack.Screen
         name="Promotions"
         options={{
-          title: "Promotions",
+          title: promotion_name,
           headerStyle: { backgroundColor: blue },
           headerTitleStyle: { color: "white" },
           headerTintColor: "white",

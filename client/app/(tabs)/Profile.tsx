@@ -136,7 +136,7 @@ export default function Profile() {
         />
 
         {userRatings?.length ? (
-          <View style={tw`flex-row w-9/10`}>
+          <View style={tw`flex-row w-9/10 mb-10`}>
             {pieChartData.map((promotion, i) => (
               <View
                 key={promotion.promotionName}

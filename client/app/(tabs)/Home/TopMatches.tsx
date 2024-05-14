@@ -1,6 +1,6 @@
 import { useQuery } from "@tanstack/react-query";
 import axios from "axios";
-import { FlatList, ScrollView, Text, View } from "react-native";
+import { FlatList, Text, View } from "react-native";
 import tw from "../../../tailwind";
 import MatchRow from "../../../components/MatchRow";
 import { ActivityIndicator } from "react-native-paper";

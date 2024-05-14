@@ -37,6 +37,7 @@ export default function RecentEvents() {
   return (
     <View style={tw`bg-darkGrey items-center`}>
       <FlatList
+        style={tw`w-9.5/10`}
         data={events}
         renderItem={({ item, index }) => (
           <EventRow
@@ -46,6 +47,7 @@ export default function RecentEvents() {
           />
         )}
         keyExtractor={(item) => item.id}
+        showsVerticalScrollIndicator={false}
       />
     </View>
   );

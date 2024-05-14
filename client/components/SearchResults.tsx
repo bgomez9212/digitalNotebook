@@ -1,4 +1,4 @@
-import { FlatList, ScrollView, Text, View } from "react-native";
+import { FlatList, Text, View } from "react-native";
 import tw from "../tailwind";
 import EventRow from "./EventRow";
 import MatchRow from "./MatchRow";

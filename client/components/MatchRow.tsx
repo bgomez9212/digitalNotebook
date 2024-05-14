@@ -3,7 +3,6 @@ import { TouchableOpacity, View, Text } from "react-native";
 import tw from "../tailwind";
 import StarView from "./StarView";
 import axios from "axios";
-import AuthContext from "../Context/authContext";
 import { useQuery } from "@tanstack/react-query";
 import { Match } from "../types/types";
 import { getAuth } from "firebase/auth";

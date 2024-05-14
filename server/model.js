@@ -138,10 +138,10 @@ module.exports = {
         SELECT
           matches.id AS match_id,
           matches.event_id AS event_id,
-          events.title AS event_title,
           TO_CHAR(events.date, 'YYYY-MM-DD') AS date,
           participants.team AS participants,
           wrestlers.name AS wrestler_name,
+          CONCAT(promotions.name, ' ', events.title) AS event_title,
           ROUND(AVG(ratings.rating)::numeric, 2) AS rating,
           (SELECT COUNT(*) FROM ratings WHERE ratings.match_id = matches.id) AS rating_count,
           championships.name AS championship_name
@@ -151,6 +151,7 @@ module.exports = {
         LEFT OUTER JOIN ratings ON matches.id = ratings.match_id
         LEFT OUTER JOIN matches_championships ON matches_championships.match_id = matches.id
         LEFT OUTER JOIN events ON events.id = matches.event_id
+        LEFT OUTER JOIN promotions ON events.promotion_id = promotions.id
         LEFT OUTER JOIN championships ON matches_championships.championship_id = championships.id
           WHERE matches.id IN (
             SELECT matches.id FROM matches
@@ -163,7 +164,7 @@ module.exports = {
             ORDER BY (AVG(ratings.rating)) DESC, events.date DESC
             LIMIT $2
           )
-        GROUP BY matches.id, participants.team, wrestlers.name, championship_name, participants.match_id, events.title, events.date
+        GROUP BY matches.id, participants.team, wrestlers.name, championship_name, participants.match_id, events.title, events.date, promotions.name
         ORDER BY rating DESC, participants.match_id, team;
         `,
         [lastMonth, numOfMatches]
@@ -254,7 +255,7 @@ module.exports = {
           `SELECT
           participants.match_id AS match_id,
           matches.event_id AS event_id,
-          events.title AS event_title,
+          CONCAT(promotions.name, ' ', events.title) AS event_title,
           TO_CHAR(events.date, 'YYYY-MM-DD') AS date,
           wrestlers.name AS wrestler_name,
           participants.team AS participants,
@@ -268,12 +269,13 @@ module.exports = {
           LEFT OUTER JOIN championships ON championships.id = matches_championships.championship_id
           LEFT OUTER JOIN ratings ON ratings.match_id = participants.match_id
           LEFT OUTER JOIN events ON matches.event_id = events.id
+          LEFT OUTER JOIN promotions ON promotions.id = events.promotion_id
           WHERE matches.id = ANY(
             SELECT match_id FROM matches_championships WHERE championship_id = ANY(
               SELECT id FROM championships WHERE name ILIKE '%' || $1 || '%'
               )
             )
-          GROUP BY participants.match_id, matches.event_id, wrestlers.name, participants.team, championships.name, rating_count, events.title, events.date
+          GROUP BY participants.match_id, matches.event_id, wrestlers.name, participants.team, championships.name, rating_count, events.title, events.date, promotions.name
           ORDER BY date DESC, match_id, team;`,
           [search_text]
         );

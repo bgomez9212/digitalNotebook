@@ -1,12 +1,5 @@
-import { useGlobalSearchParams, useLocalSearchParams } from "expo-router";
-import {
-  FlatList,
-  Image,
-  SafeAreaView,
-  ScrollView,
-  Text,
-  View,
-} from "react-native";
+import { useLocalSearchParams } from "expo-router";
+import { FlatList, Image, SafeAreaView, Text, View } from "react-native";
 import tw from "../../../tailwind";
 import { useQuery } from "@tanstack/react-query";
 import axios from "axios";

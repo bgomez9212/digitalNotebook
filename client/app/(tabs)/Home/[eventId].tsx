@@ -69,7 +69,7 @@ export default function EventPage() {
 
   return (
     <SafeAreaView style={tw`flex-1`}>
-      <View style={tw`bg-darkGrey`}>
+      <View style={tw`bg-darkGrey flex-1`}>
         <FlatList
           style={tw`px-3`}
           ListHeaderComponent={eventHeader}

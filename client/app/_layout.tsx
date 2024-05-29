@@ -27,6 +27,16 @@ export default function Layout() {
             headerShown: true,
           }}
         />
+        <Stack.Screen
+          name="ResetPasswordModal"
+          options={{
+            presentation: "modal",
+            title: "Reset Password",
+            headerStyle: { backgroundColor: blue },
+            headerTitleStyle: { color: "white" },
+            headerShown: true,
+          }}
+        />
       </Stack>
     </QueryClientProvider>
   );

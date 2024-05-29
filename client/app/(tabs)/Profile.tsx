@@ -1,11 +1,4 @@
-import {
-  Alert,
-  FlatList,
-  Pressable,
-  ScrollView,
-  Text,
-  View,
-} from "react-native";
+import { Alert, Pressable, ScrollView, Text, View } from "react-native";
 import tw from "../../tailwind";
 import { signOut } from "firebase/auth";
 import { useQuery } from "@tanstack/react-query";
@@ -45,6 +38,7 @@ export default function Profile() {
       { text: "Sign Out", onPress: appSignOut },
     ]);
   }
+
   function appSignOut() {
     signOut(auth);
     router.replace("../../");

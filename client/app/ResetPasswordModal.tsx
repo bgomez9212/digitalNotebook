@@ -5,14 +5,20 @@ import { useState } from "react";
 import LandingButton from "../components/LandingButton";
 import LandingLink from "../components/LandingLink";
 import { router } from "expo-router";
+import { ActivityIndicator } from "react-native-paper";
 
 export default function ResetPasswordModal() {
   const auth = getAuth();
   const [email, setEmail] = useState(null);
+  const [uiState, setUiState] = useState({
+    loading: false,
+    success: false,
+  });
 
   async function resetPassword() {
+    setUiState({ ...uiState, loading: true });
     await sendPasswordResetEmail(auth, email)
-      .then(() => console.log("success"))
+      .then(() => setUiState({ loading: false, success: true }))
       .catch((err) => console.log(err));
   }
   return (
@@ -24,11 +30,19 @@ export default function ResetPasswordModal() {
         onChangeText={(text) => setEmail(text)}
         placeholder="email"
       />
-      <LandingButton
-        fn={resetPassword}
-        text={"Reset Password"}
-        disabled={false}
-      />
+      {uiState.loading ? (
+        <View
+          style={tw`bg-blue w-60 flex items-center justify-center p-1.6 mb-2 rounded`}
+        >
+          <ActivityIndicator color="white" />
+        </View>
+      ) : (
+        <LandingButton
+          fn={resetPassword}
+          text={"Reset Password"}
+          disabled={false}
+        />
+      )}
       <LandingLink fn={() => router.back()} text={"cancel"} />
     </View>
   );

@@ -56,9 +56,10 @@ export default function Profile() {
 
   const pieChartColors = {
     AEW: "#C5AB57",
-    NJPW: "#FF0033",
-    WWE: "#E5E4E2",
+    NJPW: "#F70E05",
+    WWE: "#737474",
     CMLL: "#003f91",
+    NOAH: "#049B3C",
   };
 
   function getPieChartData(data) {
@@ -130,16 +131,16 @@ export default function Profile() {
         />
 
         {userRatings?.length ? (
-          <View style={tw`flex-row w-9/10 mb-10`}>
+          <View style={tw`flex-row w-9/10 mb-10 flex-wrap justify-between`}>
             {pieChartData.map((promotion, i) => (
               <View
                 key={promotion.promotionName}
-                style={tw`flex-row items-center ${i === 0 ? "" : "ml-4"}`}
+                style={tw`flex-row items-center mb-2`}
               >
+                <View style={tw`h-3 w-3 bg-[${promotion.color}] mr-1`}></View>
                 <Text style={tw`text-white`} key={promotion.promotionName}>
                   {`${promotion.promotionName} (${promotion.matchCount})`}
                 </Text>
-                <View style={tw`h-3 w-3 bg-[${promotion.color}] ml-1`}></View>
               </View>
             ))}
           </View>

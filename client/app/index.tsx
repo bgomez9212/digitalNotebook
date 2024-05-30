@@ -18,6 +18,7 @@ import { useState } from "react";
 import LandingButton from "../components/LandingButton";
 import tw from "../tailwind";
 import LandingLink from "../components/LandingLink";
+import { router } from "expo-router";
 
 export default function Landing() {
   const firebaseAuth = auth;
@@ -163,6 +164,10 @@ export default function Landing() {
               <LandingLink
                 fn={() => setUiState({ ...uiState, displaySignup: true })}
                 text={"sign up"}
+              />
+              <LandingLink
+                fn={() => router.navigate("./ResetPasswordModal")}
+                text={"forgot password?"}
               />
             </View>
           )}

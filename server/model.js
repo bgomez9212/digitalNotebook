@@ -241,7 +241,8 @@ module.exports = {
             FROM events
             JOIN venues ON events.venue_id = venues.id
             JOIN promotions ON events.promotion_id = promotions.id
-            WHERE promotions.name ILIKE $1`,
+          WHERE promotions.name ILIKE $1
+          ORDER BY date DESC`,
           [search_text]
         );
         const data = { search_param: search_param, results: events };

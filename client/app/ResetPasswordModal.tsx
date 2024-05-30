@@ -51,19 +51,12 @@ export default function ResetPasswordModal() {
                 onChangeText={(text) => setEmail(text)}
                 placeholder="email"
               />
-              {uiState.loading ? (
-                <View
-                  style={tw`bg-blue w-60 flex items-center justify-center p-1.6 mb-2 rounded`}
-                >
-                  <ActivityIndicator color="white" />
-                </View>
-              ) : (
-                <LandingButton
-                  fn={resetPassword}
-                  text={"Reset Password"}
-                  disabled={false}
-                />
-              )}
+              <LandingButton
+                fn={resetPassword}
+                text={"Reset Password"}
+                disabled={false}
+                loading={uiState.loading}
+              />
               <LandingLink fn={() => router.back()} text={"cancel"} />
             </View>
           )}

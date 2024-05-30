@@ -119,6 +119,7 @@ export default function Landing() {
                 }
                 fn={signup}
                 text={"SIGN UP"}
+                loading={false}
               />
               {uiState.signUpError && (
                 <Text style={tw`text-red my-3 text-base`}>
@@ -151,15 +152,13 @@ export default function Landing() {
                 }
                 placeholder="password"
               />
-              {uiState.loading ? (
-                <View
-                  style={tw`bg-blue w-60 flex items-center justify-center p-1.6 mb-2 rounded`}
-                >
-                  <ActivityIndicator color="white" />
-                </View>
-              ) : (
-                <LandingButton disabled={false} fn={login} text={"LOGIN"} />
-              )}
+
+              <LandingButton
+                disabled={false}
+                fn={login}
+                text={"LOGIN"}
+                loading={uiState.loading}
+              />
               {uiState.loginError && (
                 <Text style={tw`text-red my-3 text-base`}>
                   Incorrect email or password

@@ -18,6 +18,10 @@ export default function EventRow({
       params: { eventName: event.title },
     });
   }
+  function formatImg(promotionName: string) {
+    const containPromotions = ["WWE", "AEW"];
+    return containPromotions.includes(promotionName) ? "contain" : "cover";
+  }
   return (
     <TouchableOpacity
       onPress={openEvent}
@@ -34,7 +38,7 @@ export default function EventRow({
               flex: 1,
               width: undefined,
               height: undefined,
-              resizeMode: "contain",
+              resizeMode: `${formatImg(event.promotion_name)}`,
             }}
             source={photoLibrary[event.promotion_name]}
           />

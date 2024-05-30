@@ -2,7 +2,6 @@ import {
   View,
   Image,
   TextInput,
-  ActivityIndicator,
   KeyboardAvoidingView,
   TouchableWithoutFeedback,
   Platform,
@@ -19,6 +18,7 @@ import LandingButton from "../components/LandingButton";
 import tw from "../tailwind";
 import LandingLink from "../components/LandingLink";
 import { router } from "expo-router";
+import { ActivityIndicator } from "react-native-paper";
 
 export default function Landing() {
   const firebaseAuth = auth;
@@ -119,6 +119,7 @@ export default function Landing() {
                 }
                 fn={signup}
                 text={"SIGN UP"}
+                loading={false}
               />
               {uiState.signUpError && (
                 <Text style={tw`text-red my-3 text-base`}>
@@ -151,11 +152,13 @@ export default function Landing() {
                 }
                 placeholder="password"
               />
-              {uiState.loading ? (
-                <ActivityIndicator style={tw`p-2`}></ActivityIndicator>
-              ) : (
-                <LandingButton disabled={false} fn={login} text={"LOGIN"} />
-              )}
+
+              <LandingButton
+                disabled={false}
+                fn={login}
+                text={"LOGIN"}
+                loading={uiState.loading}
+              />
               {uiState.loginError && (
                 <Text style={tw`text-red my-3 text-base`}>
                   Incorrect email or password

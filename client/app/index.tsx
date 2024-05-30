@@ -2,7 +2,6 @@ import {
   View,
   Image,
   TextInput,
-  ActivityIndicator,
   KeyboardAvoidingView,
   TouchableWithoutFeedback,
   Platform,
@@ -19,6 +18,7 @@ import LandingButton from "../components/LandingButton";
 import tw from "../tailwind";
 import LandingLink from "../components/LandingLink";
 import { router } from "expo-router";
+import { ActivityIndicator } from "react-native-paper";
 
 export default function Landing() {
   const firebaseAuth = auth;
@@ -152,7 +152,11 @@ export default function Landing() {
                 placeholder="password"
               />
               {uiState.loading ? (
-                <ActivityIndicator style={tw`p-2`}></ActivityIndicator>
+                <View
+                  style={tw`bg-blue w-60 flex items-center justify-center p-1.6 mb-2 rounded`}
+                >
+                  <ActivityIndicator color="white" />
+                </View>
               ) : (
                 <LandingButton disabled={false} fn={login} text={"LOGIN"} />
               )}

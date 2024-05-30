@@ -54,7 +54,7 @@ export default function Profile() {
         </Pressable>
       </View>
       {isFetching ? (
-        <ActivityIndicator />
+        <ActivityIndicator color="#477CB9" />
       ) : isError ? (
         <Text style={tw`text-white`}>There seems to be an error</Text>
       ) : (

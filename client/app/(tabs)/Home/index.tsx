@@ -3,7 +3,7 @@ import tw from "../../../tailwind";
 import RecentMatchTable from "../../../components/RecentEventsTable";
 import TopRatedMatchesTable from "../../../components/TopRatedMatchesTable";
 import PromotionsButtonsContainer from "../../../components/PromotionsButtonContainer";
-import { useCallback, useState } from "react";
+import { useCallback } from "react";
 import { useQueryClient } from "@tanstack/react-query";
 
 export default function Home() {

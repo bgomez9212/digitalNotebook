@@ -12,16 +12,18 @@ import { auth } from "../firebase";
 import {
   createUserWithEmailAndPassword,
   signInWithEmailAndPassword,
+  updateProfile,
+  getAuth,
 } from "firebase/auth";
 import { useState } from "react";
 import LandingButton from "../components/LandingButton";
 import tw from "../tailwind";
 import LandingLink from "../components/LandingLink";
 import { router } from "expo-router";
-import { ActivityIndicator } from "react-native-paper";
 
 export default function Landing() {
   const firebaseAuth = auth;
+  const fbAuth = getAuth();
   const [uiState, setUiState] = useState({
     displaySignup: false,
     loading: false,
@@ -32,6 +34,7 @@ export default function Landing() {
     email: "",
     password: "",
     confirmPassword: "",
+    username: "",
   });
 
   async function signup() {
@@ -42,6 +45,10 @@ export default function Landing() {
         credentials.email,
         credentials.password
       );
+      // create display name
+      await updateProfile(fbAuth.currentUser, {
+        displayName: credentials.username,
+      });
       // Sign in the user after successful signup
       await signInWithEmailAndPassword(
         firebaseAuth,
@@ -61,7 +68,11 @@ export default function Landing() {
         credentials.email,
         credentials.password
       );
-      setCredentials({ email: "", password: "", confirmPassword: "" });
+      setCredentials({
+        ...credentials,
+        email: "",
+        password: "",
+      });
     } catch (err) {
       setUiState({ ...uiState, loginError: true });
     }
@@ -83,6 +94,15 @@ export default function Landing() {
           </View>
           {uiState.displaySignup ? (
             <View style={tw`items-center justify-start flex-2`}>
+              <TextInput
+                style={tw`w-60 bg-white h-10 p-4 mb-2 rounded p-3`}
+                textContentType="username"
+                autoCapitalize="none"
+                onChangeText={(text) =>
+                  setCredentials({ ...credentials, username: text })
+                }
+                placeholder="username"
+              />
               <TextInput
                 style={tw`w-60 bg-white h-10 p-4 mb-2 rounded p-3`}
                 textContentType="emailAddress"
@@ -119,7 +139,7 @@ export default function Landing() {
                 }
                 fn={signup}
                 text={"SIGN UP"}
-                loading={false}
+                loading={uiState.loading}
               />
               {uiState.signUpError && (
                 <Text style={tw`text-red my-3 text-base`}>

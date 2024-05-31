@@ -1,7 +1,9 @@
 import {
+  Alert,
   Keyboard,
   KeyboardAvoidingView,
   Platform,
+  Pressable,
   Text,
   TextInput,
   TouchableOpacity,
@@ -9,13 +11,26 @@ import {
   View,
 } from "react-native";
 import tw from "../tailwind";
-import { getAuth, updateProfile } from "firebase/auth";
+import { getAuth, signOut, updateProfile } from "firebase/auth";
 import { useState } from "react";
 import LandingButton from "../components/LandingButton";
+import { useNavigation } from "expo-router";
+
+// Was getting an error in navigation method in signout
+type RootStackParamList = {
+  index: undefined;
+};
+
+declare global {
+  namespace ReactNavigation {
+    interface RootParamList extends RootStackParamList {}
+  }
+}
 
 export default function UserInformationModal() {
   const auth = getAuth();
   const user = auth.currentUser;
+  const navigation = useNavigation();
   const [uiState, setUiState] = useState({
     showChangeEmail: false,
     showChangeUsername: false,
@@ -35,6 +50,25 @@ export default function UserInformationModal() {
       setInputValues({ ...inputValues, username: "", confirmUsername: "" });
     });
   }
+
+  function displayAlert() {
+    Alert.alert("Are you sure you want to sign out?", "", [
+      {
+        text: "Cancel",
+        style: "cancel",
+      },
+      { text: "Sign Out", onPress: appSignOut },
+    ]);
+  }
+
+  function appSignOut() {
+    signOut(auth);
+    navigation.reset({
+      index: 0,
+      routes: [{ name: "index" }],
+    });
+  }
+
   return (
     <KeyboardAvoidingView
       behavior={Platform.OS === "ios" ? "padding" : "height"}
@@ -126,6 +160,12 @@ export default function UserInformationModal() {
               </View>
             )}
           </View>
+          <Pressable
+            style={tw`h-15 w-30 bg-blue flex justify-center items-center rounded-xl my-5`}
+            onPress={displayAlert}
+          >
+            <Text style={tw`text-white text-lg`}>Sign Out</Text>
+          </Pressable>
         </View>
       </TouchableWithoutFeedback>
     </KeyboardAvoidingView>

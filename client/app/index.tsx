@@ -101,6 +101,7 @@ export default function Landing() {
                 onChangeText={(text) =>
                   setCredentials({ ...credentials, username: text })
                 }
+                value={credentials.username}
                 placeholder="username"
               />
               <TextInput
@@ -110,6 +111,7 @@ export default function Landing() {
                 onChangeText={(text) =>
                   setCredentials({ ...credentials, email: text })
                 }
+                value={credentials.email}
                 placeholder="email"
               />
               <TextInput
@@ -120,6 +122,7 @@ export default function Landing() {
                 onChangeText={(text) =>
                   setCredentials({ ...credentials, password: text })
                 }
+                value={credentials.password}
                 placeholder="password"
               />
               <TextInput
@@ -130,6 +133,7 @@ export default function Landing() {
                 onChangeText={(text) =>
                   setCredentials({ ...credentials, confirmPassword: text })
                 }
+                value={credentials.confirmPassword}
                 placeholder="confirm password"
               />
               <LandingButton
@@ -160,6 +164,7 @@ export default function Landing() {
                 onChangeText={(text) =>
                   setCredentials({ ...credentials, email: text })
                 }
+                value={credentials.email}
                 placeholder="email"
               />
               <TextInput
@@ -170,6 +175,7 @@ export default function Landing() {
                 onChangeText={(text) =>
                   setCredentials({ ...credentials, password: text })
                 }
+                value={credentials.password}
                 placeholder="password"
               />
 

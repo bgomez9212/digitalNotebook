@@ -5,6 +5,7 @@ import TopRatedMatchesTable from "../../../components/TopRatedMatchesTable";
 import PromotionsButtonsContainer from "../../../components/PromotionsButtonContainer";
 import { useCallback } from "react";
 import { useQueryClient } from "@tanstack/react-query";
+import { StatusBar } from "expo-status-bar";
 
 export default function Home() {
   const refreshing = false;
@@ -14,6 +15,7 @@ export default function Home() {
   }, []);
   return (
     <ScrollView style={tw`bg-darkGrey`}>
+      <StatusBar style="light" />
       <RefreshControl
         refreshing={refreshing}
         onRefresh={onRefresh}

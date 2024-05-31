@@ -9,7 +9,7 @@ import {
   View,
 } from "react-native";
 import tw from "../tailwind";
-import { getAuth } from "firebase/auth";
+import { getAuth, updateProfile } from "firebase/auth";
 import { useState } from "react";
 import LandingButton from "../components/LandingButton";
 
@@ -26,6 +26,15 @@ export default function UserInformationModal() {
     username: "",
     confirmUsername: "",
   });
+
+  async function changeUsername() {
+    await updateProfile(user, {
+      displayName: inputValues.username,
+    }).then(() => {
+      setUiState({ ...uiState, showChangeUsername: false });
+      setInputValues({ ...inputValues, username: "", confirmUsername: "" });
+    });
+  }
   return (
     <KeyboardAvoidingView
       behavior={Platform.OS === "ios" ? "padding" : "height"}
@@ -92,19 +101,27 @@ export default function UserInformationModal() {
               <View>
                 <TextInput
                   style={tw`w-60 bg-white h-10 p-4 mb-2 rounded p-3`}
-                  value={inputValues.email}
+                  value={inputValues.username}
                   placeholder="new username"
+                  onChangeText={(text) =>
+                    setInputValues({ ...inputValues, username: text })
+                  }
                 ></TextInput>
                 <TextInput
                   style={tw`w-60 bg-white h-10 p-4 mb-2 rounded p-3`}
-                  value={inputValues.confirmEmail}
+                  value={inputValues.confirmUsername}
                   placeholder="confirm new username"
+                  onChangeText={(text) =>
+                    setInputValues({ ...inputValues, confirmUsername: text })
+                  }
                 ></TextInput>
                 <LandingButton
-                  fn={() => console.log("clicked")}
+                  fn={changeUsername}
                   text={"Change Username"}
                   loading={false}
-                  disabled={false}
+                  disabled={
+                    inputValues.username !== inputValues.confirmUsername
+                  }
                 />
               </View>
             )}

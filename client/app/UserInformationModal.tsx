@@ -1,0 +1,116 @@
+import {
+  Keyboard,
+  KeyboardAvoidingView,
+  Platform,
+  Text,
+  TextInput,
+  TouchableOpacity,
+  TouchableWithoutFeedback,
+  View,
+} from "react-native";
+import tw from "../tailwind";
+import { getAuth } from "firebase/auth";
+import { useState } from "react";
+import LandingButton from "../components/LandingButton";
+
+export default function UserInformationModal() {
+  const auth = getAuth();
+  const user = auth.currentUser;
+  const [uiState, setUiState] = useState({
+    showChangeEmail: false,
+    showChangeUsername: false,
+  });
+  const [inputValues, setInputValues] = useState({
+    email: "",
+    confirmEmail: "",
+    username: "",
+    confirmUsername: "",
+  });
+  return (
+    <KeyboardAvoidingView
+      behavior={Platform.OS === "ios" ? "padding" : "height"}
+      style={{ flex: 1 }}
+    >
+      <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
+        <View style={tw`flex-1 justify-center items-center bg-darkGrey`}>
+          <View style={tw`items-center justify-center w-80`}>
+            <View style={tw`w-full`}>
+              <Text style={tw`text-white text-xl mb-3`}>
+                Email: {user.email}
+              </Text>
+              <TouchableOpacity
+                onPress={() =>
+                  setUiState({
+                    ...uiState,
+                    showChangeEmail: !uiState.showChangeEmail,
+                  })
+                }
+              >
+                <Text style={tw`text-white mb-3 underline text-right`}>
+                  Change Email
+                </Text>
+              </TouchableOpacity>
+            </View>
+            {uiState.showChangeEmail && (
+              <View>
+                <TextInput
+                  style={tw`w-60 bg-white h-10 p-4 mb-2 rounded p-3`}
+                  value={inputValues.email}
+                  placeholder="new email"
+                ></TextInput>
+                <TextInput
+                  style={tw`w-60 bg-white h-10 p-4 mb-2 rounded p-3`}
+                  value={inputValues.confirmEmail}
+                  placeholder="confirm new email"
+                ></TextInput>
+                <LandingButton
+                  fn={() => console.log("clicked")}
+                  text={"Change Email"}
+                  loading={false}
+                  disabled={false}
+                />
+              </View>
+            )}
+            <View style={tw`w-full`}>
+              <Text style={tw`text-white text-xl mb-3`}>
+                Username: {user.displayName}
+              </Text>
+              <TouchableOpacity
+                onPress={() =>
+                  setUiState({
+                    ...uiState,
+                    showChangeUsername: !uiState.showChangeUsername,
+                  })
+                }
+              >
+                <Text style={tw`text-white mb-3 underline text-right`}>
+                  Change Username
+                </Text>
+              </TouchableOpacity>
+            </View>
+            {uiState.showChangeUsername && (
+              <View>
+                <TextInput
+                  style={tw`w-60 bg-white h-10 p-4 mb-2 rounded p-3`}
+                  value={inputValues.email}
+                  placeholder="new username"
+                ></TextInput>
+                <TextInput
+                  style={tw`w-60 bg-white h-10 p-4 mb-2 rounded p-3`}
+                  value={inputValues.confirmEmail}
+                  placeholder="confirm new username"
+                ></TextInput>
+                <LandingButton
+                  fn={() => console.log("clicked")}
+                  text={"Change Username"}
+                  loading={false}
+                  disabled={false}
+                />
+              </View>
+            )}
+          </View>
+        </View>
+      </TouchableWithoutFeedback>
+    </KeyboardAvoidingView>
+  );
+}

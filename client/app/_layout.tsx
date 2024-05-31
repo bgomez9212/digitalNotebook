@@ -37,6 +37,16 @@ export default function Layout() {
             headerShown: true,
           }}
         />
+        <Stack.Screen
+          name="UserInformationModal"
+          options={{
+            presentation: "modal",
+            title: "Edit Info",
+            headerStyle: { backgroundColor: blue },
+            headerTitleStyle: { color: "white" },
+            headerShown: true,
+          }}
+        />
       </Stack>
     </QueryClientProvider>
   );

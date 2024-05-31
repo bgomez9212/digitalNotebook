@@ -1,4 +1,4 @@
-import { Tabs } from "expo-router";
+import { Tabs, router } from "expo-router";
 import { Entypo } from "@expo/vector-icons";
 import { FontAwesome } from "@expo/vector-icons";
 import { Ionicons } from "@expo/vector-icons";
@@ -49,7 +49,7 @@ export default function Layout() {
           headerRight: () => (
             <TouchableOpacity
               style={tw`mr-4`}
-              onPress={() => console.log("clicked gear")}
+              onPress={() => router.navigate("../UserInformationModal")}
             >
               <FontAwesome name="gear" size={24} color="white" />
             </TouchableOpacity>

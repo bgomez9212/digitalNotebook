@@ -11,7 +11,7 @@ import {
   View,
 } from "react-native";
 import tw from "../tailwind";
-import { getAuth, signOut, updateProfile } from "firebase/auth";
+import { getAuth, signOut, updateProfile, deleteUser } from "firebase/auth";
 import { useState } from "react";
 import LandingButton from "../components/LandingButton";
 import { useNavigation } from "expo-router";
@@ -51,7 +51,7 @@ export default function UserInformationModal() {
     });
   }
 
-  function displayAlert() {
+  function displaySignOutAlert() {
     Alert.alert("Are you sure you want to sign out?", "", [
       {
         text: "Cancel",
@@ -61,12 +61,41 @@ export default function UserInformationModal() {
     ]);
   }
 
+  function displayDeleteAlert() {
+    Alert.alert(
+      "Are you sure you want to delete your account?",
+      "This action is irreversible",
+      [
+        {
+          text: "Cancel",
+          style: "cancel",
+        },
+        {
+          text: "Delete Account",
+          onPress: deleteAccount,
+          style: "destructive",
+        },
+      ]
+    );
+  }
+
   function appSignOut() {
     signOut(auth);
     navigation.reset({
       index: 0,
       routes: [{ name: "index" }],
     });
+  }
+
+  async function deleteAccount() {
+    await deleteUser(user)
+      .then(() =>
+        navigation.reset({
+          index: 0,
+          routes: [{ name: "index" }],
+        })
+      )
+      .catch((err) => console.log(err));
   }
 
   return (
@@ -161,10 +190,18 @@ export default function UserInformationModal() {
             )}
           </View>
           <Pressable
-            style={tw`h-15 w-30 bg-blue flex justify-center items-center rounded-xl my-5`}
-            onPress={displayAlert}
+            style={tw`h-15 w-30 bg-blue flex justify-center items-center rounded-xl mt-5`}
+            onPress={displaySignOutAlert}
           >
             <Text style={tw`text-white text-lg`}>Sign Out</Text>
+          </Pressable>
+          <Pressable
+            style={tw`h-15 w-30 bg-red flex justify-center items-center rounded-xl mt-5`}
+            onPress={displayDeleteAlert}
+          >
+            <Text style={tw`text-white text-lg text-center`}>
+              Delete Account
+            </Text>
           </Pressable>
         </View>
       </TouchableWithoutFeedback>

@@ -188,21 +188,23 @@ export default function UserInformationModal() {
                 />
               </View>
             )}
+            <View style={tw`flex-row w-7/8 justify-between`}>
+              <Pressable
+                style={tw`h-15 w-30 bg-blue flex justify-center items-center rounded-xl mt-5`}
+                onPress={displaySignOutAlert}
+              >
+                <Text style={tw`text-white text-lg`}>Sign Out</Text>
+              </Pressable>
+              <Pressable
+                style={tw`h-15 w-30 bg-red flex justify-center items-center rounded-xl mt-5`}
+                onPress={displayDeleteAlert}
+              >
+                <Text style={tw`text-white text-lg text-center`}>
+                  Delete Account
+                </Text>
+              </Pressable>
+            </View>
           </View>
-          <Pressable
-            style={tw`h-15 w-30 bg-blue flex justify-center items-center rounded-xl mt-5`}
-            onPress={displaySignOutAlert}
-          >
-            <Text style={tw`text-white text-lg`}>Sign Out</Text>
-          </Pressable>
-          <Pressable
-            style={tw`h-15 w-30 bg-red flex justify-center items-center rounded-xl mt-5`}
-            onPress={displayDeleteAlert}
-          >
-            <Text style={tw`text-white text-lg text-center`}>
-              Delete Account
-            </Text>
-          </Pressable>
         </View>
       </TouchableWithoutFeedback>
     </KeyboardAvoidingView>

@@ -11,7 +11,15 @@ import {
   View,
 } from "react-native";
 import tw from "../tailwind";
-import { getAuth, signOut, updateProfile, deleteUser } from "firebase/auth";
+import {
+  getAuth,
+  signOut,
+  updateProfile,
+  deleteUser,
+  updateEmail,
+  reauthenticateWithCredential,
+  EmailAuthProvider,
+} from "firebase/auth";
 import { useState } from "react";
 import LandingButton from "../components/LandingButton";
 import { useNavigation } from "expo-router";
@@ -34,21 +42,46 @@ export default function UserInformationModal() {
   const [uiState, setUiState] = useState({
     showChangeEmail: false,
     showChangeUsername: false,
+    usernameError: "",
+    emailError: "",
   });
   const [inputValues, setInputValues] = useState({
     email: "",
     confirmEmail: "",
     username: "",
     confirmUsername: "",
+    currentPassword: "",
   });
 
   async function changeUsername() {
     await updateProfile(user, {
       displayName: inputValues.username,
-    }).then(() => {
-      setUiState({ ...uiState, showChangeUsername: false });
-      setInputValues({ ...inputValues, username: "", confirmUsername: "" });
-    });
+    })
+      .then(() => {
+        setUiState({ ...uiState, showChangeUsername: false });
+        setInputValues({ ...inputValues, username: "", confirmUsername: "" });
+      })
+      .catch((err) => {
+        console.log(err);
+        setUiState({ ...uiState, usernameError: "Error updating username" });
+      });
+  }
+
+  async function changeEmail() {
+    const credential = EmailAuthProvider.credential(
+      user.email,
+      inputValues.currentPassword
+    );
+    await reauthenticateWithCredential(user, credential);
+    await updateEmail(user, inputValues.email)
+      .then(() => {
+        setUiState({ ...uiState, showChangeEmail: false });
+        setInputValues({ ...inputValues, email: "", confirmEmail: "" });
+      })
+      .catch((err) => {
+        console.log(err);
+        setUiState({ ...uiState, emailError: "Error updating your email" });
+      });
   }
 
   function displaySignOutAlert() {
@@ -129,18 +162,42 @@ export default function UserInformationModal() {
                   style={tw`w-60 bg-white h-10 p-4 mb-2 rounded p-3`}
                   value={inputValues.email}
                   placeholder="new email"
-                ></TextInput>
+                  onChangeText={(text) =>
+                    setInputValues({ ...inputValues, email: text })
+                  }
+                  autoCapitalize="none"
+                />
                 <TextInput
                   style={tw`w-60 bg-white h-10 p-4 mb-2 rounded p-3`}
                   value={inputValues.confirmEmail}
                   placeholder="confirm new email"
-                ></TextInput>
+                  onChangeText={(text) =>
+                    setInputValues({ ...inputValues, confirmEmail: text })
+                  }
+                  autoCapitalize="none"
+                />
+                <TextInput
+                  textContentType="password"
+                  secureTextEntry={true}
+                  style={tw`w-60 bg-white h-10 p-4 mb-2 rounded p-3`}
+                  value={inputValues.currentPassword}
+                  placeholder="enter password"
+                  onChangeText={(text) =>
+                    setInputValues({ ...inputValues, currentPassword: text })
+                  }
+                  autoCapitalize="none"
+                />
                 <LandingButton
-                  fn={() => console.log("clicked")}
+                  fn={changeEmail}
                   text={"Change Email"}
                   loading={false}
                   disabled={false}
                 />
+                {uiState.emailError && (
+                  <Text style={tw`text-red text-center`}>
+                    {uiState.emailError}
+                  </Text>
+                )}
               </View>
             )}
             <View style={tw`w-full`}>
@@ -186,6 +243,9 @@ export default function UserInformationModal() {
                     inputValues.username !== inputValues.confirmUsername
                   }
                 />
+                {uiState.usernameError && (
+                  <Text style={tw`text-red`}>{uiState.usernameError}</Text>
+                )}
               </View>
             )}
             <View style={tw`flex-row w-7/8 justify-between`}>

@@ -1,8 +1,8 @@
 import { ScrollView, Text, View } from "react-native";
-import tw from "../../tailwind";
+import tw from "../tailwind";
 import { useQuery } from "@tanstack/react-query";
 import axios from "axios";
-import MatchRow from "../../components/MatchRow";
+import MatchRow from "./MatchRow";
 import { ActivityIndicator } from "react-native-paper";
 import { PieChart } from "react-native-chart-kit";
 import { Dimensions } from "react-native";

@@ -19,6 +19,7 @@ import {
   updateEmail,
   reauthenticateWithCredential,
   EmailAuthProvider,
+  updatePassword,
 } from "firebase/auth";
 import { useState } from "react";
 import LandingButton from "../components/LandingButton";
@@ -42,6 +43,7 @@ export default function UserInformationModal() {
   const [uiState, setUiState] = useState({
     showChangeEmail: false,
     showChangeUsername: false,
+    showChangePassword: false,
     usernameError: "",
     emailError: "",
   });
@@ -51,6 +53,8 @@ export default function UserInformationModal() {
     username: "",
     confirmUsername: "",
     currentPassword: "",
+    newPassword: "",
+    confirmNewPassword: "",
   });
 
   async function changeUsername() {
@@ -67,11 +71,12 @@ export default function UserInformationModal() {
       });
   }
 
+  const credential = EmailAuthProvider.credential(
+    user.email,
+    inputValues.currentPassword
+  );
+
   async function changeEmail() {
-    const credential = EmailAuthProvider.credential(
-      user.email,
-      inputValues.currentPassword
-    );
     await reauthenticateWithCredential(user, credential);
     await updateEmail(user, inputValues.email)
       .then(() => {
@@ -82,6 +87,22 @@ export default function UserInformationModal() {
         console.log(err);
         setUiState({ ...uiState, emailError: "Error updating your email" });
       });
+  }
+
+  async function changePassword() {
+    await reauthenticateWithCredential(user, credential);
+    await updatePassword(user, inputValues.newPassword)
+      .then(() => {
+        console.log("changed");
+        setUiState({ ...uiState, showChangePassword: false });
+        setInputValues({
+          ...inputValues,
+          newPassword: "",
+          currentPassword: "",
+          confirmNewPassword: "",
+        });
+      })
+      .catch((err) => console.log(err));
   }
 
   function displaySignOutAlert() {
@@ -226,7 +247,7 @@ export default function UserInformationModal() {
                   onChangeText={(text) =>
                     setInputValues({ ...inputValues, username: text })
                   }
-                ></TextInput>
+                />
                 <TextInput
                   style={tw`w-60 bg-white h-10 p-4 mb-2 rounded p-3`}
                   value={inputValues.confirmUsername}
@@ -234,7 +255,7 @@ export default function UserInformationModal() {
                   onChangeText={(text) =>
                     setInputValues({ ...inputValues, confirmUsername: text })
                   }
-                ></TextInput>
+                />
                 <LandingButton
                   fn={changeUsername}
                   text={"Change Username"}
@@ -245,6 +266,73 @@ export default function UserInformationModal() {
                 />
                 {uiState.usernameError && (
                   <Text style={tw`text-red`}>{uiState.usernameError}</Text>
+                )}
+              </View>
+            )}
+            <View style={tw`w-full`}>
+              <Text style={tw`text-white text-xl mb-3`}>
+                Password: ********
+              </Text>
+              <TouchableOpacity
+                onPress={() =>
+                  setUiState({
+                    ...uiState,
+                    showChangePassword: !uiState.showChangePassword,
+                  })
+                }
+              >
+                <Text style={tw`text-white mb-3 underline text-right`}>
+                  Change Password
+                </Text>
+              </TouchableOpacity>
+            </View>
+            {uiState.showChangePassword && (
+              <View>
+                <TextInput
+                  style={tw`w-60 bg-white h-10 p-4 mb-2 rounded p-3`}
+                  value={inputValues.currentPassword}
+                  placeholder="current password"
+                  onChangeText={(text) =>
+                    setInputValues({ ...inputValues, currentPassword: text })
+                  }
+                  autoCapitalize="none"
+                  secureTextEntry={true}
+                  textContentType="password"
+                />
+                <TextInput
+                  style={tw`w-60 bg-white h-10 p-4 mb-2 rounded p-3`}
+                  value={inputValues.newPassword}
+                  placeholder="new password"
+                  onChangeText={(text) =>
+                    setInputValues({ ...inputValues, newPassword: text })
+                  }
+                  autoCapitalize="none"
+                  secureTextEntry={true}
+                  textContentType="newPassword"
+                />
+                <TextInput
+                  style={tw`w-60 bg-white h-10 p-4 mb-2 rounded p-3`}
+                  value={inputValues.confirmNewPassword}
+                  placeholder="confirm new password"
+                  onChangeText={(text) =>
+                    setInputValues({ ...inputValues, confirmNewPassword: text })
+                  }
+                  autoCapitalize="none"
+                  secureTextEntry={true}
+                  textContentType="newPassword"
+                />
+                <LandingButton
+                  fn={changePassword}
+                  text={"Change Password"}
+                  loading={false}
+                  disabled={
+                    inputValues.newPassword !== inputValues.confirmNewPassword
+                  }
+                />
+                {uiState.emailError && (
+                  <Text style={tw`text-red text-center`}>
+                    {uiState.emailError}
+                  </Text>
                 )}
               </View>
             )}

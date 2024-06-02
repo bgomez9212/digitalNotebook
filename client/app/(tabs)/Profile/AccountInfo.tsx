@@ -10,7 +10,7 @@ import {
   TouchableWithoutFeedback,
   View,
 } from "react-native";
-import tw from "../tailwind";
+import tw from "../../../tailwind";
 import {
   getAuth,
   signOut,
@@ -22,21 +22,10 @@ import {
   updatePassword,
 } from "firebase/auth";
 import { useState } from "react";
-import LandingButton from "../components/LandingButton";
-import { useNavigation } from "expo-router";
+import LandingButton from "../../../components/LandingButton";
+import { router, useNavigation } from "expo-router";
 
-// Was getting an error in navigation method in signout
-type RootStackParamList = {
-  index: undefined;
-};
-
-declare global {
-  namespace ReactNavigation {
-    interface RootParamList extends RootStackParamList {}
-  }
-}
-
-export default function UserInformationModal() {
+export default function AccountInfo() {
   const auth = getAuth();
   const user = auth.currentUser;
   const navigation = useNavigation();
@@ -135,20 +124,12 @@ export default function UserInformationModal() {
 
   function appSignOut() {
     signOut(auth);
-    navigation.reset({
-      index: 0,
-      routes: [{ name: "index" }],
-    });
+    router.replace("../../");
   }
 
   async function deleteAccount() {
     await deleteUser(user)
-      .then(() =>
-        navigation.reset({
-          index: 0,
-          routes: [{ name: "index" }],
-        })
-      )
+      .then(() => router.replace("../../"))
       .catch((err) => console.log(err));
   }
 

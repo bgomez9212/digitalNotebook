@@ -49,7 +49,7 @@ export default function Layout() {
           headerRight: () => (
             <TouchableOpacity
               style={tw`mr-4`}
-              onPress={() => router.navigate("../UserInformationModal")}
+              onPress={() => router.push(`/(tabs)/Profile/AccountInfo`)}
             >
               <FontAwesome name="gear" size={24} color="white" />
             </TouchableOpacity>

@@ -1,6 +1,6 @@
 import { RefreshControl, ScrollView, View } from "react-native";
 import tw from "../../../tailwind";
-import RecentMatchTable from "../../../components/RecentEventsTable";
+import RecentEventsTable from "../../../components/RecentEventsTable";
 import TopRatedMatchesTable from "../../../components/TopRatedMatchesTable";
 import PromotionsButtonsContainer from "../../../components/PromotionsButtonContainer";
 import { useCallback } from "react";
@@ -22,7 +22,7 @@ export default function Home() {
         tintColor="white"
       />
       <View style={tw`flex items-center`}>
-        <RecentMatchTable />
+        <RecentEventsTable />
         <TopRatedMatchesTable />
         <PromotionsButtonsContainer />
       </View>

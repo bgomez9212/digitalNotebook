@@ -5,7 +5,6 @@ export default function Layout() {
     eventName: string;
     promotion_name: string;
   };
-  // const { promotion_name } = useLocalSearchParams();
   return (
     <Stack>
       <Stack.Screen

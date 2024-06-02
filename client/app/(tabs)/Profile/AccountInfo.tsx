@@ -23,18 +23,20 @@ import {
 } from "firebase/auth";
 import { useState } from "react";
 import LandingButton from "../../../components/LandingButton";
-import { router, useNavigation } from "expo-router";
+import { router } from "expo-router";
 
 export default function AccountInfo() {
   const auth = getAuth();
   const user = auth.currentUser;
-  const navigation = useNavigation();
   const [uiState, setUiState] = useState({
     showChangeEmail: false,
     showChangeUsername: false,
     showChangePassword: false,
     usernameError: "",
     emailError: "",
+    emailLoading: false,
+    usernameLoading: false,
+    passwordLoading: false,
   });
   const [inputValues, setInputValues] = useState({
     email: "",
@@ -47,11 +49,16 @@ export default function AccountInfo() {
   });
 
   async function changeUsername() {
+    setUiState({ ...uiState, usernameLoading: true });
     await updateProfile(user, {
       displayName: inputValues.username,
     })
       .then(() => {
-        setUiState({ ...uiState, showChangeUsername: false });
+        setUiState({
+          ...uiState,
+          showChangeUsername: false,
+          usernameLoading: false,
+        });
         setInputValues({ ...inputValues, username: "", confirmUsername: "" });
       })
       .catch((err) => {
@@ -66,10 +73,11 @@ export default function AccountInfo() {
   );
 
   async function changeEmail() {
+    setUiState({ ...uiState, emailLoading: true });
     await reauthenticateWithCredential(user, credential);
     await updateEmail(user, inputValues.email)
       .then(() => {
-        setUiState({ ...uiState, showChangeEmail: false });
+        setUiState({ ...uiState, showChangeEmail: false, emailLoading: false });
         setInputValues({ ...inputValues, email: "", confirmEmail: "" });
       })
       .catch((err) => {
@@ -79,11 +87,16 @@ export default function AccountInfo() {
   }
 
   async function changePassword() {
+    setUiState({ ...uiState, usernameLoading: true });
     await reauthenticateWithCredential(user, credential);
     await updatePassword(user, inputValues.newPassword)
       .then(() => {
         console.log("changed");
-        setUiState({ ...uiState, showChangePassword: false });
+        setUiState({
+          ...uiState,
+          showChangePassword: false,
+          passwordLoading: false,
+        });
         setInputValues({
           ...inputValues,
           newPassword: "",
@@ -192,7 +205,7 @@ export default function AccountInfo() {
                 <LandingButton
                   fn={changeEmail}
                   text={"Change Email"}
-                  loading={false}
+                  loading={uiState.emailLoading}
                   disabled={false}
                 />
                 {uiState.emailError && (
@@ -240,7 +253,7 @@ export default function AccountInfo() {
                 <LandingButton
                   fn={changeUsername}
                   text={"Change Username"}
-                  loading={false}
+                  loading={uiState.usernameLoading}
                   disabled={
                     inputValues.username !== inputValues.confirmUsername
                   }
@@ -305,7 +318,7 @@ export default function AccountInfo() {
                 <LandingButton
                   fn={changePassword}
                   text={"Change Password"}
-                  loading={false}
+                  loading={uiState.passwordLoading}
                   disabled={
                     inputValues.newPassword !== inputValues.confirmNewPassword
                   }

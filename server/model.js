@@ -122,16 +122,8 @@ module.exports = {
     return results;
   },
   getTopRatedMatches: async (numOfMatches) => {
-    const date = new Date();
-
-    let day = date.getDate();
-    let month = date.getMonth();
-    if (month === 0) {
-      month = 12; // December of the previous year
-      year--; // Adjust the year accordingly
-    }
-    let year = date.getFullYear();
-    let lastMonth = `${year}-${month}-${day}`;
+    let today = new Date();
+    today.setDate(today.getDate() - 30);
     try {
       const { rows: results } = await pool.query(
         `
@@ -167,7 +159,7 @@ module.exports = {
         GROUP BY matches.id, participants.team, wrestlers.name, championship_name, participants.match_id, events.title, events.date, promotions.name
         ORDER BY rating DESC, participants.match_id, team;
         `,
-        [lastMonth, numOfMatches]
+        [today.toISOString().slice(0, 10), numOfMatches]
       );
       return parseMatchData(results);
     } catch (err) {

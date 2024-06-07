@@ -220,7 +220,7 @@ module.exports = {
               FROM events
               JOIN venues ON events.venue_id = venues.id
               JOIN promotions ON events.promotion_id = promotions.id
-              WHERE (promotions.name || ' ' || events.title) ILIKE '%' || $1 || '%'
+              WHERE (promotions.name || ' ' || unaccent(events.title)) ILIKE '%' || $1 || '%'
               ORDER BY events.date DESC`,
           [search_text]
         );
@@ -308,7 +308,7 @@ module.exports = {
               FROM matches
               JOIN participants ON matches.id = participants.match_id
               JOIN wrestlers ON participants.wrestler_id = wrestlers.id
-              WHERE wrestlers.name ILIKE ANY($1)
+              WHERE unaccent(wrestlers.name) ILIKE ANY($1)
             )
             GROUP BY match_id
             HAVING COUNT(match_id) >= $2

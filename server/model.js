@@ -365,4 +365,23 @@ module.exports = {
     );
     return promotions;
   },
+  getUserNames: async (user_name) => {
+    const { rows: usernames } = await pool.query(
+      `SELECT id FROM users WHERE user_name = $1`,
+      [user_name.toLowerCase()]
+    );
+    return usernames[0].id;
+  },
+  createUser: async (user_id, user_name) => {
+    const today = new Date();
+    const dd = String(today.getDate()).padStart(2, "0");
+    const mm = String(today.getMonth() + 1).padStart(2, "0"); //January is 0!
+    const yyyy = today.getFullYear();
+    const date = mm + "/" + dd + "/" + yyyy;
+    const { rows: result } = await pool.query(
+      `INSERT INTO users(user_id, user_name, join_date VALUES ($1, $2, $3)`,
+      [user_id, user_name, date]
+    );
+    return result;
+  },
 };

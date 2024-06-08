@@ -70,4 +70,23 @@ module.exports = {
       res.send(err).status(500);
     }
   },
+  getUsers: async (req, res) => {
+    try {
+      const results = await model.checkUsernames(req.query.id);
+      res.send(results).status(200);
+    } catch (err) {
+      res.send(err).status(500);
+    }
+  },
+  createUser: async (req, res) => {
+    try {
+      const results = await model.createUser(
+        req.query.user_id,
+        req.query.user_name
+      );
+      res.send(results).status(201);
+    } catch (err) {
+      res.send(err).status(500);
+    }
+  },
 };

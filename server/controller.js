@@ -72,7 +72,7 @@ module.exports = {
   },
   getUsers: async (req, res) => {
     try {
-      const results = await model.checkUsernames(req.query.id);
+      const results = await model.checkUsernames(req.query.user_name);
       res.send(results).status(200);
     } catch (err) {
       res.send(err).status(500);

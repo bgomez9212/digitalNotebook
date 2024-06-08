@@ -20,6 +20,8 @@ import LandingButton from "../components/LandingButton";
 import tw from "../tailwind";
 import LandingLink from "../components/LandingLink";
 import { router } from "expo-router";
+import { useQuery } from "@tanstack/react-query";
+import axios from "axios";
 
 export default function Landing() {
   const firebaseAuth = auth;
@@ -36,6 +38,17 @@ export default function Landing() {
     confirmPassword: "",
     username: "",
   });
+
+  const { data: userId } = useQuery({
+    queryKey: ["userId", credentials.username],
+    queryFn: () =>
+      axios
+        .get("http://localhost:3000/api/users", {
+          params: { user_name: credentials.username },
+        })
+        .then((res) => res.data),
+  });
+  console.log(userId);
 
   async function signup() {
     setUiState({ ...uiState, loading: true });
@@ -104,10 +117,16 @@ export default function Landing() {
                 value={credentials.username}
                 placeholder="username"
               />
+              {userId && userId.length > 0 && (
+                <Text style={tw`text-red font-bold`}>
+                  Username not available
+                </Text>
+              )}
               <TextInput
                 style={tw`w-60 bg-white h-10 p-4 mb-2 rounded p-3`}
                 textContentType="emailAddress"
                 autoCapitalize="none"
+                keyboardType="email-address"
                 onChangeText={(text) =>
                   setCredentials({ ...credentials, email: text })
                 }

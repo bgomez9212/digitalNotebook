@@ -21,6 +21,7 @@ import tw from "../tailwind";
 import LandingLink from "../components/LandingLink";
 import { router } from "expo-router";
 import { useQuery } from "@tanstack/react-query";
+import { useDebounce } from "use-debounce";
 import axios from "axios";
 
 export default function Landing() {
@@ -39,14 +40,17 @@ export default function Landing() {
     username: "",
   });
 
+  const [debouncedUsername] = useDebounce(credentials.username, 500);
+
   const { data: userId } = useQuery({
-    queryKey: ["userId", credentials.username],
+    queryKey: ["userId", debouncedUsername],
     queryFn: () =>
       axios
         .get("http://localhost:3000/api/users", {
-          params: { user_name: credentials.username },
+          params: { user_name: debouncedUsername },
         })
         .then((res) => res.data),
+    enabled: debouncedUsername.length > 3,
   });
   console.log(userId);
 
@@ -69,7 +73,7 @@ export default function Landing() {
         credentials.password
       );
     } catch (err) {
-      setUiState({ ...uiState, signUpError: true, loading: false });
+      setUiState({ ...uiState, signUpError: err.message, loading: false });
     }
   }
 
@@ -122,6 +126,11 @@ export default function Landing() {
                   Username not available
                 </Text>
               )}
+              {debouncedUsername.length > 0 && debouncedUsername.length < 4 && (
+                <Text style={tw`text-red font-bold`}>
+                  Username must be at least 4 characters
+                </Text>
+              )}
               <TextInput
                 style={tw`w-60 bg-white h-10 p-4 mb-2 rounded p-3`}
                 textContentType="emailAddress"
@@ -158,7 +167,9 @@ export default function Landing() {
               <LandingButton
                 disabled={
                   credentials.password !== credentials.confirmPassword ||
-                  credentials.password.length <= 0
+                  credentials.password.length <= 0 ||
+                  !credentials.username ||
+                  credentials.username.length < 4
                 }
                 fn={signup}
                 text={"SIGN UP"}
@@ -166,7 +177,7 @@ export default function Landing() {
               />
               {uiState.signUpError && (
                 <Text style={tw`text-red my-3 text-base`}>
-                  Email already in use
+                  {uiState.signUpError}
                 </Text>
               )}
               <LandingLink

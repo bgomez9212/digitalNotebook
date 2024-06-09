@@ -169,7 +169,8 @@ export default function Landing() {
                   credentials.password !== credentials.confirmPassword ||
                   credentials.password.length <= 0 ||
                   !credentials.username ||
-                  credentials.username.length < 4
+                  credentials.username.length < 4 ||
+                  credentials.email.length < 1
                 }
                 fn={signup}
                 text={"SIGN UP"}

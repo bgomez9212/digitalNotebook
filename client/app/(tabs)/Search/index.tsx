@@ -3,9 +3,9 @@ import tw from "../../../tailwind";
 import DropdownComponent from "../../../components/DropDown";
 import { useState } from "react";
 import { useQuery } from "@tanstack/react-query";
-import axios from "axios";
 import { ActivityIndicator } from "react-native-paper";
 import SearchResults from "../../../components/SearchResults";
+import { getSearchResults } from "../../../api/search";
 export default function Profile() {
   const [userSearch, setUserSearch] = useState({
     searchParam: null,
@@ -18,17 +18,7 @@ export default function Profile() {
     queryKey: ["searchResults"],
     enabled: false,
     queryFn: () =>
-      axios
-        .get(`${process.env.API_SEARCH}`, {
-          params: {
-            search_param: userSearch.searchParam,
-            search_text: userSearch.searchText,
-          },
-        })
-        .then((res) => res.data)
-        .catch((err) => {
-          throw new Error(err);
-        }),
+      getSearchResults(userSearch.searchParam, userSearch.searchText),
   });
   return (
     <View style={tw`flex-1 bg-darkGrey w-full pt-12 items-center border`}>

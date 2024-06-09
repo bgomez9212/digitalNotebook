@@ -22,7 +22,7 @@ import LandingLink from "../components/LandingLink";
 import { router } from "expo-router";
 import { useQuery } from "@tanstack/react-query";
 import { useDebounce } from "use-debounce";
-import axios from "axios";
+import { getUserId } from "../api/users";
 
 export default function Landing() {
   const firebaseAuth = auth;
@@ -44,15 +44,9 @@ export default function Landing() {
 
   const { data: userId } = useQuery({
     queryKey: ["userId", debouncedUsername],
-    queryFn: () =>
-      axios
-        .get("http://localhost:3000/api/users", {
-          params: { user_name: debouncedUsername },
-        })
-        .then((res) => res.data),
+    queryFn: () => getUserId(debouncedUsername),
     enabled: debouncedUsername.length > 3,
   });
-  console.log(userId);
 
   async function signup() {
     setUiState({ ...uiState, loading: true });

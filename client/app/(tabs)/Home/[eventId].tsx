@@ -2,11 +2,10 @@ import { useLocalSearchParams } from "expo-router";
 import { FlatList, Image, SafeAreaView, Text, View } from "react-native";
 import tw from "../../../tailwind";
 import { useQuery } from "@tanstack/react-query";
-import axios from "axios";
-import { ActivityIndicator, DataTable } from "react-native-paper";
+import { ActivityIndicator } from "react-native-paper";
 import MatchRow from "../../../components/MatchRow";
-import { Match } from "../../../types/types";
 import { photoLibrary } from "../../../assets";
+import { getEvent } from "../../../api/events";
 export default function EventPage() {
   const { eventId } = useLocalSearchParams();
   const {
@@ -14,15 +13,8 @@ export default function EventPage() {
     error,
     data: event,
   } = useQuery({
-    queryKey: ["event"],
-    queryFn: () =>
-      axios
-        .get(`${process.env.API_EVENT}`, {
-          params: {
-            event_id: eventId,
-          },
-        })
-        .then((res) => res.data),
+    queryKey: ["event", eventId],
+    queryFn: () => getEvent(eventId),
   });
 
   if (isFetching) {

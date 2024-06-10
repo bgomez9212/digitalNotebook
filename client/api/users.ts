@@ -2,7 +2,7 @@ import axios from "axios";
 
 export async function getUserId(userName) {
   return axios
-    .get("http://localhost:3000/api/users", {
+    .get("http://localhost:3000/api/users/", {
       params: { user_name: userName },
     })
     .then((res) => res.data);

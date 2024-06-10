@@ -70,7 +70,7 @@ module.exports = {
       res.send(err).status(500);
     }
   },
-  getUsers: async (req, res) => {
+  checkUsernames: async (req, res) => {
     try {
       const results = await model.checkUsernames(req.query.user_name);
       res.send(results).status(200);

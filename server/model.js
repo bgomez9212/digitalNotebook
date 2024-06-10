@@ -368,7 +368,7 @@ module.exports = {
   checkUsernames: async (user_name) => {
     try {
       const { rows: usernames } = await pool.query(
-        `SELECT id FROM users WHERE LOWER(user_name) = $1`,
+        `SELECT id FROM users WHERE LOWER(username) = $1`,
         [user_name.toLowerCase()]
       );
       return usernames;

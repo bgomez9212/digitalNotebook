@@ -24,7 +24,8 @@ import { useState } from "react";
 import LandingButton from "../../../components/LandingButton";
 import { router } from "expo-router";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { editUsername, getUsername } from "../../../api/users";
+import { editUsername, getUserId, getUsername } from "../../../api/users";
+import { useDebounce } from "use-debounce";
 
 export default function AccountInfo() {
   const auth = getAuth();
@@ -51,8 +52,16 @@ export default function AccountInfo() {
   });
 
   const { data: username } = useQuery({
-    queryKey: ["username"],
+    queryKey: ["username", user.uid],
     queryFn: () => getUsername(user.uid),
+  });
+
+  const [debouncedUsername] = useDebounce(inputValues.username, 500);
+
+  const { data: userId } = useQuery({
+    queryKey: ["userId", debouncedUsername],
+    queryFn: () => getUserId(debouncedUsername),
+    enabled: debouncedUsername.length > 3,
   });
 
   const { mutateAsync: changeUsernameMutation } = useMutation({
@@ -88,7 +97,6 @@ export default function AccountInfo() {
     await reauthenticateWithCredential(user, credential);
     await updatePassword(user, inputValues.newPassword)
       .then(() => {
-        console.log("changed");
         setUiState({
           ...uiState,
           showChangePassword: false,
@@ -230,7 +238,7 @@ export default function AccountInfo() {
               </TouchableOpacity>
             </View>
             {uiState.showChangeUsername && (
-              <View>
+              <View style={tw`items-center`}>
                 <TextInput
                   style={tw`w-60 bg-white h-10 p-4 mb-2 rounded p-3`}
                   value={inputValues.username}
@@ -239,6 +247,19 @@ export default function AccountInfo() {
                     setInputValues({ ...inputValues, username: text })
                   }
                 />
+                {userId && userId.length > 0 && (
+                  <Text style={tw`mb-2 text-center text-red font-bold`}>
+                    Username unavailable
+                  </Text>
+                )}
+                {debouncedUsername.length > 0 &&
+                  debouncedUsername.length < 4 && (
+                    <Text
+                      style={tw`mb-2 text-center text-red font-bold flex-wrap`}
+                    >
+                      Username must be at least 4 characters
+                    </Text>
+                  )}
                 <TextInput
                   style={tw`w-60 bg-white h-10 p-4 mb-2 rounded p-3`}
                   value={inputValues.confirmUsername}
@@ -252,6 +273,8 @@ export default function AccountInfo() {
                   text={"Change Username"}
                   loading={uiState.usernameLoading}
                   disabled={
+                    !inputValues.username ||
+                    !inputValues.confirmUsername ||
                     inputValues.username !== inputValues.confirmUsername
                   }
                 />

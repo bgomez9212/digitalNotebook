@@ -110,12 +110,12 @@ export default function Landing() {
                 placeholder="username"
               />
               {userId && userId.length > 0 && (
-                <Text style={tw`text-red font-bold`}>
-                  Username not available
+                <Text style={tw`mb-2 text-red font-bold`}>
+                  Username unavailable
                 </Text>
               )}
               {debouncedUsername.length > 0 && debouncedUsername.length < 4 && (
-                <Text style={tw`text-red font-bold`}>
+                <Text style={tw`mb-2 text-red font-bold`}>
                   Username must be at least 4 characters
                 </Text>
               )}

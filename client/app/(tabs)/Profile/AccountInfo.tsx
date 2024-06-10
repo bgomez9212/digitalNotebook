@@ -23,8 +23,8 @@ import {
 import { useState } from "react";
 import LandingButton from "../../../components/LandingButton";
 import { router } from "expo-router";
-import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { editUsername } from "../../../api/users";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import { editUsername, getUsername } from "../../../api/users";
 
 export default function AccountInfo() {
   const auth = getAuth();
@@ -50,11 +50,20 @@ export default function AccountInfo() {
     confirmNewPassword: "",
   });
 
-  const { mutateAsync: changeUsernameMutation } = useMutation({
-    mutationFn: async () => await editUsername(user.uid, inputValues.username),
-    onSuccess: async () => await queryClient.invalidateQueries(),
+  const { data: username } = useQuery({
+    queryKey: ["username"],
+    queryFn: () => getUsername(user.uid),
   });
 
+  const { mutateAsync: changeUsernameMutation } = useMutation({
+    mutationFn: () => editUsername(user.uid, inputValues.username),
+    onSuccess: () => {
+      queryClient.invalidateQueries();
+      setUiState({ ...uiState, showChangeUsername: false });
+      setInputValues({ ...inputValues, username: "", confirmUsername: "" });
+    },
+  });
+  // needed to change password or email
   const credential = EmailAuthProvider.credential(
     user.email,
     inputValues.currentPassword
@@ -205,7 +214,7 @@ export default function AccountInfo() {
             )}
             <View style={tw`w-full`}>
               <Text style={tw`text-white text-xl mb-3`}>
-                Username: {user.displayName}
+                Username: {username}
               </Text>
               <TouchableOpacity
                 onPress={() =>

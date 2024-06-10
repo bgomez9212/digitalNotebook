@@ -20,5 +20,6 @@ router.get("/promotions", controller.getPromotions);
 router.get("/users", controller.getUsers);
 router.get("/users/:user_id", controller.getUsername);
 router.post("/users", controller.createUser);
+router.put("/users/:user_id", controller.editUsername);
 
 module.exports = router;

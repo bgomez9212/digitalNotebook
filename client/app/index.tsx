@@ -12,8 +12,6 @@ import { auth } from "../firebase";
 import {
   createUserWithEmailAndPassword,
   signInWithEmailAndPassword,
-  updateProfile,
-  getAuth,
 } from "firebase/auth";
 import { useState } from "react";
 import LandingButton from "../components/LandingButton";
@@ -22,11 +20,10 @@ import LandingLink from "../components/LandingLink";
 import { router } from "expo-router";
 import { useQuery } from "@tanstack/react-query";
 import { useDebounce } from "use-debounce";
-import { getUserId } from "../api/users";
+import { createUser, getUserId } from "../api/users";
 
 export default function Landing() {
   const firebaseAuth = auth;
-  const fbAuth = getAuth();
   const [uiState, setUiState] = useState({
     displaySignup: false,
     loading: false,
@@ -55,12 +52,9 @@ export default function Landing() {
         firebaseAuth,
         credentials.email,
         credentials.password
+      ).then((userCredential) =>
+        createUser(userCredential.user.uid, credentials.username)
       );
-      // create display name
-      await updateProfile(fbAuth.currentUser, {
-        displayName: credentials.username,
-      });
-      // Sign in the user after successful signup
       await signInWithEmailAndPassword(
         firebaseAuth,
         credentials.email,

@@ -384,7 +384,7 @@ module.exports = {
       const yyyy = today.getFullYear();
       const date = mm + "/" + dd + "/" + yyyy;
       const { rows: result } = await pool.query(
-        `INSERT INTO users(user_id, user_name, join_date VALUES ($1, $2, $3)`,
+        `INSERT INTO users(user_id, username, join_date VALUES ($1, $2, $3)`,
         [user_id, user_name, date]
       );
       return result;
@@ -399,6 +399,17 @@ module.exports = {
         [user_id]
       );
       return username;
+    } catch (err) {
+      throw new Error(err);
+    }
+  },
+  editUsername: async (user_id, username) => {
+    try {
+      const { rows: results } = await pool.query(
+        `UPDATE users SET username = $1 WHERE user_id = $2`,
+        [username, user_id]
+      );
+      return results;
     } catch (err) {
       throw new Error(err);
     }

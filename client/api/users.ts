@@ -38,3 +38,23 @@ export async function getUsername(userUid) {
     })
     .then((res) => res.data[0].username);
 }
+
+export async function editUsername(userUid, username) {
+  axios
+    .put("http://localhost:3000/api/users/:user_id", {
+      user_id: userUid,
+      username: username,
+    })
+    .then(() => console.log("success"))
+    .catch((err) => console.log(err));
+}
+
+export async function createUser(userUid, username) {
+  axios
+    .post("http://localhost:3000/api/users", {
+      user_id: userUid,
+      username: username,
+    })
+    .then(() => console.log("success"))
+    .catch((err) => console.log(err));
+}

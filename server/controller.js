@@ -81,8 +81,8 @@ module.exports = {
   createUser: async (req, res) => {
     try {
       const results = await model.createUser(
-        req.query.user_id,
-        req.query.user_name
+        req.body.user_id,
+        req.body.user_name
       );
       res.send(results).status(201);
     } catch (err) {
@@ -92,6 +92,17 @@ module.exports = {
   getUsername: async (req, res) => {
     try {
       const results = await model.getUsername(req.query.user_id);
+      res.send(results).status(200);
+    } catch (err) {
+      res.send(err).status(500);
+    }
+  },
+  editUsername: async (req, res) => {
+    try {
+      const results = await model.editUsername(
+        req.body.user_id,
+        req.body.username
+      );
       res.send(results).status(200);
     } catch (err) {
       res.send(err).status(500);

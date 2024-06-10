@@ -10,7 +10,6 @@ import { getUsername } from "../../api/users";
 const blue = "#477CB9";
 export default function Layout() {
   const auth = getAuth();
-  // const username = auth.currentUser.displayName;
   const { data: username } = useQuery({
     queryKey: ["username", auth.currentUser.uid],
     queryFn: () => getUsername(auth.currentUser.uid),

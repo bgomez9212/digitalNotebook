@@ -14,7 +14,6 @@ import tw from "../../../tailwind";
 import {
   getAuth,
   signOut,
-  updateProfile,
   deleteUser,
   updateEmail,
   reauthenticateWithCredential,
@@ -24,10 +23,13 @@ import {
 import { useState } from "react";
 import LandingButton from "../../../components/LandingButton";
 import { router } from "expo-router";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { editUsername } from "../../../api/users";
 
 export default function AccountInfo() {
   const auth = getAuth();
   const user = auth.currentUser;
+  const queryClient = useQueryClient();
   const [uiState, setUiState] = useState({
     showChangeEmail: false,
     showChangeUsername: false,
@@ -48,24 +50,10 @@ export default function AccountInfo() {
     confirmNewPassword: "",
   });
 
-  async function changeUsername() {
-    setUiState({ ...uiState, usernameLoading: true });
-    await updateProfile(user, {
-      displayName: inputValues.username,
-    })
-      .then(() => {
-        setUiState({
-          ...uiState,
-          showChangeUsername: false,
-          usernameLoading: false,
-        });
-        setInputValues({ ...inputValues, username: "", confirmUsername: "" });
-      })
-      .catch((err) => {
-        console.log(err);
-        setUiState({ ...uiState, usernameError: "Error updating username" });
-      });
-  }
+  const { mutateAsync: changeUsernameMutation } = useMutation({
+    mutationFn: async () => await editUsername(user.uid, inputValues.username),
+    onSuccess: async () => await queryClient.invalidateQueries(),
+  });
 
   const credential = EmailAuthProvider.credential(
     user.email,
@@ -251,7 +239,7 @@ export default function AccountInfo() {
                   }
                 />
                 <LandingButton
-                  fn={changeUsername}
+                  fn={changeUsernameMutation}
                   text={"Change Username"}
                   loading={uiState.usernameLoading}
                   disabled={

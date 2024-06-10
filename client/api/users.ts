@@ -28,3 +28,13 @@ export async function getUserRatings(userUid) {
     })
     .then((res) => res.data);
 }
+
+export async function getUsername(userUid) {
+  return axios
+    .get("http://localhost:3000/api/users/:user_id", {
+      params: {
+        user_id: userUid,
+      },
+    })
+    .then((res) => res.data[0].username);
+}

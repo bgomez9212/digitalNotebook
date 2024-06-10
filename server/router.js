@@ -18,6 +18,7 @@ router.get("/search/:search_param/:search_text", controller.getSearchResults);
 router.get("/promotions", controller.getPromotions);
 
 router.get("/users", controller.getUsers);
+router.get("/users/:user_id", controller.getUsername);
 router.post("/users", controller.createUser);
 
 module.exports = router;

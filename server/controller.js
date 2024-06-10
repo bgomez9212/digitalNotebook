@@ -89,4 +89,12 @@ module.exports = {
       res.send(err).status(500);
     }
   },
+  getUsername: async (req, res) => {
+    try {
+      const results = await model.getUsername(req.query.user_id);
+      res.send(results).status(200);
+    } catch (err) {
+      res.send(err).status(500);
+    }
+  },
 };

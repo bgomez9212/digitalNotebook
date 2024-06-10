@@ -392,4 +392,15 @@ module.exports = {
       throw new Error(err);
     }
   },
+  getUsername: async (user_id) => {
+    try {
+      const { rows: username } = await pool.query(
+        `SELECT username FROM users WHERE user_id = $1`,
+        [user_id]
+      );
+      return username;
+    } catch (err) {
+      throw new Error(err);
+    }
+  },
 };

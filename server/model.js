@@ -365,4 +365,53 @@ module.exports = {
     );
     return promotions;
   },
+  checkUsernames: async (user_name) => {
+    try {
+      const { rows: usernames } = await pool.query(
+        `SELECT id FROM users WHERE LOWER(username) = $1`,
+        [user_name.toLowerCase()]
+      );
+      return usernames;
+    } catch (err) {
+      throw new Error(err);
+    }
+  },
+  createUser: async (user_id, username) => {
+    try {
+      const today = new Date();
+      const dd = String(today.getDate()).padStart(2, "0");
+      const mm = String(today.getMonth() + 1).padStart(2, "0"); //January is 0!
+      const yyyy = today.getFullYear();
+      const date = mm + "/" + dd + "/" + yyyy;
+      const { rows: result } = await pool.query(
+        `INSERT INTO users(user_id, username, join_date) VALUES ($1, $2, $3)`,
+        [user_id, username, date]
+      );
+      return result;
+    } catch (err) {
+      throw new Error(err);
+    }
+  },
+  getUsername: async (user_id) => {
+    try {
+      const { rows: username } = await pool.query(
+        `SELECT username FROM users WHERE user_id = $1`,
+        [user_id]
+      );
+      return username;
+    } catch (err) {
+      throw new Error(err);
+    }
+  },
+  editUsername: async (user_id, username) => {
+    try {
+      const { rows: results } = await pool.query(
+        `UPDATE users SET username = $1 WHERE user_id = $2`,
+        [username, user_id]
+      );
+      return results;
+    } catch (err) {
+      throw new Error(err);
+    }
+  },
 };

@@ -3,12 +3,17 @@ import { Entypo } from "@expo/vector-icons";
 import { FontAwesome } from "@expo/vector-icons";
 import { Ionicons } from "@expo/vector-icons";
 import { getAuth } from "firebase/auth";
-import { Text, TouchableOpacity } from "react-native";
+import { TouchableOpacity } from "react-native";
 import tw from "../../tailwind";
+import { useQuery } from "@tanstack/react-query";
+import { getUsername } from "../../api/users";
 const blue = "#477CB9";
 export default function Layout() {
   const auth = getAuth();
-  const username = auth.currentUser.displayName;
+  const { data: username } = useQuery({
+    queryKey: ["username", auth.currentUser.uid],
+    queryFn: () => getUsername(auth.currentUser.uid),
+  });
   return (
     <Tabs
       screenOptions={{
@@ -46,10 +51,11 @@ export default function Layout() {
           tabBarIcon: ({ color }) => (
             <Ionicons name="person" size={24} color={color} />
           ),
+          headerTintColor: "#EBF2FA",
           headerRight: () => (
             <TouchableOpacity
               style={tw`mr-4`}
-              onPress={() => router.push(`/(tabs)/Profile/AccountInfo`)}
+              onPress={() => router.navigate("Profile/AccountInfo")}
             >
               <FontAwesome name="gear" size={24} color="white" />
             </TouchableOpacity>

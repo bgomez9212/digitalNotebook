@@ -12,18 +12,18 @@ import { auth } from "../firebase";
 import {
   createUserWithEmailAndPassword,
   signInWithEmailAndPassword,
-  updateProfile,
-  getAuth,
 } from "firebase/auth";
 import { useState } from "react";
 import LandingButton from "../components/LandingButton";
 import tw from "../tailwind";
 import LandingLink from "../components/LandingLink";
 import { router } from "expo-router";
+import { useQuery } from "@tanstack/react-query";
+import { useDebounce } from "use-debounce";
+import { createUser, getUserId } from "../api/users";
 
 export default function Landing() {
   const firebaseAuth = auth;
-  const fbAuth = getAuth();
   const [uiState, setUiState] = useState({
     displaySignup: false,
     loading: false,
@@ -37,6 +37,14 @@ export default function Landing() {
     username: "",
   });
 
+  const [debouncedUsername] = useDebounce(credentials.username, 500);
+
+  const { data: userId } = useQuery({
+    queryKey: ["userId", debouncedUsername],
+    queryFn: () => getUserId(debouncedUsername),
+    enabled: debouncedUsername.length > 3,
+  });
+
   async function signup() {
     setUiState({ ...uiState, loading: true });
     try {
@@ -44,19 +52,16 @@ export default function Landing() {
         firebaseAuth,
         credentials.email,
         credentials.password
+      ).then((userCredential) =>
+        createUser(userCredential.user.uid, credentials.username)
       );
-      // create display name
-      await updateProfile(fbAuth.currentUser, {
-        displayName: credentials.username,
-      });
-      // Sign in the user after successful signup
       await signInWithEmailAndPassword(
         firebaseAuth,
         credentials.email,
         credentials.password
       );
     } catch (err) {
-      setUiState({ ...uiState, signUpError: true, loading: false });
+      setUiState({ ...uiState, signUpError: err.message, loading: false });
     }
   }
 
@@ -104,10 +109,21 @@ export default function Landing() {
                 value={credentials.username}
                 placeholder="username"
               />
+              {userId && userId.length > 0 && (
+                <Text style={tw`mb-2 text-red font-bold`}>
+                  Username unavailable
+                </Text>
+              )}
+              {debouncedUsername.length > 0 && debouncedUsername.length < 4 && (
+                <Text style={tw`mb-2 text-red font-bold`}>
+                  Username must be at least 4 characters
+                </Text>
+              )}
               <TextInput
                 style={tw`w-60 bg-white h-10 p-4 mb-2 rounded p-3`}
                 textContentType="emailAddress"
                 autoCapitalize="none"
+                keyboardType="email-address"
                 onChangeText={(text) =>
                   setCredentials({ ...credentials, email: text })
                 }
@@ -139,7 +155,10 @@ export default function Landing() {
               <LandingButton
                 disabled={
                   credentials.password !== credentials.confirmPassword ||
-                  credentials.password.length <= 0
+                  credentials.password.length <= 0 ||
+                  !credentials.username ||
+                  credentials.username.length < 4 ||
+                  credentials.email.length < 1
                 }
                 fn={signup}
                 text={"SIGN UP"}
@@ -147,7 +166,7 @@ export default function Landing() {
               />
               {uiState.signUpError && (
                 <Text style={tw`text-red my-3 text-base`}>
-                  Email already in use
+                  {uiState.signUpError}
                 </Text>
               )}
               <LandingLink

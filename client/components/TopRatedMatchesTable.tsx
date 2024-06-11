@@ -2,9 +2,9 @@ import { View, Text, TouchableOpacity } from "react-native";
 import { ActivityIndicator } from "react-native-paper";
 import tw from "../tailwind";
 import { useQuery } from "@tanstack/react-query";
-import axios from "axios";
 import { router } from "expo-router";
 import MatchRow from "./MatchRow";
+import { getTopMatches } from "../api/matches";
 
 export default function TopRatedMatchesTable() {
   const {
@@ -13,14 +13,7 @@ export default function TopRatedMatchesTable() {
     data: matches,
   } = useQuery({
     queryKey: ["topMatches"],
-    queryFn: () =>
-      axios
-        .get(`${process.env.API_TOP_RATED}`, {
-          params: {
-            numOfMatches: 5,
-          },
-        })
-        .then((res) => res.data),
+    queryFn: () => getTopMatches(5),
   });
 
   if (isFetching || error) {

@@ -1,9 +1,9 @@
 import { useQuery } from "@tanstack/react-query";
-import axios from "axios";
 import { FlatList, Text, View } from "react-native";
 import tw from "../../../tailwind";
 import MatchRow from "../../../components/MatchRow";
 import { ActivityIndicator } from "react-native-paper";
+import { getTopMatches } from "../../../api/matches";
 
 export default function TopMatches() {
   const {
@@ -12,14 +12,7 @@ export default function TopMatches() {
     data: matches,
   } = useQuery({
     queryKey: ["topMatchesExpanded"],
-    queryFn: () =>
-      axios
-        .get(`${process.env.API_TOP_RATED}`, {
-          params: {
-            numOfMatches: null,
-          },
-        })
-        .then((res) => res.data),
+    queryFn: () => getTopMatches(30),
   });
 
   if (isFetching) {

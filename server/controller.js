@@ -70,4 +70,43 @@ module.exports = {
       res.send(err).status(500);
     }
   },
+  checkUsernames: async (req, res) => {
+    try {
+      const results = await model.checkUsernames(req.query.user_name);
+      res.send(results).status(200);
+    } catch (err) {
+      res.send(err).status(500);
+    }
+  },
+  createUser: async (req, res) => {
+    console.log(req.body);
+    try {
+      const results = await model.createUser(
+        req.body.user_id,
+        req.body.username
+      );
+      res.send(results).status(201);
+    } catch (err) {
+      res.send(err).status(500);
+    }
+  },
+  getUsername: async (req, res) => {
+    try {
+      const results = await model.getUsername(req.query.user_id);
+      res.send(results).status(200);
+    } catch (err) {
+      res.send(err).status(500);
+    }
+  },
+  editUsername: async (req, res) => {
+    try {
+      const results = await model.editUsername(
+        req.body.user_id,
+        req.body.username
+      );
+      res.send(results).status(200);
+    } catch (err) {
+      res.send(err).status(500);
+    }
+  },
 };

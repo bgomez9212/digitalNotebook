@@ -1,13 +1,13 @@
 import { ScrollView, Text, View } from "react-native";
 import tw from "../../../tailwind";
 import { useQuery } from "@tanstack/react-query";
-import axios from "axios";
 import MatchRow from "../../../components/MatchRow";
 import { ActivityIndicator } from "react-native-paper";
 import { PieChart } from "react-native-chart-kit";
 import { Dimensions } from "react-native";
 const screenWidth = Dimensions.get("window").width;
 import { getAuth } from "firebase/auth";
+import { getUserRatings } from "../../../api/users";
 export default function Profile() {
   const auth = getAuth();
   const { uid } = auth.currentUser;
@@ -17,14 +17,7 @@ export default function Profile() {
     isLoading,
   } = useQuery({
     queryKey: ["userRatings"],
-    queryFn: () =>
-      axios
-        .get(process.env.API_USER_RATINGS, {
-          params: {
-            user_id: uid,
-          },
-        })
-        .then((res) => res.data),
+    queryFn: () => getUserRatings(uid),
   });
 
   const chartConfig = {

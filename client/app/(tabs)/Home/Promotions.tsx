@@ -2,9 +2,9 @@ import { View, FlatList, Text } from "react-native";
 import tw from "../../../tailwind";
 import { useLocalSearchParams } from "expo-router";
 import { useQuery } from "@tanstack/react-query";
-import axios from "axios";
 import { ActivityIndicator } from "react-native-paper";
 import EventRow from "../../../components/EventRow";
+import { getPromotion } from "../../../api/promotions";
 
 export default function Promotions() {
   const { promotion_name } = useLocalSearchParams();
@@ -15,18 +15,7 @@ export default function Promotions() {
   } = useQuery({
     queryKey: ["promotions-events"],
     enabled: !!promotion_name,
-    queryFn: () =>
-      axios
-        .get(`${process.env.API_SEARCH}`, {
-          params: {
-            search_param: "promotions",
-            search_text: promotion_name,
-          },
-        })
-        .then((res) => res.data)
-        .catch((err) => {
-          throw new Error(err);
-        }),
+    queryFn: () => getPromotion(promotion_name),
   });
 
   if (isFetching) {

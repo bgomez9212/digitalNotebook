@@ -2,9 +2,9 @@ import { View, Text, Image, TouchableOpacity } from "react-native";
 import { ActivityIndicator } from "react-native-paper";
 import tw from "../tailwind";
 import { useQuery } from "@tanstack/react-query";
-import axios from "axios";
 import EventRow from "./EventRow";
 import { router } from "expo-router";
+import { getRecentEvents } from "../api/events";
 
 export default function RecentEventTable() {
   const {
@@ -13,12 +13,7 @@ export default function RecentEventTable() {
     data: events,
   } = useQuery({
     queryKey: ["recentEvents"],
-    queryFn: () =>
-      axios
-        .get(`${process.env.API_RECENT_EVENTS}`, {
-          params: { numOfResults: 5 },
-        })
-        .then((res) => res.data),
+    queryFn: () => getRecentEvents(5),
   });
 
   // if (isPending) return 'Loading...'

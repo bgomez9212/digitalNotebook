@@ -2,11 +2,12 @@ import { View, Text, ActivityIndicator, Pressable, Alert } from "react-native";
 import { Picker } from "@react-native-picker/picker";
 import { router, useLocalSearchParams } from "expo-router";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import axios from "axios";
 import tw from "../tailwind";
 import { useEffect, useState } from "react";
 import { getAuth } from "firebase/auth";
 import StarView from "../components/StarView";
+import { getMatchInfo, addRating, deleteRating } from "../api/matches";
+import { getUserRating } from "../api/users";
 
 export default function RatingModal() {
   const auth = getAuth();
@@ -21,15 +22,8 @@ export default function RatingModal() {
     error: matchInfoError,
     data: matchInfo,
   } = useQuery({
-    queryKey: ["matchInfo"],
-    queryFn: () =>
-      axios
-        .get(`${process.env.API_MATCH}`, {
-          params: {
-            match_id: match_id,
-          },
-        })
-        .then((res) => res.data),
+    queryKey: ["matchInfo", match_id],
+    queryFn: () => getMatchInfo(match_id),
   });
 
   const {
@@ -37,28 +31,9 @@ export default function RatingModal() {
     error: userRatingError,
     data: userRating,
   } = useQuery({
-    queryKey: ["userRating"],
-    queryFn: () =>
-      axios
-        .get(`${process.env.API_USER_RATING}`, {
-          params: {
-            user_id: uid,
-            match_id: match_id,
-          },
-        })
-        .then((res) => res.data),
+    queryKey: ["userRating", uid, match_id],
+    queryFn: () => getUserRating(uid, match_id),
   });
-
-  async function addRating(ratingObj) {
-    await axios
-      .post(`${process.env.API_POST_RATING}`, {
-        match_id: ratingObj.matchId,
-        user_id: ratingObj.uid,
-        rating: ratingObj.rating,
-      })
-      .then(() => console.log("success"))
-      .catch((err) => console.log(err.message));
-  }
 
   const { mutateAsync: addRatingMutation, isPending: addRatingPending } =
     useMutation({
@@ -69,18 +44,6 @@ export default function RatingModal() {
         router.back();
       },
     });
-
-  async function deleteRating(ratingInfo) {
-    await axios
-      .delete(`${process.env.API_DELETE_RATING}`, {
-        params: {
-          user_id: ratingInfo.uid,
-          match_id: ratingInfo.match_id,
-        },
-      })
-      .then(() => console.log("success"))
-      .catch((err) => console.log(err.message));
-  }
 
   const { mutateAsync: deleteRatingMutation } = useMutation({
     mutationFn: deleteRating,

@@ -1,9 +1,9 @@
 import { useQuery } from "@tanstack/react-query";
-import axios from "axios";
 import { View, Text, FlatList } from "react-native";
 import tw from "../../../tailwind";
 import EventRow from "../../../components/EventRow";
 import { ActivityIndicator } from "react-native-paper";
+import { getRecentEvents } from "../../../api/events";
 
 export default function RecentEvents() {
   const {
@@ -12,12 +12,7 @@ export default function RecentEvents() {
     data: events,
   } = useQuery({
     queryKey: ["recentEventsExpanded"],
-    queryFn: () =>
-      axios
-        .get(`${process.env.API_RECENT_EVENTS}`, {
-          params: { numOfResults: 30 },
-        })
-        .then((res) => res.data),
+    queryFn: () => getRecentEvents(30),
   });
 
   if (isPending) {

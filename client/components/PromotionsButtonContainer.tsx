@@ -1,10 +1,10 @@
 import { Image, Text, TouchableOpacity, View } from "react-native";
 import tw from "../tailwind";
 import { useQuery } from "@tanstack/react-query";
-import axios from "axios";
 import { ActivityIndicator } from "react-native-paper";
 import { router } from "expo-router";
 import { photoLibrary } from "../assets";
+import { getPromotions } from "../api/promotions";
 
 export default function PromotionsButtonsContainer() {
   const {
@@ -13,8 +13,7 @@ export default function PromotionsButtonsContainer() {
     data: promotions,
   } = useQuery({
     queryKey: ["promotions"],
-    queryFn: () =>
-      axios.get(`${process.env.API_PROMOTIONS}`, {}).then((res) => res.data),
+    queryFn: () => getPromotions(),
   });
 
   if (isFetching) {

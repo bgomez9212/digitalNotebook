@@ -2,10 +2,10 @@ import { router } from "expo-router";
 import { TouchableOpacity, View, Text } from "react-native";
 import tw from "../tailwind";
 import StarView from "./StarView";
-import axios from "axios";
 import { useQuery } from "@tanstack/react-query";
 import { Match } from "../types/types";
 import { getAuth } from "firebase/auth";
+import { getUserRating } from "../api/users";
 export default function MatchRow({
   match,
   display,
@@ -19,15 +19,7 @@ export default function MatchRow({
   const { uid } = auth.currentUser;
   const { data: userMatchRating } = useQuery({
     queryKey: ["userMatchData", match.match_id],
-    queryFn: () =>
-      axios
-        .get(`${process.env.API_USER_RATING}`, {
-          params: {
-            user_id: uid,
-            match_id: match.match_id,
-          },
-        })
-        .then((res) => res.data.rating || null),
+    queryFn: () => getUserRating(uid, match.match_id),
   });
 
   if (display === "Home") {
@@ -67,7 +59,7 @@ export default function MatchRow({
           >
             <StarView
               display={"User"}
-              rating={userMatchRating}
+              rating={userMatchRating.rating}
               rating_count={match.rating_count}
             />
             <StarView
@@ -122,7 +114,7 @@ export default function MatchRow({
           >
             <StarView
               display={"User"}
-              rating={userMatchRating}
+              rating={userMatchRating?.rating}
               rating_count={match.rating_count}
             />
             <StarView
@@ -167,7 +159,7 @@ export default function MatchRow({
           >
             <StarView
               display={"User"}
-              rating={userMatchRating}
+              rating={userMatchRating?.rating}
               rating_count={match.rating_count}
             />
             <StarView

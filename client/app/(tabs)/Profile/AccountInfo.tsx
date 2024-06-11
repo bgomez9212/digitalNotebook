@@ -67,7 +67,7 @@ export default function AccountInfo() {
   const { mutateAsync: changeUsernameMutation } = useMutation({
     mutationFn: () => editUsername(user.uid, inputValues.username),
     onSuccess: () => {
-      queryClient.invalidateQueries();
+      queryClient.invalidateQueries({ queryKey: ["username", user.uid] });
       setUiState({ ...uiState, showChangeUsername: false });
       setInputValues({ ...inputValues, username: "", confirmUsername: "" });
     },

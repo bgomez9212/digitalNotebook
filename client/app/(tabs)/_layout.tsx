@@ -45,16 +45,17 @@ export default function Layout() {
         }}
       />
       <Tabs.Screen
-        name={"Profile"}
+        name="Profile"
         options={{
           title: username || "Profile",
           tabBarIcon: ({ color }) => (
             <Ionicons name="person" size={24} color={color} />
           ),
+          headerTintColor: "#EBF2FA",
           headerRight: () => (
             <TouchableOpacity
               style={tw`mr-4`}
-              onPress={() => router.push(`/(tabs)/Profile/AccountInfo`)}
+              onPress={() => router.navigate("Profile/AccountInfo")}
             >
               <FontAwesome name="gear" size={24} color="white" />
             </TouchableOpacity>

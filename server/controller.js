@@ -109,4 +109,12 @@ module.exports = {
       res.send(err).status(500);
     }
   },
+  deleteUser: async (req, res) => {
+    try {
+      const results = await model.deleteUser(req.query.user_id);
+      res.send(results).status(204);
+    } catch (err) {
+      res.send(err).status(404);
+    }
+  },
 };

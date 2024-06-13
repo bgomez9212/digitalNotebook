@@ -26,6 +26,7 @@ import { router } from "expo-router";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { editUsername, getUserId, getUsername } from "../../../api/users";
 import { useDebounce } from "use-debounce";
+import { deleteAllUserRatings } from "../../../api/matches";
 
 export default function AccountInfo() {
   const auth = getAuth();
@@ -131,6 +132,7 @@ export default function AccountInfo() {
           text: "Cancel",
           style: "cancel",
         },
+
         {
           text: "Delete Account",
           onPress: deleteAccount,
@@ -145,7 +147,13 @@ export default function AccountInfo() {
     router.replace("../../");
   }
 
+  const { mutateAsync: deleteAllUserRatingsMutation } = useMutation({
+    mutationFn: deleteAllUserRatings,
+    onSuccess: () => queryClient.invalidateQueries(),
+  });
+
   async function deleteAccount() {
+    await deleteAllUserRatingsMutation(user.uid);
     await deleteUser(user)
       .then(() => router.replace("../../"))
       .catch((err) => console.log(err));

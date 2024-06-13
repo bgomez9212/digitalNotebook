@@ -414,4 +414,15 @@ module.exports = {
       throw new Error(err);
     }
   },
+  deleteUser: async (user_id) => {
+    try {
+      const result = await pool.query(
+        `DELETE FROM ratings WHERE user_id = $1`,
+        [user_id]
+      );
+      return result;
+    } catch (err) {
+      throw new Error(err);
+    }
+  },
 };

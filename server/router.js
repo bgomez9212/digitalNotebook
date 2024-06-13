@@ -21,5 +21,6 @@ router.get("/users", controller.checkUsernames);
 router.get("/users/:user_id", controller.getUsername);
 router.post("/users", controller.createUser);
 router.put("/users/:user_id", controller.editUsername);
+router.delete("/users/:user_id", controller.deleteUser);
 
 module.exports = router;

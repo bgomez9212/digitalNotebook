@@ -32,15 +32,15 @@ export default function AccountInfo() {
   const user = auth.currentUser;
   const queryClient = useQueryClient();
   const [uiState, setUiState] = useState({
-    showChangeEmail: false,
     showChangeUsername: false,
-    showChangePassword: false,
-    usernameError: "",
-    emailError: "",
-    passwordError: "",
-    emailLoading: false,
     usernameLoading: false,
+    usernameError: "",
+    showChangeEmail: false,
+    emailLoading: false,
+    emailError: "",
+    showChangePassword: false,
     passwordLoading: false,
+    passwordError: "",
     showDeleteAccount: false,
   });
   const [inputValues, setInputValues] = useState({
@@ -53,10 +53,10 @@ export default function AccountInfo() {
     confirmNewPassword: "",
   });
 
-  const { data: username } = useQuery({
-    queryKey: ["username", user.uid],
-    queryFn: () => getUsername(user.uid),
-  });
+  // const { data: username } = useQuery({
+  //   queryKey: ["username", user.uid],
+  //   queryFn: () => getUsername(user.uid),
+  // });
 
   const [debouncedUsername] = useDebounce(inputValues.username, 500);
 
@@ -174,18 +174,23 @@ export default function AccountInfo() {
                   setInputValues({ ...inputValues, username: text })
                 }
               />
+              {/* {userId?.length && <Text>Username unavailable</Text>} */}
               <StyledTextInput
-                inputValue={inputValues.currentPassword}
-                label="password"
+                inputValue={inputValues.confirmUsername}
+                label={"confirm new username"}
                 changeFn={(text) => {
-                  setInputValues({ ...inputValues, currentPassword: text });
+                  setInputValues({ ...inputValues, confirmUsername: text });
                 }}
               />
               <LandingButton
                 fn={changeUsernameMutation}
                 text={"Change Username"}
                 loading={uiState.usernameLoading}
-                disabled={!inputValues.currentPassword}
+                disabled={
+                  !inputValues.confirmUsername ||
+                  !inputValues.username ||
+                  inputValues.username !== inputValues.confirmUsername
+                }
                 width="full"
               />
               {uiState.usernameError && (
@@ -206,21 +211,21 @@ export default function AccountInfo() {
             >
               <StyledTextInput
                 inputValue={inputValues.email}
-                label={"New Email"}
+                label={"new email"}
                 changeFn={(text) =>
                   setInputValues({ ...inputValues, email: text })
                 }
               />
               <StyledTextInput
                 inputValue={inputValues.confirmEmail}
-                label={"Confirm New Email"}
+                label={"confirm new email"}
                 changeFn={(text) =>
                   setInputValues({ ...inputValues, confirmEmail: text })
                 }
               />
               <StyledTextInput
                 inputValue={inputValues.currentPassword}
-                label={"Password"}
+                label={"password"}
                 changeFn={(text) =>
                   setInputValues({ ...inputValues, currentPassword: text })
                 }
@@ -229,9 +234,12 @@ export default function AccountInfo() {
                 fn={changeEmail}
                 text="Change Email"
                 disabled={false}
-                loading={false}
+                loading={uiState.emailLoading}
                 width="full"
               />
+              {uiState.emailError && (
+                <Text style={tw`text-red`}>{uiState.emailError}</Text>
+              )}
             </AccountDropdown>
             <AccountDropdown
               setting={"Password"}

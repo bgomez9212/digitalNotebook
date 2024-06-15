@@ -22,7 +22,7 @@ export default function AccountDropdown({
           )}
         </View>
       </TouchableOpacity>
-      {display && <View style={tw`w-full mt-3 pb-3`}>{children}</View>}
+      {display && <View style={tw`w-full mt-3`}>{children}</View>}
     </View>
   );
 }

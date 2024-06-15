@@ -45,7 +45,7 @@ export async function editUsername(userUid, username) {
       user_id: userUid,
       username: username,
     })
-    .then(() => console.log("success"))
+    .then(() => console.log("successfully edited username"))
     .catch((err) => console.log(err));
 }
 
@@ -55,6 +55,17 @@ export async function createUser(userUid, username) {
       user_id: userUid,
       username: username,
     })
-    .then(() => console.log("success"))
+    .then(() => console.log("successfully created user"))
     .catch((err) => console.log(err));
+}
+
+export async function deleteUserFromDb(userUid) {
+  await axios
+    .delete(`${process.env.API_DELETE_USER}`, {
+      params: {
+        user_id: userUid,
+      },
+    })
+    .then(() => console.log("successfully deleted user"))
+    .catch((err) => console.log(err.message));
 }

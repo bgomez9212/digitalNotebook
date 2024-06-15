@@ -42,14 +42,3 @@ export async function deleteRating(ratingInfo) {
     .then(() => console.log("success"))
     .catch((err) => console.log(err.message));
 }
-
-export async function deleteAllUserRatings(userUid) {
-  await axios
-    .delete(`${process.env.API_DELETE_USER}`, {
-      params: {
-        user_id: userUid,
-      },
-    })
-    .then(() => console.log("success"))
-    .catch((err) => console.log(err.message));
-}

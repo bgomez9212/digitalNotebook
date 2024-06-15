@@ -79,7 +79,6 @@ module.exports = {
     }
   },
   createUser: async (req, res) => {
-    console.log(req.body);
     try {
       const results = await model.createUser(
         req.body.user_id,

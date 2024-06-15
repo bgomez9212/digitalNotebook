@@ -21,6 +21,17 @@ export default function Layout() {
           headerTintColor: "white",
         }}
       />
+      <Stack.Screen
+        name="DeactivateAccountModal"
+        options={{
+          presentation: "modal",
+          title: "Confirm Deactivation",
+          headerStyle: { backgroundColor: "#FF0033" },
+          headerTitleStyle: { color: "white" },
+          headerShown: true,
+          headerTintColor: "white",
+        }}
+      />
     </Stack>
   );
 }

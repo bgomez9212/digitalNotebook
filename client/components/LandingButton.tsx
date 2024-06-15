@@ -26,7 +26,7 @@ export default function LandingButton({
   ) : (
     <Pressable
       disabled={disabled}
-      style={tw`bg-blue w-${width ? width : 60} flex items-center justify-center p-2.5 mb-2 rounded ${disabled ? "opacity-50" : ""}`}
+      style={tw`bg-blue h-10 w-${width ? width : 60} flex items-center justify-center rounded ${disabled ? "opacity-50" : ""}`}
       onPress={fn}
     >
       <Text style={tw`text-white`}>{text}</Text>

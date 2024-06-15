@@ -6,11 +6,11 @@ import {
   Platform,
   Pressable,
   Text,
-  TextInput,
   TouchableOpacity,
   TouchableWithoutFeedback,
   View,
 } from "react-native";
+import { TextInput } from "react-native-paper";
 import tw from "../../../tailwind";
 import { AntDesign } from "@expo/vector-icons";
 import {
@@ -28,6 +28,7 @@ import { router } from "expo-router";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { editUsername, getUserId, getUsername } from "../../../api/users";
 import { useDebounce } from "use-debounce";
+import StyledTextInput from "../../../components/StyledTextInput";
 // import { deleteUserFromDb } from "../../../api/users";
 export default function AccountInfo() {
   const auth = getAuth();
@@ -181,6 +182,10 @@ export default function AccountInfo() {
   //   </View>
   // </Modal>
 
+  // function changeUsername(inputValue) {
+  //   setInputValues({...inputValues, inputValue: })
+  // }
+
   return (
     <KeyboardAvoidingView
       behavior={Platform.OS === "ios" ? "padding" : "height"}
@@ -202,32 +207,27 @@ export default function AccountInfo() {
               <AntDesign name="downcircleo" size={24} color="white" />
             </View>
             {uiState.showChangeUsername && (
-              <View>
-                <TextInput
-                  style={tw`w-60 bg-white h-10 p-4 mb-2 rounded p-3`}
-                  value={inputValues.username}
-                  placeholder="new username"
-                  onChangeText={(text) =>
+              <View style={tw`w-full mt-3`}>
+                <StyledTextInput
+                  inputValue={inputValues.username}
+                  label={"new username"}
+                  changeFn={(text) =>
                     setInputValues({ ...inputValues, username: text })
                   }
-                  autoCapitalize="none"
                 />
-                <TextInput
-                  textContentType="password"
-                  secureTextEntry={true}
-                  style={tw`w-60 bg-white h-10 p-4 mb-2 rounded p-3`}
-                  value={inputValues.currentPassword}
-                  placeholder="enter password"
-                  onChangeText={(text) =>
-                    setInputValues({ ...inputValues, currentPassword: text })
-                  }
-                  autoCapitalize="none"
+                <StyledTextInput
+                  inputValue={inputValues.currentPassword}
+                  label="password"
+                  changeFn={(text) => {
+                    setInputValues({ ...inputValues, currentPassword: text });
+                  }}
                 />
                 <LandingButton
                   fn={changeUsernameMutation}
                   text={"Change Username"}
                   loading={uiState.usernameLoading}
                   disabled={false}
+                  width="full"
                 />
                 {uiState.usernameError && (
                   <Text style={tw`text-red text-center`}>

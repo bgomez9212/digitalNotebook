@@ -12,7 +12,7 @@ import tw from "../../../tailwind";
 import {
   getAuth,
   signOut,
-  // deleteUser,
+  deleteUser,
   updateEmail,
   reauthenticateWithCredential,
   EmailAuthProvider,
@@ -26,7 +26,7 @@ import { editUsername, getUserId, getUsername } from "../../../api/users";
 import { useDebounce } from "use-debounce";
 import StyledTextInput from "../../../components/StyledTextInput";
 import AccountDropdown from "../../../components/AccountDropdown";
-// import { deleteUserFromDb } from "../../../api/users";
+import { deleteUserFromDb } from "../../../api/users";
 export default function AccountInfo() {
   const auth = getAuth();
   const user = auth.currentUser;
@@ -41,7 +41,7 @@ export default function AccountInfo() {
     emailLoading: false,
     usernameLoading: false,
     passwordLoading: false,
-    showDeleteAlert: false,
+    showDeleteAccount: false,
   });
   const [inputValues, setInputValues] = useState({
     email: "",
@@ -127,6 +127,24 @@ export default function AccountInfo() {
   function appSignOut() {
     signOut(auth);
     router.replace("../../");
+  }
+
+  const { mutateAsync: deleteAllUserRatingsMutation } = useMutation({
+    mutationFn: deleteUserFromDb,
+    onSuccess: () => {
+      queryClient.invalidateQueries();
+    },
+  });
+
+  async function deleteAccount() {
+    try {
+      await deleteAllUserRatingsMutation(user.uid);
+      await reauthenticateWithCredential(user, credential);
+      await deleteUser(user);
+      router.replace("../../");
+    } catch (err) {
+      console.log(err);
+    }
   }
 
   return (
@@ -252,6 +270,38 @@ export default function AccountInfo() {
                 fn={changePassword}
                 loading={false}
                 disabled={false}
+              />
+            </AccountDropdown>
+            <AccountDropdown
+              setting={"Deactivate Account"}
+              display={uiState.showDeleteAccount}
+              displayfn={() =>
+                setUiState({
+                  ...uiState,
+                  showDeleteAccount: !uiState.showDeleteAccount,
+                })
+              }
+            >
+              <Text style={tw`text-red`}>
+                Warning: this action is irreversible
+              </Text>
+              <Text style={tw`text-red`}>
+                To confirm deactivation, re-enter your password
+              </Text>
+              <StyledTextInput
+                label={"password"}
+                inputValue={inputValues.currentPassword}
+                changeFn={(text) =>
+                  setInputValues({ ...inputValues, currentPassword: text })
+                }
+              />
+              <LandingButton
+                color="red"
+                width="full"
+                fn={deleteAccount}
+                text="Deactivate"
+                disabled={!inputValues.currentPassword}
+                loading={false}
               />
             </AccountDropdown>
           </View>

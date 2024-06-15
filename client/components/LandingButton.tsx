@@ -8,6 +8,7 @@ type LandingButtonProps = {
   disabled: boolean;
   loading: boolean;
   width?: string;
+  color?: string;
 };
 
 export default function LandingButton({
@@ -16,17 +17,18 @@ export default function LandingButton({
   disabled,
   loading,
   width,
+  color,
 }: LandingButtonProps) {
   return loading ? (
     <View
-      style={tw`bg-blue w-${width ? width : 60} flex items-center justify-center p-1.6 mb-2 rounded`}
+      style={tw`bg-${color ? color : "blue"} w-${width ? width : 60} flex items-center justify-center p-1.6 mb-2 rounded mt-2`}
     >
       <ActivityIndicator color="white" />
     </View>
   ) : (
     <Pressable
       disabled={disabled}
-      style={tw`bg-blue h-10 w-${width ? width : 60} flex items-center justify-center rounded ${disabled ? "opacity-50" : ""}`}
+      style={tw`bg-${color ? color : "blue"} h-10 w-${width ? width : 60} flex items-center justify-center rounded ${disabled ? "opacity-50" : ""} mt-2`}
       onPress={fn}
     >
       <Text style={tw`text-white`}>{text}</Text>

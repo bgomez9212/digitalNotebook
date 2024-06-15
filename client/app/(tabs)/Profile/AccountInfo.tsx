@@ -29,6 +29,7 @@ import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { editUsername, getUserId, getUsername } from "../../../api/users";
 import { useDebounce } from "use-debounce";
 import StyledTextInput from "../../../components/StyledTextInput";
+import AccountDropdown from "../../../components/AccountDropdown";
 // import { deleteUserFromDb } from "../../../api/users";
 export default function AccountInfo() {
   const auth = getAuth();
@@ -193,19 +194,62 @@ export default function AccountInfo() {
     >
       <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
         <View style={tw`flex-1 bg-darkGrey p-3`}>
-          <TouchableOpacity
-            onPress={() =>
+          <AccountDropdown
+            displayfn={() =>
               setUiState({
                 ...uiState,
                 showChangeUsername: !uiState.showChangeUsername,
               })
             }
+            display={uiState.showChangeUsername}
+          >
+            <StyledTextInput
+              inputValue={inputValues.username}
+              label={"new username"}
+              changeFn={(text) =>
+                setInputValues({ ...inputValues, username: text })
+              }
+            />
+            <StyledTextInput
+              inputValue={inputValues.currentPassword}
+              label="password"
+              changeFn={(text) => {
+                setInputValues({ ...inputValues, currentPassword: text });
+              }}
+            />
+            <LandingButton
+              fn={changeUsernameMutation}
+              text={"Change Username"}
+              loading={uiState.usernameLoading}
+              disabled={!inputValues.currentPassword}
+              width="full"
+            />
+            {uiState.usernameError && (
+              <Text style={tw`text-red text-center`}>
+                {uiState.usernameError}
+              </Text>
+            )}
+          </AccountDropdown>
+          {/* <View
             style={tw`border border-white items-center px-2 py-3 rounded-md mb-2`}
           >
-            <View style={tw`justify-between w-full flex-row items-center`}>
-              <Text style={tw`text-white font-bold`}>Username</Text>
-              <AntDesign name="downcircleo" size={24} color="white" />
-            </View>
+            <TouchableOpacity
+              onPress={() =>
+                setUiState({
+                  ...uiState,
+                  showChangeUsername: !uiState.showChangeUsername,
+                })
+              }
+            >
+              <View style={tw`justify-between w-full flex-row items-center`}>
+                <Text style={tw`text-white font-bold`}>Username</Text>
+                {uiState.showChangeUsername ? (
+                  <AntDesign name="upcircleo" size={24} color="white" />
+                ) : (
+                  <AntDesign name="downcircleo" size={24} color="white" />
+                )}
+              </View>
+            </TouchableOpacity>
             {uiState.showChangeUsername && (
               <View style={tw`w-full mt-3`}>
                 <StyledTextInput
@@ -226,7 +270,7 @@ export default function AccountInfo() {
                   fn={changeUsernameMutation}
                   text={"Change Username"}
                   loading={uiState.usernameLoading}
-                  disabled={false}
+                  disabled={!inputValues.currentPassword}
                   width="full"
                 />
                 {uiState.usernameError && (
@@ -236,7 +280,7 @@ export default function AccountInfo() {
                 )}
               </View>
             )}
-          </TouchableOpacity>
+          </View> */}
           <TouchableOpacity
             onPress={() =>
               setUiState({

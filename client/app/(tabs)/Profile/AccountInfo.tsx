@@ -82,16 +82,15 @@ export default function AccountInfo() {
 
   async function changeEmail() {
     setUiState({ ...uiState, emailLoading: true });
-    await reauthenticateWithCredential(user, credential);
-    await updateEmail(user, inputValues.email)
-      .then(() => {
-        setUiState({ ...uiState, showChangeEmail: false, emailLoading: false });
-        setInputValues({ ...inputValues, email: "", confirmEmail: "" });
-      })
-      .catch((err) => {
-        console.log(err);
-        setUiState({ ...uiState, emailError: "Error updating your email" });
-      });
+    try {
+      await reauthenticateWithCredential(user, credential);
+      await updateEmail(user, inputValues.email);
+      setUiState({ ...uiState, showChangeEmail: false, emailLoading: false });
+      setInputValues({ ...inputValues, email: "", confirmEmail: "" });
+    } catch (err) {
+      setUiState({ ...uiState, emailError: err.message });
+      // console.error(err);
+    }
   }
 
   async function changePassword() {
@@ -174,7 +173,11 @@ export default function AccountInfo() {
                   setInputValues({ ...inputValues, username: text })
                 }
               />
-              {/* {userId?.length && <Text>Username unavailable</Text>} */}
+              {userId && userId.length > 0 && (
+                <Text style={tw`mt-1 text-center text-red`}>
+                  Username unavailable
+                </Text>
+              )}
               <StyledTextInput
                 inputValue={inputValues.confirmUsername}
                 label={"confirm new username"}
@@ -233,12 +236,19 @@ export default function AccountInfo() {
               <LandingButton
                 fn={changeEmail}
                 text="Change Email"
-                disabled={false}
+                disabled={
+                  inputValues.email !== inputValues.confirmEmail ||
+                  !inputValues.email ||
+                  !inputValues.confirmEmail ||
+                  !inputValues.currentPassword
+                }
                 loading={uiState.emailLoading}
                 width="full"
               />
               {uiState.emailError && (
-                <Text style={tw`text-red`}>{uiState.emailError}</Text>
+                <Text style={tw`text-red text-center`}>
+                  {uiState.emailError}
+                </Text>
               )}
             </AccountDropdown>
             <AccountDropdown

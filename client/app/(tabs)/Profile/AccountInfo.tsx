@@ -1,8 +1,6 @@
 import {
   Alert,
   Keyboard,
-  KeyboardAvoidingView,
-  Platform,
   Pressable,
   Text,
   TouchableWithoutFeedback,
@@ -170,213 +168,206 @@ export default function AccountInfo() {
   }
 
   return (
-    <KeyboardAvoidingView
-      behavior={Platform.OS === "ios" ? "padding" : "height"}
-      style={{ flex: 1 }}
-    >
-      <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
-        <View
-          style={tw`flex-1 bg-darkGrey p-3 items-center justify-between pb-10`}
-        >
-          <View>
-            <AccountDropdown
-              setting={"Username"}
-              displayfn={() =>
-                setUiState({
-                  ...uiState,
-                  showChangeUsername: !uiState.showChangeUsername,
-                })
+    <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
+      <View
+        style={tw`flex-1 bg-darkGrey p-3 items-center justify-between pb-10`}
+      >
+        <View>
+          <AccountDropdown
+            setting={"Username"}
+            displayfn={() =>
+              setUiState({
+                ...uiState,
+                showChangeUsername: !uiState.showChangeUsername,
+              })
+            }
+            display={uiState.showChangeUsername}
+          >
+            <StyledTextInput
+              inputValue={inputValues.username}
+              label={"new username"}
+              changeFn={(text) =>
+                setInputValues({ ...inputValues, username: text })
               }
-              display={uiState.showChangeUsername}
-            >
-              <StyledTextInput
-                inputValue={inputValues.username}
-                label={"new username"}
-                changeFn={(text) =>
-                  setInputValues({ ...inputValues, username: text })
-                }
-              />
-              {userId && userId.length > 0 && (
-                <Text style={tw`mt-1 text-center text-red`}>
-                  Username unavailable
-                </Text>
-              )}
-              <StyledTextInput
-                inputValue={inputValues.confirmUsername}
-                label={"confirm new username"}
-                changeFn={(text) => {
-                  setInputValues({ ...inputValues, confirmUsername: text });
-                }}
-              />
-              <LandingButton
-                fn={changeUsernameMutation}
-                text={"Change Username"}
-                loading={uiState.usernameLoading}
-                disabled={
-                  !inputValues.confirmUsername ||
-                  !inputValues.username ||
-                  inputValues.username !== inputValues.confirmUsername
-                }
-                width="full"
-              />
-              {uiState.usernameError && (
-                <Text style={tw`text-red text-center`}>
-                  {uiState.usernameError}
-                </Text>
-              )}
-            </AccountDropdown>
-            <AccountDropdown
-              setting={"Email"}
-              display={uiState.showChangeEmail}
-              displayfn={() =>
-                setUiState({
-                  ...uiState,
-                  showChangeEmail: !uiState.showChangeEmail,
-                })
-              }
-            >
-              <StyledTextInput
-                inputValue={inputValues.email}
-                label={"new email"}
-                changeFn={(text) =>
-                  setInputValues({ ...inputValues, email: text })
-                }
-              />
-              <StyledTextInput
-                inputValue={inputValues.confirmEmail}
-                label={"confirm new email"}
-                changeFn={(text) =>
-                  setInputValues({ ...inputValues, confirmEmail: text })
-                }
-              />
-              <StyledTextInput
-                inputValue={inputValues.currentPasswordEmail}
-                label={"password"}
-                changeFn={(text) =>
-                  setInputValues({ ...inputValues, currentPasswordEmail: text })
-                }
-              />
-              <LandingButton
-                fn={changeEmail}
-                text="Change Email"
-                disabled={
-                  inputValues.email !== inputValues.confirmEmail ||
-                  !inputValues.email ||
-                  !inputValues.confirmEmail ||
-                  !inputValues.currentPasswordEmail
-                }
-                loading={uiState.emailLoading}
-                width="full"
-              />
-              {uiState.emailError && (
-                <Text style={tw`text-red text-center`}>
-                  {uiState.emailError}
-                </Text>
-              )}
-            </AccountDropdown>
-            <AccountDropdown
-              setting={"Password"}
-              display={uiState.showChangePassword}
-              displayfn={() =>
-                setUiState({
-                  ...uiState,
-                  showChangePassword: !uiState.showChangePassword,
-                })
-              }
-            >
-              <StyledTextInput
-                inputValue={inputValues.newPassword}
-                label={"new password"}
-                changeFn={(text) =>
-                  setInputValues({ ...inputValues, newPassword: text })
-                }
-              />
-              <StyledTextInput
-                inputValue={inputValues.confirmNewPassword}
-                label={"confirm new password"}
-                changeFn={(text) =>
-                  setInputValues({ ...inputValues, confirmNewPassword: text })
-                }
-              />
-              <StyledTextInput
-                inputValue={inputValues.currentPasswordPassword}
-                label={"current password"}
-                changeFn={(text) =>
-                  setInputValues({
-                    ...inputValues,
-                    currentPasswordPassword: text,
-                  })
-                }
-              />
-              <LandingButton
-                width="full"
-                text="Change Password"
-                fn={changePassword}
-                loading={uiState.passwordLoading}
-                disabled={
-                  !inputValues.newPassword ||
-                  !inputValues.confirmNewPassword ||
-                  !inputValues.currentPasswordPassword ||
-                  inputValues.newPassword !== inputValues.confirmNewPassword
-                }
-              />
-              {uiState.passwordError && (
-                <Text style={tw`text-red text-center`}>
-                  {uiState.passwordError}
-                </Text>
-              )}
-            </AccountDropdown>
-            <AccountDropdown
-              setting={"Deactivate Account"}
-              display={uiState.showDeleteAccount}
-              displayfn={() =>
-                setUiState({
-                  ...uiState,
-                  showDeleteAccount: !uiState.showDeleteAccount,
-                })
-              }
-            >
-              <Text style={tw`text-red`}>
-                Warning: this action is irreversible
+            />
+            {userId && userId.length > 0 && (
+              <Text style={tw`mt-1 text-center text-red`}>
+                Username unavailable
               </Text>
-              <Text style={tw`text-red`}>
-                To confirm deactivation, re-enter your password
+            )}
+            <StyledTextInput
+              inputValue={inputValues.confirmUsername}
+              label={"confirm new username"}
+              changeFn={(text) => {
+                setInputValues({ ...inputValues, confirmUsername: text });
+              }}
+            />
+            <LandingButton
+              fn={changeUsernameMutation}
+              text={"Change Username"}
+              loading={uiState.usernameLoading}
+              disabled={
+                !inputValues.confirmUsername ||
+                !inputValues.username ||
+                inputValues.username !== inputValues.confirmUsername
+              }
+              width="full"
+            />
+            {uiState.usernameError && (
+              <Text style={tw`text-red text-center`}>
+                {uiState.usernameError}
               </Text>
-              <StyledTextInput
-                label={"password"}
-                inputValue={inputValues.currentPasswordDeactivate}
-                changeFn={(text) =>
-                  setInputValues({
-                    ...inputValues,
-                    currentPasswordDeactivate: text,
-                  })
-                }
-              />
-              <LandingButton
-                color="red"
-                width="full"
-                fn={deleteAccount}
-                text="Deactivate"
-                disabled={!inputValues.currentPasswordDeactivate}
-                loading={false}
-              />
-              {uiState.deleteError && (
-                <Text style={tw`text-red text-center`}>
-                  {uiState.deleteError}
-                </Text>
-              )}
-            </AccountDropdown>
-          </View>
-          <View>
-            <Pressable
-              style={tw`h-15 w-30 bg-blue flex justify-center items-center rounded-xl mt-5`}
-              onPress={displaySignOutAlert}
-            >
-              <Text style={tw`text-white text-lg`}>Sign Out</Text>
-            </Pressable>
-          </View>
+            )}
+          </AccountDropdown>
+          <AccountDropdown
+            setting={"Email"}
+            display={uiState.showChangeEmail}
+            displayfn={() =>
+              setUiState({
+                ...uiState,
+                showChangeEmail: !uiState.showChangeEmail,
+              })
+            }
+          >
+            <StyledTextInput
+              inputValue={inputValues.email}
+              label={"new email"}
+              changeFn={(text) =>
+                setInputValues({ ...inputValues, email: text })
+              }
+            />
+            <StyledTextInput
+              inputValue={inputValues.confirmEmail}
+              label={"confirm new email"}
+              changeFn={(text) =>
+                setInputValues({ ...inputValues, confirmEmail: text })
+              }
+            />
+            <StyledTextInput
+              inputValue={inputValues.currentPasswordEmail}
+              label={"password"}
+              changeFn={(text) =>
+                setInputValues({ ...inputValues, currentPasswordEmail: text })
+              }
+            />
+            <LandingButton
+              fn={changeEmail}
+              text="Change Email"
+              disabled={
+                inputValues.email !== inputValues.confirmEmail ||
+                !inputValues.email ||
+                !inputValues.confirmEmail ||
+                !inputValues.currentPasswordEmail
+              }
+              loading={uiState.emailLoading}
+              width="full"
+            />
+            {uiState.emailError && (
+              <Text style={tw`text-red text-center`}>{uiState.emailError}</Text>
+            )}
+          </AccountDropdown>
+          <AccountDropdown
+            setting={"Password"}
+            display={uiState.showChangePassword}
+            displayfn={() =>
+              setUiState({
+                ...uiState,
+                showChangePassword: !uiState.showChangePassword,
+              })
+            }
+          >
+            <StyledTextInput
+              inputValue={inputValues.newPassword}
+              label={"new password"}
+              changeFn={(text) =>
+                setInputValues({ ...inputValues, newPassword: text })
+              }
+            />
+            <StyledTextInput
+              inputValue={inputValues.confirmNewPassword}
+              label={"confirm new password"}
+              changeFn={(text) =>
+                setInputValues({ ...inputValues, confirmNewPassword: text })
+              }
+            />
+            <StyledTextInput
+              inputValue={inputValues.currentPasswordPassword}
+              label={"current password"}
+              changeFn={(text) =>
+                setInputValues({
+                  ...inputValues,
+                  currentPasswordPassword: text,
+                })
+              }
+            />
+            <LandingButton
+              width="full"
+              text="Change Password"
+              fn={changePassword}
+              loading={uiState.passwordLoading}
+              disabled={
+                !inputValues.newPassword ||
+                !inputValues.confirmNewPassword ||
+                !inputValues.currentPasswordPassword ||
+                inputValues.newPassword !== inputValues.confirmNewPassword
+              }
+            />
+            {uiState.passwordError && (
+              <Text style={tw`text-red text-center`}>
+                {uiState.passwordError}
+              </Text>
+            )}
+          </AccountDropdown>
+          <AccountDropdown
+            setting={"Deactivate Account"}
+            display={uiState.showDeleteAccount}
+            displayfn={() =>
+              setUiState({
+                ...uiState,
+                showDeleteAccount: !uiState.showDeleteAccount,
+              })
+            }
+          >
+            <Text style={tw`text-red`}>
+              Warning: this action is irreversible
+            </Text>
+            <Text style={tw`text-red`}>
+              To confirm deactivation, re-enter your password
+            </Text>
+            <StyledTextInput
+              label={"password"}
+              inputValue={inputValues.currentPasswordDeactivate}
+              changeFn={(text) =>
+                setInputValues({
+                  ...inputValues,
+                  currentPasswordDeactivate: text,
+                })
+              }
+            />
+            <LandingButton
+              color="red"
+              width="full"
+              fn={deleteAccount}
+              text="Deactivate"
+              disabled={!inputValues.currentPasswordDeactivate}
+              loading={false}
+            />
+            {uiState.deleteError && (
+              <Text style={tw`text-red text-center`}>
+                {uiState.deleteError}
+              </Text>
+            )}
+          </AccountDropdown>
         </View>
-      </TouchableWithoutFeedback>
-    </KeyboardAvoidingView>
+        <View>
+          <Pressable
+            style={tw`h-15 w-30 bg-blue flex justify-center items-center rounded-xl mt-5`}
+            onPress={displaySignOutAlert}
+          >
+            <Text style={tw`text-white text-lg`}>Sign Out</Text>
+          </Pressable>
+        </View>
+      </View>
+    </TouchableWithoutFeedback>
   );
 }

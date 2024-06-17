@@ -286,21 +286,21 @@ export default function AccountInfo() {
             >
               <StyledTextInput
                 inputValue={inputValues.newPassword}
-                label={"New Password"}
+                label={"new password"}
                 changeFn={(text) =>
                   setInputValues({ ...inputValues, newPassword: text })
                 }
               />
               <StyledTextInput
                 inputValue={inputValues.confirmNewPassword}
-                label={"Confirm New Password"}
+                label={"confirm new password"}
                 changeFn={(text) =>
                   setInputValues({ ...inputValues, confirmNewPassword: text })
                 }
               />
               <StyledTextInput
                 inputValue={inputValues.currentPasswordPassword}
-                label={"Current Password"}
+                label={"current password"}
                 changeFn={(text) =>
                   setInputValues({
                     ...inputValues,

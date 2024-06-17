@@ -12,6 +12,7 @@ export default function StyledTextInput({ inputValue, label, changeFn }) {
       activeOutlineColor="#477CB9"
       textColor="white"
       autoCapitalize="none"
+      secureTextEntry={label.includes("password") ? true : false}
     />
   );
 }

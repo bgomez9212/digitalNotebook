@@ -209,7 +209,8 @@ export default function AccountInfo() {
               disabled={
                 !inputValues.confirmUsername ||
                 !inputValues.username ||
-                inputValues.username !== inputValues.confirmUsername
+                inputValues.username !== inputValues.confirmUsername ||
+                (userId && userId.length)
               }
               width="full"
             />

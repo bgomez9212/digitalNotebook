@@ -1,5 +1,5 @@
-import React, { useState } from "react";
-import { Text, View } from "react-native";
+import { useState } from "react";
+import { View } from "react-native";
 import { Dropdown } from "react-native-element-dropdown";
 import tw from "../tailwind";
 
@@ -13,7 +13,7 @@ const DropdownComponent = ({ searchParam, setSearchParam }) => {
   const [isFocus, setIsFocus] = useState(false);
 
   return (
-    <View style={tw`w-full`}>
+    <View style={tw`w-full mt-2`}>
       <Dropdown
         style={tw`bg-grey h-10 px-3 border-2 rounded-md`}
         containerStyle={tw`bg-grey pl-[2.5%] border-0`}

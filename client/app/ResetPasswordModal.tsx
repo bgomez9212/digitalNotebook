@@ -14,6 +14,7 @@ import LandingButton from "../components/LandingButton";
 import LandingLink from "../components/LandingLink";
 import { router } from "expo-router";
 import { ActivityIndicator } from "react-native-paper";
+import StyledTextInput from "../components/StyledTextInput";
 
 export default function ResetPasswordModal() {
   const auth = getAuth();
@@ -44,19 +45,19 @@ export default function ResetPasswordModal() {
             </View>
           ) : (
             <View style={tw`items-center justify-center`}>
-              <TextInput
-                style={tw`w-60 bg-white h-10 p-4 mb-2 rounded p-3`}
-                textContentType="emailAddress"
-                autoCapitalize="none"
-                onChangeText={(text) => setEmail(text)}
-                placeholder="email"
-              />
-              <LandingButton
-                fn={resetPassword}
-                text={"Reset Password"}
-                disabled={false}
-                loading={uiState.loading}
-              />
+              <View>
+                <StyledTextInput
+                  inputValue={email}
+                  label={"email"}
+                  changeFn={(text) => setEmail(text)}
+                />
+                <LandingButton
+                  fn={resetPassword}
+                  text={"Reset Password"}
+                  disabled={false}
+                  loading={uiState.loading}
+                />
+              </View>
               <LandingLink fn={() => router.back()} text={"cancel"} />
             </View>
           )}

@@ -48,15 +48,12 @@ export default function AccountInfo() {
     confirmEmail: "",
     username: "",
     confirmUsername: "",
-    currentPassword: "",
+    currentPasswordEmail: "",
+    currentPasswordPassword: "",
+    currentPasswordDeactivate: "",
     newPassword: "",
     confirmNewPassword: "",
   });
-
-  // const { data: username } = useQuery({
-  //   queryKey: ["username", user.uid],
-  //   queryFn: () => getUsername(user.uid),
-  // });
 
   const [debouncedUsername] = useDebounce(inputValues.username, 500);
 
@@ -75,18 +72,31 @@ export default function AccountInfo() {
     },
   });
   // needed to change password or email
-  const credential = EmailAuthProvider.credential(
-    user.email,
-    inputValues.currentPassword
-  );
+  function getCredential(password) {
+    const credential = EmailAuthProvider.credential(user.email, password);
+    return credential;
+  }
 
   async function changeEmail() {
     setUiState({ ...uiState, emailLoading: true });
     try {
-      await reauthenticateWithCredential(user, credential);
+      await reauthenticateWithCredential(
+        user,
+        getCredential(inputValues.currentPasswordEmail)
+      );
       await updateEmail(user, inputValues.email);
-      setUiState({ ...uiState, showChangeEmail: false, emailLoading: false });
-      setInputValues({ ...inputValues, email: "", confirmEmail: "" });
+      setUiState({
+        ...uiState,
+        showChangeEmail: false,
+        emailLoading: false,
+        emailError: "",
+      });
+      setInputValues({
+        ...inputValues,
+        email: "",
+        confirmEmail: "",
+        currentPasswordEmail: "",
+      });
     } catch (err) {
       setUiState({ ...uiState, emailError: err.message });
       // console.error(err);
@@ -94,23 +104,32 @@ export default function AccountInfo() {
   }
 
   async function changePassword() {
-    setUiState({ ...uiState, usernameLoading: true });
-    await reauthenticateWithCredential(user, credential);
-    await updatePassword(user, inputValues.newPassword)
-      .then(() => {
-        setUiState({
-          ...uiState,
-          showChangePassword: false,
-          passwordLoading: false,
-        });
-        setInputValues({
-          ...inputValues,
-          newPassword: "",
-          currentPassword: "",
-          confirmNewPassword: "",
-        });
-      })
-      .catch((err) => console.log(err));
+    setUiState({ ...uiState, passwordLoading: true });
+    try {
+      await reauthenticateWithCredential(
+        user,
+        getCredential(inputValues.currentPasswordPassword)
+      );
+      await updatePassword(user, inputValues.newPassword);
+      setUiState({
+        ...uiState,
+        showChangePassword: false,
+        passwordLoading: false,
+        passwordError: "",
+      });
+      setInputValues({
+        ...inputValues,
+        newPassword: "",
+        currentPasswordPassword: "",
+        confirmNewPassword: "",
+      });
+    } catch (err) {
+      setUiState({
+        ...uiState,
+        passwordError: err.message,
+        passwordLoading: false,
+      });
+    }
   }
 
   function displaySignOutAlert() {
@@ -138,7 +157,10 @@ export default function AccountInfo() {
   async function deleteAccount() {
     try {
       await deleteAllUserRatingsMutation(user.uid);
-      await reauthenticateWithCredential(user, credential);
+      await reauthenticateWithCredential(
+        user,
+        getCredential(inputValues.currentPasswordDeactivate)
+      );
       await deleteUser(user);
       router.replace("../../");
     } catch (err) {
@@ -227,10 +249,10 @@ export default function AccountInfo() {
                 }
               />
               <StyledTextInput
-                inputValue={inputValues.currentPassword}
+                inputValue={inputValues.currentPasswordEmail}
                 label={"password"}
                 changeFn={(text) =>
-                  setInputValues({ ...inputValues, currentPassword: text })
+                  setInputValues({ ...inputValues, currentPasswordEmail: text })
                 }
               />
               <LandingButton
@@ -240,7 +262,7 @@ export default function AccountInfo() {
                   inputValues.email !== inputValues.confirmEmail ||
                   !inputValues.email ||
                   !inputValues.confirmEmail ||
-                  !inputValues.currentPassword
+                  !inputValues.currentPasswordEmail
                 }
                 loading={uiState.emailLoading}
                 width="full"
@@ -276,19 +298,32 @@ export default function AccountInfo() {
                 }
               />
               <StyledTextInput
-                inputValue={inputValues.currentPassword}
+                inputValue={inputValues.currentPasswordPassword}
                 label={"Current Password"}
                 changeFn={(text) =>
-                  setInputValues({ ...inputValues, currentPassword: text })
+                  setInputValues({
+                    ...inputValues,
+                    currentPasswordPassword: text,
+                  })
                 }
               />
               <LandingButton
                 width="full"
                 text="Change Password"
                 fn={changePassword}
-                loading={false}
-                disabled={false}
+                loading={uiState.passwordLoading}
+                disabled={
+                  !inputValues.newPassword ||
+                  !inputValues.confirmNewPassword ||
+                  !inputValues.currentPasswordPassword ||
+                  inputValues.newPassword !== inputValues.confirmNewPassword
+                }
               />
+              {uiState.passwordError && (
+                <Text style={tw`text-red text-center`}>
+                  {uiState.passwordError}
+                </Text>
+              )}
             </AccountDropdown>
             <AccountDropdown
               setting={"Deactivate Account"}
@@ -308,9 +343,12 @@ export default function AccountInfo() {
               </Text>
               <StyledTextInput
                 label={"password"}
-                inputValue={inputValues.currentPassword}
+                inputValue={inputValues.currentPasswordDeactivate}
                 changeFn={(text) =>
-                  setInputValues({ ...inputValues, currentPassword: text })
+                  setInputValues({
+                    ...inputValues,
+                    currentPasswordDeactivate: text,
+                  })
                 }
               />
               <LandingButton
@@ -318,7 +356,7 @@ export default function AccountInfo() {
                 width="full"
                 fn={deleteAccount}
                 text="Deactivate"
-                disabled={!inputValues.currentPassword}
+                disabled={!inputValues.currentPasswordDeactivate}
                 loading={false}
               />
             </AccountDropdown>

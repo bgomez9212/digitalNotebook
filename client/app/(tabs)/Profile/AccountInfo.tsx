@@ -42,17 +42,18 @@ export default function AccountInfo() {
     passwordLoading: false,
     passwordError: "",
     showDeleteAccount: false,
+    deleteError: "",
   });
   const [inputValues, setInputValues] = useState({
     email: "",
     confirmEmail: "",
+    currentPasswordEmail: "",
     username: "",
     confirmUsername: "",
-    currentPasswordEmail: "",
     currentPasswordPassword: "",
-    currentPasswordDeactivate: "",
     newPassword: "",
     confirmNewPassword: "",
+    currentPasswordDeactivate: "",
   });
 
   const [debouncedUsername] = useDebounce(inputValues.username, 500);
@@ -164,7 +165,7 @@ export default function AccountInfo() {
       await deleteUser(user);
       router.replace("../../");
     } catch (err) {
-      console.log(err);
+      setUiState({ ...uiState, deleteError: err.message });
     }
   }
 
@@ -359,6 +360,11 @@ export default function AccountInfo() {
                 disabled={!inputValues.currentPasswordDeactivate}
                 loading={false}
               />
+              {uiState.deleteError && (
+                <Text style={tw`text-red text-center`}>
+                  {uiState.deleteError}
+                </Text>
+              )}
             </AccountDropdown>
           </View>
           <View>

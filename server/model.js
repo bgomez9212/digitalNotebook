@@ -414,4 +414,25 @@ module.exports = {
       throw new Error(err);
     }
   },
+  deleteUser: async (user_id) => {
+    try {
+      const deleteFromRatings = await pool.query(
+        `DELETE FROM ratings WHERE user_id = $1`,
+        [user_id]
+      );
+
+      const deleteFromUsernames = await pool.query(
+        `DELETE FROM users WHERE user_id = $1`,
+        [user_id]
+      );
+      return {
+        success: true,
+        message: "User and ratings deleted successfully",
+        deletedRatingsCount: deleteRatingsResult.rowCount,
+        deletedUserCount: deleteUserResult.rowCount,
+      };
+    } catch (err) {
+      throw new Error(err);
+    }
+  },
 };

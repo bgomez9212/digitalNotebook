@@ -1,7 +1,6 @@
 import {
   View,
   Image,
-  TextInput,
   KeyboardAvoidingView,
   TouchableWithoutFeedback,
   Platform,
@@ -99,7 +98,7 @@ export default function Landing() {
           </View>
           {uiState.displaySignup ? (
             <View style={tw`items-center justify-start flex-2`}>
-              <View style={tw`w-60`}>
+              <View>
                 <StyledTextInput
                   inputValue={credentials.username}
                   label={"username"}
@@ -156,13 +155,18 @@ export default function Landing() {
                     {uiState.signUpError}
                   </Text>
                 )}
-                <View style={tw`items-center mt-1`}>
-                  <LandingLink
-                    fn={() => setUiState({ ...uiState, displaySignup: false })}
-                    text={"log in"}
-                  />
-                </View>
               </View>
+              <LandingLink
+                fn={() => {
+                  setUiState({ ...uiState, displaySignup: false });
+                  setCredentials({
+                    ...credentials,
+                    password: "",
+                    confirmPassword: "",
+                  });
+                }}
+                text={"log in"}
+              />
             </View>
           ) : (
             <View style={tw`flex justify-start items-center flex-2`}>
@@ -182,27 +186,32 @@ export default function Landing() {
                   }
                 />
                 <LandingButton
-                  disabled={false}
+                  disabled={!credentials.email || !credentials.password}
                   fn={login}
                   text={"LOGIN"}
                   loading={uiState.loading}
                 />
                 {uiState.loginError && (
-                  <Text style={tw`text-red my-3 text-base`}>
+                  <Text style={tw`text-red my-3 text-center text-base`}>
                     Incorrect email or password
                   </Text>
                 )}
-                <View style={tw`items-center`}>
-                  <LandingLink
-                    fn={() => setUiState({ ...uiState, displaySignup: true })}
-                    text={"sign up"}
-                  />
-                  <LandingLink
-                    fn={() => router.navigate("./ResetPasswordModal")}
-                    text={"forgot password?"}
-                  />
-                </View>
               </View>
+              <LandingLink
+                fn={() => {
+                  setUiState({
+                    ...uiState,
+                    displaySignup: true,
+                    loginError: false,
+                  });
+                  setCredentials({ ...credentials, password: "" });
+                }}
+                text={"sign up"}
+              />
+              <LandingLink
+                fn={() => router.navigate("./ResetPasswordModal")}
+                text={"forgot password?"}
+              />
             </View>
           )}
         </View>

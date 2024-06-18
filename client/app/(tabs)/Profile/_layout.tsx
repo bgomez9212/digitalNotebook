@@ -14,7 +14,7 @@ export default function Layout() {
         name="AccountInfo"
         options={{
           // presentation: "modal",
-          title: "Edit Account Information",
+          title: "Account Information",
           headerStyle: { backgroundColor: "#141414" },
           headerTitleStyle: { color: "white" },
           headerShown: true,

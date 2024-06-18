@@ -16,15 +16,6 @@ export default function Layout() {
         }}
       />
       <Stack.Screen
-        name="[eventId]"
-        options={{
-          title: eventName,
-          headerStyle: { backgroundColor: blue },
-          headerTitleStyle: { color: "white" },
-          headerTintColor: "white",
-        }}
-      />
-      <Stack.Screen
         name="RecentEvents"
         options={{
           title: "Recent Events",

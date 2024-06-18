@@ -14,7 +14,7 @@ export default function EventRow({
 }) {
   function openEvent() {
     router.push({
-      pathname: `/(tabs)/Home/${event.id}`,
+      pathname: `/(tabs)/${event.id}`,
       params: { eventName: event.title },
     });
   }

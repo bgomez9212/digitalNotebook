@@ -1,9 +1,9 @@
-import { Tabs, router } from "expo-router";
+import { Tabs, router, useGlobalSearchParams } from "expo-router";
 import { Entypo } from "@expo/vector-icons";
 import { FontAwesome } from "@expo/vector-icons";
 import { Ionicons } from "@expo/vector-icons";
 import { getAuth } from "firebase/auth";
-import { TouchableOpacity } from "react-native";
+import { Text, TouchableOpacity } from "react-native";
 import tw from "../../tailwind";
 import { useQuery } from "@tanstack/react-query";
 import { getUsername } from "../../api/users";
@@ -14,6 +14,9 @@ export default function Layout() {
     queryKey: ["username", auth.currentUser.uid],
     queryFn: () => getUsername(auth.currentUser.uid),
   });
+  const { eventName } = useGlobalSearchParams() as {
+    eventName: string;
+  };
   return (
     <Tabs
       screenOptions={{
@@ -26,6 +29,7 @@ export default function Layout() {
         tabBarActiveTintColor: blue,
         tabBarShowLabel: false,
       }}
+      backBehavior="history"
     >
       <Tabs.Screen
         name="Home"
@@ -58,6 +62,18 @@ export default function Layout() {
               onPress={() => router.navigate("Profile/AccountInfo")}
             >
               <FontAwesome name="gear" size={24} color="white" />
+            </TouchableOpacity>
+          ),
+        }}
+      />
+      <Tabs.Screen
+        name="[eventId]"
+        options={{
+          headerTitle: `${eventName}`,
+          href: null,
+          headerLeft: () => (
+            <TouchableOpacity onPress={() => router.back()}>
+              <Text style={tw`ml-5 text-lg font-bold text-white`}>{`<<`}</Text>
             </TouchableOpacity>
           ),
         }}

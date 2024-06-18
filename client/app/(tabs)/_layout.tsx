@@ -1,4 +1,4 @@
-import { Tabs, router, useGlobalSearchParams } from "expo-router";
+import { Tabs, router, useGlobalSearchParams, usePathname } from "expo-router";
 import { Entypo } from "@expo/vector-icons";
 import { FontAwesome } from "@expo/vector-icons";
 import { Ionicons } from "@expo/vector-icons";
@@ -17,6 +17,22 @@ export default function Layout() {
   const { eventName } = useGlobalSearchParams() as {
     eventName: string;
   };
+  const route = usePathname();
+
+  function renderGear(routeName) {
+    if (routeName === "/Profile/AccountInfo") {
+      return null;
+    } else {
+      return (
+        <TouchableOpacity
+          style={tw`mr-4`}
+          onPress={() => router.navigate("Profile/AccountInfo")}
+        >
+          <FontAwesome name="gear" size={24} color="white" />
+        </TouchableOpacity>
+      );
+    }
+  }
   return (
     <Tabs
       screenOptions={{
@@ -56,14 +72,7 @@ export default function Layout() {
             <Ionicons name="person" size={24} color={color} />
           ),
           headerTintColor: "#EBF2FA",
-          headerRight: () => (
-            <TouchableOpacity
-              style={tw`mr-4`}
-              onPress={() => router.navigate("Profile/AccountInfo")}
-            >
-              <FontAwesome name="gear" size={24} color="white" />
-            </TouchableOpacity>
-          ),
+          headerRight: () => renderGear(route),
         }}
       />
       <Tabs.Screen

@@ -27,11 +27,11 @@ export default function RatingModal() {
   });
 
   const {
-    isPending: userRatingPending,
-    error: userRatingError,
-    data: userRating,
+    isPending: ratingDataPending,
+    error: ratingDataError,
+    data: ratingData,
   } = useQuery({
-    queryKey: ["userRating", uid, match_id],
+    queryKey: ["ratingData", uid, match_id],
     queryFn: () => getUserRating(uid, match_id),
   });
 
@@ -39,8 +39,8 @@ export default function RatingModal() {
     useMutation({
       mutationFn: addRating,
       onSuccess: () => {
-        queryClient.invalidateQueries();
-        setRating(userRating.rating || 2);
+        queryClient.invalidateQueries({ queryKey: ["ratingData"] });
+        setRating(ratingData?.userRating?.rating || 2);
         router.back();
       },
     });
@@ -71,18 +71,18 @@ export default function RatingModal() {
   }
 
   useEffect(() => {
-    if (userRating) {
+    if (ratingData) {
       setShowPicker(false);
-      setRating(userRating.rating);
+      setRating(ratingData?.userRating?.rating);
     } else {
       setShowPicker(true);
       setRating(2);
     }
-  }, [userRating]);
+  }, [ratingData]);
 
   function cancelEdit() {
     setShowPicker(false);
-    setRating(userRating.rating || 2);
+    setRating(ratingData?.currentUser?.rating || 2);
   }
 
   if (matchInfoPending) {
@@ -110,19 +110,15 @@ export default function RatingModal() {
         </Text>
         <Text style={tw`text-white pb-3`}>From {event_title}</Text>
         <View
-          style={tw`flex flex-row ${userRating ? "justify-between" : "justify-end"}`}
+          style={tw`flex flex-row ${ratingData ? "justify-between" : "justify-end"}`}
         >
-          {userRating && (
-            <StarView
-              display="User"
-              rating={userRating.rating}
-              rating_count={matchInfo.rating_count}
-            />
+          {ratingData && (
+            <StarView display="User" rating={ratingData?.userRating?.rating} />
           )}
           <StarView
             display="Total"
-            rating={matchInfo.rating}
-            rating_count={matchInfo.rating_count}
+            rating={ratingData?.communityRating?.rating}
+            rating_count={ratingData?.communityRating?.rating_count}
           />
         </View>
       </View>
@@ -174,7 +170,7 @@ export default function RatingModal() {
               <Text style={tw`text-white text-lg`}>Submit</Text>
             )}
           </Pressable>
-          {userRating && showPicker && (
+          {ratingData && showPicker && (
             <Pressable
               onPress={cancelEdit}
               style={tw`bg-lightGrey w-1/3 p-4 items-center justify-center rounded-md mt-5`}

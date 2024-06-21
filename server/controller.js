@@ -34,7 +34,7 @@ module.exports = {
       req.query.user_id,
       req.query.match_id
     );
-    res.send(result[0]).status(200);
+    res.send(result).status(200);
   },
   deleteUserRating: async (req, res) => {
     const result = await model.deleteUserRating(

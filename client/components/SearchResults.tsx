@@ -1,9 +1,12 @@
-import { FlatList, Text, View } from "react-native";
+import { FlatList, RefreshControl, Text, View } from "react-native";
 import tw from "../tailwind";
 import EventRow from "./EventRow";
 import MatchRow from "./MatchRow";
+import { useQueryClient } from "@tanstack/react-query";
 
 export default function SearchResults({ data }) {
+  const refreshing = false;
+  const queryClient = useQueryClient();
   if (!data) {
     return null;
   }
@@ -40,6 +43,15 @@ export default function SearchResults({ data }) {
         showsVerticalScrollIndicator={false}
         data={data.results}
         keyExtractor={(item) => item.match_id}
+        refreshControl={
+          <RefreshControl
+            refreshing={refreshing}
+            onRefresh={() =>
+              queryClient.invalidateQueries({ queryKey: ["ratingData"] })
+            }
+            tintColor="#fff"
+          />
+        }
         renderItem={({ item, index }) => (
           <MatchRow
             match={item}

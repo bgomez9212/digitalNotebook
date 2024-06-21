@@ -17,8 +17,8 @@ export default function MatchRow({
 }) {
   const auth = getAuth();
   const { uid } = auth.currentUser;
-  const { data: matchRatings } = useQuery({
-    queryKey: ["userMatchData", match.match_id],
+  const { data: ratingData } = useQuery({
+    queryKey: ["ratingData", match.match_id],
     queryFn: () => getUserRating(uid, match.match_id),
   });
 
@@ -55,16 +55,16 @@ export default function MatchRow({
             <Text style={tw`text-white text-lg`}>{match.participants}</Text>
           </View>
           <View
-            style={tw`flex flex-row ${matchRatings ? "justify-between" : "justify-end"}`}
+            style={tw`flex flex-row ${ratingData ? "justify-between" : "justify-end"}`}
           >
             <StarView
               display={"User"}
-              rating={matchRatings?.userRating?.rating}
+              rating={ratingData?.userRating?.rating}
             />
             <StarView
               display="Home"
-              rating={matchRatings?.communityRating.rating}
-              rating_count={matchRatings?.communityRating.rating_count}
+              rating={ratingData?.communityRating.rating}
+              rating_count={ratingData?.communityRating.rating_count}
             />
           </View>
         </View>
@@ -109,16 +109,16 @@ export default function MatchRow({
             <Text style={tw`text-white text-lg`}>{match.participants}</Text>
           </View>
           <View
-            style={tw`flex flex-row ${matchRatings ? "justify-between" : "justify-end"}`}
+            style={tw`flex flex-row ${ratingData ? "justify-between" : "justify-end"}`}
           >
             <StarView
               display={"User"}
-              rating={matchRatings?.userRating?.rating}
+              rating={ratingData?.userRating?.rating}
             />
             <StarView
               display="Total"
-              rating={matchRatings?.communityRating.rating}
-              rating_count={matchRatings?.communityRating.rating_count}
+              rating={ratingData?.communityRating.rating}
+              rating_count={ratingData?.communityRating.rating_count}
             />
           </View>
         </View>
@@ -153,16 +153,16 @@ export default function MatchRow({
             <Text style={tw`text-white text-lg`}>{match.participants}</Text>
           </View>
           <View
-            style={tw`flex flex-row ${matchRatings ? "justify-between" : "justify-end"}`}
+            style={tw`flex flex-row ${ratingData ? "justify-between" : "justify-end"}`}
           >
             <StarView
               display={"User"}
-              rating={matchRatings?.userRating?.rating}
+              rating={ratingData?.userRating?.rating}
             />
             <StarView
               display="Total"
-              rating={matchRatings?.communityRating.rating}
-              rating_count={matchRatings?.communityRating.rating_count}
+              rating={ratingData?.communityRating.rating}
+              rating_count={ratingData?.communityRating.rating_count}
             />
           </View>
         </View>

@@ -14,9 +14,6 @@ export default function Layout() {
     queryKey: ["username", auth.currentUser.uid],
     queryFn: () => getUsername(auth.currentUser.uid),
   });
-  const { eventName } = useGlobalSearchParams() as {
-    eventName: string;
-  };
   const route = usePathname();
 
   function renderGear(routeName) {
@@ -59,6 +56,7 @@ export default function Layout() {
       <Tabs.Screen
         name="Search"
         options={{
+          headerShown: false,
           tabBarIcon: ({ color }) => (
             <FontAwesome name="search" size={24} color={color} />
           ),
@@ -73,18 +71,6 @@ export default function Layout() {
           ),
           headerTintColor: "#EBF2FA",
           headerRight: () => renderGear(route),
-        }}
-      />
-      <Tabs.Screen
-        name="[eventId]"
-        options={{
-          headerTitle: `${eventName}`,
-          href: null,
-          headerLeft: () => (
-            <TouchableOpacity onPress={() => router.back()}>
-              <Text style={tw`ml-5 text-lg font-bold text-white`}>{`<<`}</Text>
-            </TouchableOpacity>
-          ),
         }}
       />
     </Tabs>

@@ -46,7 +46,10 @@ export default function Profile() {
           />
           <Pressable
             style={tw`w-full mt-2 bg-blue h-10 justify-center items-center rounded-md ${!userSearch.searchParam || !userSearch.searchText ? "opacity-50" : ""}`}
-            onPress={() => refetch()}
+            onPress={() => {
+              Keyboard.dismiss();
+              refetch();
+            }}
             disabled={!userSearch.searchParam || !userSearch.searchText}
           >
             <Text style={tw`text-lg font-bold text-white`}>Submit</Text>

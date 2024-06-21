@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { View } from "react-native";
+import { Keyboard, View } from "react-native";
 import { Dropdown } from "react-native-element-dropdown";
 import tw from "../tailwind";
 
@@ -30,7 +30,10 @@ const DropdownComponent = ({ searchParam, setSearchParam }) => {
         placeholder={!isFocus ? "Search By" : "..."}
         searchPlaceholder="Search..."
         value={searchParam}
-        onFocus={() => setIsFocus(true)}
+        onFocus={() => {
+          setIsFocus(true);
+          Keyboard.dismiss();
+        }}
         onBlur={() => setIsFocus(false)}
         onChange={(item) => {
           setSearchParam(item.value);

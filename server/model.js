@@ -21,8 +21,6 @@ function parseMatchData(matchArr) {
     promotion: matchArr[0].promotion_name,
     participants: [],
     championships: [],
-    rating: matchArr[0].rating,
-    rating_count: matchArr[0].rating_count,
     date: matchArr[0].date,
   };
 
@@ -34,8 +32,6 @@ function parseMatchData(matchArr) {
       matchObj.event_title = partObj.event_title;
       matchObj.participants = [];
       matchObj.championships = [];
-      matchObj.rating = partObj.rating;
-      matchObj.rating_count = partObj.rating_count;
       matchObj.date = partObj.date;
       matchObj.promotion = partObj.promotion_name;
     }
@@ -174,14 +170,11 @@ module.exports = {
         matches.id AS match_id,
         matches.event_id AS event_id,
         participants.team AS participants,
-        wrestlers.name AS wrestler_name,
-        ROUND(AVG(ratings.rating)::numeric, 2) AS rating,
-        (SELECT COUNT(*) FROM ratings WHERE match_id = $1) AS rating_count,
+        wrestlers.name AS wrestler_name
         championships.name AS championship_name
       FROM matches
       JOIN participants ON matches.id = participants.match_id
       JOIN wrestlers ON participants.wrestler_id = wrestlers.id
-      LEFT OUTER JOIN ratings ON matches.id = ratings.match_id
       LEFT OUTER JOIN matches_championships ON matches_championships.match_id = matches.id
       LEFT OUTER JOIN championships ON matches_championships.championship_id = championships.id
         WHERE matches.id = $1
@@ -199,11 +192,20 @@ module.exports = {
     return results;
   },
   getUserRating: async (user_id, match_id) => {
-    const { rows: results } = await pool.query(
+    const { rows: userRating } = await pool.query(
       "SELECT rating FROM ratings WHERE user_id = $1 AND match_id = $2",
       [user_id, match_id]
     );
-    return results;
+    const { rows: communityRating } = await pool.query(
+      `SELECT
+        ROUND(AVG(ratings.rating)::numeric, 2) AS rating,
+        (SELECT COUNT(*) FROM ratings WHERE match_id = $1) AS rating_count
+      FROM matches
+      LEFT OUTER JOIN ratings ON matches.id = ratings.match_id
+      WHERE matches.id = $1`,
+      [match_id]
+    );
+    return { userRating: userRating[0], communityRating: communityRating[0] };
   },
   deleteUserRating: async (user_id, match_id) => {
     const { rows: results } = await pool.query(

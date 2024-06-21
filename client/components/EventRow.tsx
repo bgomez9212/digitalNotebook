@@ -1,4 +1,4 @@
-import { router } from "expo-router";
+import { router, usePathname } from "expo-router";
 import { TouchableOpacity, View, Text, Image } from "react-native";
 import tw from "../tailwind";
 import { photoLibrary } from "../assets";
@@ -12,9 +12,10 @@ export default function EventRow({
   hideBorder: boolean;
   display: "Table" | "Search";
 }) {
+  const pathname = usePathname();
   function openEvent() {
     router.push({
-      pathname: `/(tabs)/${event.id}`,
+      pathname: `${pathname === "/Home" ? `/(tabs)/Home/${event.id}` : `/(tabs)/Search/${event.id}`}`,
       params: { eventName: event.title },
     });
   }

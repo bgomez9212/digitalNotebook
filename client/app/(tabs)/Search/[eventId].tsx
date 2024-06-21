@@ -1,11 +1,11 @@
-import { router, useLocalSearchParams } from "expo-router";
+import { useLocalSearchParams } from "expo-router";
 import { FlatList, Image, SafeAreaView, Text, View } from "react-native";
-import tw from "../../tailwind";
+import tw from "../../../tailwind";
 import { useQuery } from "@tanstack/react-query";
 import { ActivityIndicator } from "react-native-paper";
-import MatchRow from "../../components/MatchRow";
-import { photoLibrary } from "../../assets";
-import { getEvent } from "../../api/events";
+import MatchRow from "../../../components/MatchRow";
+import { photoLibrary } from "../../../assets";
+import { getEvent } from "../../../api/events";
 export default function EventPage() {
   const { eventId } = useLocalSearchParams();
   const {

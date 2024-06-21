@@ -8,7 +8,7 @@ export default function StarView({
   display,
 }: {
   rating: number;
-  rating_count: number;
+  rating_count?: number;
   display: "Total" | "User" | "Home";
 }) {
   const starPercentage: number = rating * 20;

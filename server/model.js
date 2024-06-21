@@ -170,7 +170,7 @@ module.exports = {
         matches.id AS match_id,
         matches.event_id AS event_id,
         participants.team AS participants,
-        wrestlers.name AS wrestler_name
+        wrestlers.name AS wrestler_name,
         championships.name AS championship_name
       FROM matches
       JOIN participants ON matches.id = participants.match_id

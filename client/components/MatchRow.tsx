@@ -22,8 +22,6 @@ export default function MatchRow({
     queryFn: () => getUserRating(uid, match.match_id),
   });
 
-  console.log(matchRatings);
-
   if (display === "Home") {
     return (
       <TouchableOpacity
@@ -56,20 +54,19 @@ export default function MatchRow({
           <View style={tw`py-2`}>
             <Text style={tw`text-white text-lg`}>{match.participants}</Text>
           </View>
-          {/* <View
+          <View
             style={tw`flex flex-row ${matchRatings ? "justify-between" : "justify-end"}`}
           >
             <StarView
               display={"User"}
-              rating={userMatchRating.rating}
-              rating_count={match.rating_count}
+              rating={matchRatings?.userRating?.rating}
             />
             <StarView
               display="Home"
-              rating={match.rating}
-              rating_count={match.rating_count}
+              rating={matchRatings?.communityRating.rating}
+              rating_count={matchRatings?.communityRating.rating_count}
             />
-          </View> */}
+          </View>
         </View>
       </TouchableOpacity>
     );
@@ -111,20 +108,19 @@ export default function MatchRow({
           <View style={tw`py-2`}>
             <Text style={tw`text-white text-lg`}>{match.participants}</Text>
           </View>
-          {/* <View
-            style={tw`flex flex-row ${userMatchRating ? "justify-between" : "justify-end"}`}
+          <View
+            style={tw`flex flex-row ${matchRatings ? "justify-between" : "justify-end"}`}
           >
             <StarView
               display={"User"}
-              rating={userMatchRating?.rating}
-              rating_count={match.rating_count}
+              rating={matchRatings?.userRating?.rating}
             />
             <StarView
               display="Total"
-              rating={match.rating}
-              rating_count={match.rating_count}
+              rating={matchRatings?.communityRating.rating}
+              rating_count={matchRatings?.communityRating.rating_count}
             />
-          </View> */}
+          </View>
         </View>
       </TouchableOpacity>
     );
@@ -156,20 +152,19 @@ export default function MatchRow({
           <View style={tw`py-2`}>
             <Text style={tw`text-white text-lg`}>{match.participants}</Text>
           </View>
-          {/* <View
-            style={tw`flex flex-row ${userMatchRating ? "justify-between" : "justify-end"}`}
+          <View
+            style={tw`flex flex-row ${matchRatings ? "justify-between" : "justify-end"}`}
           >
             <StarView
               display={"User"}
-              rating={userMatchRating?.rating}
-              rating_count={match.rating_count}
+              rating={matchRatings?.userRating?.rating}
             />
             <StarView
               display="Total"
-              rating={match.rating}
-              rating_count={match.rating_count}
+              rating={matchRatings?.communityRating.rating}
+              rating_count={matchRatings?.communityRating.rating_count}
             />
-          </View> */}
+          </View>
         </View>
       </TouchableOpacity>
     );

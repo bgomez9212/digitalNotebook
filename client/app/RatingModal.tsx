@@ -39,7 +39,7 @@ export default function RatingModal() {
     useMutation({
       mutationFn: addRating,
       onSuccess: () => {
-        queryClient.invalidateQueries();
+        queryClient.invalidateQueries({ queryKey: ["userMatchData"] });
         setRating(userRating.rating || 2);
         router.back();
       },

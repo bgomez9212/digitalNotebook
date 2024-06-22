@@ -13,7 +13,6 @@ import { useState } from "react";
 import LandingButton from "../components/LandingButton";
 import LandingLink from "../components/LandingLink";
 import { router } from "expo-router";
-import { ActivityIndicator } from "react-native-paper";
 import StyledTextInput from "../components/StyledTextInput";
 
 export default function ResetPasswordModal() {

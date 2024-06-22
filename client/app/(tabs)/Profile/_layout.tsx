@@ -13,12 +13,18 @@ export default function Layout() {
       <Stack.Screen
         name="AccountInfo"
         options={{
-          // presentation: "modal",
           title: "Account Information",
           headerStyle: { backgroundColor: "#141414" },
           headerTitleStyle: { color: "white" },
           headerShown: true,
           headerTintColor: "white",
+        }}
+      />
+      <Stack.Screen
+        name="RatingsExtended"
+        options={{
+          title: "All Ratings",
+          headerShown: false,
         }}
       />
     </Stack>

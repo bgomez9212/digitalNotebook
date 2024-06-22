@@ -1,4 +1,4 @@
-import { ScrollView, Text, View } from "react-native";
+import { ScrollView, Text, TouchableOpacity, View } from "react-native";
 import tw from "../../../tailwind";
 import { useQuery } from "@tanstack/react-query";
 import MatchRow from "../../../components/MatchRow";
@@ -8,6 +8,7 @@ import { Dimensions } from "react-native";
 const screenWidth = Dimensions.get("window").width;
 import { getAuth } from "firebase/auth";
 import { getUserRatings } from "../../../api/users";
+import { router } from "expo-router";
 export default function Profile() {
   const auth = getAuth();
   const { uid } = auth.currentUser;
@@ -103,7 +104,8 @@ export default function Profile() {
         {userRatings?.length ? (
           <View style={tw`flex-row w-9/10 mb-10 flex-wrap justify-between`}>
             {pieChartData.map((promotion, i) => (
-              <View
+              <TouchableOpacity
+                onPress={() => router.push("/(tabs)/Profile/RatingsExtended")}
                 key={promotion.promotionName}
                 style={tw`flex-row items-center justify-center mb-2 w-1/3 py-1`}
               >
@@ -113,7 +115,7 @@ export default function Profile() {
                 <Text style={tw`text-white`} key={promotion.promotionName}>
                   {`${promotion.promotionName} (${promotion.matchCount})`}
                 </Text>
-              </View>
+              </TouchableOpacity>
             ))}
           </View>
         ) : null}

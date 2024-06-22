@@ -105,9 +105,11 @@ export default function Profile() {
             {pieChartData.map((promotion, i) => (
               <View
                 key={promotion.promotionName}
-                style={tw`flex-row items-center mb-2`}
+                style={tw`flex-row items-center justify-center mb-2 w-1/3 py-1`}
               >
-                <View style={tw`h-3 w-3 bg-[${promotion.color}] mr-1`}></View>
+                <View
+                  style={tw`h-3 w-3 bg-[${promotion.color}] mr-1 border`}
+                ></View>
                 <Text style={tw`text-white`} key={promotion.promotionName}>
                   {`${promotion.promotionName} (${promotion.matchCount})`}
                 </Text>

@@ -40,6 +40,7 @@ export default function RatingModal() {
       mutationFn: addRating,
       onSuccess: () => {
         queryClient.invalidateQueries({ queryKey: ["ratingData"] });
+        queryClient.invalidateQueries({ queryKey: ["userRatings"] });
         setRating(ratingData?.userRating?.rating || 2);
         router.back();
       },
@@ -48,7 +49,8 @@ export default function RatingModal() {
   const { mutateAsync: deleteRatingMutation } = useMutation({
     mutationFn: deleteRating,
     onSuccess: () => {
-      queryClient.invalidateQueries();
+      queryClient.invalidateQueries({ queryKey: ["ratingData"] });
+      queryClient.invalidateQueries({ queryKey: ["userRatings"] });
       router.back();
     },
   });

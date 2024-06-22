@@ -71,7 +71,7 @@ export default function RatingModal() {
   }
 
   useEffect(() => {
-    if (ratingData) {
+    if (ratingData?.userRating?.rating) {
       setShowPicker(false);
       setRating(ratingData?.userRating?.rating);
     } else {

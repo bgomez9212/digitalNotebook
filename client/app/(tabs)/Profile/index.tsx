@@ -105,7 +105,12 @@ export default function Profile() {
           <View style={tw`flex-row w-9/10 mb-10 flex-wrap justify-between`}>
             {pieChartData.map((promotion, i) => (
               <TouchableOpacity
-                onPress={() => router.push("/(tabs)/Profile/RatingsExtended")}
+                onPress={() =>
+                  router.push({
+                    pathname: "/(tabs)/Profile/RatingsExtended",
+                    params: { promotionName: promotion.promotionName },
+                  })
+                }
                 key={promotion.promotionName}
                 style={tw`flex-row items-center justify-center mb-2 w-1/3 py-1`}
               >

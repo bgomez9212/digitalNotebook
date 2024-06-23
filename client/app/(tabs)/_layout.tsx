@@ -1,4 +1,4 @@
-import { Tabs, router, useGlobalSearchParams, usePathname } from "expo-router";
+import { Tabs, usePathname } from "expo-router";
 import { Entypo } from "@expo/vector-icons";
 import { FontAwesome } from "@expo/vector-icons";
 import { Ionicons } from "@expo/vector-icons";

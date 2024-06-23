@@ -15,7 +15,7 @@ export default function EventRow({
   const pathname = usePathname();
   function openEvent() {
     router.push({
-      pathname: `${pathname === "/Home" || pathname === "/Home/Promotions" ? `/(tabs)/Home/${event.id}` : `/(tabs)/Search/${event.id}`}`,
+      pathname: `${pathname === "/Home" || pathname === "/Home/Promotions" || pathname === "/Home/RecentEvents" ? `/(tabs)/Home/${event.id}` : `/(tabs)/Search/${event.id}`}`,
       params: { eventName: event.title },
     });
   }

@@ -130,14 +130,10 @@ export default function Profile() {
             This pie chart will fill when you have rated some matches
           </Text>
         )}
-        <Text style={tw`text-xl text-white underline my-10`}>
-          Matches You Have Rated
+        <Text style={tw`text-xl text-white underline my-5`}>
+          Most Recently Rated
         </Text>
-        <ScrollView
-          nestedScrollEnabled={true}
-          showsVerticalScrollIndicator={false}
-          style={tw`w-9/10 h-[140]`}
-        >
+        <View style={tw`bg-grey w-[95%] rounded-md px-2 mb-5`}>
           {isError ? (
             <Text>There seems to be an error..</Text>
           ) : isLoading ? (
@@ -147,27 +143,26 @@ export default function Profile() {
               You haven't rated any matches yet.
             </Text>
           ) : (
-            userRatings.map((match, i) => (
-              <MatchRow
-                key={match.match_id}
-                match={match}
-                display="Search"
-                hideBottomBorder={i === userRatings.length - 1}
-              />
-            ))
+            userRatings
+              .slice(0, 4)
+              .map((match, i) => (
+                <MatchRow
+                  key={match.match_id}
+                  match={match}
+                  display="Home"
+                  hideBottomBorder={false}
+                />
+              ))
           )}
-        </ScrollView>
-        {/* <FlatList
-          style={tw`w-9/10 h-[140] bg-darkGrey`}
-          data={userRatings}
-          renderItem={({ item, index }) => (
-            <MatchRow
-              match={item}
-              display="Search"
-              hideBottomBorder={userRatings.length - 1 === index}
-            />
-          )}
-        /> */}
+          <TouchableOpacity
+            onPress={() => router.push(`./Profile/RatingsExtended`)}
+            style={tw`py-3`}
+          >
+            <Text style={tw`text-blue font-bold underline text-center`}>
+              See More
+            </Text>
+          </TouchableOpacity>
+        </View>
       </View>
     </ScrollView>
   );

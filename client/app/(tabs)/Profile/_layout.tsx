@@ -50,11 +50,11 @@ export default function Layout() {
       <Stack.Screen
         name="RatingsExtended"
         options={{
-          title: "All Ratings",
+          title: "Your Ratings",
           headerShown: true,
           headerStyle: { backgroundColor: blue },
           headerTintColor: "white",
-          headerBackTitle: "Back",
+          headerBackTitle: "Profile",
         }}
       />
     </Stack>

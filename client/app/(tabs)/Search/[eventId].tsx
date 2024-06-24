@@ -61,9 +61,10 @@ export default function EventPage() {
 
   return (
     <SafeAreaView style={tw`flex-1`}>
-      <View style={tw`bg-darkGrey flex-1`}>
+      <View style={tw`bg-darkGrey flex-1 items-center pb-3`}>
         <FlatList
-          style={tw`px-3`}
+          showsVerticalScrollIndicator={false}
+          style={tw`w-9/10`}
           ListHeaderComponent={eventHeader}
           keyExtractor={(item) => item.match_id}
           data={event.matches}

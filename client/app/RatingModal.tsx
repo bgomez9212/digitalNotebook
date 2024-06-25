@@ -14,8 +14,7 @@ export default function RatingModal() {
   const { uid } = auth.currentUser;
   const queryClient = useQueryClient();
   const [rating, setRating] = useState(2);
-  const { match_id } = useLocalSearchParams();
-  const { event_title } = useLocalSearchParams();
+  const { match_id, eventName } = useLocalSearchParams();
   const [showPicker, setShowPicker] = useState(true);
   const {
     isFetching: matchInfoPending,
@@ -110,7 +109,7 @@ export default function RatingModal() {
         <Text style={tw`text-white text-xl pb-3`}>
           {matchInfo.participants}
         </Text>
-        <Text style={tw`text-white pb-3`}>From {event_title}</Text>
+        <Text style={tw`text-white pb-3`}>From {eventName}</Text>
         <View
           style={tw`flex flex-row ${ratingData ? "justify-between" : "justify-end"}`}
         >

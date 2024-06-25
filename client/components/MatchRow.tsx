@@ -32,7 +32,7 @@ export default function MatchRow({
             pathname: "../../RatingModal",
             params: {
               match_id: match.match_id,
-              event_title: match.event_title,
+              eventName: match.event_title,
             },
           })
         }
@@ -82,7 +82,7 @@ export default function MatchRow({
             pathname: "../../RatingModal",
             params: {
               match_id: match.match_id,
-              event_title: match.event_title,
+              eventName: match.event_title,
             },
           })
         }
@@ -136,7 +136,7 @@ export default function MatchRow({
             pathname: "../../RatingModal",
             params: {
               match_id: match.match_id,
-              event_title: match.event_title,
+              eventName: match.event_title,
             },
           })
         }

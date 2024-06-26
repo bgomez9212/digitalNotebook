@@ -32,8 +32,8 @@ export default function EventRow({
           : `w-full flex flex-row py-2 border-b-2 border-grey`
       }`}
     >
-      <View style={tw`py-2 flex flex-row w-full items-center`}>
-        <View style={tw`flex-2 h-11`}>
+      <View style={tw`py-2 flex flex-row w-full items-center justify-between`}>
+        <View style={tw`w-1/4 h-11`}>
           <Image
             style={{
               flex: 1,
@@ -44,12 +44,12 @@ export default function EventRow({
             source={photoLibrary[event.promotion_name]}
           />
         </View>
-        <View style={tw`flex-3 justify-center`}>
+        <View style={tw`w-1/3 justify-center`}>
           <Text style={tw`text-center text-white font-bold`}>
             {event.title}
           </Text>
         </View>
-        <View style={tw`flex-2 justify-center items-end`}>
+        <View style={tw`w-1/4 justify-center items-end`}>
           <Text style={tw`text-white font-bold`}>{event.date}</Text>
         </View>
       </View>

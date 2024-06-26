@@ -144,7 +144,7 @@ export default function Profile() {
             </Text>
           ) : (
             userRatings
-              .slice(0, 4)
+              .slice(0, 5)
               .map((match, i) => (
                 <MatchRow
                   key={match.match_id}

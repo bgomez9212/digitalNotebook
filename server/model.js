@@ -57,7 +57,6 @@ function parseMatchData(matchArr) {
 
   return matchesArr.map((match) => formatData(match));
 }
-let today = new Date();
 
 module.exports = {
   getEvent: async (eventId) => {
@@ -119,7 +118,7 @@ module.exports = {
     return results;
   },
   getTopRatedMatches: async (numOfMatches) => {
-    today.setDate(today.getDate() - 30);
+    let today = new Date();
     try {
       const { rows: results } = await pool.query(
         `
@@ -185,6 +184,7 @@ module.exports = {
     return parseMatchData(result);
   },
   postRating: async (match_id, user_id, rating) => {
+    let today = new Date();
     const { rows: results } = await pool.query(
       "INSERT INTO ratings (user_id, match_id, rating, date) VALUES ($1, $2, $3, $4) ON CONFLICT (match_id, user_id) DO UPDATE SET rating = $3",
       [user_id, match_id, rating, today]
@@ -342,7 +342,8 @@ module.exports = {
         AVG(ratings.rating) AS rating,
         (SELECT COUNT(*) FROM ratings WHERE ratings.match_id = matches.id) AS rating_count,
         championships.name AS championship_name,
-        promotions.name AS promotion_name
+        promotions.name AS promotion_name,
+        ratings.date AS rating_date
       FROM matches
       JOIN participants ON matches.id = participants.match_id
       JOIN wrestlers ON participants.wrestler_id = wrestlers.id
@@ -355,7 +356,7 @@ module.exports = {
         SELECT ratings.match_id FROM ratings WHERE ratings.user_id = $1
       )
       GROUP BY matches.id, participants.team, wrestlers.name, championship_name, participants.match_id, events.title, promotions.name, events.date, ratings.date
-      ORDER BY ratings.date DESC, participants.match_id, team;`,
+      ORDER BY rating_date DESC, participants.match_id, team;`,
       [user_id]
     );
     const results = parseMatchData(userRatings);

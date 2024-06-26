@@ -26,7 +26,7 @@ export default function RatingModal() {
   });
 
   const {
-    isPending: ratingDataPending,
+    isFetching: ratingDataPending,
     error: ratingDataError,
     data: ratingData,
   } = useQuery({
@@ -86,7 +86,7 @@ export default function RatingModal() {
     setRating(ratingData?.currentUser?.rating || 2);
   }
 
-  if (matchInfoPending) {
+  if (ratingDataPending) {
     return (
       <View style={tw`bg-black flex-1 justify-center items-center`}>
         <ActivityIndicator color="white" />

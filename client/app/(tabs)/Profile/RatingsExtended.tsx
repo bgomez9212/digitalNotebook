@@ -1,11 +1,13 @@
-import { View, FlatList } from "react-native";
+import { View, Text, FlatList } from "react-native";
 import tw from "../../../tailwind";
 import { useQuery } from "@tanstack/react-query";
 import { getUserRatings } from "../../../api/users";
 import { getAuth } from "firebase/auth";
 import MatchRow from "../../../components/MatchRow";
+import { useState } from "react";
 
 export default function RatingsExtended() {
+  const [filters, setFilters] = useState({});
   const auth = getAuth();
   const user = auth.currentUser;
   const {
@@ -19,6 +21,9 @@ export default function RatingsExtended() {
 
   return (
     <View style={tw`flex-1 justify-center items-center bg-darkGrey`}>
+      <View>
+        <Text style={tw`text-white`}>Sorted By Most Recently Rated</Text>
+      </View>
       <FlatList
         className="w-[90%]"
         data={userRatings}

@@ -55,7 +55,7 @@ export default function MatchRow({
             <Text style={tw`text-white text-lg`}>{match.participants}</Text>
           </View>
           <View
-            style={tw`flex flex-row ${ratingData ? "justify-between" : "justify-end"}`}
+            style={tw`flex flex-row ${ratingData?.userRating ? "justify-between" : "justify-end"}`}
           >
             <StarView
               display={"User"}
@@ -109,7 +109,7 @@ export default function MatchRow({
             <Text style={tw`text-white text-lg`}>{match.participants}</Text>
           </View>
           <View
-            style={tw`flex flex-row ${ratingData ? "justify-between" : "justify-end"}`}
+            style={tw`flex flex-row ${ratingData?.userRating ? "justify-between" : "justify-end"}`}
           >
             <StarView
               display={"User"}
@@ -153,7 +153,7 @@ export default function MatchRow({
             <Text style={tw`text-white text-lg`}>{match.participants}</Text>
           </View>
           <View
-            style={tw`flex flex-row ${ratingData ? "justify-between" : "justify-end"}`}
+            style={tw`flex flex-row ${ratingData?.userRating ? "justify-between" : "justify-end"}`}
           >
             <StarView
               display={"User"}

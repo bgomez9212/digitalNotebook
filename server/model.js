@@ -333,29 +333,25 @@ module.exports = {
   getUserRatings: async (user_id) => {
     const { rows: userRatings } = await pool.query(
       `SELECT
-        matches.id AS match_id,
-        matches.event_id AS event_id,
-        events.title AS event_title,
-        TO_CHAR(events.date, 'YYYY-MM-DD') AS date,
-        participants.team AS participants,
-        wrestlers.name AS wrestler_name,
-        AVG(ratings.rating) AS rating,
-        (SELECT COUNT(*) FROM ratings WHERE ratings.match_id = matches.id) AS rating_count,
-        championships.name AS championship_name,
-        promotions.name AS promotion_name,
-        ratings.date AS rating_date
+          matches.id AS match_id,
+          matches.event_id AS event_id,
+          events.title AS event_title,
+          TO_CHAR(events.date, 'YYYY-MM-DD') AS date,
+          participants.team AS participants,
+          wrestlers.name AS wrestler_name,
+          championships.name AS championship_name,
+          promotions.name AS promotion_name,
+          ratings.date AS rating_date
       FROM matches
       JOIN participants ON matches.id = participants.match_id
       JOIN wrestlers ON participants.wrestler_id = wrestlers.id
-      LEFT OUTER JOIN ratings ON matches.id = ratings.match_id
+      LEFT OUTER JOIN ratings ON matches.id = ratings.match_id AND ratings.user_id = $1
       LEFT OUTER JOIN matches_championships ON matches_championships.match_id = matches.id
       LEFT OUTER JOIN events ON events.id = matches.event_id
       LEFT OUTER JOIN championships ON matches_championships.championship_id = championships.id
       LEFT OUTER JOIN promotions ON events.promotion_id = promotions.id
-        WHERE matches.id IN (
-        SELECT ratings.match_id FROM ratings WHERE ratings.user_id = $1
-      )
-      GROUP BY matches.id, participants.team, wrestlers.name, championship_name, participants.match_id, events.title, promotions.name, events.date, ratings.date
+      WHERE ratings.user_id = $1
+      GROUP BY matches.id, participants.team, wrestlers.name, championship_name, participants.match_id, events.title, promotions.name, events.date, ratings.date, ratings.rating
       ORDER BY rating_date DESC, participants.match_id, team;`,
       [user_id]
     );

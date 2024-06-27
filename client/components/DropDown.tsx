@@ -3,13 +3,7 @@ import { Keyboard, View } from "react-native";
 import { Dropdown } from "react-native-element-dropdown";
 import tw from "../tailwind";
 
-const data = [
-  { label: "Matches", value: "matches" },
-  { label: "Event", value: "events" },
-  { label: "Championship", value: "championships" },
-];
-
-const DropdownComponent = ({ searchParam, setSearchParam }) => {
+const DropdownComponent = ({ searchParam, setSearchParam, data }) => {
   const [isFocus, setIsFocus] = useState(false);
 
   return (

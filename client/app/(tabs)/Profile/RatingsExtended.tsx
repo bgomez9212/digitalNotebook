@@ -18,18 +18,13 @@ import LandingButton from "../../../components/LandingButton";
 export default function RatingsExtended() {
   const auth = getAuth();
   const user = auth.currentUser;
-  const sortParamData = [
-    { label: "Rating Date", value: "Rating Date" },
-    { label: "Rating", value: "Rating" },
-    { label: "Event Date", value: "Rating Date" },
-  ];
-  const sortTypeData = [
-    { label: "Asc", value: "Asc" },
-    { label: "Desc", value: "Asc" },
-  ];
   const [sortParams, setSortParams] = useState({
-    sortBy: "Rating Date",
-    sort: "Desc",
+    sortBy: "rating_date",
+    sort: "DESC",
+  });
+  const [form, setForm] = useState({
+    sortBy: "rating_date",
+    sort: "DESC",
   });
 
   const {
@@ -38,8 +33,8 @@ export default function RatingsExtended() {
     isFetching,
     refetch,
   } = useQuery({
-    queryKey: ["userRatings"],
-    queryFn: () => getUserRatings(user.uid),
+    queryKey: ["userRatings", sortParams],
+    queryFn: () => getUserRatings(user.uid, sortParams),
   });
 
   const bottomSheetModalRef = useRef<BottomSheetModal>(null);
@@ -50,44 +45,48 @@ export default function RatingsExtended() {
   // callbacks
   const handlePresentModalPress = useCallback(() => {
     bottomSheetModalRef.current?.present();
+    bottomSheetModalRef.current?.close();
   }, []);
 
-  if (isFetching) {
-    return (
-      <View style={tw`flex-1 bg-darkGrey justify-center items-center`}>
-        <ActivityIndicator color="#477CB9" />
-      </View>
-    );
+  function changeSearchClick() {
+    setSortParams(form);
+    refetch;
+    bottomSheetModalRef.current?.close();
   }
 
   return (
     <GestureHandlerRootView>
       <BottomSheetModalProvider>
         <View style={tw`flex-1 bg-darkGrey items-center`}>
-          <FlatList
-            ListHeaderComponent={
-              <View
-                style={tw`pt-2 flex flex-row justify-between w-full items-center`}
-              >
-                <Text style={tw`text-white`}>
-                  Sorted By: {sortParams.sortBy}, {sortParams.sort}
-                </Text>
-                <TouchableOpacity onPress={handlePresentModalPress}>
-                  <Ionicons name="options" size={24} color="white" />
-                </TouchableOpacity>
-              </View>
-            }
-            className="w-[95%]"
-            data={userRatings}
-            renderItem={({ item }) => (
-              <MatchRow
-                match={item}
-                display="Search"
-                hideBottomBorder={false}
-              />
-            )}
-            keyExtractor={(item) => item.match_id}
-          />
+          <View
+            style={tw`pt-2 px-3 flex flex-row justify-between w-full items-center`}
+          >
+            <Text style={tw`text-white`}>
+              Sorted By: {sortParams.sortBy}, {sortParams.sort}
+            </Text>
+            <TouchableOpacity onPress={handlePresentModalPress}>
+              <Ionicons name="options" size={24} color="white" />
+            </TouchableOpacity>
+          </View>
+          {isFetching ? (
+            <View style={tw`flex-1 justify-center items-center`}>
+              <ActivityIndicator color="#477CB9" />
+            </View>
+          ) : (
+            <FlatList
+              showsVerticalScrollIndicator={false}
+              className="w-[95%]"
+              data={userRatings}
+              renderItem={({ item }) => (
+                <MatchRow
+                  match={item}
+                  display="Search"
+                  hideBottomBorder={false}
+                />
+              )}
+              keyExtractor={(item) => item.match_id}
+            />
+          )}
           <BottomSheetModal
             ref={bottomSheetModalRef}
             index={1}
@@ -99,51 +98,51 @@ export default function RatingsExtended() {
               <View style={tw`flex-row gap-10 mb-2`}>
                 <RadioButton.Group
                   onValueChange={(newValue) =>
-                    setSortParams({ ...sortParams, sortBy: newValue })
+                    setForm({ ...form, sortBy: newValue })
                   }
-                  value={sortParams.sortBy}
+                  value={form.sortBy}
                 >
                   <Text>Sort By:</Text>
                   <View
                     style={tw`flex-row border-b justify-between items-center`}
                   >
                     <Text>Rating Date</Text>
-                    <RadioButton value="Rating Date" />
+                    <RadioButton value="rating_date" />
                   </View>
                   <View
                     style={tw`flex-row border-b justify-between items-center`}
                   >
                     <Text>Rating</Text>
-                    <RadioButton value="Rating" />
+                    <RadioButton value="ratings.rating" />
                   </View>
                   <View style={tw`flex-row justify-between items-center`}>
                     <Text>Event Date</Text>
-                    <RadioButton value="Event Date" />
+                    <RadioButton value="date" />
                   </View>
                 </RadioButton.Group>
                 <RadioButton.Group
                   onValueChange={(newValue) =>
-                    setSortParams({ ...sortParams, sort: newValue })
+                    setForm({ ...form, sort: newValue })
                   }
-                  value={sortParams.sort}
+                  value={form.sort}
                 >
                   <Text>Sort Order:</Text>
                   <View
                     style={tw`flex-row border-b justify-between items-center`}
                   >
                     <Text>Asc</Text>
-                    <RadioButton value="Asc" />
+                    <RadioButton value="ASC" />
                   </View>
                   <View
                     style={tw`flex-row border-b justify-between items-center`}
                   >
                     <Text>Desc</Text>
-                    <RadioButton value="Desc" />
+                    <RadioButton value="DESC" />
                   </View>
                 </RadioButton.Group>
               </View>
               <LandingButton
-                fn={refetch}
+                fn={changeSearchClick}
                 text="Search"
                 disabled={false}
                 color="blue"

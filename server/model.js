@@ -330,7 +330,7 @@ module.exports = {
       throw new Error(err.message);
     }
   },
-  getUserRatings: async (user_id) => {
+  getUserRatings: async (user_id, sort_params) => {
     const { rows: userRatings } = await pool.query(
       `SELECT
           matches.id AS match_id,
@@ -352,7 +352,7 @@ module.exports = {
       LEFT OUTER JOIN promotions ON events.promotion_id = promotions.id
       WHERE ratings.user_id = $1
       GROUP BY matches.id, participants.team, wrestlers.name, championship_name, participants.match_id, events.title, promotions.name, events.date, ratings.date, ratings.rating
-      ORDER BY rating_date DESC, participants.match_id, team;`,
+      ORDER BY ${sort_params.sortBy} ${sort_params.sort}, participants.match_id, team;`,
       [user_id]
     );
     const results = parseMatchData(userRatings);

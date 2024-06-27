@@ -56,7 +56,10 @@ module.exports = {
   },
   getUserRatings: async (req, res) => {
     try {
-      const results = await model.getUserRatings(req.query.user_id);
+      const results = await model.getUserRatings(
+        req.query.user_id,
+        req.query.sort_params
+      );
       res.send(results).status(200);
     } catch (err) {
       res.send(err).status(500);

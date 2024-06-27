@@ -12,7 +12,7 @@ import {
   BottomSheetModalProvider,
 } from "@gorhom/bottom-sheet";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
-import { RadioButton } from "react-native-paper";
+import { ActivityIndicator, RadioButton } from "react-native-paper";
 import LandingButton from "../../../components/LandingButton";
 
 export default function RatingsExtended() {
@@ -35,7 +35,7 @@ export default function RatingsExtended() {
   const {
     data: userRatings,
     isError,
-    isLoading,
+    isFetching,
     refetch,
   } = useQuery({
     queryKey: ["userRatings"],
@@ -51,9 +51,14 @@ export default function RatingsExtended() {
   const handlePresentModalPress = useCallback(() => {
     bottomSheetModalRef.current?.present();
   }, []);
-  const handleSheetChanges = useCallback((index: number) => {
-    console.log("handleSheetChanges", index);
-  }, []);
+
+  if (isFetching) {
+    return (
+      <View style={tw`flex-1 bg-darkGrey justify-center items-center`}>
+        <ActivityIndicator color="#477CB9" />
+      </View>
+    );
+  }
 
   return (
     <GestureHandlerRootView>
@@ -87,7 +92,6 @@ export default function RatingsExtended() {
             ref={bottomSheetModalRef}
             index={1}
             snapPoints={snapPoints}
-            onChange={handleSheetChanges}
           >
             <BottomSheetView
               style={tw`flex flex-1 justify-center items-center`}

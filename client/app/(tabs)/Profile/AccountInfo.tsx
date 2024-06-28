@@ -62,6 +62,11 @@ export default function AccountInfo() {
     enabled: debouncedUsername.length > 3,
   });
 
+  const { data: username } = useQuery({
+    queryKey: ["username", user.uid],
+    queryFn: () => getUsername(user.uid),
+  });
+
   const { mutateAsync: changeUsernameMutation } = useMutation({
     mutationFn: () => editUsername(user.uid, inputValues.username),
     onSuccess: () => {
@@ -183,6 +188,7 @@ export default function AccountInfo() {
             }
             display={uiState.showChangeUsername}
           >
+            <Text style={tw`text-white text-lg`}>{username}</Text>
             <StyledTextInput
               inputValue={inputValues.username}
               label={"new username"}
@@ -230,6 +236,7 @@ export default function AccountInfo() {
               })
             }
           >
+            <Text style={tw`text-white text-lg`}>{user.email}</Text>
             <StyledTextInput
               inputValue={inputValues.email}
               label={"new email"}

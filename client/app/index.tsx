@@ -107,7 +107,7 @@ export default function Landing() {
                   }
                 />
                 {userId && userId.length > 0 && (
-                  <Text style={tw`mb-2 text-red font-bold`}>
+                  <Text style={tw`text-center text-red font-bold`}>
                     Username unavailable
                   </Text>
                 )}
@@ -144,7 +144,8 @@ export default function Landing() {
                     credentials.password.length <= 0 ||
                     !credentials.username ||
                     credentials.username.length < 4 ||
-                    credentials.email.length < 1
+                    credentials.email.length < 1 ||
+                    userId.length > 0
                   }
                   fn={signup}
                   text={"SIGN UP"}

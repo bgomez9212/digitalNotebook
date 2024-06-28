@@ -62,12 +62,18 @@ export default function AccountInfo() {
     enabled: debouncedUsername.length > 3,
   });
 
+  const { data: username } = useQuery({
+    queryKey: ["username", user.uid],
+    queryFn: () => getUsername(user.uid),
+  });
+
   const { mutateAsync: changeUsernameMutation } = useMutation({
     mutationFn: () => editUsername(user.uid, inputValues.username),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["username", user.uid] });
-      setUiState({ ...uiState, showChangeUsername: false });
+      setUiState({ ...uiState, showChangeUsername: true });
       setInputValues({ ...inputValues, username: "", confirmUsername: "" });
+      Keyboard.dismiss();
     },
   });
   // needed to change password or email
@@ -86,7 +92,6 @@ export default function AccountInfo() {
       await updateEmail(user, inputValues.email);
       setUiState({
         ...uiState,
-        showChangeEmail: false,
         emailLoading: false,
         emailError: "",
       });
@@ -96,6 +101,7 @@ export default function AccountInfo() {
         confirmEmail: "",
         currentPasswordEmail: "",
       });
+      Keyboard.dismiss();
     } catch (err) {
       setUiState({ ...uiState, emailError: err.message });
       // console.error(err);
@@ -112,7 +118,6 @@ export default function AccountInfo() {
       await updatePassword(user, inputValues.newPassword);
       setUiState({
         ...uiState,
-        showChangePassword: false,
         passwordLoading: false,
         passwordError: "",
       });
@@ -122,6 +127,7 @@ export default function AccountInfo() {
         currentPasswordPassword: "",
         confirmNewPassword: "",
       });
+      Keyboard.dismiss();
     } catch (err) {
       setUiState({
         ...uiState,
@@ -183,6 +189,7 @@ export default function AccountInfo() {
             }
             display={uiState.showChangeUsername}
           >
+            <Text style={tw`text-white text-lg`}>{username}</Text>
             <StyledTextInput
               inputValue={inputValues.username}
               label={"new username"}
@@ -230,6 +237,7 @@ export default function AccountInfo() {
               })
             }
           >
+            <Text style={tw`text-white text-lg`}>{user.email}</Text>
             <StyledTextInput
               inputValue={inputValues.email}
               label={"new email"}

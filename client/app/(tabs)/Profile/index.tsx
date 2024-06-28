@@ -87,7 +87,7 @@ export default function Profile() {
   }
 
   return (
-    <ScrollView nestedScrollEnabled={true}>
+    <ScrollView nestedScrollEnabled={true} style={tw`bg-darkGrey`}>
       <View style={tw`flex-1 bg-darkGrey items-center`}>
         <PieChart
           style={tw`flex justify-center items-center`}

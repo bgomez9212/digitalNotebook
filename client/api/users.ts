@@ -2,7 +2,7 @@ import axios from "axios";
 
 export async function getUserId(userName) {
   return axios
-    .get("http://localhost:3000/api/users/", {
+    .get(process.env.API_GET_USERS, {
       params: { user_name: userName },
     })
     .then((res) => res.data);
@@ -32,7 +32,7 @@ export async function getUserRatings(userUid, sortParams) {
 
 export async function getUsername(userUid) {
   return axios
-    .get("http://localhost:3000/api/users/:user_id", {
+    .get(process.env.API_USERS, {
       params: {
         user_id: userUid,
       },
@@ -42,7 +42,7 @@ export async function getUsername(userUid) {
 
 export async function editUsername(userUid, username) {
   axios
-    .put("http://localhost:3000/api/users/:user_id", {
+    .put(process.env.API_USERS, {
       user_id: userUid,
       username: username,
     })
@@ -52,7 +52,7 @@ export async function editUsername(userUid, username) {
 
 export async function createUser(userUid, username) {
   axios
-    .post("http://localhost:3000/api/users", {
+    .post(process.env.API_GET_USERS, {
       user_id: userUid,
       username: username,
     })

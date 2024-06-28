@@ -83,6 +83,9 @@ export default function RatingModal() {
 
   function cancelEdit() {
     setShowPicker(false);
+    if (!ratingData?.userRating) {
+      router.back();
+    }
     setRating(ratingData?.currentUser?.rating || 2);
   }
 
@@ -111,7 +114,7 @@ export default function RatingModal() {
         </Text>
         <Text style={tw`text-white pb-3`}>From {eventName}</Text>
         <View
-          style={tw`flex flex-row ${ratingData ? "justify-between" : "justify-end"}`}
+          style={tw`flex flex-row ${ratingData.userRating ? "justify-between" : "justify-end"}`}
         >
           {ratingData && (
             <StarView display="User" rating={ratingData?.userRating?.rating} />

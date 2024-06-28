@@ -23,6 +23,12 @@ export default function Profile() {
     setUserSearch({ ...userSearch, searchParam: selectedParam });
   }
 
+  const dropdownData = [
+    { label: "Matches", value: "matches" },
+    { label: "Event", value: "events" },
+    { label: "Championship", value: "championships" },
+  ];
+
   const { data, isFetching, isError, refetch } = useQuery({
     queryKey: ["searchResults"],
     enabled: false,
@@ -43,6 +49,7 @@ export default function Profile() {
           <DropdownComponent
             searchParam={userSearch.searchParam}
             setSearchParam={setSearchParam}
+            data={dropdownData}
           />
           <Pressable
             style={tw`w-full mt-2 bg-blue h-10 justify-center items-center rounded-md ${!userSearch.searchParam || !userSearch.searchText ? "opacity-50" : ""}`}

@@ -14,8 +14,7 @@ export default function RatingModal() {
   const { uid } = auth.currentUser;
   const queryClient = useQueryClient();
   const [rating, setRating] = useState(2);
-  const { match_id } = useLocalSearchParams();
-  const { event_title } = useLocalSearchParams();
+  const { match_id, eventName } = useLocalSearchParams();
   const [showPicker, setShowPicker] = useState(true);
   const {
     isFetching: matchInfoPending,
@@ -27,7 +26,7 @@ export default function RatingModal() {
   });
 
   const {
-    isPending: ratingDataPending,
+    isFetching: ratingDataPending,
     error: ratingDataError,
     data: ratingData,
   } = useQuery({
@@ -40,6 +39,7 @@ export default function RatingModal() {
       mutationFn: addRating,
       onSuccess: () => {
         queryClient.invalidateQueries({ queryKey: ["ratingData"] });
+        queryClient.invalidateQueries({ queryKey: ["userRatings"] });
         setRating(ratingData?.userRating?.rating || 2);
         router.back();
       },
@@ -48,7 +48,8 @@ export default function RatingModal() {
   const { mutateAsync: deleteRatingMutation } = useMutation({
     mutationFn: deleteRating,
     onSuccess: () => {
-      queryClient.invalidateQueries();
+      queryClient.invalidateQueries({ queryKey: ["ratingData"] });
+      queryClient.invalidateQueries({ queryKey: ["userRatings"] });
       router.back();
     },
   });
@@ -85,7 +86,7 @@ export default function RatingModal() {
     setRating(ratingData?.currentUser?.rating || 2);
   }
 
-  if (matchInfoPending) {
+  if (ratingDataPending) {
     return (
       <View style={tw`bg-black flex-1 justify-center items-center`}>
         <ActivityIndicator color="white" />
@@ -108,7 +109,7 @@ export default function RatingModal() {
         <Text style={tw`text-white text-xl pb-3`}>
           {matchInfo.participants}
         </Text>
-        <Text style={tw`text-white pb-3`}>From {event_title}</Text>
+        <Text style={tw`text-white pb-3`}>From {eventName}</Text>
         <View
           style={tw`flex flex-row ${ratingData ? "justify-between" : "justify-end"}`}
         >

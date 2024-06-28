@@ -33,7 +33,9 @@ export default function StarView({
         >{`${rating} (${rating_count})`}</Text>
       </View>
     ) : (
-      <Text style={tw`text-white pt-1`}>No ratings yet</Text>
+      <View style={tw`w-full flex items-end`}>
+        <Text style={tw`text-white pt-1`}>No ratings yet</Text>
+      </View>
     );
   }
   if (display === "Home") {

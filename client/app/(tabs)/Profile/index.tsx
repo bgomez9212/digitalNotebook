@@ -1,4 +1,4 @@
-import { ScrollView, Text, View } from "react-native";
+import { ScrollView, Text, TouchableOpacity, View } from "react-native";
 import tw from "../../../tailwind";
 import { useQuery } from "@tanstack/react-query";
 import MatchRow from "../../../components/MatchRow";
@@ -8,6 +8,7 @@ import { Dimensions } from "react-native";
 const screenWidth = Dimensions.get("window").width;
 import { getAuth } from "firebase/auth";
 import { getUserRatings } from "../../../api/users";
+import { router } from "expo-router";
 export default function Profile() {
   const auth = getAuth();
   const { uid } = auth.currentUser;
@@ -17,7 +18,8 @@ export default function Profile() {
     isLoading,
   } = useQuery({
     queryKey: ["userRatings"],
-    queryFn: () => getUserRatings(uid),
+    queryFn: () =>
+      getUserRatings(uid, { sortBy: "rating_date", sortOrder: "DESC" }),
   });
 
   const chartConfig = {
@@ -103,15 +105,23 @@ export default function Profile() {
         {userRatings?.length ? (
           <View style={tw`flex-row w-9/10 mb-10 flex-wrap justify-between`}>
             {pieChartData.map((promotion, i) => (
-              <View
+              <TouchableOpacity
+                onPress={() =>
+                  router.push({
+                    pathname: "/(tabs)/Profile/RatingsExtended",
+                    params: { promotionName: promotion.promotionName },
+                  })
+                }
                 key={promotion.promotionName}
-                style={tw`flex-row items-center mb-2`}
+                style={tw`flex-row items-center justify-center mb-2 w-1/3 py-1`}
               >
-                <View style={tw`h-3 w-3 bg-[${promotion.color}] mr-1`}></View>
+                <View
+                  style={tw`h-3 w-3 bg-[${promotion.color}] mr-1 border`}
+                ></View>
                 <Text style={tw`text-white`} key={promotion.promotionName}>
                   {`${promotion.promotionName} (${promotion.matchCount})`}
                 </Text>
-              </View>
+              </TouchableOpacity>
             ))}
           </View>
         ) : null}
@@ -121,14 +131,10 @@ export default function Profile() {
             This pie chart will fill when you have rated some matches
           </Text>
         )}
-        <Text style={tw`text-xl text-white underline my-10`}>
-          Matches You Have Rated
+        <Text style={tw`text-xl text-white underline my-5`}>
+          Most Recently Rated
         </Text>
-        <ScrollView
-          nestedScrollEnabled={true}
-          showsVerticalScrollIndicator={false}
-          style={tw`w-9/10 h-[140]`}
-        >
+        <View style={tw`bg-grey w-[95%] rounded-md px-2 mb-5`}>
           {isError ? (
             <Text>There seems to be an error..</Text>
           ) : isLoading ? (
@@ -138,27 +144,26 @@ export default function Profile() {
               You haven't rated any matches yet.
             </Text>
           ) : (
-            userRatings.map((match, i) => (
-              <MatchRow
-                key={match.match_id}
-                match={match}
-                display="Search"
-                hideBottomBorder={i === userRatings.length - 1}
-              />
-            ))
+            userRatings
+              .slice(0, 5)
+              .map((match, i) => (
+                <MatchRow
+                  key={match.match_id}
+                  match={match}
+                  display="Home"
+                  hideBottomBorder={false}
+                />
+              ))
           )}
-        </ScrollView>
-        {/* <FlatList
-          style={tw`w-9/10 h-[140] bg-darkGrey`}
-          data={userRatings}
-          renderItem={({ item, index }) => (
-            <MatchRow
-              match={item}
-              display="Search"
-              hideBottomBorder={userRatings.length - 1 === index}
-            />
-          )}
-        /> */}
+          <TouchableOpacity
+            onPress={() => router.push(`./Profile/RatingsExtended`)}
+            style={tw`py-3`}
+          >
+            <Text style={tw`text-blue font-bold underline text-center`}>
+              See More
+            </Text>
+          </TouchableOpacity>
+        </View>
       </View>
     </ScrollView>
   );

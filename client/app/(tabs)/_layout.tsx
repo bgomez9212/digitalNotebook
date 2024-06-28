@@ -1,35 +1,10 @@
-import { Tabs, router, useGlobalSearchParams, usePathname } from "expo-router";
+import { Tabs, usePathname } from "expo-router";
 import { Entypo } from "@expo/vector-icons";
 import { FontAwesome } from "@expo/vector-icons";
 import { Ionicons } from "@expo/vector-icons";
-import { getAuth } from "firebase/auth";
-import { Text, TouchableOpacity } from "react-native";
-import tw from "../../tailwind";
-import { useQuery } from "@tanstack/react-query";
-import { getUsername } from "../../api/users";
 const blue = "#477CB9";
 export default function Layout() {
-  const auth = getAuth();
-  const { data: username } = useQuery({
-    queryKey: ["username", auth.currentUser.uid],
-    queryFn: () => getUsername(auth.currentUser.uid),
-  });
   const route = usePathname();
-
-  function renderGear(routeName) {
-    if (routeName === "/Profile/AccountInfo") {
-      return null;
-    } else {
-      return (
-        <TouchableOpacity
-          style={tw`mr-4`}
-          onPress={() => router.navigate("Profile/AccountInfo")}
-        >
-          <FontAwesome name="gear" size={24} color="white" />
-        </TouchableOpacity>
-      );
-    }
-  }
   return (
     <Tabs
       screenOptions={{
@@ -65,12 +40,11 @@ export default function Layout() {
       <Tabs.Screen
         name="Profile"
         options={{
-          title: username || "Profile",
+          headerShown: false,
+          title: "Profile",
           tabBarIcon: ({ color }) => (
             <Ionicons name="person" size={24} color={color} />
           ),
-          headerTintColor: "#EBF2FA",
-          headerRight: () => renderGear(route),
         }}
       />
     </Tabs>

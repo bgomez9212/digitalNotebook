@@ -32,7 +32,7 @@ export default function MatchRow({
             pathname: "../../RatingModal",
             params: {
               match_id: match.match_id,
-              event_title: match.event_title,
+              eventName: match.event_title,
             },
           })
         }
@@ -55,7 +55,7 @@ export default function MatchRow({
             <Text style={tw`text-white text-lg`}>{match.participants}</Text>
           </View>
           <View
-            style={tw`flex flex-row ${ratingData ? "justify-between" : "justify-end"}`}
+            style={tw`flex flex-row ${ratingData?.userRating ? "justify-between" : "justify-end"}`}
           >
             <StarView
               display={"User"}
@@ -82,7 +82,7 @@ export default function MatchRow({
             pathname: "../../RatingModal",
             params: {
               match_id: match.match_id,
-              event_title: match.event_title,
+              eventName: match.event_title,
             },
           })
         }
@@ -109,7 +109,7 @@ export default function MatchRow({
             <Text style={tw`text-white text-lg`}>{match.participants}</Text>
           </View>
           <View
-            style={tw`flex flex-row ${ratingData ? "justify-between" : "justify-end"}`}
+            style={tw`flex flex-row ${ratingData?.userRating ? "justify-between" : "justify-end"}`}
           >
             <StarView
               display={"User"}
@@ -136,7 +136,7 @@ export default function MatchRow({
             pathname: "../../RatingModal",
             params: {
               match_id: match.match_id,
-              event_title: match.event_title,
+              eventName: match.event_title,
             },
           })
         }
@@ -153,7 +153,7 @@ export default function MatchRow({
             <Text style={tw`text-white text-lg`}>{match.participants}</Text>
           </View>
           <View
-            style={tw`flex flex-row ${ratingData ? "justify-between" : "justify-end"}`}
+            style={tw`flex flex-row ${ratingData?.userRating ? "justify-between" : "justify-end"}`}
           >
             <StarView
               display={"User"}

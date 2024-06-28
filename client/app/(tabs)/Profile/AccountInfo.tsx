@@ -71,8 +71,9 @@ export default function AccountInfo() {
     mutationFn: () => editUsername(user.uid, inputValues.username),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["username", user.uid] });
-      setUiState({ ...uiState, showChangeUsername: false });
+      setUiState({ ...uiState, showChangeUsername: true });
       setInputValues({ ...inputValues, username: "", confirmUsername: "" });
+      Keyboard.dismiss();
     },
   });
   // needed to change password or email
@@ -91,7 +92,6 @@ export default function AccountInfo() {
       await updateEmail(user, inputValues.email);
       setUiState({
         ...uiState,
-        showChangeEmail: false,
         emailLoading: false,
         emailError: "",
       });
@@ -101,6 +101,7 @@ export default function AccountInfo() {
         confirmEmail: "",
         currentPasswordEmail: "",
       });
+      Keyboard.dismiss();
     } catch (err) {
       setUiState({ ...uiState, emailError: err.message });
       // console.error(err);
@@ -117,7 +118,6 @@ export default function AccountInfo() {
       await updatePassword(user, inputValues.newPassword);
       setUiState({
         ...uiState,
-        showChangePassword: false,
         passwordLoading: false,
         passwordError: "",
       });
@@ -127,6 +127,7 @@ export default function AccountInfo() {
         currentPasswordPassword: "",
         confirmNewPassword: "",
       });
+      Keyboard.dismiss();
     } catch (err) {
       setUiState({
         ...uiState,

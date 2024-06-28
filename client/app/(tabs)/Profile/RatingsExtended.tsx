@@ -20,13 +20,25 @@ export default function RatingsExtended() {
   const user = auth.currentUser;
   const [sortParams, setSortParams] = useState({
     sortBy: "rating_date",
-    sort: "DESC",
+    sortOrder: "DESC",
+    sortByLabel: "Rating Date",
+    sortOrderLabel: "Desc",
   });
   const [form, setForm] = useState({
     sortBy: "rating_date",
-    sort: "DESC",
+    sortOrder: "DESC",
   });
 
+  const sortRadios = [
+    { label: "Rating Date", value: "rating_date" },
+    { label: "Event Date", value: "date" },
+    { label: "My Ratings", value: "ratings.rating" },
+    { label: "Community Ratings", value: "average_rating" },
+  ];
+  const sortOrder = [
+    { label: "Desc", value: "DESC" },
+    { label: "Asc", value: "ASC" },
+  ];
   const {
     data: userRatings,
     isError,
@@ -36,12 +48,9 @@ export default function RatingsExtended() {
     queryKey: ["userRatings", sortParams],
     queryFn: () => getUserRatings(user.uid, sortParams),
   });
-
   const bottomSheetModalRef = useRef<BottomSheetModal>(null);
-
   // variables
   const snapPoints = useMemo(() => ["25%", "50%"], []);
-
   // callbacks
   const handlePresentModalPress = useCallback(() => {
     bottomSheetModalRef.current?.present();
@@ -49,7 +58,15 @@ export default function RatingsExtended() {
   }, []);
 
   function changeSearchClick() {
-    setSortParams(form);
+    setSortParams({
+      sortBy: form.sortBy,
+      sortOrder: form.sortOrder,
+      sortByLabel: sortRadios.filter((param) => param.value === form.sortBy)[0]
+        .label,
+      sortOrderLabel: sortOrder.filter(
+        (param) => param.value === form.sortOrder
+      )[0].label,
+    });
     refetch;
     bottomSheetModalRef.current?.close();
   }
@@ -62,7 +79,7 @@ export default function RatingsExtended() {
             style={tw`pt-2 px-3 flex flex-row justify-between w-full items-center`}
           >
             <Text style={tw`text-white`}>
-              Sorted By: {sortParams.sortBy}, {sortParams.sort}
+              Sorted By: {sortParams.sortByLabel}, {sortParams.sortOrderLabel}
             </Text>
             <TouchableOpacity onPress={handlePresentModalPress}>
               <Ionicons name="options" size={24} color="white" />
@@ -103,42 +120,32 @@ export default function RatingsExtended() {
                   value={form.sortBy}
                 >
                   <Text>Sort By:</Text>
-                  <View
-                    style={tw`flex-row border-b justify-between items-center`}
-                  >
-                    <Text>Rating Date</Text>
-                    <RadioButton value="rating_date" />
-                  </View>
-                  <View
-                    style={tw`flex-row border-b justify-between items-center`}
-                  >
-                    <Text>Rating</Text>
-                    <RadioButton value="ratings.rating" />
-                  </View>
-                  <View style={tw`flex-row justify-between items-center`}>
-                    <Text>Event Date</Text>
-                    <RadioButton value="date" />
-                  </View>
+                  {sortRadios.map((param) => (
+                    <View
+                      key={param.value}
+                      style={tw`flex-row border-b justify-between items-center`}
+                    >
+                      <Text>{param.label}</Text>
+                      <RadioButton value={param.value} />
+                    </View>
+                  ))}
                 </RadioButton.Group>
                 <RadioButton.Group
                   onValueChange={(newValue) =>
-                    setForm({ ...form, sort: newValue })
+                    setForm({ ...form, sortOrder: newValue })
                   }
-                  value={form.sort}
+                  value={form.sortOrder}
                 >
                   <Text>Sort Order:</Text>
-                  <View
-                    style={tw`flex-row border-b justify-between items-center`}
-                  >
-                    <Text>Asc</Text>
-                    <RadioButton value="ASC" />
-                  </View>
-                  <View
-                    style={tw`flex-row border-b justify-between items-center`}
-                  >
-                    <Text>Desc</Text>
-                    <RadioButton value="DESC" />
-                  </View>
+                  {sortOrder.map((param) => (
+                    <View
+                      key={param.value}
+                      style={tw`flex-row border-b justify-between items-center`}
+                    >
+                      <Text>{param.label}</Text>
+                      <RadioButton value={param.value} />
+                    </View>
+                  ))}
                 </RadioButton.Group>
               </View>
               <LandingButton

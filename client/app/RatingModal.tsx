@@ -108,13 +108,13 @@ export default function RatingModal() {
   return (
     <View style={tw`flex-1 items-center justify-center bg-black`}>
       <View style={tw`w-4/5`}>
-        <Text style={tw`text-gold pb-3`}>{matchInfo.championships}</Text>
+        <Text style={tw`text-gold pb-3`}>{matchInfo?.championships}</Text>
         <Text style={tw`text-white text-xl pb-3`}>
-          {matchInfo.participants}
+          {matchInfo?.participants}
         </Text>
         <Text style={tw`text-white pb-3`}>From {eventName}</Text>
         <View
-          style={tw`flex flex-row ${ratingData.userRating ? "justify-between" : "justify-end"}`}
+          style={tw`flex flex-row ${ratingData?.userRating ? "justify-between" : "justify-end"}`}
         >
           {ratingData && (
             <StarView display="User" rating={ratingData?.userRating?.rating} />
@@ -131,7 +131,7 @@ export default function RatingModal() {
           <Picker
             style={tw`w-1/2`}
             selectedValue={rating}
-            onValueChange={(itemValue, itemIndex) => setRating(itemValue)}
+            onValueChange={(itemValue) => setRating(itemValue)}
           >
             <Picker.Item label="¼" value={0.25} color="white" />
             <Picker.Item label="½" value={0.5} color="white" />

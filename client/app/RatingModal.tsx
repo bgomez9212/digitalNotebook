@@ -139,7 +139,7 @@ export default function RatingModal() {
         <View style={tw`w-full items-center`}>
           <Picker
             mode="dropdown"
-            style={tw`w-1/2 bg-white ${Platform.OS !== "ios" && "mt-3"}`}
+            style={tw`w-1/2 ${Platform.OS !== "ios" ? "mt-3 bg-white" : ""}`}
             selectedValue={rating}
             onValueChange={(itemValue) => setRating(itemValue)}
           >

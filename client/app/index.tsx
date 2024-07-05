@@ -7,6 +7,7 @@ import {
   Keyboard,
   Text,
 } from "react-native";
+import { useForm, Controller } from "react-hook-form";
 import { auth } from "../firebase";
 import {
   createUserWithEmailAndPassword,
@@ -21,6 +22,7 @@ import { useQuery } from "@tanstack/react-query";
 import { useDebounce } from "use-debounce";
 import { createUser, getUserId } from "../api/users";
 import StyledTextInput from "../components/StyledTextInput";
+import RenderCounter from "../components/rendercounter";
 
 export default function Landing() {
   const firebaseAuth = auth;
@@ -65,23 +67,17 @@ export default function Landing() {
     }
   }
 
-  async function login() {
+  async function login(data) {
     setUiState({ ...uiState, loading: true });
     try {
-      await signInWithEmailAndPassword(
-        firebaseAuth,
-        credentials.email,
-        credentials.password
-      );
-      setCredentials({
-        ...credentials,
-        email: "",
-        password: "",
-      });
+      await signInWithEmailAndPassword(firebaseAuth, data.email, data.password);
     } catch (err) {
       setUiState({ ...uiState, loginError: true });
     }
   }
+
+  const { control: loginControl, handleSubmit: handleLoginSubmit } = useForm();
+  const onSubmit = (data) => login(data);
 
   return (
     <KeyboardAvoidingView
@@ -172,23 +168,37 @@ export default function Landing() {
           ) : (
             <View style={tw`flex justify-start items-center flex-2`}>
               <View>
-                <StyledTextInput
-                  inputValue={credentials.email}
-                  label={"email"}
-                  changeFn={(text) =>
-                    setCredentials({ ...credentials, email: text })
-                  }
+                <Controller
+                  control={loginControl}
+                  rules={{
+                    required: true,
+                  }}
+                  render={({ field: { onChange, onBlur, value } }) => (
+                    <StyledTextInput
+                      inputValue={value}
+                      label={"email"}
+                      changeFn={onChange}
+                    />
+                  )}
+                  name="email"
                 />
-                <StyledTextInput
-                  inputValue={credentials.password}
-                  label={"password"}
-                  changeFn={(text) =>
-                    setCredentials({ ...credentials, password: text })
-                  }
+                <Controller
+                  control={loginControl}
+                  rules={{
+                    required: true,
+                  }}
+                  render={({ field: { onChange, onBlur, value } }) => (
+                    <StyledTextInput
+                      inputValue={value}
+                      label={"password"}
+                      changeFn={onChange}
+                    />
+                  )}
+                  name="password"
                 />
                 <LandingButton
-                  disabled={!credentials.email || !credentials.password}
-                  fn={login}
+                  disabled={false}
+                  fn={handleLoginSubmit(onSubmit)}
                   text={"LOGIN"}
                   loading={uiState.loading}
                 />
@@ -215,6 +225,7 @@ export default function Landing() {
               />
             </View>
           )}
+          <RenderCounter />
         </View>
       </TouchableWithoutFeedback>
     </KeyboardAvoidingView>

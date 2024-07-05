@@ -13,6 +13,7 @@ export default function StyledTextInput({ inputValue, label, changeFn }) {
       textColor="white"
       autoCapitalize="none"
       secureTextEntry={label.includes("password") ? true : false}
+      textContentType="oneTimeCode"
     />
   );
 }

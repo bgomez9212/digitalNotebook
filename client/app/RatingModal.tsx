@@ -1,4 +1,11 @@
-import { View, Text, ActivityIndicator, Pressable, Alert } from "react-native";
+import {
+  View,
+  Text,
+  ActivityIndicator,
+  Pressable,
+  Alert,
+  Platform,
+} from "react-native";
 import { Picker } from "@react-native-picker/picker";
 import { router, useLocalSearchParams } from "expo-router";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
@@ -24,6 +31,8 @@ export default function RatingModal() {
     queryKey: ["matchInfo", match_id],
     queryFn: () => getMatchInfo(match_id),
   });
+
+  const dropdownFontColor = Platform.OS === "ios" ? "white" : "black";
 
   const {
     isFetching: ratingDataPending,
@@ -129,30 +138,31 @@ export default function RatingModal() {
       {showPicker ? (
         <View style={tw`w-full items-center`}>
           <Picker
-            style={tw`w-1/2`}
+            mode="dropdown"
+            style={tw`w-1/2 ${Platform.OS !== "ios" ? "mt-3 bg-white" : ""}`}
             selectedValue={rating}
             onValueChange={(itemValue) => setRating(itemValue)}
           >
-            <Picker.Item label="¼" value={0.25} color="white" />
-            <Picker.Item label="½" value={0.5} color="white" />
-            <Picker.Item label="¾" value={0.75} color="white" />
-            <Picker.Item label="1" value={1} color="white" />
-            <Picker.Item label="1 ¼" value={1.25} color="white" />
-            <Picker.Item label="1 ½" value={1.5} color="white" />
-            <Picker.Item label="1 ¾" value={1.75} color="white" />
-            <Picker.Item label="2" value={2} color="white" />
-            <Picker.Item label="2 ¼" value={2.25} color="white" />
-            <Picker.Item label="2 ½" value={2.5} color="white" />
-            <Picker.Item label="2 ¾" value={2.75} color="white" />
-            <Picker.Item label="3" value={3} color="white" />
-            <Picker.Item label="3 ¼" value={3.25} color="white" />
-            <Picker.Item label="3 ½" value={3.5} color="white" />
-            <Picker.Item label="3 ¾" value={3.75} color="white" />
-            <Picker.Item label="4" value={4} color="white" />
-            <Picker.Item label="4 ¼" value={4.25} color="white" />
-            <Picker.Item label="4 ½" value={4.5} color="white" />
-            <Picker.Item label="4 ¾" value={4.75} color="white" />
-            <Picker.Item label="5" value={5} color="white" />
+            <Picker.Item label="¼" value={0.25} color={dropdownFontColor} />
+            <Picker.Item label="½" value={0.5} color={dropdownFontColor} />
+            <Picker.Item label="¾" value={0.75} color={dropdownFontColor} />
+            <Picker.Item label="1" value={1} color={dropdownFontColor} />
+            <Picker.Item label="1 ¼" value={1.25} color={dropdownFontColor} />
+            <Picker.Item label="1 ½" value={1.5} color={dropdownFontColor} />
+            <Picker.Item label="1 ¾" value={1.75} color={dropdownFontColor} />
+            <Picker.Item label="2" value={2} color={dropdownFontColor} />
+            <Picker.Item label="2 ¼" value={2.25} color={dropdownFontColor} />
+            <Picker.Item label="2 ½" value={2.5} color={dropdownFontColor} />
+            <Picker.Item label="2 ¾" value={2.75} color={dropdownFontColor} />
+            <Picker.Item label="3" value={3} color={dropdownFontColor} />
+            <Picker.Item label="3 ¼" value={3.25} color={dropdownFontColor} />
+            <Picker.Item label="3 ½" value={3.5} color={dropdownFontColor} />
+            <Picker.Item label="3 ¾" value={3.75} color={dropdownFontColor} />
+            <Picker.Item label="4" value={4} color={dropdownFontColor} />
+            <Picker.Item label="4 ¼" value={4.25} color={dropdownFontColor} />
+            <Picker.Item label="4 ½" value={4.5} color={dropdownFontColor} />
+            <Picker.Item label="4 ¾" value={4.75} color={dropdownFontColor} />
+            <Picker.Item label="5" value={5} color={dropdownFontColor} />
           </Picker>
           <View style={tw`py-4`}>
             {rating > 1 ? (

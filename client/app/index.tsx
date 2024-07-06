@@ -33,14 +33,6 @@ export default function Landing() {
     signUpError: false,
   });
 
-  // const [debouncedUsername] = useDebounce(credentials.username, 500);
-
-  // const { data: userId } = useQuery({
-  //   queryKey: ["userId", debouncedUsername],
-  //   queryFn: () => getUserId(debouncedUsername),
-  //   enabled: debouncedUsername.length > 3,
-  // });
-
   // async function signup() {
   //   setUiState({ ...uiState, loading: true });
   //   try {
@@ -71,6 +63,7 @@ export default function Landing() {
   }
 
   const {
+    watch,
     control,
     handleSubmit,
     reset: resetLogin,
@@ -84,7 +77,16 @@ export default function Landing() {
       signupPasswordConfirm: "",
     },
   });
-  // const onLogin = (data) => login(data);
+
+  const [debouncedUsername] = useDebounce(watch("signupUsername"), 500);
+  console.log(debouncedUsername);
+
+  const { data: userId } = useQuery({
+    queryKey: ["userId", debouncedUsername],
+    queryFn: () => getUserId(debouncedUsername),
+    enabled: debouncedUsername.length > 3,
+  });
+
   const onLogin = (data) => console.log(data);
   const onSignup = (data) => console.log(data);
 
@@ -108,6 +110,7 @@ export default function Landing() {
                   control={control}
                   rules={{
                     required: true,
+                    minLength: 4,
                   }}
                   render={({ field: { onChange, value } }) => (
                     <StyledTextInput
@@ -118,7 +121,11 @@ export default function Landing() {
                   )}
                   name="signupUsername"
                 />
-
+                {userId && userId.length > 0 && (
+                  <Text style={tw`text-center text-red font-bold`}>
+                    Username unavailable
+                  </Text>
+                )}
                 <Controller
                   control={control}
                   rules={{

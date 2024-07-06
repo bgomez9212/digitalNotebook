@@ -32,40 +32,34 @@ export default function Landing() {
     loginError: false,
     signUpError: false,
   });
-  const [credentials, setCredentials] = useState({
-    email: "",
-    password: "",
-    confirmPassword: "",
-    username: "",
-  });
 
-  const [debouncedUsername] = useDebounce(credentials.username, 500);
+  // const [debouncedUsername] = useDebounce(credentials.username, 500);
 
-  const { data: userId } = useQuery({
-    queryKey: ["userId", debouncedUsername],
-    queryFn: () => getUserId(debouncedUsername),
-    enabled: debouncedUsername.length > 3,
-  });
+  // const { data: userId } = useQuery({
+  //   queryKey: ["userId", debouncedUsername],
+  //   queryFn: () => getUserId(debouncedUsername),
+  //   enabled: debouncedUsername.length > 3,
+  // });
 
-  async function signup() {
-    setUiState({ ...uiState, loading: true });
-    try {
-      await createUserWithEmailAndPassword(
-        firebaseAuth,
-        credentials.email,
-        credentials.password
-      ).then((userCredential) =>
-        createUser(userCredential.user.uid, credentials.username)
-      );
-      await signInWithEmailAndPassword(
-        firebaseAuth,
-        credentials.email,
-        credentials.password
-      );
-    } catch (err) {
-      setUiState({ ...uiState, signUpError: err.message, loading: false });
-    }
-  }
+  // async function signup() {
+  //   setUiState({ ...uiState, loading: true });
+  //   try {
+  //     await createUserWithEmailAndPassword(
+  //       firebaseAuth,
+  //       credentials.email,
+  //       credentials.password
+  //     ).then((userCredential) =>
+  //       createUser(userCredential.user.uid, credentials.username)
+  //     );
+  //     await signInWithEmailAndPassword(
+  //       firebaseAuth,
+  //       credentials.email,
+  //       credentials.password
+  //     );
+  //   } catch (err) {
+  //     setUiState({ ...uiState, signUpError: err.message, loading: false });
+  //   }
+  // }
 
   async function login(data) {
     setUiState({ ...uiState, loading: true });
@@ -76,8 +70,23 @@ export default function Landing() {
     }
   }
 
-  const { control: loginControl, handleSubmit: handleLoginSubmit } = useForm();
-  const onSubmit = (data) => login(data);
+  const {
+    control,
+    handleSubmit,
+    reset: resetLogin,
+  } = useForm({
+    defaultValues: {
+      loginEmail: "",
+      loginPassword: "",
+      signupUsername: "",
+      signupEmail: "",
+      signupPassword: "",
+      signupPasswordConfirm: "",
+    },
+  });
+  // const onLogin = (data) => login(data);
+  const onLogin = (data) => console.log(data);
+  const onSignup = (data) => console.log(data);
 
   return (
     <KeyboardAvoidingView
@@ -95,55 +104,66 @@ export default function Landing() {
           {uiState.displaySignup ? (
             <View style={tw`items-center justify-start flex-2`}>
               <View>
-                <StyledTextInput
-                  inputValue={credentials.username}
-                  label={"username"}
-                  changeFn={(text) =>
-                    setCredentials({ ...credentials, username: text })
-                  }
-                />
-                {userId && userId.length > 0 && (
-                  <Text style={tw`text-center text-red font-bold`}>
-                    Username unavailable
-                  </Text>
-                )}
-                {debouncedUsername.length > 0 &&
-                  debouncedUsername.length < 4 && (
-                    <Text style={tw`mb-2 text-red font-bold`}>
-                      Username must be at least 4 characters
-                    </Text>
+                <Controller
+                  control={control}
+                  rules={{
+                    required: true,
+                  }}
+                  render={({ field: { onChange, value } }) => (
+                    <StyledTextInput
+                      inputValue={value}
+                      label={"username"}
+                      changeFn={onChange}
+                    />
                   )}
-                <StyledTextInput
-                  inputValue={credentials.email}
-                  label={"email"}
-                  changeFn={(text) =>
-                    setCredentials({ ...credentials, email: text })
-                  }
+                  name="signupUsername"
                 />
-                <StyledTextInput
-                  inputValue={credentials.password}
-                  label={"password"}
-                  changeFn={(text) =>
-                    setCredentials({ ...credentials, password: text })
-                  }
+
+                <Controller
+                  control={control}
+                  rules={{
+                    required: true,
+                  }}
+                  render={({ field: { onChange, value } }) => (
+                    <StyledTextInput
+                      inputValue={value}
+                      label={"email"}
+                      changeFn={onChange}
+                    />
+                  )}
+                  name="signupEmail"
                 />
-                <StyledTextInput
-                  inputValue={credentials.confirmPassword}
-                  label={"confirm password"}
-                  changeFn={(text) =>
-                    setCredentials({ ...credentials, confirmPassword: text })
-                  }
+                <Controller
+                  control={control}
+                  rules={{
+                    required: true,
+                  }}
+                  render={({ field: { onChange, value } }) => (
+                    <StyledTextInput
+                      inputValue={value}
+                      label={"password"}
+                      changeFn={onChange}
+                    />
+                  )}
+                  name="signupPassword"
+                />
+                <Controller
+                  control={control}
+                  rules={{
+                    required: true,
+                  }}
+                  render={({ field: { onChange, value } }) => (
+                    <StyledTextInput
+                      inputValue={value}
+                      label={"confirm password"}
+                      changeFn={onChange}
+                    />
+                  )}
+                  name="signupPasswordConfirm"
                 />
                 <LandingButton
-                  disabled={
-                    credentials.password !== credentials.confirmPassword ||
-                    credentials.password.length <= 0 ||
-                    !credentials.username ||
-                    credentials.username.length < 4 ||
-                    credentials.email.length < 1 ||
-                    userId.length > 0
-                  }
-                  fn={signup}
+                  disabled={false}
+                  fn={handleSubmit(onSignup)}
                   text={"SIGN UP"}
                   loading={uiState.loading}
                 />
@@ -155,12 +175,8 @@ export default function Landing() {
               </View>
               <LandingLink
                 fn={() => {
+                  resetLogin();
                   setUiState({ ...uiState, displaySignup: false });
-                  setCredentials({
-                    ...credentials,
-                    password: "",
-                    confirmPassword: "",
-                  });
                 }}
                 text={"log in"}
               />
@@ -169,36 +185,36 @@ export default function Landing() {
             <View style={tw`flex justify-start items-center flex-2`}>
               <View>
                 <Controller
-                  control={loginControl}
+                  control={control}
                   rules={{
                     required: true,
                   }}
-                  render={({ field: { onChange, onBlur, value } }) => (
+                  render={({ field: { onChange, value } }) => (
                     <StyledTextInput
                       inputValue={value}
                       label={"email"}
                       changeFn={onChange}
                     />
                   )}
-                  name="email"
+                  name="loginEmail"
                 />
                 <Controller
-                  control={loginControl}
+                  control={control}
                   rules={{
                     required: true,
                   }}
-                  render={({ field: { onChange, onBlur, value } }) => (
+                  render={({ field: { onChange, value } }) => (
                     <StyledTextInput
                       inputValue={value}
                       label={"password"}
                       changeFn={onChange}
                     />
                   )}
-                  name="password"
+                  name="loginPassword"
                 />
                 <LandingButton
                   disabled={false}
-                  fn={handleLoginSubmit(onSubmit)}
+                  fn={handleSubmit(onLogin)}
                   text={"LOGIN"}
                   loading={uiState.loading}
                 />
@@ -215,7 +231,7 @@ export default function Landing() {
                     displaySignup: true,
                     loginError: false,
                   });
-                  setCredentials({ ...credentials, password: "" });
+                  resetLogin();
                 }}
                 text={"sign up"}
               />

@@ -22,7 +22,6 @@ import { useQuery } from "@tanstack/react-query";
 import { useDebounce } from "use-debounce";
 import { createUser, getUserId } from "../api/users";
 import StyledTextInput from "../components/StyledTextInput";
-import RenderCounter from "../components/rendercounter";
 
 export default function Landing() {
   const firebaseAuth = auth;
@@ -33,30 +32,34 @@ export default function Landing() {
     signUpError: false,
   });
 
-  // async function signup() {
-  //   setUiState({ ...uiState, loading: true });
-  //   try {
-  //     await createUserWithEmailAndPassword(
-  //       firebaseAuth,
-  //       credentials.email,
-  //       credentials.password
-  //     ).then((userCredential) =>
-  //       createUser(userCredential.user.uid, credentials.username)
-  //     );
-  //     await signInWithEmailAndPassword(
-  //       firebaseAuth,
-  //       credentials.email,
-  //       credentials.password
-  //     );
-  //   } catch (err) {
-  //     setUiState({ ...uiState, signUpError: err.message, loading: false });
-  //   }
-  // }
+  async function signup(data) {
+    setUiState({ ...uiState, loading: true });
+    try {
+      await createUserWithEmailAndPassword(
+        firebaseAuth,
+        data.signupEmail,
+        data.signupPassword
+      ).then((userCredential) =>
+        createUser(userCredential.user.uid, data.signupUsername)
+      );
+      await signInWithEmailAndPassword(
+        firebaseAuth,
+        data.loginEmail,
+        data.loginPassword
+      );
+    } catch (err) {
+      setUiState({ ...uiState, signUpError: err.message, loading: false });
+    }
+  }
 
   async function login(data) {
     setUiState({ ...uiState, loading: true });
     try {
-      await signInWithEmailAndPassword(firebaseAuth, data.email, data.password);
+      await signInWithEmailAndPassword(
+        firebaseAuth,
+        data.loginEmail,
+        data.loginPassword
+      );
     } catch (err) {
       setUiState({ ...uiState, loginError: true });
     }
@@ -87,8 +90,8 @@ export default function Landing() {
     enabled: debouncedUsername.length > 3,
   });
 
-  const onLogin = (data) => console.log(data);
-  const onSignup = (data) => console.log(data);
+  const onLogin = (data) => login(data);
+  const onSignup = (data) => signup(data);
 
   return (
     <KeyboardAvoidingView
@@ -248,7 +251,6 @@ export default function Landing() {
               />
             </View>
           )}
-          <RenderCounter />
         </View>
       </TouchableWithoutFeedback>
     </KeyboardAvoidingView>

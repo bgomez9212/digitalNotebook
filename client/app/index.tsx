@@ -228,7 +228,7 @@ export default function Landing() {
                   name="loginPassword"
                 />
                 <LandingButton
-                  disabled={false}
+                  disabled={!isValid || !isDirty}
                   fn={handleSubmit(onLogin)}
                   text={"LOGIN"}
                   loading={uiState.loading}

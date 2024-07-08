@@ -23,9 +23,16 @@ import { useDebounce } from "use-debounce";
 import { createUser, getUserId } from "../api/users";
 import StyledTextInput from "../components/StyledTextInput";
 
+type uiStateTypes = {
+  displaySignup: boolean;
+  loading: boolean;
+  loginError: boolean | string;
+  signUpError: boolean | string;
+};
+
 export default function Landing() {
   const firebaseAuth = auth;
-  const [uiState, setUiState] = useState({
+  const [uiState, setUiState] = useState<uiStateTypes>({
     displaySignup: false,
     loading: false,
     loginError: false,
@@ -70,6 +77,8 @@ export default function Landing() {
     control,
     handleSubmit,
     reset: resetLogin,
+    formState: { errors, isDirty, isValid },
+    getValues,
   } = useForm({
     defaultValues: {
       loginEmail: "",
@@ -81,8 +90,7 @@ export default function Landing() {
     },
   });
 
-  const [debouncedUsername] = useDebounce(watch("signupUsername"), 500);
-  console.log(debouncedUsername);
+  const [debouncedUsername] = useDebounce(watch("signupUsername"), 400);
 
   const { data: userId } = useQuery({
     queryKey: ["userId", debouncedUsername],
@@ -111,10 +119,6 @@ export default function Landing() {
               <View>
                 <Controller
                   control={control}
-                  rules={{
-                    required: true,
-                    minLength: 4,
-                  }}
                   render={({ field: { onChange, value } }) => (
                     <StyledTextInput
                       inputValue={value}
@@ -131,9 +135,6 @@ export default function Landing() {
                 )}
                 <Controller
                   control={control}
-                  rules={{
-                    required: true,
-                  }}
                   render={({ field: { onChange, value } }) => (
                     <StyledTextInput
                       inputValue={value}
@@ -145,9 +146,7 @@ export default function Landing() {
                 />
                 <Controller
                   control={control}
-                  rules={{
-                    required: true,
-                  }}
+                  rules={{ required: true }}
                   render={({ field: { onChange, value } }) => (
                     <StyledTextInput
                       inputValue={value}
@@ -160,7 +159,7 @@ export default function Landing() {
                 <Controller
                   control={control}
                   rules={{
-                    required: true,
+                    validate: (value) => value === getValues().signupPassword,
                   }}
                   render={({ field: { onChange, value } }) => (
                     <StyledTextInput
@@ -172,13 +171,15 @@ export default function Landing() {
                   name="signupPasswordConfirm"
                 />
                 <LandingButton
-                  disabled={false}
+                  disabled={!isDirty || !isValid}
                   fn={handleSubmit(onSignup)}
                   text={"SIGN UP"}
                   loading={uiState.loading}
                 />
                 {uiState.signUpError && (
-                  <Text style={tw`text-red my-3 text-base`}>
+                  <Text
+                    style={tw`text-red mt-1 text-base border w-60 text-center`}
+                  >
                     {uiState.signUpError}
                   </Text>
                 )}
@@ -186,7 +187,11 @@ export default function Landing() {
               <LandingLink
                 fn={() => {
                   resetLogin();
-                  setUiState({ ...uiState, displaySignup: false });
+                  setUiState({
+                    ...uiState,
+                    displaySignup: false,
+                    signUpError: false,
+                  });
                 }}
                 text={"log in"}
               />
@@ -223,7 +228,7 @@ export default function Landing() {
                   name="loginPassword"
                 />
                 <LandingButton
-                  disabled={false}
+                  disabled={!isValid || !isDirty}
                   fn={handleSubmit(onLogin)}
                   text={"LOGIN"}
                   loading={uiState.loading}

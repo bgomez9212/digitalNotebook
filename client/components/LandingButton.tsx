@@ -1,4 +1,4 @@
-import { Pressable, Text, View } from "react-native";
+import { Text, TouchableOpacity, View } from "react-native";
 import tw from "../tailwind";
 import { ActivityIndicator } from "react-native-paper";
 
@@ -26,12 +26,12 @@ export default function LandingButton({
       <ActivityIndicator color="white" />
     </View>
   ) : (
-    <Pressable
+    <TouchableOpacity
       disabled={disabled}
       style={tw`bg-${color ? color : "blue"} h-10 w-${width ? width : 60} flex items-center justify-center rounded ${disabled ? "opacity-50" : ""} mt-2`}
       onPress={fn}
     >
       <Text style={tw`text-white`}>{text}</Text>
-    </Pressable>
+    </TouchableOpacity>
   );
 }

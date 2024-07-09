@@ -51,9 +51,10 @@ export default function Landing() {
       );
       await signInWithEmailAndPassword(
         firebaseAuth,
-        data.loginEmail,
-        data.loginPassword
+        data.signupEmail,
+        data.signupPassword
       );
+      router.replace("/(tabs)/Home");
     } catch (err) {
       setUiState({ ...uiState, signUpError: err.message, loading: false });
     }
@@ -67,6 +68,7 @@ export default function Landing() {
         data.loginEmail,
         data.loginPassword
       );
+      router.replace("/(tabs)/Home");
     } catch (err) {
       setUiState({ ...uiState, loginError: true });
     }

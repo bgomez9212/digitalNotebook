@@ -1,9 +1,16 @@
-import { Stack } from "expo-router";
+import { Stack, router } from "expo-router";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import { onAuthStateChanged } from "firebase/auth";
+import { auth } from "../firebase";
 const queryClient = new QueryClient();
 const blue = "#477CB9";
 
 export default function Layout() {
+  onAuthStateChanged(auth, (user) => {
+    if (user) {
+      router.replace("/(tabs)/Home");
+    }
+  });
   return (
     <QueryClientProvider client={queryClient}>
       <Stack screenOptions={{ headerShown: false }}>

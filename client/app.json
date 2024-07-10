@@ -16,8 +16,7 @@
       "**/*"
     ],
     "ios": {
-      "supportsTablet": true,
-      "bundleIdentifier": "com.earthdeparture.the-notebook"
+      "supportsTablet": true
     },
     "android": {
       "adaptiveIcon": {
@@ -30,6 +29,20 @@
     },
     "plugins": [
       "expo-router"
-    ]
+    ],
+    "extra": {
+      "router": {
+        "origin": false
+      },
+      "eas": {
+        "projectId": "e0da2f50-50bc-4097-91ac-96786de50716"
+      }
+    },
+    "runtimeVersion": {
+      "policy": "appVersion"
+    },
+    "updates": {
+      "url": "https://u.expo.dev/e0da2f50-50bc-4097-91ac-96786de50716"
+    }
   }
 }

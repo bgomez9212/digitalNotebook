@@ -62,7 +62,7 @@ export async function createUser(userUid, username) {
 
 export async function deleteUserFromDb(userUid) {
   await axios
-    .delete(`${process.env.API_DELETE_USER}`, {
+    .delete(`${process.env.API_USERS}`, {
       params: {
         user_id: userUid,
       },

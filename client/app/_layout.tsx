@@ -9,12 +9,29 @@ export default function Layout() {
   onAuthStateChanged(auth, (user) => {
     if (user) {
       router.replace("/(tabs)/Home");
+    } else {
+      router.replace("/Landing");
     }
   });
   return (
     <QueryClientProvider client={queryClient}>
       <Stack screenOptions={{ headerShown: false }}>
-        <Stack.Screen name="index" options={{ headerShown: false }} />
+        <Stack.Screen
+          name="index"
+          options={{
+            headerShown: false,
+            animation: "fade",
+            animationDuration: 1000,
+          }}
+        />
+        <Stack.Screen
+          name="Landing"
+          options={{
+            headerShown: false,
+            animation: "fade",
+            animationDuration: 1000,
+          }}
+        />
         <Stack.Screen
           name="RatingModal"
           options={{
@@ -24,6 +41,10 @@ export default function Layout() {
             headerTitleStyle: { color: "white" },
             headerShown: true,
           }}
+        />
+        <Stack.Screen
+          name="(tabs)"
+          options={{ animation: "fade", animationDuration: 1000 }}
         />
         <Stack.Screen
           name="ResetPasswordModal"

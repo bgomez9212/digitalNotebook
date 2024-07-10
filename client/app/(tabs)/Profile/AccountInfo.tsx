@@ -149,7 +149,7 @@ export default function AccountInfo() {
 
   function appSignOut() {
     signOut(auth);
-    router.replace("../../");
+    router.replace("/Landing");
   }
 
   const { mutateAsync: deleteAllUserRatingsMutation } = useMutation({

@@ -286,6 +286,16 @@ export default function AccountInfo() {
             }
           >
             <StyledTextInput
+              inputValue={inputValues.currentPasswordPassword}
+              label={"current password"}
+              changeFn={(text) =>
+                setInputValues({
+                  ...inputValues,
+                  currentPasswordPassword: text,
+                })
+              }
+            />
+            <StyledTextInput
               inputValue={inputValues.newPassword}
               label={"new password"}
               changeFn={(text) =>
@@ -297,16 +307,6 @@ export default function AccountInfo() {
               label={"confirm new password"}
               changeFn={(text) =>
                 setInputValues({ ...inputValues, confirmNewPassword: text })
-              }
-            />
-            <StyledTextInput
-              inputValue={inputValues.currentPasswordPassword}
-              label={"current password"}
-              changeFn={(text) =>
-                setInputValues({
-                  ...inputValues,
-                  currentPasswordPassword: text,
-                })
               }
             />
             <LandingButton

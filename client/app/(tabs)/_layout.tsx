@@ -26,6 +26,7 @@ export default function Layout() {
           tabBarIcon: ({ color }) => (
             <Entypo name="home" size={24} color={color} />
           ),
+          lazy: false,
         }}
       />
       <Tabs.Screen
@@ -35,6 +36,7 @@ export default function Layout() {
           tabBarIcon: ({ color }) => (
             <FontAwesome name="search" size={24} color={color} />
           ),
+          lazy: false,
         }}
       />
       <Tabs.Screen
@@ -45,6 +47,7 @@ export default function Layout() {
           tabBarIcon: ({ color }) => (
             <Ionicons name="person" size={24} color={color} />
           ),
+          lazy: false,
         }}
       />
     </Tabs>

@@ -7,7 +7,7 @@ export default function Landing() {
       <Image
         source={require("../assets/Notebook.png")}
         resizeMode="contain"
-        style={tw`w-90`}
+        style={tw`w-full`}
       />
     </View>
   );

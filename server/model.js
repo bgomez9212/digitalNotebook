@@ -218,15 +218,30 @@ module.exports = {
     try {
       if (search_param === "events") {
         const { rows: results } = await pool.query(
-          `SELECT events.id AS id, events.title AS title, TO_CHAR(events.date, 'YYYY-MM-DD') AS date, venues.name AS venue_name, promotions.name AS promotion_name
-              FROM events
-              JOIN venues ON events.venue_id = venues.id
-              JOIN promotions ON events.promotion_id = promotions.id
-              WHERE (promotions.name || ' ' || unaccent(events.title)) ILIKE '%' || $1 || '%'
-              ORDER BY events.date DESC`,
+          `
+          SELECT events.id AS id,
+              events.title AS title,
+              TO_CHAR(events.date, 'YYYY-MM-DD') AS date,
+              venues.name AS venue_name,
+              promotions.name AS promotion_name,
+              AVG(ratings.rating) AS avg_rating
+          FROM events
+          JOIN venues ON events.venue_id = venues.id
+          JOIN promotions ON events.promotion_id = promotions.id
+          LEFT JOIN (
+              SELECT event_id, AVG(rating) AS rating
+              FROM matches
+              JOIN ratings ON matches.id = ratings.match_id
+              GROUP BY event_id
+          ) AS ratings ON events.id = ratings.event_id
+          WHERE (promotions.name || ' ' || unaccent(events.title)) ILIKE '%' || $1 || '%'
+          GROUP BY events.id, events.title, events.date, venues.name, promotions.name
+          ORDER BY events.date DESC;
+          `,
           [search_text]
         );
         const data = { search_param: search_param, results: results };
+        console.log(data);
         return data;
       }
       if (search_param === "promotions") {

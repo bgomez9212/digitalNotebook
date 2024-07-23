@@ -134,10 +134,7 @@ export default function MatchRow({
         onPress={() =>
           router.navigate({
             pathname: "../../RatingModal",
-            params: {
-              match_id: match.match_id,
-              eventName: match.event_title,
-            },
+            params: match,
           })
         }
       >

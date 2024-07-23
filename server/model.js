@@ -107,6 +107,7 @@ module.exports = {
       [eventId]
     );
     eventInfo[0].matches = parseMatchData(matches);
+    console.log(eventInfo[0].matches);
     return eventInfo;
   },
   getRecentEvents: async (numOfResults) => {

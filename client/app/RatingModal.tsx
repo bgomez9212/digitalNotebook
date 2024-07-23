@@ -13,7 +13,7 @@ import tw from "../tailwind";
 import { useEffect, useState } from "react";
 import { getAuth } from "firebase/auth";
 import StarView from "../components/StarView";
-import { getMatchInfo, addRating, deleteRating } from "../api/matches";
+import { addRating, deleteRating } from "../api/matches";
 import { getUserRating } from "../api/users";
 
 export default function RatingModal() {
@@ -21,16 +21,9 @@ export default function RatingModal() {
   const { uid } = auth.currentUser;
   const queryClient = useQueryClient();
   const [rating, setRating] = useState(2);
-  const { match_id, eventName } = useLocalSearchParams();
+  const { championships, event_id, event_title, match_id, participants } =
+    useLocalSearchParams();
   const [showPicker, setShowPicker] = useState(true);
-  const {
-    isFetching: matchInfoPending,
-    error: matchInfoError,
-    data: matchInfo,
-  } = useQuery({
-    queryKey: ["matchInfo", match_id],
-    queryFn: () => getMatchInfo(match_id),
-  });
 
   const dropdownFontColor = Platform.OS === "ios" ? "white" : "black";
 
@@ -108,22 +101,12 @@ export default function RatingModal() {
     );
   }
 
-  if (matchInfoError) {
-    return (
-      <View>
-        <Text>Error: {matchInfoError.message}</Text>
-      </View>
-    );
-  }
-
   return (
     <View style={tw`flex-1 items-center justify-center bg-black`}>
       <View style={tw`w-4/5`}>
-        <Text style={tw`text-gold pb-3`}>{matchInfo?.championships}</Text>
-        <Text style={tw`text-white text-xl pb-3`}>
-          {matchInfo?.participants}
-        </Text>
-        <Text style={tw`text-white pb-3`}>From {eventName}</Text>
+        <Text style={tw`text-gold pb-3`}>{championships}</Text>
+        <Text style={tw`text-white text-xl pb-3`}>{participants}</Text>
+        <Text style={tw`text-white pb-3`}>From {event_title}</Text>
         <View
           style={tw`flex flex-row ${ratingData?.userRating ? "justify-between" : "justify-end"}`}
         >

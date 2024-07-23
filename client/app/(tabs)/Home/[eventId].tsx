@@ -6,15 +6,18 @@ import { ActivityIndicator } from "react-native-paper";
 import MatchRow from "../../../components/MatchRow";
 import { photoLibrary } from "../../../assets";
 import { getEvent } from "../../../api/events";
+import { getAuth } from "firebase/auth";
 export default function EventPage() {
   const { eventId } = useLocalSearchParams();
+  const auth = getAuth();
+  const { uid } = auth.currentUser;
   const {
     isFetching,
     error,
     data: event,
   } = useQuery({
     queryKey: ["event", eventId],
-    queryFn: () => getEvent(eventId),
+    queryFn: () => getEvent(eventId, uid),
   });
 
   if (isFetching) {

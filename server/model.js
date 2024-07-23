@@ -22,6 +22,9 @@ function parseMatchData(matchArr) {
     participants: [],
     championships: [],
     date: matchArr[0].date,
+    user_rating: matchArr[0].user_rating,
+    community_rating: matchArr[0].community_rating,
+    rating_count: matchArr[0].rating_count,
   };
 
   for (const [i, partObj] of matchArr.entries()) {
@@ -34,6 +37,9 @@ function parseMatchData(matchArr) {
       matchObj.championships = [];
       matchObj.date = partObj.date;
       matchObj.promotion = partObj.promotion_name;
+      matchObj.user_rating = partObj.user_rating;
+      matchObj.community_rating = partObj.community_rating;
+      matchObj.rating_count = partObj.rating_count;
     }
     if (!matchObj.participants[partObj.participants]) {
       matchObj.participants[partObj.participants] = [];
@@ -59,7 +65,7 @@ function parseMatchData(matchArr) {
 }
 
 module.exports = {
-  getEvent: async (eventId) => {
+  getEvent: async (eventId, user_id) => {
     const { rows: eventInfo } = await pool.query(
       `SELECT
         events.title AS title,
@@ -92,7 +98,8 @@ module.exports = {
         events.title AS event_title,
         participants.team AS participants,
         wrestlers.name AS wrestler_name,
-        ROUND(AVG(ratings.rating)::numeric, 2) AS rating,
+        (SELECT rating from ratings WHERE ratings.match_id = matches.id AND ratings.user_id = $2) AS user_rating,
+        ROUND(AVG(ratings.rating)::numeric, 2) AS community_rating,
         (SELECT COUNT(*) FROM ratings WHERE ratings.match_id = matches.id) AS rating_count,
         championships.name AS championship_name
       FROM matches
@@ -106,10 +113,9 @@ module.exports = {
         WHERE matches.event_id = $1
       GROUP BY matches.id, participants.team, wrestlers.name, matches_championships.id, championships.name, events.title, promotions.name
       ORDER BY matches.match_number, participants.team ASC`,
-      [eventId]
+      [eventId, user_id]
     );
     eventInfo[0].matches = parseMatchData(matches);
-    console.log(eventInfo[0].matches);
     return eventInfo;
   },
   getRecentEvents: async (numOfResults) => {

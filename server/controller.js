@@ -2,7 +2,7 @@ const model = require("./model.js");
 
 module.exports = {
   getEvent: async (req, res) => {
-    const result = await model.getEvent(req.query.event_id);
+    const result = await model.getEvent(req.query.event_id, req.query.user_id);
     res.send(result[0]).status(200);
   },
   getRecentEvents: async (req, res) => {

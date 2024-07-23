@@ -21,7 +21,6 @@ export default function MatchRow({
     queryKey: ["ratingData", match.match_id],
     queryFn: () => getUserRating(uid, match.match_id),
   });
-
   if (display === "Home") {
     return (
       <TouchableOpacity
@@ -32,7 +31,7 @@ export default function MatchRow({
             pathname: "../../RatingModal",
             params: {
               match_id: match.match_id,
-              eventName: match.event_title,
+              event_title: match.event_title,
             },
           })
         }
@@ -82,7 +81,7 @@ export default function MatchRow({
             pathname: "../../RatingModal",
             params: {
               match_id: match.match_id,
-              eventName: match.event_title,
+              event_title: match.event_title,
             },
           })
         }

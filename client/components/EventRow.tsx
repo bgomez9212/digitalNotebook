@@ -22,7 +22,7 @@ export default function EventRow({
   function openEvent() {
     router.push({
       pathname: `${pathname.includes("Home") ? `/(tabs)/Home/${event.id}` : `/(tabs)/Search/${event.id}`}`,
-      params: { eventName: event.title },
+      params: { event_title: event.title },
     });
   }
   function formatImg(promotionName: string) {

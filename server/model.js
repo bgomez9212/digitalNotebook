@@ -87,6 +87,7 @@ module.exports = {
       `
       SELECT
         matches.id AS match_id,
+        promotions.name AS promotion_name,
         matches.event_id AS event_id,
         events.title AS event_title,
         participants.team AS participants,
@@ -98,11 +99,12 @@ module.exports = {
       JOIN participants ON matches.id = participants.match_id
       JOIN wrestlers ON participants.wrestler_id = wrestlers.id
       JOIN events ON matches.event_id = events.id
+      JOIN promotions ON promotions.id = events.promotion_id
       LEFT OUTER JOIN ratings ON matches.id = ratings.match_id
       LEFT OUTER JOIN matches_championships ON matches_championships.match_id = matches.id
       LEFT OUTER JOIN championships ON matches_championships.championship_id = championships.id
         WHERE matches.event_id = $1
-      GROUP BY matches.id, participants.team, wrestlers.name, matches_championships.id, championships.name, events.title
+      GROUP BY matches.id, participants.team, wrestlers.name, matches_championships.id, championships.name, events.title, promotions.name
       ORDER BY matches.match_number, participants.team ASC`,
       [eventId]
     );

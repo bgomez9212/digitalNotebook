@@ -21,8 +21,14 @@ export default function RatingModal() {
   const { uid } = auth.currentUser;
   const queryClient = useQueryClient();
   const [rating, setRating] = useState(2);
-  const { championships, event_id, event_title, match_id, participants } =
-    useLocalSearchParams();
+  const {
+    championships,
+    event_id,
+    event_title,
+    match_id,
+    participants,
+    promotion,
+  } = useLocalSearchParams();
   const [showPicker, setShowPicker] = useState(true);
 
   const dropdownFontColor = Platform.OS === "ios" ? "white" : "black";
@@ -106,7 +112,9 @@ export default function RatingModal() {
       <View style={tw`w-4/5`}>
         <Text style={tw`text-gold pb-3`}>{championships}</Text>
         <Text style={tw`text-white text-xl pb-3`}>{participants}</Text>
-        <Text style={tw`text-white pb-3`}>From {event_title}</Text>
+        <Text style={tw`text-white pb-3`}>
+          From {promotion} {event_title}
+        </Text>
         <View
           style={tw`flex flex-row ${ratingData?.userRating ? "justify-between" : "justify-end"}`}
         >

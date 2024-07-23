@@ -54,6 +54,11 @@ export default function EventPage() {
           <Text style={tw`text-white pb-2`}>
             {event.city}, {event.state} ({event.country})
           </Text>
+          <Text
+            style={tw`text-lg ${event.avg_rating >= 3.5 ? "text-green" : event.avg_rating >= 2 ? "text-yellow" : event.avg_rating > 0 ? "text-red" : "text-white"}`}
+          >
+            {event.avg_rating}
+          </Text>
         </View>
       </View>
     );

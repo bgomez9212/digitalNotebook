@@ -68,11 +68,19 @@ module.exports = {
         venues.name AS venue_name,
         venues.city,
         venues.state,
-        venues.country
+        venues.country,
+        AVG(ratings.rating) AS avg_rating
       FROM events
       JOIN promotions ON events.promotion_id = promotions.id
       JOIN venues ON events.venue_id = venues.id
-      WHERE events.id = $1`,
+      LEFT JOIN (
+        SELECT event_id, AVG(rating) AS rating
+        FROM matches
+        JOIN ratings ON matches.id = ratings.match_id
+        GROUP BY event_id
+      ) AS ratings ON events.id = ratings.event_id
+      WHERE events.id = $1
+      GROUP BY events.title, events.date, promotions.name, venues.name, venues.city, venues,state, venues.country`,
       [eventId]
     );
     const { rows: matches } = await pool.query(

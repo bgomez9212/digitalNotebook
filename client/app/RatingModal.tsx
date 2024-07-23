@@ -49,6 +49,7 @@ export default function RatingModal() {
       onSuccess: () => {
         queryClient.invalidateQueries({ queryKey: ["ratingData"] });
         queryClient.invalidateQueries({ queryKey: ["userRatings"] });
+        queryClient.invalidateQueries({ queryKey: ["event"] });
         setRating(ratingData?.userRating?.rating || 2);
         router.back();
       },
@@ -59,6 +60,7 @@ export default function RatingModal() {
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["ratingData"] });
       queryClient.invalidateQueries({ queryKey: ["userRatings"] });
+      queryClient.invalidateQueries({ queryKey: ["event"] });
       router.back();
     },
   });

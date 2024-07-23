@@ -21,6 +21,7 @@ export default function Profile() {
     queryFn: () =>
       getUserRatings(uid, { sortBy: "rating_date", sortOrder: "DESC" }),
   });
+  console.log(userRatings);
 
   const chartConfig = {
     backgroundGradientFrom: "#1E2923",

@@ -421,7 +421,10 @@ module.exports = {
           wrestlers.name AS wrestler_name,
           championships.name AS championship_name,
           promotions.name AS promotion_name,
-          ratings.date AS rating_date
+          ratings.date AS rating_date,
+          ratings.rating AS user_rating,
+          CAST((SELECT COUNT(*) FROM ratings WHERE ratings.match_id = matches.id) AS INTEGER) AS rating_count,
+          CAST((SELECT AVG(ratings.rating) FROM ratings WHERE ratings.match_id = matches.id) AS FLOAT) AS community_rating
       FROM matches
       JOIN participants ON matches.id = participants.match_id
       JOIN wrestlers ON participants.wrestler_id = wrestlers.id
@@ -436,6 +439,7 @@ module.exports = {
       [user_id]
     );
     const results = parseMatchData(userRatings);
+    console.log(results);
     return results;
   },
   getPromotions: async () => {

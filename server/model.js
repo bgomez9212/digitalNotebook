@@ -99,8 +99,8 @@ module.exports = {
         participants.team AS participants,
         wrestlers.name AS wrestler_name,
         (SELECT rating from ratings WHERE ratings.match_id = matches.id AND ratings.user_id = $2) AS user_rating,
-        ROUND(AVG(ratings.rating)::numeric, 2) AS community_rating,
-        (SELECT COUNT(*) FROM ratings WHERE ratings.match_id = matches.id) AS rating_count,
+        CAST(ROUND(AVG(ratings.rating)::numeric, 2) AS FLOAT) AS community_rating,
+        CAST((SELECT COUNT(*) FROM ratings WHERE ratings.match_id = matches.id) AS INTEGER) AS rating_count,
         championships.name AS championship_name
       FROM matches
       JOIN participants ON matches.id = participants.match_id
@@ -116,6 +116,7 @@ module.exports = {
       [eventId, user_id]
     );
     eventInfo[0].matches = parseMatchData(matches);
+    console.log(eventInfo[0].matches);
     return eventInfo;
   },
   getRecentEvents: async (numOfResults) => {

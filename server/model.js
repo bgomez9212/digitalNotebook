@@ -249,7 +249,6 @@ module.exports = {
           [search_text]
         );
         const data = { search_param: search_param, results: results };
-        console.log(data);
         return data;
       }
       if (search_param === "promotions") {

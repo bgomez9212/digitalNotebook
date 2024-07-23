@@ -20,7 +20,6 @@ export default function RatingModal() {
   const { uid } = auth.currentUser;
   const {
     championships,
-    event_id,
     event_title,
     match_id,
     participants,

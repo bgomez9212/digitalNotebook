@@ -47,7 +47,8 @@ module.exports = {
     try {
       const result = await model.getSearchResults(
         req.query.search_param,
-        req.query.search_text
+        req.query.search_text,
+        req.query.user_id
       );
       res.send(result).status(200);
     } catch (err) {

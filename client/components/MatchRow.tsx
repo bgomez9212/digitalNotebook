@@ -79,10 +79,7 @@ export default function MatchRow({
         onPress={() =>
           router.navigate({
             pathname: "../../RatingModal",
-            params: {
-              match_id: match.match_id,
-              event_title: match.event_title,
-            },
+            params: match,
           })
         }
       >
@@ -108,16 +105,13 @@ export default function MatchRow({
             <Text style={tw`text-white text-lg`}>{match.participants}</Text>
           </View>
           <View
-            style={tw`flex flex-row ${ratingData?.userRating ? "justify-between" : "justify-end"}`}
+            style={tw`flex flex-row ${match.user_rating ? "justify-between" : "justify-end"}`}
           >
-            <StarView
-              display={"User"}
-              rating={ratingData?.userRating?.rating}
-            />
+            <StarView display={"User"} rating={match.user_rating} />
             <StarView
               display="Total"
-              rating={ratingData?.communityRating.rating}
-              rating_count={ratingData?.communityRating.rating_count}
+              rating={match.community_rating}
+              rating_count={match.community_rating}
             />
           </View>
         </View>

@@ -232,7 +232,7 @@ module.exports = {
     );
     return results;
   },
-  getSearchResults: async (search_param, search_text) => {
+  getSearchResults: async (search_param, search_text, user_id) => {
     try {
       if (search_param === "events") {
         const { rows: results } = await pool.query(
@@ -339,16 +339,17 @@ module.exports = {
           wrestlers.name AS wrestler_name,
           participants.team AS participants,
           championships.name AS championship_name,
-          ROUND(AVG(ratings.rating)::numeric, 2) as rating,
+          ROUND(AVG(ratings.rating)::numeric, 2) as community_rating,
+          (SELECT rating from ratings WHERE ratings.match_id = participants.match_id AND ratings.user_id = $3) AS user_rating,
           (SELECT COUNT(*) FROM ratings WHERE ratings.match_id = participants.match_id) AS rating_count
           FROM participants
-          JOIN wrestlers ON participants.wrestler_id = wrestlers.id
-          JOIN matches ON matches.id = participants.match_id
-          LEFT OUTER JOIN matches_championships ON matches_championships.match_id = participants.match_id
-          LEFT OUTER JOIN championships ON championships.id = matches_championships.championship_id
-          LEFT OUTER JOIN ratings ON ratings.match_id = participants.match_id
-          LEFT OUTER JOIN events ON matches.event_id = events.id
-          LEFT OUTER JOIN promotions ON promotions.id = events.promotion_id
+            JOIN wrestlers ON participants.wrestler_id = wrestlers.id
+            JOIN matches ON matches.id = participants.match_id
+            LEFT OUTER JOIN matches_championships ON matches_championships.match_id = participants.match_id
+            LEFT OUTER JOIN championships ON championships.id = matches_championships.championship_id
+            LEFT OUTER JOIN ratings ON ratings.match_id = participants.match_id
+            LEFT OUTER JOIN events ON matches.event_id = events.id
+            LEFT OUTER JOIN promotions ON promotions.id = events.promotion_id
           WHERE matches.id = ANY(
             SELECT match_id FROM (
               SELECT matches.id AS match_id
@@ -362,7 +363,7 @@ module.exports = {
           )
           GROUP BY participants.match_id, matches.event_id, wrestlers.name, participants.team, championships.name, rating_count, events.title, events.date, promotions.name
           ORDER BY date DESC, match_id, team;`,
-          [wrestlersArr, wrestlersArr.length]
+          [wrestlersArr, wrestlersArr.length, user_id]
         );
         const data = {
           search_param: search_param,

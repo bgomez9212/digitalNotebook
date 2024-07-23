@@ -39,7 +39,7 @@ export default function EventRow({
       }`}
     >
       <View style={tw`py-2 flex flex-row w-full items-center justify-between`}>
-        {display === "Table" ? (
+        {display === "Table" || pathname === "/Home/RecentEvents" ? (
           <View style={tw`w-1/4 h-11`}>
             <Image
               style={{
@@ -54,7 +54,7 @@ export default function EventRow({
         ) : (
           <View style={tw`w-1/4`}>
             <Text
-              style={tw`text-center text-white font-bold ${event.avg_rating < 2 ? "text-red" : event.avg_rating < 3.5 ? "text-yellow" : event.avg_rating >= 3.5 ? "text-green" : "text-white"}`}
+              style={tw`text-center text-white font-bold ${event.avg_rating >= 3.5 ? "text-green" : event.avg_rating >= 2 ? "text-yellow" : event.avg_rating > 0 ? "text-red" : "text-white"}`}
             >
               {event.avg_rating || "-"}
             </Text>

@@ -246,11 +246,24 @@ module.exports = {
       }
       if (search_param === "promotions") {
         const { rows: events } = await pool.query(
-          `SELECT events.id AS id, events.title AS title, TO_CHAR(events.date, 'YYYY-MM-DD') AS date, venues.name AS venue_name, promotions.name AS promotion_name
+          `
+          SELECT events.id AS id,
+          events.title AS title,
+          TO_CHAR(events.date, 'YYYY-MM-DD') AS date,
+          venues.name AS venue_name,
+          promotions.name AS promotion_name,
+          AVG(ratings.rating) AS avg_rating
             FROM events
             JOIN venues ON events.venue_id = venues.id
             JOIN promotions ON events.promotion_id = promotions.id
+            LEFT JOIN (
+              SELECT event_id, AVG(rating) AS rating
+              FROM matches
+              JOIN ratings ON matches.id = ratings.match_id
+              GROUP BY event_id
+          ) AS ratings ON events.id = ratings.event_id
           WHERE promotions.name ILIKE $1
+          GROUP BY events.id, venues.name, promotions.name
           ORDER BY date DESC`,
           [search_text]
         );

@@ -54,9 +54,9 @@ export default function EventRow({
         ) : (
           <View style={tw`w-1/4`}>
             <Text
-              style={tw`text-center text-white font-bold ${event.avg_rating < 2 ? "text-red" : event.avg_rating < 3.5 ? "text-yellow" : "text-green"}`}
+              style={tw`text-center text-white font-bold ${event.avg_rating < 2 ? "text-red" : event.avg_rating < 3.5 ? "text-yellow" : event.avg_rating >= 3.5 ? "text-green" : "text-white"}`}
             >
-              {event.avg_rating}
+              {event.avg_rating || "-"}
             </Text>
           </View>
         )}

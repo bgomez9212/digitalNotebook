@@ -68,11 +68,19 @@ module.exports = {
         venues.name AS venue_name,
         venues.city,
         venues.state,
-        venues.country
+        venues.country,
+        AVG(ratings.rating) AS avg_rating
       FROM events
       JOIN promotions ON events.promotion_id = promotions.id
       JOIN venues ON events.venue_id = venues.id
-      WHERE events.id = $1`,
+      LEFT JOIN (
+        SELECT event_id, AVG(rating) AS rating
+        FROM matches
+        JOIN ratings ON matches.id = ratings.match_id
+        GROUP BY event_id
+      ) AS ratings ON events.id = ratings.event_id
+      WHERE events.id = $1
+      GROUP BY events.title, events.date, promotions.name, venues.name, venues.city, venues,state, venues.country`,
       [eventId]
     );
     const { rows: matches } = await pool.query(
@@ -218,12 +226,26 @@ module.exports = {
     try {
       if (search_param === "events") {
         const { rows: results } = await pool.query(
-          `SELECT events.id AS id, events.title AS title, TO_CHAR(events.date, 'YYYY-MM-DD') AS date, venues.name AS venue_name, promotions.name AS promotion_name
-              FROM events
-              JOIN venues ON events.venue_id = venues.id
-              JOIN promotions ON events.promotion_id = promotions.id
-              WHERE (promotions.name || ' ' || unaccent(events.title)) ILIKE '%' || $1 || '%'
-              ORDER BY events.date DESC`,
+          `
+          SELECT events.id AS id,
+              events.title AS title,
+              TO_CHAR(events.date, 'YYYY-MM-DD') AS date,
+              venues.name AS venue_name,
+              promotions.name AS promotion_name,
+              AVG(ratings.rating) AS avg_rating
+          FROM events
+          JOIN venues ON events.venue_id = venues.id
+          JOIN promotions ON events.promotion_id = promotions.id
+          LEFT JOIN (
+              SELECT event_id, AVG(rating) AS rating
+              FROM matches
+              JOIN ratings ON matches.id = ratings.match_id
+              GROUP BY event_id
+          ) AS ratings ON events.id = ratings.event_id
+          WHERE (promotions.name || ' ' || unaccent(events.title)) ILIKE '%' || $1 || '%'
+          GROUP BY events.id, events.title, events.date, venues.name, promotions.name
+          ORDER BY events.date DESC;
+          `,
           [search_text]
         );
         const data = { search_param: search_param, results: results };
@@ -231,11 +253,24 @@ module.exports = {
       }
       if (search_param === "promotions") {
         const { rows: events } = await pool.query(
-          `SELECT events.id AS id, events.title AS title, TO_CHAR(events.date, 'YYYY-MM-DD') AS date, venues.name AS venue_name, promotions.name AS promotion_name
+          `
+          SELECT events.id AS id,
+          events.title AS title,
+          TO_CHAR(events.date, 'YYYY-MM-DD') AS date,
+          venues.name AS venue_name,
+          promotions.name AS promotion_name,
+          AVG(ratings.rating) AS avg_rating
             FROM events
             JOIN venues ON events.venue_id = venues.id
             JOIN promotions ON events.promotion_id = promotions.id
+            LEFT JOIN (
+              SELECT event_id, AVG(rating) AS rating
+              FROM matches
+              JOIN ratings ON matches.id = ratings.match_id
+              GROUP BY event_id
+          ) AS ratings ON events.id = ratings.event_id
           WHERE promotions.name ILIKE $1
+          GROUP BY events.id, venues.name, promotions.name
           ORDER BY date DESC`,
           [search_text]
         );

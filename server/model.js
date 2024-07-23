@@ -137,6 +137,7 @@ module.exports = {
   },
   getTopRatedMatches: async (numOfMatches) => {
     let today = new Date();
+    let lastMonth = new Date(today.setDate(today.getDate() - 30));
     try {
       const { rows: results } = await pool.query(
         `
@@ -172,7 +173,7 @@ module.exports = {
         GROUP BY matches.id, participants.team, wrestlers.name, championship_name, participants.match_id, events.title, events.date, promotions.name
         ORDER BY rating DESC, participants.match_id, team;
         `,
-        [today.toISOString().slice(0, 10), numOfMatches]
+        [lastMonth.toISOString().slice(0, 10), numOfMatches]
       );
       return parseMatchData(results);
     } catch (err) {

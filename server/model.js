@@ -75,7 +75,7 @@ module.exports = {
         venues.city,
         venues.state,
         venues.country,
-        AVG(ratings.rating) AS avg_rating
+        ROUND(AVG(ratings.rating) :: numeric, 2) AS avg_rating
       FROM events
       JOIN promotions ON events.promotion_id = promotions.id
       JOIN venues ON events.venue_id = venues.id
@@ -99,7 +99,7 @@ module.exports = {
         participants.team AS participants,
         wrestlers.name AS wrestler_name,
         (SELECT rating from ratings WHERE ratings.match_id = matches.id AND ratings.user_id = $2) AS user_rating,
-        CAST(ROUND(AVG(ratings.rating)::numeric, 2) AS FLOAT) AS community_rating,
+        ROUND(AVG(ratings.rating)::numeric, 2) AS community_rating,
         CAST((SELECT COUNT(*) FROM ratings WHERE ratings.match_id = matches.id) AS INTEGER) AS rating_count,
         championships.name AS championship_name
       FROM matches
@@ -148,7 +148,7 @@ module.exports = {
           wrestlers.name AS wrestler_name,
           CONCAT(promotions.name, ' ', events.title) AS event_title,
           (SELECT ratings.rating FROM ratings WHERE ratings.match_id = matches.id AND ratings.user_id = $3) AS user_rating,
-          (SELECT AVG(ratings.rating) FROM ratings WHERE ratings.match_id = matches.id) AS community_rating,
+          ROUND((SELECT AVG(ratings.rating) FROM ratings WHERE ratings.match_id = matches.id)::numeric, 2) AS community_rating,
           CAST((SELECT COUNT(*) FROM ratings WHERE ratings.match_id = matches.id) AS INTEGER) AS rating_count,
           championships.name AS championship_name
         FROM matches
@@ -243,7 +243,7 @@ module.exports = {
               TO_CHAR(events.date, 'YYYY-MM-DD') AS date,
               venues.name AS venue_name,
               promotions.name AS promotion_name,
-              AVG(ratings.rating) AS avg_rating
+              ROUND(AVG(ratings.rating) :: numeric, 2) AS avg_rating
           FROM events
           JOIN venues ON events.venue_id = venues.id
           JOIN promotions ON events.promotion_id = promotions.id
@@ -270,7 +270,7 @@ module.exports = {
           TO_CHAR(events.date, 'YYYY-MM-DD') AS date,
           venues.name AS venue_name,
           promotions.name AS promotion_name,
-          AVG(ratings.rating) AS avg_rating
+          ROUND(AVG(ratings.rating) :: numeric, 2) AS avg_rating
             FROM events
             JOIN venues ON events.venue_id = venues.id
             JOIN promotions ON events.promotion_id = promotions.id
@@ -390,7 +390,7 @@ module.exports = {
         wrestlers.name AS wrestler_name,
         AVG(ratings.rating) AS average_rating,
         CAST((SELECT COUNT(*) FROM ratings WHERE ratings.match_id = matches.id) AS INTEGER) AS rating_count,
-        (SELECT AVG(ratings.rating) FROM ratings WHERE ratings.match_id = matches.id) AS community_rating,
+        ROUND((SELECT AVG(ratings.rating) FROM ratings WHERE ratings.match_id = matches.id)::numeric, 2) AS community_rating,
         (SELECT ratings.rating FROM ratings WHERE ratings.match_id = matches.id AND ratings.user_id = $1) AS user_rating,
         championships.name AS championship_name,
         promotions.name AS promotion_name
@@ -426,7 +426,7 @@ module.exports = {
           ratings.date AS rating_date,
           ratings.rating AS user_rating,
           CAST((SELECT COUNT(*) FROM ratings WHERE ratings.match_id = matches.id) AS INTEGER) AS rating_count,
-          CAST((SELECT AVG(ratings.rating) FROM ratings WHERE ratings.match_id = matches.id) AS FLOAT) AS community_rating
+          ROUND((SELECT AVG(ratings.rating) FROM ratings WHERE ratings.match_id = matches.id)::numeric, 2) AS community_rating
       FROM matches
       JOIN participants ON matches.id = participants.match_id
       JOIN wrestlers ON participants.wrestler_id = wrestlers.id

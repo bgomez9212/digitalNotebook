@@ -2,7 +2,7 @@ const model = require("./model.js");
 
 module.exports = {
   getEvent: async (req, res) => {
-    const result = await model.getEvent(req.query.event_id);
+    const result = await model.getEvent(req.query.event_id, req.query.user_id);
     res.send(result[0]).status(200);
   },
   getRecentEvents: async (req, res) => {
@@ -11,7 +11,10 @@ module.exports = {
   },
   getTopRatedMatches: async (req, res) => {
     try {
-      const result = await model.getTopRatedMatches(req.query.numOfMatches);
+      const result = await model.getTopRatedMatches(
+        req.query.numOfMatches,
+        req.query.user_id
+      );
       res.send(result).status(200);
     } catch (err) {
       res.sendStatus(404);
@@ -47,7 +50,8 @@ module.exports = {
     try {
       const result = await model.getSearchResults(
         req.query.search_param,
-        req.query.search_text
+        req.query.search_text,
+        req.query.user_id
       );
       res.send(result).status(200);
     } catch (err) {

@@ -2,10 +2,7 @@ import { router } from "expo-router";
 import { TouchableOpacity, View, Text } from "react-native";
 import tw from "../tailwind";
 import StarView from "./StarView";
-import { useQuery } from "@tanstack/react-query";
 import { Match } from "../types/types";
-import { getAuth } from "firebase/auth";
-import { getUserRating } from "../api/users";
 export default function MatchRow({
   match,
   display,
@@ -15,13 +12,6 @@ export default function MatchRow({
   display: "Home" | "Search" | "Event";
   hideBottomBorder: boolean;
 }) {
-  const auth = getAuth();
-  const { uid } = auth.currentUser;
-  const { data: ratingData } = useQuery({
-    queryKey: ["ratingData", match.match_id],
-    queryFn: () => getUserRating(uid, match.match_id),
-  });
-
   if (display === "Home") {
     return (
       <TouchableOpacity
@@ -30,10 +20,7 @@ export default function MatchRow({
         onPress={() =>
           router.navigate({
             pathname: "../../RatingModal",
-            params: {
-              match_id: match.match_id,
-              eventName: match.event_title,
-            },
+            params: match,
           })
         }
       >
@@ -55,16 +42,13 @@ export default function MatchRow({
             <Text style={tw`text-white text-lg`}>{match.participants}</Text>
           </View>
           <View
-            style={tw`flex flex-row ${ratingData?.userRating ? "justify-between" : "justify-end"}`}
+            style={tw`flex flex-row ${match.user_rating ? "justify-between" : "justify-end"}`}
           >
-            <StarView
-              display={"User"}
-              rating={ratingData?.userRating?.rating}
-            />
+            <StarView display={"User"} rating={match.user_rating} />
             <StarView
               display="Home"
-              rating={ratingData?.communityRating.rating}
-              rating_count={ratingData?.communityRating.rating_count}
+              rating={match.community_rating}
+              rating_count={match.rating_count}
             />
           </View>
         </View>
@@ -80,10 +64,7 @@ export default function MatchRow({
         onPress={() =>
           router.navigate({
             pathname: "../../RatingModal",
-            params: {
-              match_id: match.match_id,
-              eventName: match.event_title,
-            },
+            params: match,
           })
         }
       >
@@ -109,16 +90,13 @@ export default function MatchRow({
             <Text style={tw`text-white text-lg`}>{match.participants}</Text>
           </View>
           <View
-            style={tw`flex flex-row ${ratingData?.userRating ? "justify-between" : "justify-end"}`}
+            style={tw`flex flex-row ${match.user_rating ? "justify-between" : "justify-end"}`}
           >
-            <StarView
-              display={"User"}
-              rating={ratingData?.userRating?.rating}
-            />
+            <StarView display={"User"} rating={match.user_rating} />
             <StarView
               display="Total"
-              rating={ratingData?.communityRating.rating}
-              rating_count={ratingData?.communityRating.rating_count}
+              rating={match.community_rating}
+              rating_count={match.rating_count}
             />
           </View>
         </View>
@@ -134,10 +112,7 @@ export default function MatchRow({
         onPress={() =>
           router.navigate({
             pathname: "../../RatingModal",
-            params: {
-              match_id: match.match_id,
-              eventName: match.event_title,
-            },
+            params: match,
           })
         }
       >
@@ -153,16 +128,13 @@ export default function MatchRow({
             <Text style={tw`text-white text-lg`}>{match.participants}</Text>
           </View>
           <View
-            style={tw`flex flex-row ${ratingData?.userRating ? "justify-between" : "justify-end"}`}
+            style={tw`flex flex-row ${match.user_rating ? "justify-between" : "justify-end"}`}
           >
-            <StarView
-              display={"User"}
-              rating={ratingData?.userRating?.rating}
-            />
+            <StarView display={"User"} rating={match.user_rating} />
             <StarView
               display="Total"
-              rating={ratingData?.communityRating.rating}
-              rating_count={ratingData?.communityRating.rating_count}
+              rating={match.community_rating}
+              rating_count={match.rating_count}
             />
           </View>
         </View>

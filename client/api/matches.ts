@@ -10,11 +10,12 @@ export async function getMatchInfo(matchId) {
     .then((res) => res.data);
 }
 
-export async function getTopMatches(numOfMatches) {
+export async function getTopMatches(numOfMatches, uid) {
   return axios
     .get(`${process.env.API_TOP_RATED}`, {
       params: {
         numOfMatches: numOfMatches,
+        user_id: uid,
       },
     })
     .then((res) => res.data);

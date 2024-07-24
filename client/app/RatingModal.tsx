@@ -8,40 +8,31 @@ import {
 } from "react-native";
 import { Picker } from "@react-native-picker/picker";
 import { router, useLocalSearchParams } from "expo-router";
-import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 import tw from "../tailwind";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { getAuth } from "firebase/auth";
 import StarView from "../components/StarView";
-import { getMatchInfo, addRating, deleteRating } from "../api/matches";
-import { getUserRating } from "../api/users";
+import { addRating, deleteRating } from "../api/matches";
 
 export default function RatingModal() {
   const auth = getAuth();
   const { uid } = auth.currentUser;
-  const queryClient = useQueryClient();
-  const [rating, setRating] = useState(2);
-  const { match_id, eventName } = useLocalSearchParams();
-  const [showPicker, setShowPicker] = useState(true);
   const {
-    isFetching: matchInfoPending,
-    error: matchInfoError,
-    data: matchInfo,
-  } = useQuery({
-    queryKey: ["matchInfo", match_id],
-    queryFn: () => getMatchInfo(match_id),
-  });
+    championships,
+    event_title,
+    match_id,
+    participants,
+    promotion,
+    user_rating,
+    community_rating,
+    rating_count,
+  } = useLocalSearchParams();
+  const queryClient = useQueryClient();
+  const [rating, setRating] = useState(Number(user_rating) || 2);
+  const [showPicker, setShowPicker] = useState(!user_rating);
 
   const dropdownFontColor = Platform.OS === "ios" ? "white" : "black";
-
-  const {
-    isFetching: ratingDataPending,
-    error: ratingDataError,
-    data: ratingData,
-  } = useQuery({
-    queryKey: ["ratingData", uid, match_id],
-    queryFn: () => getUserRating(uid, match_id),
-  });
 
   const { mutateAsync: addRatingMutation, isPending: addRatingPending } =
     useMutation({
@@ -50,7 +41,7 @@ export default function RatingModal() {
         queryClient.invalidateQueries({ queryKey: ["ratingData"] });
         queryClient.invalidateQueries({ queryKey: ["userRatings"] });
         queryClient.invalidateQueries({ queryKey: ["event"] });
-        setRating(ratingData?.userRating?.rating || 2);
+        setRating(Number(user_rating) || 2);
         router.back();
       },
     });
@@ -82,58 +73,30 @@ export default function RatingModal() {
     );
   }
 
-  useEffect(() => {
-    if (ratingData?.userRating?.rating) {
-      setShowPicker(false);
-      setRating(ratingData?.userRating?.rating);
-    } else {
-      setShowPicker(true);
-      setRating(2);
-    }
-  }, [ratingData]);
-
   function cancelEdit() {
     setShowPicker(false);
-    if (!ratingData?.userRating) {
-      router.back();
-    }
-    setRating(ratingData?.currentUser?.rating || 2);
-  }
-
-  if (ratingDataPending) {
-    return (
-      <View style={tw`bg-black flex-1 justify-center items-center`}>
-        <ActivityIndicator color="white" />
-      </View>
-    );
-  }
-
-  if (matchInfoError) {
-    return (
-      <View>
-        <Text>Error: {matchInfoError.message}</Text>
-      </View>
-    );
+    router.back();
+    setRating(Number(user_rating) || 2);
   }
 
   return (
     <View style={tw`flex-1 items-center justify-center bg-black`}>
       <View style={tw`w-4/5`}>
-        <Text style={tw`text-gold pb-3`}>{matchInfo?.championships}</Text>
-        <Text style={tw`text-white text-xl pb-3`}>
-          {matchInfo?.participants}
+        <Text style={tw`text-gold pb-3`}>{championships}</Text>
+        <Text style={tw`text-white text-xl pb-3`}>{participants}</Text>
+        <Text style={tw`text-white pb-3`}>
+          From {promotion} {event_title}
         </Text>
-        <Text style={tw`text-white pb-3`}>From {eventName}</Text>
         <View
-          style={tw`flex flex-row ${ratingData?.userRating ? "justify-between" : "justify-end"}`}
+          style={tw`flex flex-row ${user_rating ? "justify-between" : "justify-end"}`}
         >
-          {ratingData && (
-            <StarView display="User" rating={ratingData?.userRating?.rating} />
+          {user_rating && (
+            <StarView display="User" rating={Number(user_rating)} />
           )}
           <StarView
             display="Total"
-            rating={ratingData?.communityRating?.rating}
-            rating_count={ratingData?.communityRating?.rating_count}
+            rating={Number(community_rating)}
+            rating_count={Number(rating_count)}
           />
         </View>
       </View>
@@ -186,7 +149,7 @@ export default function RatingModal() {
               <Text style={tw`text-white text-lg`}>Submit</Text>
             )}
           </Pressable>
-          {ratingData && showPicker && (
+          {showPicker && (
             <Pressable
               onPress={cancelEdit}
               style={tw`bg-lightGrey w-1/3 p-4 items-center justify-center rounded-md mt-5`}

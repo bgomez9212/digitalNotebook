@@ -13,11 +13,14 @@ import { ActivityIndicator } from "react-native-paper";
 import SearchResults from "../../../components/SearchResults";
 import { getSearchResults } from "../../../api/search";
 import StyledTextInput from "../../../components/StyledTextInput";
+import { getAuth } from "firebase/auth";
 export default function Profile() {
   const [userSearch, setUserSearch] = useState({
     searchParam: null,
     searchText: "",
   });
+  const auth = getAuth();
+  const { uid } = auth.currentUser;
 
   function setSearchParam(selectedParam) {
     setUserSearch({ ...userSearch, searchParam: selectedParam });
@@ -33,7 +36,7 @@ export default function Profile() {
     queryKey: ["searchResults"],
     enabled: false,
     queryFn: () =>
-      getSearchResults(userSearch.searchParam, userSearch.searchText),
+      getSearchResults(userSearch.searchParam, userSearch.searchText, uid),
   });
   return (
     <TouchableWithoutFeedback onPress={Keyboard.dismiss}>

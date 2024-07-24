@@ -2,7 +2,7 @@ import {
   View,
   Text,
   ActivityIndicator,
-  Pressable,
+  TouchableOpacity,
   Alert,
   Platform,
 } from "react-native";
@@ -136,7 +136,7 @@ export default function RatingModal() {
               <Text style={tw`text-white`}>Rate this match {rating} star</Text>
             )}
           </View>
-          <Pressable
+          <TouchableOpacity
             disabled={addRatingPending}
             onPress={async () => {
               await addRatingMutation({ matchId: match_id, uid, rating });
@@ -148,30 +148,30 @@ export default function RatingModal() {
             ) : (
               <Text style={tw`text-white text-lg`}>Submit</Text>
             )}
-          </Pressable>
+          </TouchableOpacity>
           {showPicker && (
-            <Pressable
+            <TouchableOpacity
               onPress={cancelEdit}
               style={tw`bg-lightGrey w-1/3 p-4 items-center justify-center rounded-md mt-5`}
             >
               <Text style={tw`text-black text-lg`}>Cancel</Text>
-            </Pressable>
+            </TouchableOpacity>
           )}
         </View>
       ) : (
         <View style={tw`w-4/5 flex-row justify-center mt-30`}>
-          <Pressable
+          <TouchableOpacity
             onPress={() => setShowPicker(true)}
             style={tw`bg-blue w-1/3 p-4 items-center justify-center rounded-md`}
           >
             <Text style={tw`text-white text-lg`}>Edit</Text>
-          </Pressable>
-          <Pressable
+          </TouchableOpacity>
+          <TouchableOpacity
             onPress={displayAlert}
             style={tw`bg-red w-1/3 p-4 items-center justify-center rounded-md ml-10`}
           >
             <Text style={tw`text-white text-lg`}>Delete</Text>
-          </Pressable>
+          </TouchableOpacity>
         </View>
       )}
     </View>

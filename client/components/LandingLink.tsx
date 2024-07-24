@@ -1,10 +1,10 @@
-import { Pressable, Text } from "react-native";
+import { TouchableOpacity, Text } from "react-native";
 import tw from "../tailwind";
 
 export default function LandingLink({ fn, text }) {
   return (
-    <Pressable onPress={fn}>
+    <TouchableOpacity onPress={fn}>
       <Text style={tw`text-white underline text-base`}>{text}</Text>
-    </Pressable>
+    </TouchableOpacity>
   );
 }

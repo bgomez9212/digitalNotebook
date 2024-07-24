@@ -1,7 +1,7 @@
 import {
   Alert,
   Keyboard,
-  Pressable,
+  TouchableOpacity,
   Text,
   TouchableWithoutFeedback,
   View,
@@ -369,12 +369,12 @@ export default function AccountInfo() {
           </AccountDropdown>
         </View>
         <View>
-          <Pressable
+          <TouchableOpacity
             style={tw`h-15 w-30 bg-blue flex justify-center items-center rounded-xl mt-5`}
             onPress={displaySignOutAlert}
           >
             <Text style={tw`text-white text-lg`}>Sign Out</Text>
-          </Pressable>
+          </TouchableOpacity>
         </View>
       </View>
     </TouchableWithoutFeedback>

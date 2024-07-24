@@ -16,7 +16,7 @@ export default function EventRow({
     avg_rating: number;
   };
   hideBorder: boolean;
-  display: "Table" | "Search";
+  display: "Table" | "Search" | "RecentEvents";
 }) {
   const pathname = usePathname();
   function openEvent() {
@@ -29,17 +29,16 @@ export default function EventRow({
     const containPromotions = ["WWE", "AEW"];
     return containPromotions.includes(promotionName) ? "contain" : "cover";
   }
-  return (
-    <TouchableOpacity
-      onPress={openEvent}
-      style={tw`${
-        display === "Table"
-          ? `w-full flex flex-row py-2 border-darkGrey border-b-2`
-          : `w-full flex flex-row py-2 border-b-2 border-grey`
-      }`}
-    >
-      <View style={tw`py-2 flex flex-row w-full items-center justify-between`}>
-        {display === "Table" || pathname === "/Home/RecentEvents" ? (
+
+  if (display === "Table") {
+    return (
+      <TouchableOpacity
+        onPress={openEvent}
+        style={tw`w-full flex flex-row py-2 border-darkGrey border-b-2`}
+      >
+        <View
+          style={tw`py-2 flex flex-row w-full items-center justify-between`}
+        >
           <View style={tw`w-1/4 h-11`}>
             <Image
               style={{
@@ -51,7 +50,28 @@ export default function EventRow({
               source={photoLibrary[event.promotion_name]}
             />
           </View>
-        ) : (
+          <View style={tw`w-1/3 justify-center`}>
+            <Text style={tw`text-center text-white font-bold`}>
+              {event.title}
+            </Text>
+          </View>
+          <View style={tw`w-1/4 justify-center items-end`}>
+            <Text style={tw`text-white font-bold`}>{event.date}</Text>
+          </View>
+        </View>
+      </TouchableOpacity>
+    );
+  }
+
+  if (display === "Search") {
+    return (
+      <TouchableOpacity
+        onPress={openEvent}
+        style={tw`w-full flex flex-row py-2 border-b-2 border-grey`}
+      >
+        <View
+          style={tw`py-2 flex flex-row w-full items-center justify-between`}
+        >
           <View style={tw`w-1/4`}>
             <Text
               style={tw`text-center text-white font-bold ${event.avg_rating >= 3.5 ? "text-green" : event.avg_rating >= 2 ? "text-yellow" : event.avg_rating > 0 ? "text-red" : "text-white"}`}
@@ -59,16 +79,49 @@ export default function EventRow({
               {event.avg_rating || "-"}
             </Text>
           </View>
-        )}
-        <View style={tw`w-1/3 justify-center`}>
-          <Text style={tw`text-center text-white font-bold`}>
-            {event.title}
-          </Text>
+          <View style={tw`w-1/3 justify-center`}>
+            <Text style={tw`text-center text-white font-bold`}>
+              {event.title}
+            </Text>
+          </View>
+          <View style={tw`w-1/4 justify-center items-end`}>
+            <Text style={tw`text-white font-bold`}>{event.date}</Text>
+          </View>
         </View>
-        <View style={tw`w-1/4 justify-center items-end`}>
-          <Text style={tw`text-white font-bold`}>{event.date}</Text>
+      </TouchableOpacity>
+    );
+  }
+
+  if (display === "RecentEvents") {
+    return (
+      <TouchableOpacity
+        onPress={openEvent}
+        style={tw`w-full flex flex-row py-2 border-grey border-b-2`}
+      >
+        <View
+          style={tw`py-2 flex flex-row w-full items-center justify-between`}
+        >
+          <View style={tw`w-1/4 h-11`}>
+            <Image
+              style={{
+                flex: 1,
+                width: undefined,
+                height: undefined,
+                resizeMode: `${formatImg(event.promotion_name)}`,
+              }}
+              source={photoLibrary[event.promotion_name]}
+            />
+          </View>
+          <View style={tw`w-1/3 justify-center`}>
+            <Text style={tw`text-center text-white font-bold`}>
+              {event.title}
+            </Text>
+          </View>
+          <View style={tw`w-1/4 justify-center items-end`}>
+            <Text style={tw`text-white font-bold`}>{event.date}</Text>
+          </View>
         </View>
-      </View>
-    </TouchableOpacity>
-  );
+      </TouchableOpacity>
+    );
+  }
 }

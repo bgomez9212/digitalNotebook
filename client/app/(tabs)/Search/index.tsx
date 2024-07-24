@@ -1,6 +1,6 @@
 import {
   Keyboard,
-  Pressable,
+  TouchableOpacity,
   Text,
   TouchableWithoutFeedback,
   View,
@@ -54,7 +54,7 @@ export default function Profile() {
             setSearchParam={setSearchParam}
             data={dropdownData}
           />
-          <Pressable
+          <TouchableOpacity
             style={tw`w-full mt-2 bg-blue h-10 justify-center items-center rounded-md ${!userSearch.searchParam || !userSearch.searchText ? "opacity-50" : ""}`}
             onPress={() => {
               Keyboard.dismiss();
@@ -63,7 +63,7 @@ export default function Profile() {
             disabled={!userSearch.searchParam || !userSearch.searchText}
           >
             <Text style={tw`text-lg font-bold text-white`}>Submit</Text>
-          </Pressable>
+          </TouchableOpacity>
         </View>
         {isFetching ? (
           <ActivityIndicator color="#477CB9" />

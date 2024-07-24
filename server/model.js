@@ -116,7 +116,6 @@ module.exports = {
       [eventId, user_id]
     );
     eventInfo[0].matches = parseMatchData(matches);
-    console.log(eventInfo[0].matches);
     return eventInfo;
   },
   getRecentEvents: async (numOfResults) => {
@@ -389,7 +388,9 @@ module.exports = {
         participants.team AS participants,
         wrestlers.name AS wrestler_name,
         AVG(ratings.rating) AS average_rating,
-        (SELECT COUNT(*) FROM ratings WHERE ratings.match_id = matches.id) AS rating_count,
+        CAST((SELECT COUNT(*) FROM ratings WHERE ratings.match_id = matches.id) AS INTEGER) AS rating_count,
+        (SELECT AVG(ratings.rating) FROM ratings WHERE ratings.match_id = matches.id) AS community_rating,
+        (SELECT ratings.rating FROM ratings WHERE ratings.match_id = matches.id AND ratings.user_id = $1) AS user_rating,
         championships.name AS championship_name,
         promotions.name AS promotion_name
       FROM matches
@@ -408,6 +409,7 @@ module.exports = {
         [user_id]
       );
       const results = parseMatchData(userRatings);
+      console.log(results);
       return results;
     }
     // this query only gets the rows of the current users ratings
@@ -439,7 +441,6 @@ module.exports = {
       [user_id]
     );
     const results = parseMatchData(userRatings);
-    console.log(results);
     return results;
   },
   getPromotions: async () => {

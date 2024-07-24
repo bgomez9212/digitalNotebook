@@ -108,7 +108,7 @@ export default function MatchRow({
             <StarView
               display="Total"
               rating={match.community_rating}
-              rating_count={match.community_rating}
+              rating_count={match.rating_count}
             />
           </View>
         </View>

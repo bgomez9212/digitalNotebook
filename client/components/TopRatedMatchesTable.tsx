@@ -5,15 +5,18 @@ import { useQuery } from "@tanstack/react-query";
 import { router } from "expo-router";
 import MatchRow from "./MatchRow";
 import { getTopMatches } from "../api/matches";
+import { getAuth } from "firebase/auth";
 
 export default function TopRatedMatchesTable() {
+  const auth = getAuth();
+  const { uid } = auth.currentUser;
   const {
     isFetching,
     error,
     data: matches,
   } = useQuery({
     queryKey: ["topMatches"],
-    queryFn: () => getTopMatches(5),
+    queryFn: () => getTopMatches(5, uid),
   });
 
   if (isFetching || error) {
@@ -46,7 +49,7 @@ export default function TopRatedMatchesTable() {
           Top Matches of the Month
         </Text>
       </View>
-      {matches.map((match, i) => (
+      {matches.map((match) => (
         <MatchRow
           key={match.match_id}
           match={match}

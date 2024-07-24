@@ -32,17 +32,6 @@ export default function RatingModal() {
   const [rating, setRating] = useState(Number(user_rating) || 2);
   const [showPicker, setShowPicker] = useState(!user_rating);
 
-  console.log(
-    championships,
-    event_title,
-    match_id,
-    participants,
-    promotion,
-    user_rating,
-    community_rating,
-    rating_count
-  );
-
   const dropdownFontColor = Platform.OS === "ios" ? "white" : "black";
 
   const { mutateAsync: addRatingMutation, isPending: addRatingPending } =

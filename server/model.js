@@ -134,7 +134,7 @@ module.exports = {
     );
     return results;
   },
-  getTopRatedMatches: async (numOfMatches) => {
+  getTopRatedMatches: async (numOfMatches, user_id) => {
     let today = new Date();
     let lastMonth = new Date(today.setDate(today.getDate() - 30));
     try {
@@ -147,8 +147,9 @@ module.exports = {
           participants.team AS participants,
           wrestlers.name AS wrestler_name,
           CONCAT(promotions.name, ' ', events.title) AS event_title,
-          ROUND(AVG(ratings.rating)::numeric, 2) AS rating,
-          (SELECT COUNT(*) FROM ratings WHERE ratings.match_id = matches.id) AS rating_count,
+          (SELECT ratings.rating FROM ratings WHERE ratings.match_id = matches.id AND ratings.user_id = $3) AS user_rating,
+          (SELECT AVG(ratings.rating) FROM ratings WHERE ratings.match_id = matches.id) AS community_rating,
+          CAST((SELECT COUNT(*) FROM ratings WHERE ratings.match_id = matches.id) AS INTEGER) AS rating_count,
           championships.name AS championship_name
         FROM matches
         JOIN participants ON matches.id = participants.match_id
@@ -169,11 +170,12 @@ module.exports = {
             ORDER BY (AVG(ratings.rating)) DESC, events.date DESC
             LIMIT $2
           )
-        GROUP BY matches.id, participants.team, wrestlers.name, championship_name, participants.match_id, events.title, events.date, promotions.name
+        GROUP BY matches.id, participants.team, wrestlers.name, championship_name, participants.match_id, events.title, events.date, promotions.name, ratings.rating
         ORDER BY rating DESC, participants.match_id, team;
         `,
-        [lastMonth.toISOString().slice(0, 10), numOfMatches]
+        [lastMonth.toISOString().slice(0, 10), numOfMatches, user_id]
       );
+      console.log(results);
       return parseMatchData(results);
     } catch (err) {
       console.log(err);

@@ -175,7 +175,6 @@ module.exports = {
         `,
         [lastMonth.toISOString().slice(0, 10), numOfMatches, user_id]
       );
-      console.log(results);
       return parseMatchData(results);
     } catch (err) {
       console.log(err);
@@ -411,7 +410,6 @@ module.exports = {
         [user_id]
       );
       const results = parseMatchData(userRatings);
-      console.log(results);
       return results;
     }
     // this query only gets the rows of the current users ratings

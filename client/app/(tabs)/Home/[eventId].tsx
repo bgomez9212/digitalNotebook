@@ -12,7 +12,7 @@ export default function EventPage() {
   const auth = getAuth();
   const { uid } = auth.currentUser;
   const {
-    isFetching,
+    isLoading,
     error,
     data: event,
   } = useQuery({
@@ -20,7 +20,7 @@ export default function EventPage() {
     queryFn: () => getEvent(eventId, uid),
   });
 
-  if (isFetching) {
+  if (isLoading) {
     return (
       <View style={tw`flex-1 justify-center bg-darkGrey`}>
         <ActivityIndicator color="#477CB9" />

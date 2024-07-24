@@ -2,10 +2,7 @@ import { router } from "expo-router";
 import { TouchableOpacity, View, Text } from "react-native";
 import tw from "../tailwind";
 import StarView from "./StarView";
-import { useQuery } from "@tanstack/react-query";
 import { Match } from "../types/types";
-import { getAuth } from "firebase/auth";
-import { getUserRating } from "../api/users";
 export default function MatchRow({
   match,
   display,
@@ -15,12 +12,6 @@ export default function MatchRow({
   display: "Home" | "Search" | "Event";
   hideBottomBorder: boolean;
 }) {
-  const auth = getAuth();
-  const { uid } = auth.currentUser;
-  const { data: ratingData } = useQuery({
-    queryKey: ["ratingData", match.match_id],
-    queryFn: () => getUserRating(uid, match.match_id),
-  });
   if (display === "Home") {
     return (
       <TouchableOpacity

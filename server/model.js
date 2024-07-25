@@ -519,4 +519,18 @@ module.exports = {
       throw new Error(err);
     }
   },
+  postEvent: async (event) => {
+    try {
+      // statement to prevent injection if event exists
+      const { rows: preventInjection } = await pool.query(
+        "SELECT id FROM events WHERE title = $1",
+        [event.title]
+      );
+      if (preventInjection.length) {
+        throw new Error("event already exists");
+      }
+    } catch (err) {
+      throw new Error(err);
+    }
+  },
 };

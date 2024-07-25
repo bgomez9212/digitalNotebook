@@ -123,4 +123,12 @@ module.exports = {
       res.send(err).status(404);
     }
   },
+  postEvent: async (req, res) => {
+    try {
+      const result = await model.postEvent(req.body.event);
+      res.status(201).send(result);
+    } catch (err) {
+      res.status(404).send({ error: err.message });
+    }
+  },
 };

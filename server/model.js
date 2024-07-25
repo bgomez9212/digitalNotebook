@@ -523,72 +523,90 @@ module.exports = {
     try {
       const [city, state, country] = event.location.split(",");
       // statement to prevent injection if event exists
-      const { rows: preventInjection } = await pool.query(
-        "SELECT id FROM events WHERE title = $1 AND date = $2",
-        [event.title, event.date]
-      );
-      if (preventInjection.length) {
-        throw new Error("event already exists");
+      // const { rows: preventInjection } = await pool.query(
+      //   "SELECT id FROM events WHERE title = $1 AND date = $2",
+      //   [event.title, event.date]
+      // );
+      // if (preventInjection.length) {
+      //   throw new Error("event already exists");
+      // }
+      // const { rows: venueId } = await pool.query(
+      //   `
+      //   WITH existing_id AS (
+      //     SELECT id
+      //     FROM venues
+      //     WHERE name = $1
+      //   ),
+      //   ins AS (
+      //     INSERT INTO venues(name, city, state, country)
+      //     SELECT $1, $2, $3, $4
+      //     WHERE NOT EXISTS (SELECT 1 FROM existing_id)
+      //     RETURNING id
+      //   )
+      //     SELECT id FROM ins
+      //     UNION ALL
+      //     SELECT id FROM existing_id;
+      //   `,
+      //   [event.venue, city, state, country]
+      // );
+
+      // const { rows: promotionId } = await pool.query(
+      //   `
+      //     WITH existing_id AS (
+      //       SELECT id
+      //       FROM promotions
+      //       WHERE name = $1
+      //     ),
+      //     ins AS (
+      //       INSERT INTO promotions(name)
+      //       SELECT $1
+      //       WHERE NOT EXISTS (SELECT 1 FROM existing_id)
+      //       RETURNING id
+      //     )
+      //     SELECT id FROM ins
+      //     UNION ALL
+      //     SELECT id FROM existing_id;
+      //   `,
+      //   [event.promotion]
+      // );
+
+      // const { rows: eventId } = await pool.query(
+      //   `
+      //   WITH existing_id AS (
+      //     SELECT id
+      //     FROM events
+      //     WHERE title = $1
+      //   ),
+      //   ins AS (
+      //     INSERT INTO events(title, date, venue_id, promotion_id)
+      //     SELECT $1, $2, $3, $4
+      //     WHERE NOT EXISTS (SELECT 1 FROM existing_id)
+      //     RETURNING id
+      //   )
+      //   SELECT id FROM ins
+      //   UNION ALL
+      //   SELECT id FROM existing_id
+      //   `,
+      //   [event.title, event.date, venueId[0].id, promotionId[0].id]
+      // );
+      let wrestlersArr = [];
+      for (const match of event.matches) {
+        for (const team of match.participants) {
+          wrestlersArr.push(team);
+        }
       }
-      const { rows: venueId } = await pool.query(
-        `
-        WITH existing_id AS (
-          SELECT id
-          FROM venues
-          WHERE name = $1
-        ),
-        ins AS (
-          INSERT INTO venues(name, city, state, country)
-          SELECT $1, $2, $3, $4
-          WHERE NOT EXISTS (SELECT 1 FROM existing_id)
-          RETURNING id
-        )
-          SELECT id FROM ins
-          UNION ALL
-          SELECT id FROM existing_id;
-        `,
-        [event.venue, city, state, country]
-      );
-
-      const { rows: promotionId } = await pool.query(
-        `
-          WITH existing_id AS (
-            SELECT id
-            FROM promotions
-            WHERE name = $1
-          ),
-          ins AS (
-            INSERT INTO promotions(name)
-            SELECT $1
-            WHERE NOT EXISTS (SELECT 1 FROM existing_id)
-            RETURNING id
-          )
-          SELECT id FROM ins
-          UNION ALL
-          SELECT id FROM existing_id;
-        `,
-        [event.promotion]
-      );
-
-      const { rows: eventId } = await pool.query(
-        `
-        WITH existing_id AS (
-          SELECT id
-          FROM events
-          WHERE title = $1
-        ),
-        ins AS (
-          INSERT INTO events(title, date, venue_id, promotion_id)
-          SELECT $1, $2, $3, $4
-          WHERE NOT EXISTS (SELECT 1 FROM existing_id)
-          RETURNING id
-        )
-        SELECT id FROM ins
-        UNION ALL
-        SELECT id FROM existing_id
-        `,
-        [event.title, event.date, venueId[0].id, promotionId[0].id]
-      );
+      wrestlersArr = wrestlersArr.flat();
+      for (const wrestler of wrestlersArr) {
+        await pool.query(
+          `
+          INSERT INTO wrestlers(name)
+          SELECT $1
+          WHERE NOT EXISTS (
+          SELECT id FROM wrestlers WHERE name = $2
+          )`,
+          [wrestler, wrestler]
+        );
+      }
     } catch (err) {
       throw new Error(err);
     }

@@ -589,23 +589,48 @@ module.exports = {
       //   `,
       //   [event.title, event.date, venueId[0].id, promotionId[0].id]
       // );
-      let wrestlersArr = [];
+
       for (const match of event.matches) {
-        for (const team of match.participants) {
-          wrestlersArr.push(team);
-        }
-      }
-      wrestlersArr = wrestlersArr.flat();
-      for (const wrestler of wrestlersArr) {
-        await pool.query(
-          `
-          INSERT INTO wrestlers(name)
-          SELECT $1
-          WHERE NOT EXISTS (
-          SELECT id FROM wrestlers WHERE name = $2
-          )`,
-          [wrestler, wrestler]
+        // create matches based off of match num and event id, returning match id
+        const { rows: matchId } = await pool.query(
+          "INSERT INTO matches(match_number, event_id) VALUES ($1, $2)",
+          [match.match_num, eventId[0].id]
         );
+
+        // create or get championship id
+        const { rows: championshipId } = await pool.query(
+          `
+          WITH existing_id AS (
+            SELECT id
+            FROM championships
+            WHERE name = $1
+          ),
+          ins AS (
+          INSERT INTO championships(name)
+          SELECT $1
+          WHERE NOT EXISTS (SELECT 1 FROM existing_id)
+          )
+          SELECT id FROM ins
+          UNION ALL
+          SELECT id FROM existing_id
+          `,
+          [match.championship]
+        );
+        // fill matches_championships based off match id and championship id
+        await pool.query(
+          `INSERT INTO matches_championships(championship_id, match_id) VALUES($1, $2)`,
+          [championshipId[0].id, matchId[0].id]
+        );
+        for (const team of match.participants) {
+          // if team has more than one participant
+          // another loop to get each wrestler
+          // insert into wrestlers / get wrestler id
+          // insert into matches_participants (match_id, wrestler_id)
+          // else (is just one person)
+          // insert into wrestlers / get wrestler id
+          // insert into matches_participants (match_id, wrestler_id)
+          //
+        }
       }
     } catch (err) {
       throw new Error(err);

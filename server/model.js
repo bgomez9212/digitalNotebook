@@ -530,14 +530,25 @@ module.exports = {
       if (preventInjection.length) {
         throw new Error("event already exists");
       }
-      // const { rows: venueId } = await pool.query(
-      //   `
-      //   INSERT INTO venues (name, city, state, country)
-      //   VALUES ($1, $2, $3, $4)
-      //   ON CONFLICT (name) DO UPDATE SET name = EXCLUDED.name
-      //   RETURNING id`,
-      //   [event.venue, city, state, country]
-      // );
+      const { rows: venueId } = await pool.query(
+        `
+        WITH existing_id AS (
+          SELECT id
+          FROM venues
+          WHERE name = $1
+        ),
+        ins AS (
+          INSERT INTO venues(name, city, state, country)
+          SELECT $1, $2, $3, $4
+          WHERE NOT EXISTS (SELECT 1 FROM existing_id)
+          RETURNING id
+        )
+          SELECT id FROM ins
+          UNION ALL
+          SELECT id FROM existing_id;
+        `,
+        [event.venue, city, state, country]
+      );
 
       const { rows: promotionId } = await pool.query(
         `
@@ -545,8 +556,8 @@ module.exports = {
             SELECT id
             FROM promotions
             WHERE name = $1
-          )
-          , ins AS (
+          ),
+          ins AS (
             INSERT INTO promotions(name)
             SELECT $1
             WHERE NOT EXISTS (SELECT 1 FROM existing_id)

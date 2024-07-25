@@ -524,8 +524,8 @@ module.exports = {
       const [city, state, country] = event.location.split(",");
       // statement to prevent injection if event exists
       const { rows: preventInjection } = await pool.query(
-        "SELECT id FROM events WHERE title = $1",
-        [event.title]
+        "SELECT id FROM events WHERE title = $1 AND date = $2",
+        [event.title, event.date]
       );
       if (preventInjection.length) {
         throw new Error("event already exists");
@@ -570,7 +570,25 @@ module.exports = {
         [event.promotion]
       );
 
-      console.log(promotionId);
+      const { rows: eventId } = await pool.query(
+        `
+        WITH existing_id AS (
+          SELECT id
+          FROM events
+          WHERE title = $1
+        ),
+        ins AS (
+          INSERT INTO events(title, date, venue_id, promotion_id)
+          SELECT $1, $2, $3, $4
+          WHERE NOT EXISTS (SELECT 1 FROM existing_id)
+          RETURNING id
+        )
+        SELECT id FROM ins
+        UNION ALL
+        SELECT id FROM existing_id
+        `,
+        [event.title, event.date, venueId[0].id, promotionId[0].id]
+      );
     } catch (err) {
       throw new Error(err);
     }

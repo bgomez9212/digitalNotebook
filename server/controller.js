@@ -2,12 +2,23 @@ const model = require("./model.js");
 
 module.exports = {
   getEvent: async (req, res) => {
-    const result = await model.getEvent(req.query.event_id, req.query.user_id);
-    res.send(result[0]).status(200);
+    try {
+      const result = await model.getEvent(
+        req.query.event_id,
+        req.query.user_id
+      );
+      res.status(200).send(result[0]);
+    } catch (err) {
+      res.status(400).send(err);
+    }
   },
   getRecentEvents: async (req, res) => {
-    const result = await model.getRecentEvents(req.query.numOfResults);
-    res.send(result).status(200);
+    try {
+      const result = await model.getRecentEvents(req.query.numOfResults);
+      res.status(200).send(result);
+    } catch (err) {
+      res.status(400).send(err);
+    }
   },
   getTopRatedMatches: async (req, res) => {
     try {
@@ -15,36 +26,52 @@ module.exports = {
         req.query.numOfMatches,
         req.query.user_id
       );
-      res.send(result).status(200);
+      res.status(200).send(result);
     } catch (err) {
-      res.sendStatus(404);
+      res.status(404).send(err);
     }
   },
   getMatchInfo: async (req, res) => {
-    const result = await model.getMatchInfo(req.query.match_id);
-    res.send(result[0]).status(200);
+    try {
+      const result = await model.getMatchInfo(req.query.match_id);
+      res.status(200).send(result[0]);
+    } catch (err) {
+      res.status(400).send(err);
+    }
   },
   postRating: async (req, res) => {
-    const result = await model.postRating(
-      req.body.match_id,
-      req.body.user_id,
-      req.body.rating
-    );
-    res.sendStatus(201);
+    try {
+      const result = await model.postRating(
+        req.body.match_id,
+        req.body.user_id,
+        req.body.rating
+      );
+      res.sendStatus(201);
+    } catch (err) {
+      res.status(400).send(err);
+    }
   },
   getUserRating: async (req, res) => {
-    const result = await model.getUserRating(
-      req.query.user_id,
-      req.query.match_id
-    );
-    res.send(result).status(200);
+    try {
+      const result = await model.getUserRating(
+        req.query.user_id,
+        req.query.match_id
+      );
+      res.status(200).send(result);
+    } catch (err) {
+      res.status(400).send(err);
+    }
   },
   deleteUserRating: async (req, res) => {
-    const result = await model.deleteUserRating(
-      req.query.user_id,
-      req.query.match_id
-    );
-    res.sendStatus(204);
+    try {
+      const result = await model.deleteUserRating(
+        req.query.user_id,
+        req.query.match_id
+      );
+      res.sendStatus(204);
+    } catch (err) {
+      res.status(400).send(err);
+    }
   },
   getSearchResults: async (req, res) => {
     try {
@@ -128,7 +155,7 @@ module.exports = {
       const result = await model.postEvent(req.body.event);
       res.status(201).send(result);
     } catch (err) {
-      res.status(404).send({ error: err.message });
+      res.status(404).send(err.message);
     }
   },
 };

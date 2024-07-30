@@ -521,11 +521,10 @@ module.exports = {
   },
   postEvent: async (event) => {
     try {
-      const [city, state, country] = event.location.split(",");
       // statement to prevent injection if event exists
       const { rows: preventInjection } = await pool.query(
         "SELECT id FROM events WHERE title = $1 AND date = $2",
-        [event.title, event.date]
+        [event.eventTitle, event.date]
       );
       if (preventInjection.length) {
         throw new Error("event already exists");
@@ -533,120 +532,124 @@ module.exports = {
       // insert/get venue id
       const { rows: venueId } = await pool.query(
         `
-        WITH existing_id AS (
-          SELECT id
-          FROM venues
-          WHERE name = $1
-        ),
-        ins AS (
-          INSERT INTO venues(name, city, state, country)
-          SELECT $1, $2, $3, $4
-          WHERE NOT EXISTS (SELECT 1 FROM existing_id)
-          RETURNING id
-        )
-          SELECT id FROM ins
-          UNION ALL
-          SELECT id FROM existing_id;
-        `,
-        [event.venue, city, state, country]
+          WITH existing_id AS (
+            SELECT id
+            FROM venues
+            WHERE name = $1
+          ),
+          ins AS (
+            INSERT INTO venues(name, city, state, country)
+            SELECT $1, $2, $3, $4
+            WHERE NOT EXISTS (SELECT 1 FROM existing_id)
+            RETURNING id
+          )
+            SELECT id FROM ins
+            UNION ALL
+            SELECT id FROM existing_id;
+          `,
+        [event.venueName, event.city, event.state, event.country]
       );
       // insert/get promotion id
       const { rows: promotionId } = await pool.query(
         `
+            WITH existing_id AS (
+              SELECT id
+              FROM promotions
+              WHERE name = $1
+            ),
+            ins AS (
+              INSERT INTO promotions(name)
+              SELECT $1
+              WHERE NOT EXISTS (SELECT 1 FROM existing_id)
+              RETURNING id
+            )
+            SELECT id FROM ins
+            UNION ALL
+            SELECT id FROM existing_id;
+          `,
+        [event.promotion]
+      );
+      // insert/get event id
+      const { rows: eventId } = await pool.query(
+        `
           WITH existing_id AS (
             SELECT id
-            FROM promotions
-            WHERE name = $1
+            FROM events
+            WHERE title = $1
           ),
           ins AS (
-            INSERT INTO promotions(name)
-            SELECT $1
+            INSERT INTO events(title, date, venue_id, promotion_id)
+            SELECT $1, $2, $3, $4
             WHERE NOT EXISTS (SELECT 1 FROM existing_id)
             RETURNING id
           )
           SELECT id FROM ins
           UNION ALL
-          SELECT id FROM existing_id;
-        `,
-        [event.promotion]
+          SELECT id FROM existing_id
+          `,
+        [event.eventTitle, event.date, venueId[0].id, promotionId[0].id]
       );
-      // // insert/get event id
-      const { rows: eventId } = await pool.query(
-        `
-        WITH existing_id AS (
-          SELECT id
-          FROM events
-          WHERE title = $1
-        ),
-        ins AS (
-          INSERT INTO events(title, date, venue_id, promotion_id)
-          SELECT $1, $2, $3, $4
-          WHERE NOT EXISTS (SELECT 1 FROM existing_id)
-          RETURNING id
-        )
-        SELECT id FROM ins
-        UNION ALL
-        SELECT id FROM existing_id
-        `,
-        [event.title, event.date, venueId[0].id, promotionId[0].id]
-      );
-
       for (const match of event.matches) {
         // create matches based off of match num and event id, returning match id
         const { rows: matchId } = await pool.query(
           "INSERT INTO matches(match_number, event_id) VALUES ($1, $2) returning id",
           [match.match_num, eventId[0].id]
         );
-
-        for (let championship of match.championship) {
-          // create or get championship id
-          const { rows: championshipId } = await pool.query(
-            `
-                WITH existing_id AS (
-                  SELECT id
-                  FROM championships
-                  WHERE name = $1
-                ),
-                ins AS (
-                INSERT INTO championships(name)
-                SELECT $1
-                WHERE NOT EXISTS (SELECT 1 FROM existing_id)
-                RETURNING id
-                )
-                SELECT id FROM ins
-                UNION ALL
-                SELECT id FROM existing_id
-                `,
-            [championship]
-          );
-          // fill matches_championships based off match id and championship id
-          await pool.query(
-            `INSERT INTO matches_championships(championship_id, match_id) VALUES($1, $2)`,
-            [championshipId[0].id, matchId[0].id]
-          );
-        }
-        let index = 0;
-        for (const team of match.participants) {
-          // another loop to get each wrestler
-          for (participant of team) {
-            // insert into wrestlers / get wrestler id
-            const { rows: wrestlerId } = await pool.query(
+        // create or get championship id
+        if (match.championship) {
+          let championships = match.championship.split(", ");
+          for (let championship of championships) {
+            const { rows: championshipId } = await pool.query(
               `
                     WITH existing_id AS (
                       SELECT id
-                      FROM wrestlers
+                      FROM championships
                       WHERE name = $1
                     ),
                     ins AS (
-                      INSERT INTO wrestlers(name)
-                      SELECT $1
-                      WHERE NOT EXISTS (SELECT 1 FROM existing_id)
-                      RETURNING id
+                    INSERT INTO championships(name)
+                    SELECT $1
+                    WHERE NOT EXISTS (SELECT 1 FROM existing_id)
+                    RETURNING id
                     )
                     SELECT id FROM ins
                     UNION ALL
                     SELECT id FROM existing_id
                     `,
+              [championship]
+            );
+            // fill matches_championships based off match id and championship id
+            await pool.query(
+              `INSERT INTO matches_championships(championship_id, match_id) VALUES($1, $2)`,
+              [championshipId[0].id, matchId[0].id]
+            );
+          }
+        }
+        let index = 0;
+        let participants = match.participants
+          .split(" vs. ")
+          .map((participant) => participant.split(", "));
+        for (const team of participants) {
+          // another loop to get each wrestler
+          for (participant of team) {
+            // insert into wrestlers / get wrestler id
+            const { rows: wrestlerId } = await pool.query(
+              `
+                        WITH existing_id AS (
+                          SELECT id
+                          FROM wrestlers
+                          WHERE name = $1
+                        ),
+                        ins AS (
+                          INSERT INTO wrestlers(name)
+                          SELECT $1
+                          WHERE NOT EXISTS (SELECT 1 FROM existing_id)
+                          RETURNING id
+                        )
+                        SELECT id FROM ins
+                        UNION ALL
+                        SELECT id FROM existing_id
+                        `,
               [participant]
             );
             // insert into participants
@@ -659,6 +662,7 @@ module.exports = {
         }
       }
     } catch (err) {
+      console.log(err);
       throw new Error(err);
     }
   },

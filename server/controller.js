@@ -152,7 +152,7 @@ module.exports = {
   },
   postEvent: async (req, res) => {
     try {
-      const result = await model.postEvent(req.body.event);
+      const result = await model.postEvent(req.body);
       res.status(201).send(result);
     } catch (err) {
       res.status(404).send(err.message);

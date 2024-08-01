@@ -4,6 +4,7 @@ const controller = require("./controller.js");
 
 router.get("/events/recent", controller.getRecentEvents);
 router.get("/events/:event_id", controller.getEvent);
+router.post("/events/", controller.postEvent);
 
 router.get("/matches/topRated", controller.getTopRatedMatches);
 router.get("/matches/:match_id", controller.getMatchInfo);

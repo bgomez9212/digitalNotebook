@@ -529,6 +529,14 @@ module.exports = {
       if (preventInjection.length) {
         throw new Error("event already exists");
       }
+      // statement to prevent injection if apikey does not exist
+      const { rows: apiKeyId } = await pool.query(
+        "SELECT id FROM api_keys WHERE uid = $1",
+        [event.apiKey]
+      );
+      if (!apiKeyId.length) {
+        throw new Error("invalid API key");
+      }
       // insert/get venue id
       const { rows: venueId } = await pool.query(
         `
@@ -578,8 +586,8 @@ module.exports = {
             WHERE title = $1
           ),
           ins AS (
-            INSERT INTO events(title, date, venue_id, promotion_id)
-            SELECT $1, $2, $3, $4
+            INSERT INTO events(title, date, venue_id, promotion_id, api_key_id)
+            SELECT $1, $2, $3, $4, $5
             WHERE NOT EXISTS (SELECT 1 FROM existing_id)
             RETURNING id
           )
@@ -587,7 +595,13 @@ module.exports = {
           UNION ALL
           SELECT id FROM existing_id
           `,
-        [event.eventTitle, event.date, venueId[0].id, promotionId[0].id]
+        [
+          event.eventTitle,
+          event.date,
+          venueId[0].id,
+          promotionId[0].id,
+          apiKeyId[0].id,
+        ]
       );
       for (const match of event.matches) {
         // create matches based off of match num and event id, returning match id
@@ -662,8 +676,7 @@ module.exports = {
         }
       }
     } catch (err) {
-      console.log(err);
-      throw new Error(err);
+      throw err;
     }
   },
 };

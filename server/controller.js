@@ -155,7 +155,17 @@ module.exports = {
       const result = await model.postEvent(req.body);
       res.status(201).send(result);
     } catch (err) {
-      res.status(404).send(err.message);
+      console.log(err);
+      if (
+        err.message === "event already exists" ||
+        err.message === "invalid API key"
+      ) {
+        res.status(400).send({ error: err.message });
+      } else {
+        res
+          .status(500)
+          .send({ error: "An error occurred while posting the event" });
+      }
     }
   },
 };

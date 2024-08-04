@@ -5,6 +5,7 @@ export default function Layout() {
     event_title: string;
     promotion_name: string;
   };
+  console.log(promotion_name);
   return (
     <Stack>
       <Stack.Screen

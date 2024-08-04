@@ -531,7 +531,7 @@ module.exports = {
       }
       // statement to prevent injection if apikey does not exist
       const { rows: apiKeyId } = await pool.query(
-        "SELECT id FROM api_keys WHERE uid = $1",
+        "SELECT id FROM api_keys WHERE uuid = $1",
         [event.apiKey]
       );
       if (!apiKeyId.length) {

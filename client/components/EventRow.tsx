@@ -22,11 +22,14 @@ export default function EventRow({
   function openEvent() {
     router.push({
       pathname: `${pathname.includes("Home") ? `/(tabs)/Home/${event.id}` : `/(tabs)/Search/${event.id}`}`,
-      params: { event_title: event.title },
+      params: {
+        event_title: event.title,
+        promotion_name: event.promotion_name,
+      },
     });
   }
   function formatImg(promotionName: string) {
-    const containPromotions = ["WWE", "AEW"];
+    const containPromotions = ["WWE", "AEW", "ROH", "NOAH"];
     return containPromotions.includes(promotionName) ? "contain" : "cover";
   }
 

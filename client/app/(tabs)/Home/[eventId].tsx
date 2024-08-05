@@ -20,6 +20,20 @@ export default function EventPage() {
     queryFn: () => getEvent(eventId, uid),
   });
 
+  function setColorToDisplay(rating) {
+    return rating >= 4
+      ? "text-green"
+      : rating >= 3
+        ? "text-yellowGreen"
+        : rating >= 2
+          ? "text-yellow"
+          : rating >= 1
+            ? "text-orange"
+            : rating >= 0.01
+              ? "text-red"
+              : "text-white";
+  }
+
   if (isLoading) {
     return (
       <View style={tw`flex-1 justify-center bg-darkGrey`}>
@@ -57,9 +71,7 @@ export default function EventPage() {
           <Text style={tw`text-white pb-2`}>
             {event.city}, {event.state} ({event.country})
           </Text>
-          <Text
-            style={tw`text-lg ${event.avg_rating >= 3.5 ? "text-green" : event.avg_rating >= 2 ? "text-yellow" : event.avg_rating > 0 ? "text-red" : "text-white"}`}
-          >
+          <Text style={tw`text-lg ${setColorToDisplay(event.avg_rating)}`}>
             {event.avg_rating}
           </Text>
         </View>

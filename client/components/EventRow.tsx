@@ -29,8 +29,22 @@ export default function EventRow({
     });
   }
   function formatImg(promotionName: string) {
-    const containPromotions = ["WWE", "AEW", "ROH", "NOAH"];
+    const containPromotions = ["WWE", "AEW", "ROH"];
     return containPromotions.includes(promotionName) ? "contain" : "cover";
+  }
+
+  function setColorToDisplay(rating) {
+    return rating >= 4
+      ? "text-green"
+      : rating >= 3
+        ? "text-yellowGreen"
+        : rating >= 2
+          ? "text-yellow"
+          : rating >= 1
+            ? "text-orange"
+            : rating >= 0.01
+              ? "text-red"
+              : "text-white";
   }
 
   if (display === "Table") {
@@ -77,7 +91,7 @@ export default function EventRow({
         >
           <View style={tw`w-1/4`}>
             <Text
-              style={tw`text-center text-white font-bold ${event.avg_rating >= 3.5 ? "text-green" : event.avg_rating >= 2 ? "text-yellow" : event.avg_rating > 0 ? "text-red" : "text-white"}`}
+              style={tw`text-center text-white font-bold ${setColorToDisplay(event.avg_rating)}`}
             >
               {event.avg_rating || "-"}
             </Text>

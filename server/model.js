@@ -377,42 +377,7 @@ module.exports = {
       throw new Error(err.message);
     }
   },
-  getUserRatings: async (user_id, sort_params) => {
-    // this query gets all of the ratings a match has that the user has rated as well
-    if (sort_params.sortBy === "average_rating") {
-      const { rows: userRatings } = await pool.query(
-        `SELECT
-        matches.id AS match_id,
-        matches.event_id AS event_id,
-        events.title AS event_title,
-        TO_CHAR(events.date, 'YYYY-MM-DD') AS date,
-        participants.team AS participants,
-        wrestlers.name AS wrestler_name,
-        AVG(ratings.rating) AS average_rating,
-        CAST((SELECT COUNT(*) FROM ratings WHERE ratings.match_id = matches.id) AS INTEGER) AS rating_count,
-        ROUND((SELECT AVG(ratings.rating) FROM ratings WHERE ratings.match_id = matches.id)::numeric, 2) AS community_rating,
-        (SELECT ratings.rating FROM ratings WHERE ratings.match_id = matches.id AND ratings.user_id = $1) AS user_rating,
-        championships.name AS championship_name,
-        promotions.name AS promotion_name
-      FROM matches
-      JOIN participants ON matches.id = participants.match_id
-      JOIN wrestlers ON participants.wrestler_id = wrestlers.id
-      LEFT OUTER JOIN ratings ON matches.id = ratings.match_id
-      LEFT OUTER JOIN matches_championships ON matches_championships.match_id = matches.id
-      LEFT OUTER JOIN events ON events.id = matches.event_id
-      LEFT OUTER JOIN championships ON matches_championships.championship_id = championships.id
-      LEFT OUTER JOIN promotions ON events.promotion_id = promotions.id
-        WHERE matches.id IN (
-        SELECT ratings.match_id FROM ratings WHERE ratings.user_id = $1
-      )
-      GROUP BY matches.id, participants.team, wrestlers.name, championship_name, participants.match_id, events.title, promotions.name, events.date
-      ORDER BY ${sort_params.sortBy} ${sort_params.sortOrder}, participants.match_id, team;`,
-        [user_id]
-      );
-      const results = parseMatchData(userRatings);
-      return results;
-    }
-    // this query only gets the rows of the current users ratings
+  getUsersRatedMatches: async (user_id) => {
     const { rows: userRatings } = await pool.query(
       `SELECT
           matches.id AS match_id,
@@ -437,7 +402,7 @@ module.exports = {
       LEFT OUTER JOIN promotions ON events.promotion_id = promotions.id
       WHERE ratings.user_id = $1
       GROUP BY matches.id, participants.team, wrestlers.name, championship_name, participants.match_id, events.title, promotions.name, events.date, ratings.date, ratings.rating
-      ORDER BY ${sort_params.sortBy} ${sort_params.sortOrder}, participants.match_id, team;`,
+      ORDER BY ratings.date DESC, participants.match_id, team;`,
       [user_id]
     );
     const results = parseMatchData(userRatings);

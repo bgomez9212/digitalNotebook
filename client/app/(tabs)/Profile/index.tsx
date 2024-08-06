@@ -18,8 +18,7 @@ export default function Profile() {
     isLoading,
   } = useQuery({
     queryKey: ["userRatings"],
-    queryFn: () =>
-      getUserRatings(uid, { sortBy: "rating_date", sortOrder: "DESC" }),
+    queryFn: () => getUserRatings(uid),
   });
 
   const chartConfig = {

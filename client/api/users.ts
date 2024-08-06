@@ -19,12 +19,11 @@ export async function getUserRating(userUid, matchId) {
     .then((res) => res.data);
 }
 
-export async function getUserRatings(userUid, sortParams) {
+export async function getUserRatings(userUid) {
   return axios
     .get(process.env.API_USER_RATINGS, {
       params: {
         user_id: userUid,
-        sort_params: sortParams,
       },
     })
     .then((res) => res.data);

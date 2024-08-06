@@ -35,10 +35,12 @@ export default function RatingsExtended() {
     { label: "My Ratings", value: "ratings.rating" },
     { label: "Community Ratings", value: "average_rating" },
   ];
+
   const sortOrder = [
     { label: "Desc", value: "DESC" },
     { label: "Asc", value: "ASC" },
   ];
+
   const {
     data: userRatings,
     isError,
@@ -46,7 +48,7 @@ export default function RatingsExtended() {
     refetch,
   } = useQuery({
     queryKey: ["userRatings", sortParams],
-    queryFn: () => getUserRatings(user.uid, sortParams),
+    queryFn: () => getUserRatings(user.uid),
   });
   const bottomSheetModalRef = useRef<BottomSheetModal>(null);
   // variables
@@ -69,6 +71,14 @@ export default function RatingsExtended() {
     });
     refetch;
     bottomSheetModalRef.current?.close();
+  }
+
+  if (isError) {
+    return (
+      <View style={tw`flex-1 bg-darkGrey justify-center items-center`}>
+        <Text>There seems to be an error. Please try again later.</Text>
+      </View>
+    );
   }
 
   return (

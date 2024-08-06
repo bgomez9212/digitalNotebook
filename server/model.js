@@ -25,6 +25,7 @@ function parseMatchData(matchArr) {
     user_rating: matchArr[0].user_rating,
     community_rating: matchArr[0].community_rating,
     rating_count: matchArr[0].rating_count,
+    rating_date: matchArr[0].rating_date,
   };
 
   for (const [i, partObj] of matchArr.entries()) {
@@ -40,6 +41,7 @@ function parseMatchData(matchArr) {
       matchObj.user_rating = partObj.user_rating;
       matchObj.community_rating = partObj.community_rating;
       matchObj.rating_count = partObj.rating_count;
+      matchObj.rating_date = partObj.rating_date;
     }
     if (!matchObj.participants[partObj.participants]) {
       matchObj.participants[partObj.participants] = [];

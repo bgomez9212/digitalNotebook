@@ -14,10 +14,13 @@ import {
 import { GestureHandlerRootView } from "react-native-gesture-handler";
 import { ActivityIndicator, RadioButton } from "react-native-paper";
 import LandingButton from "../../../components/LandingButton";
+import { useLocalSearchParams } from "expo-router";
 
 export default function RatingsExtended() {
   const auth = getAuth();
   const user = auth.currentUser;
+  const { promotionName } = useLocalSearchParams();
+
   const [sortParams, setSortParams] = useState({
     sortBy: "ratingDate",
     sortByLabel: "Rating Date",
@@ -42,8 +45,14 @@ export default function RatingsExtended() {
     { label: "Asc", value: "ASC" },
   ];
 
-  const filterRatings = useCallback(
+  const sortAndFilterRatings = useCallback(
     (userRatings) => {
+      if (promotionName) {
+        userRatings = userRatings.filter(
+          (matchObj) => matchObj.promotion === promotionName
+        );
+      }
+
       const compare = (a, b, key) => {
         if (sortParams.sortOrder === "ASC") {
           return a[key] > b[key] ? 1 : -1;
@@ -69,9 +78,9 @@ export default function RatingsExtended() {
     isFetching,
     refetch,
   } = useQuery({
-    queryKey: ["userRatings", sortParams.sortBy],
+    queryKey: ["userRatings"],
     queryFn: () => getUserRatings(user.uid),
-    select: filterRatings,
+    select: sortAndFilterRatings,
   });
 
   const bottomSheetModalRef = useRef<BottomSheetModal>(null);

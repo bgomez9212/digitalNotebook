@@ -14,44 +14,77 @@ import {
 import { GestureHandlerRootView } from "react-native-gesture-handler";
 import { ActivityIndicator, RadioButton } from "react-native-paper";
 import LandingButton from "../../../components/LandingButton";
+import { useLocalSearchParams } from "expo-router";
 
 export default function RatingsExtended() {
   const auth = getAuth();
   const user = auth.currentUser;
+  const { promotionName } = useLocalSearchParams();
+
   const [sortParams, setSortParams] = useState({
-    sortBy: "rating_date",
-    sortOrder: "DESC",
+    sortBy: "ratingDate",
     sortByLabel: "Rating Date",
+    sortOrder: "DESC",
     sortOrderLabel: "Desc",
   });
+
   const [form, setForm] = useState({
-    sortBy: "rating_date",
+    sortBy: "ratingDate",
     sortOrder: "DESC",
   });
 
   const sortRadios = [
-    { label: "Rating Date", value: "rating_date" },
-    { label: "Event Date", value: "date" },
-    { label: "My Ratings", value: "ratings.rating" },
-    { label: "Community Ratings", value: "average_rating" },
+    { label: "Rating Date", value: "ratingDate" },
+    { label: "Event Date", value: "eventDate" },
+    { label: "My Ratings", value: "userRatings" },
+    { label: "Community Ratings", value: "communityRatings" },
   ];
+
   const sortOrder = [
     { label: "Desc", value: "DESC" },
     { label: "Asc", value: "ASC" },
   ];
+
+  const sortAndFilterRatings = useCallback(
+    (userRatings) => {
+      if (promotionName) {
+        userRatings = userRatings.filter(
+          (matchObj) => matchObj.promotion === promotionName
+        );
+      }
+
+      const compare = (a, b, key) => {
+        if (sortParams.sortOrder === "ASC") {
+          return a[key] > b[key] ? 1 : -1;
+        } else {
+          return a[key] < b[key] ? 1 : -1;
+        }
+      };
+
+      return sortParams.sortBy === "userRatings"
+        ? userRatings?.sort((a, b) => compare(a, b, "user_rating"))
+        : sortParams.sortBy === "communityRatings"
+          ? userRatings?.sort((a, b) => compare(a, b, "community_rating"))
+          : sortParams.sortBy === "eventDate"
+            ? userRatings?.sort((a, b) => compare(a, b, "date"))
+            : userRatings?.sort((a, b) => compare(a, b, "rating_date"));
+    },
+    [sortParams.sortBy, sortParams.sortOrder]
+  );
+
   const {
     data: userRatings,
     isError,
     isFetching,
     refetch,
   } = useQuery({
-    queryKey: ["userRatings", sortParams],
-    queryFn: () => getUserRatings(user.uid, sortParams),
+    queryKey: ["userRatings"],
+    queryFn: () => getUserRatings(user.uid),
+    select: sortAndFilterRatings,
   });
+
   const bottomSheetModalRef = useRef<BottomSheetModal>(null);
-  // variables
   const snapPoints = useMemo(() => ["25%", "50%"], []);
-  // callbacks
   const handlePresentModalPress = useCallback(() => {
     bottomSheetModalRef.current?.present();
     bottomSheetModalRef.current?.close();
@@ -69,6 +102,14 @@ export default function RatingsExtended() {
     });
     refetch;
     bottomSheetModalRef.current?.close();
+  }
+
+  if (isError) {
+    return (
+      <View style={tw`flex-1 bg-darkGrey justify-center items-center`}>
+        <Text>There seems to be an error. Please try again later.</Text>
+      </View>
+    );
   }
 
   return (

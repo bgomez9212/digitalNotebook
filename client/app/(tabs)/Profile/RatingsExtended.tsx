@@ -121,6 +121,7 @@ export default function RatingsExtended() {
           >
             <Text style={tw`text-white`}>
               Sorted By: {sortParams.sortByLabel}, {sortParams.sortOrderLabel}
+              {promotionName ? `, ${promotionName}` : ""}
             </Text>
             <TouchableOpacity onPress={handlePresentModalPress}>
               <Ionicons name="options" size={24} color="white" />

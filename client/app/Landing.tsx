@@ -55,7 +55,11 @@ export default function Landing() {
         data.signupPassword
       );
     } catch (err) {
-      setUiState({ ...uiState, signUpError: err.message, loading: false });
+      setUiState({
+        ...uiState,
+        signUpError: "Unable to sign up with these credentials",
+        loading: false,
+      });
     }
   }
 

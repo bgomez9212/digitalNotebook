@@ -4,7 +4,7 @@ export const photoLibrary = {
   AJPW: require("./promotions/AJPW-logo.png"),
   CMLL: require("./promotions/CMLL-logo.png"),
   DDT: require("./promotions/DDT-logo.png"),
-  Dragongate: require("./promotions/Dragongate-logo.png"),
+  "Dragon Gate": require("./promotions/Dragongate-logo.png"),
   GCW: require("./promotions/GCW-logo.png"),
   MLW: require("./promotions/MLW-logo.png"),
   NJPW: require("./promotions/NJPW-logo.png"),

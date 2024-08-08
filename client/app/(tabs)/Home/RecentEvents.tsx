@@ -12,7 +12,7 @@ export default function RecentEvents() {
     data: events,
   } = useQuery({
     queryKey: ["recentEventsExpanded"],
-    queryFn: () => getRecentEvents(30),
+    queryFn: () => getRecentEvents(50),
   });
 
   if (isPending) {

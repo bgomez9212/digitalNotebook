@@ -26,28 +26,30 @@ export default function PromotionsButtonsContainer() {
       <View
         style={tw`flex-wrap w-[95%] justify-between flex-row flex-wrap items-center`}
       >
-        {promotions.map((promotion) => (
-          <TouchableOpacity
-            onPress={() =>
-              router.push({
-                pathname: `/(tabs)/Home/Promotions`,
-                params: { promotion_name: promotion.name },
-              })
-            }
-            key={promotion.id}
-            style={tw`w-[48%] h-15 justify-center items-center border border-grey my-2 rounded-md`}
-          >
-            <Image
-              style={{
-                flex: 1,
-                width: 100,
-                height: 15,
-                resizeMode: "contain",
-              }}
-              source={photoLibrary[promotion.name]}
-            />
-          </TouchableOpacity>
-        ))}
+        {promotions
+          .sort((a, b) => (a.name > b.name ? 1 : -1))
+          .map((promotion) => (
+            <TouchableOpacity
+              onPress={() =>
+                router.push({
+                  pathname: `/(tabs)/Home/Promotions`,
+                  params: { promotion_name: promotion.name },
+                })
+              }
+              key={promotion.id}
+              style={tw`w-[48%] h-30 justify-center items-center my-2 rounded-md`}
+            >
+              <Image
+                style={{
+                  flex: 1,
+                  width: 150,
+                  height: 150,
+                  resizeMode: "contain",
+                }}
+                source={photoLibrary[promotion.name]}
+              />
+            </TouchableOpacity>
+          ))}
       </View>
     </View>
   );

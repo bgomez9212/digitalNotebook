@@ -33,10 +33,15 @@ export default function Profile() {
 
   const pieChartColors = {
     AEW: "#C5AB57",
-    NJPW: "#F70E05",
-    WWE: "#737474",
+    AJPW: "#e41c1c",
     CMLL: "#003f91",
+    DDT: "#bb08f7",
+    "Dragon Gate": "#ff8300",
+    NJPW: "#3da9dc",
     NOAH: "#049B3C",
+    ROH: "#080404",
+    TNA: "#f0e60d",
+    WWE: "#737474",
   };
 
   function getPieChartData(data) {

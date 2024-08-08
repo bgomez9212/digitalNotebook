@@ -55,9 +55,9 @@ export default function RatingsExtended() {
 
       const compare = (a, b, key) => {
         if (sortParams.sortOrder === "ASC") {
-          return a[key] > b[key] ? 1 : -1;
+          return a[key] >= b[key] ? 1 : -1;
         } else {
-          return a[key] < b[key] ? 1 : -1;
+          return a[key] <= b[key] ? 1 : -1;
         }
       };
 
@@ -69,7 +69,7 @@ export default function RatingsExtended() {
             ? userRatings?.sort((a, b) => compare(a, b, "date"))
             : userRatings?.sort((a, b) => compare(a, b, "rating_date"));
     },
-    [sortParams.sortBy, sortParams.sortOrder]
+    [sortParams]
   );
 
   const {

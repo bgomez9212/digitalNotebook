@@ -156,7 +156,6 @@ module.exports = {
         FROM matches
         JOIN participants ON matches.id = participants.match_id
         JOIN wrestlers ON participants.wrestler_id = wrestlers.id
-        LEFT OUTER JOIN ratings ON matches.id = ratings.match_id
         LEFT OUTER JOIN matches_championships ON matches_championships.match_id = matches.id
         LEFT OUTER JOIN events ON events.id = matches.event_id
         LEFT OUTER JOIN promotions ON events.promotion_id = promotions.id
@@ -172,8 +171,8 @@ module.exports = {
             ORDER BY (AVG(ratings.rating)) DESC, events.date DESC
             LIMIT $2
           )
-        GROUP BY matches.id, participants.team, wrestlers.name, championship_name, participants.match_id, events.title, events.date, promotions.name, ratings.rating
-        ORDER BY rating DESC, participants.match_id, team;
+        GROUP BY matches.id, participants.team, wrestlers.name, championship_name, participants.match_id, events.title, events.date, promotions.name
+        ORDER BY community_rating DESC, match_id, team;
         `,
         [lastMonth.toISOString().slice(0, 10), numOfMatches, user_id]
       );

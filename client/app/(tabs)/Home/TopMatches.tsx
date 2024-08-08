@@ -4,15 +4,17 @@ import tw from "../../../tailwind";
 import MatchRow from "../../../components/MatchRow";
 import { ActivityIndicator } from "react-native-paper";
 import { getTopMatches } from "../../../api/matches";
+import { getAuth } from "firebase/auth";
 
 export default function TopMatches() {
+  const auth = getAuth();
   const {
     isFetching,
     isError,
     data: matches,
   } = useQuery({
     queryKey: ["topMatchesExpanded"],
-    queryFn: () => getTopMatches(30),
+    queryFn: () => getTopMatches(30, auth.currentUser.uid),
   });
 
   if (isFetching) {

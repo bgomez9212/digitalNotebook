@@ -29,7 +29,7 @@ export default function EventRow({
     });
   }
   function formatImg(promotionName: string) {
-    const containPromotions = ["WWE", "AEW", "ROH"];
+    const containPromotions = ["WWE", "AEW", "ROH", "AJPW"];
     return containPromotions.includes(promotionName) ? "contain" : "cover";
   }
 

@@ -26,7 +26,7 @@ export default function TopRatedMatchesTable() {
           style={tw`items-center justify-center py-3 border-b-2 border-darkGrey`}
         >
           <Text style={tw`text-white font-bold text-lg`}>
-            Top Matches of the Month
+            Top Matches of the Last 30 Days
           </Text>
         </View>
         <View style={tw`h-96 justify-center items-center`}>
@@ -46,7 +46,7 @@ export default function TopRatedMatchesTable() {
         style={tw`items-center justify-center py-3 border-b-2 border-darkGrey`}
       >
         <Text style={tw`text-white font-bold text-lg`}>
-          Top Matches of the Month
+          Top Matches of the Last 30 Days
         </Text>
       </View>
       {matches.map((match) => (

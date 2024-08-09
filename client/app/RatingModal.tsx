@@ -42,6 +42,8 @@ export default function RatingModal() {
         queryClient.invalidateQueries({ queryKey: ["userRatings"] });
         queryClient.invalidateQueries({ queryKey: ["event"] });
         queryClient.invalidateQueries({ queryKey: ["promotions-events"] });
+        queryClient.invalidateQueries({ queryKey: ["topMatches"] });
+        queryClient.invalidateQueries({ queryKey: ["topMatchesExpanded"] });
         setRating(Number(user_rating) || 2);
         router.back();
       },
@@ -53,6 +55,9 @@ export default function RatingModal() {
       queryClient.invalidateQueries({ queryKey: ["ratingData"] });
       queryClient.invalidateQueries({ queryKey: ["userRatings"] });
       queryClient.invalidateQueries({ queryKey: ["event"] });
+      queryClient.invalidateQueries({ queryKey: ["promotions-events"] });
+      queryClient.invalidateQueries({ queryKey: ["topMatches"] });
+      queryClient.invalidateQueries({ queryKey: ["topMatchesExpanded"] });
       router.back();
     },
   });

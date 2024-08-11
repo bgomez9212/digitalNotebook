@@ -26,8 +26,12 @@ export default function MatchRow({
       >
         <View style={tw`flex flex-col w-full`}>
           {match.event_title && (
-            <View style={tw`w-full flex-row items-center justify-between`}>
-              <Text style={tw`text-white italic`}>{match.event_title}</Text>
+            <View
+              style={tw`w-full flex-row items-center justify-between items-start`}
+            >
+              <Text style={tw`text-white italic w-5/8`}>
+                {match.event_title}
+              </Text>
               <Text style={tw`text-white italic`}>{match.date}</Text>
             </View>
           )}

@@ -38,12 +38,7 @@ export default function RatingModal() {
     useMutation({
       mutationFn: addRating,
       onSuccess: () => {
-        queryClient.invalidateQueries({ queryKey: ["ratingData"] });
-        queryClient.invalidateQueries({ queryKey: ["userRatings"] });
-        queryClient.invalidateQueries({ queryKey: ["event"] });
-        queryClient.invalidateQueries({ queryKey: ["promotions-events"] });
-        queryClient.invalidateQueries({ queryKey: ["topMatches"] });
-        queryClient.invalidateQueries({ queryKey: ["topMatchesExpanded"] });
+        queryClient.refetchQueries();
         setRating(Number(user_rating) || 2);
         router.back();
       },
@@ -52,12 +47,7 @@ export default function RatingModal() {
   const { mutateAsync: deleteRatingMutation } = useMutation({
     mutationFn: deleteRating,
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["ratingData"] });
-      queryClient.invalidateQueries({ queryKey: ["userRatings"] });
-      queryClient.invalidateQueries({ queryKey: ["event"] });
-      queryClient.invalidateQueries({ queryKey: ["promotions-events"] });
-      queryClient.invalidateQueries({ queryKey: ["topMatches"] });
-      queryClient.invalidateQueries({ queryKey: ["topMatchesExpanded"] });
+      queryClient.refetchQueries();
       router.back();
     },
   });

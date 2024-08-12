@@ -4,7 +4,6 @@ import { FontAwesome } from "@expo/vector-icons";
 import { Ionicons } from "@expo/vector-icons";
 const blue = "#477CB9";
 export default function Layout() {
-  const route = usePathname();
   return (
     <Tabs
       screenOptions={{

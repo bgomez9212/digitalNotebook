@@ -84,15 +84,20 @@ export default function Profile() {
 
   if (isLoading) {
     return (
-      <View style={tw`flex-1 bg-darkGrey justify-center items-center`}>
+      <View
+        style={tw`flex-1 bg-white dark:bg-darkGrey justify-center items-center`}
+      >
         <ActivityIndicator color="#477CB9" />
       </View>
     );
   }
 
   return (
-    <ScrollView nestedScrollEnabled={true} style={tw`bg-darkGrey`}>
-      <View style={tw`flex-1 bg-darkGrey items-center`}>
+    <ScrollView
+      nestedScrollEnabled={true}
+      style={tw`bg-white dark:bg-darkGrey`}
+    >
+      <View style={tw`flex-1 bg-white dark:bg-darkGrey items-center`}>
         <PieChart
           style={tw`flex justify-center items-center`}
           data={pieChartData}
@@ -119,10 +124,11 @@ export default function Profile() {
                 key={promotion.promotionName}
                 style={tw`flex-row items-center justify-center mb-2 w-1/3 py-1`}
               >
-                <View
-                  style={tw`h-3 w-3 bg-[${promotion.color}] mr-1 border`}
-                ></View>
-                <Text style={tw`text-white`} key={promotion.promotionName}>
+                <View style={tw`h-3 w-3 bg-[${promotion.color}] mr-1`}></View>
+                <Text
+                  style={tw`dark:text-white text-grey`}
+                  key={promotion.promotionName}
+                >
                   {`${promotion.promotionName} (${promotion.matchCount})`}
                 </Text>
               </TouchableOpacity>
@@ -131,14 +137,14 @@ export default function Profile() {
         ) : null}
 
         {!userRatings?.length && (
-          <Text style={tw`text-white`}>
+          <Text style={tw`dark:text-white text-grey`}>
             This pie chart will fill when you have rated some matches
           </Text>
         )}
-        <Text style={tw`text-xl text-white underline my-5`}>
+        <Text style={tw`text-xl dark:text-white text-grey underline my-5`}>
           Most Recently Rated
         </Text>
-        <View style={tw`bg-grey w-[95%] rounded-md px-2 mb-5`}>
+        <View style={tw`bg-white dark:bg-grey w-[95%] rounded-md px-2 mb-5`}>
           {isError ? (
             <Text>There seems to be an error..</Text>
           ) : isLoading ? (

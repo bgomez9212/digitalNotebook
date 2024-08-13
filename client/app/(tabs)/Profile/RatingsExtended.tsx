@@ -15,10 +15,12 @@ import { GestureHandlerRootView } from "react-native-gesture-handler";
 import { ActivityIndicator, RadioButton } from "react-native-paper";
 import LandingButton from "../../../components/LandingButton";
 import { useLocalSearchParams } from "expo-router";
+import { useAppColorScheme } from "twrnc";
 
 export default function RatingsExtended() {
   const auth = getAuth();
   const user = auth.currentUser;
+  const [colorScheme] = useAppColorScheme(tw);
   const { promotionName } = useLocalSearchParams();
 
   const [sortParams, setSortParams] = useState({
@@ -106,7 +108,9 @@ export default function RatingsExtended() {
 
   if (isError) {
     return (
-      <View style={tw`flex-1 bg-darkGrey justify-center items-center`}>
+      <View
+        style={tw`flex-1 bg-white dark:bg-darkGrey justify-center items-center`}
+      >
         <Text>There seems to be an error. Please try again later.</Text>
       </View>
     );
@@ -115,16 +119,20 @@ export default function RatingsExtended() {
   return (
     <GestureHandlerRootView>
       <BottomSheetModalProvider>
-        <View style={tw`flex-1 bg-darkGrey items-center`}>
+        <View style={tw`flex-1 bg-white dark:bg-darkGrey items-center`}>
           <View
             style={tw`pt-2 px-3 flex flex-row justify-between w-full items-center`}
           >
-            <Text style={tw`text-white`}>
+            <Text style={tw`text-grey dark:text-white`}>
               Sorted By: {sortParams.sortByLabel}, {sortParams.sortOrderLabel}
               {promotionName ? `, ${promotionName}` : ""}
             </Text>
             <TouchableOpacity onPress={handlePresentModalPress}>
-              <Ionicons name="options" size={24} color="white" />
+              <Ionicons
+                name="options"
+                size={24}
+                color={colorScheme === "light" ? "black" : "white"}
+              />
             </TouchableOpacity>
           </View>
           {isFetching ? (

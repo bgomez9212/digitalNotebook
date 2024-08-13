@@ -176,7 +176,7 @@ export default function AccountInfo() {
   return (
     <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
       <View
-        style={tw`flex-1 bg-darkGrey p-3 items-center justify-between pb-10`}
+        style={tw`flex-1 bg-white dark:bg-darkGrey p-3 items-center justify-between pb-10`}
       >
         <View>
           <AccountDropdown
@@ -189,7 +189,9 @@ export default function AccountInfo() {
             }
             display={uiState.showChangeUsername}
           >
-            <Text style={tw`text-white text-lg`}>{username}</Text>
+            <Text style={tw`text-grey dark:text-white text-lg`}>
+              {username}
+            </Text>
             <StyledTextInput
               inputValue={inputValues.username}
               label={"new username"}

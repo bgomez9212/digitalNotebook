@@ -1,6 +1,7 @@
 import { TouchableOpacity, View, Text } from "react-native";
 import tw from "../tailwind";
 import { AntDesign } from "@expo/vector-icons";
+import { useAppColorScheme } from "twrnc";
 
 export default function AccountDropdown({
   displayfn,
@@ -8,17 +9,26 @@ export default function AccountDropdown({
   setting,
   children,
 }) {
+  const [colorScheme] = useAppColorScheme(tw);
   return (
     <View
-      style={tw`border border-white items-center px-2 py-3 rounded-md mb-2`}
+      style={tw`border border-lightGrey dark:border-white items-center px-2 py-3 rounded-md mb-2`}
     >
       <TouchableOpacity onPress={displayfn}>
         <View style={tw`justify-between w-full flex-row items-center`}>
-          <Text style={tw`text-white font-bold`}>{setting}</Text>
+          <Text style={tw`text-grey dark:text-white font-bold`}>{setting}</Text>
           {display ? (
-            <AntDesign name="upcircleo" size={24} color="white" />
+            <AntDesign
+              name="upcircleo"
+              size={24}
+              color={colorScheme === "light" ? "#E5E4E2" : "white"}
+            />
           ) : (
-            <AntDesign name="downcircleo" size={24} color="white" />
+            <AntDesign
+              name="downcircleo"
+              size={24}
+              color={colorScheme === "light" ? "#E5E4E2" : "white"}
+            />
           )}
         </View>
       </TouchableOpacity>

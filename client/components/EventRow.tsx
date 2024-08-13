@@ -72,12 +72,12 @@ export default function EventRow({
             />
           </View>
           <View style={tw`w-1/3 justify-center`}>
-            <Text style={tw`text-center dark:text-white text-grey font-bold`}>
+            <Text style={tw`text-center dark:text-white text-grey font-medium`}>
               {event.title}
             </Text>
           </View>
           <View style={tw`w-1/4 justify-center items-end`}>
-            <Text style={tw`dark:text-white text-grey font-bold`}>
+            <Text style={tw`dark:text-white text-grey font-medium`}>
               {event.date}
             </Text>
           </View>

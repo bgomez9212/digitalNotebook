@@ -39,7 +39,7 @@ export default function PromotionsButtonsContainer() {
                 })
               }
               key={promotion.id}
-              style={tw`w-[48%] h-30 justify-center items-center my-2 rounded-md shadow-2xl dark:shadow-none`}
+              style={tw`w-[48%] h-30 justify-center items-center my-2 rounded-md shadow dark:shadow-none`}
             >
               <Image
                 style={{

@@ -23,18 +23,22 @@ export default function StarView({
             maskElement={<Text style={tw`text-xl text-center`}>★★★★★</Text>}
           >
             <View style={tw`h-full flex flex-row`}>
-              <View style={tw`bg-yellow w-[${starPercentage}%] h-full`} />
-              <View style={tw`bg-grey w-[${emptyPercentage}%] h-full`} />
+              <View
+                style={tw`dark:bg-yellow bg-grey w-[${starPercentage}%] h-full`}
+              />
+              <View
+                style={tw`dark:bg-grey bg-lightGrey w-[${emptyPercentage}%] h-full`}
+              />
             </View>
           </MaskedView>
         </View>
         <Text
-          style={tw`text-white text-right`}
+          style={tw`dark:text-white text-grey text-right`}
         >{`${rating} (${rating_count})`}</Text>
       </View>
     ) : (
       <View style={tw`w-full flex items-end`}>
-        <Text style={tw`text-white pt-1`}>No ratings yet</Text>
+        <Text style={tw`dark:text-white text-grey pt-1`}>No ratings yet</Text>
       </View>
     );
   }
@@ -57,7 +61,7 @@ export default function StarView({
           </MaskedView>
         </View>
         <Text
-          style={tw`text-white text-xs`}
+          style={tw`dark:text-white text-grey text-xs`}
         >{`${rating} (${rating_count})`}</Text>
       </View>
     ) : (
@@ -79,7 +83,9 @@ export default function StarView({
               </View>
             </MaskedView>
           </View>
-          <Text style={tw`text-white pt-1 pl-1`}>{`${rating}`}</Text>
+          <Text
+            style={tw`dark:text-white text-grey pt-1 pl-1`}
+          >{`${rating}`}</Text>
         </View>
       )
     );

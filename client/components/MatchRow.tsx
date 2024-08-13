@@ -15,7 +15,7 @@ export default function MatchRow({
   if (display === "Home") {
     return (
       <TouchableOpacity
-        style={tw`${hideBottomBorder ? "" : "border-b"} border-black py-4`}
+        style={tw`${hideBottomBorder ? "" : "border-b"} dark:border-black border-lightGrey py-4`}
         key={match.match_id}
         onPress={() =>
           router.navigate({
@@ -29,10 +29,12 @@ export default function MatchRow({
             <View
               style={tw`w-full flex-row items-center justify-between items-start`}
             >
-              <Text style={tw`text-white italic w-5/8`}>
+              <Text style={tw`dark:text-white text-grey italic w-5/8`}>
                 {match.event_title}
               </Text>
-              <Text style={tw`text-white italic`}>{match.date}</Text>
+              <Text style={tw`dark:text-white text-grey italic`}>
+                {match.date}
+              </Text>
             </View>
           )}
           {match.championships && (
@@ -43,7 +45,9 @@ export default function MatchRow({
             </View>
           )}
           <View style={tw`py-2`}>
-            <Text style={tw`text-white text-lg`}>{match.participants}</Text>
+            <Text style={tw`dark:text-white text-grey text-lg`}>
+              {match.participants}
+            </Text>
           </View>
           <View
             style={tw`flex flex-row ${match.user_rating ? "justify-between" : "justify-end"}`}

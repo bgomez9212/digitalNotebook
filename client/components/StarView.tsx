@@ -47,8 +47,12 @@ export default function StarView({
             maskElement={<Text style={tw`text-xl text-center`}>★★★★★</Text>}
           >
             <View style={tw`h-full flex flex-row`}>
-              <View style={tw`bg-lightGrey w-[${starPercentage}%] h-full`} />
-              <View style={tw`bg-black w-[${emptyPercentage}%] h-full`} />
+              <View
+                style={tw`dark:bg-lightGrey bg-black w-[${starPercentage}%] h-full`}
+              />
+              <View
+                style={tw`dark:bg-black bg-lightGrey w-[${emptyPercentage}%] h-full`}
+              />
             </View>
           </MaskedView>
         </View>

@@ -41,11 +41,11 @@ export default function TopRatedMatchesTable() {
   }
 
   return (
-    <View style={tw`bg-grey w-[95%] my-12 rounded-md px-2`}>
+    <View style={tw`dark:bg-grey bg-white w-[95%] my-12 rounded-md px-2`}>
       <View
-        style={tw`items-center justify-center py-3 border-b-2 border-darkGrey`}
+        style={tw`items-center justify-center py-3 border-b dark:border-darkGrey border-lightGrey`}
       >
-        <Text style={tw`text-white font-bold text-lg`}>
+        <Text style={tw`dark:text-white text-grey font-bold text-lg`}>
           Top Matches of the Last 30 Days
         </Text>
       </View>

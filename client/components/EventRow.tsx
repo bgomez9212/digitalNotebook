@@ -1,6 +1,5 @@
 import { router, usePathname } from "expo-router";
 import { TouchableOpacity, View, Text, Image } from "react-native";
-import tw from "../tailwind";
 import { photoLibrary } from "../assets";
 
 export default function EventRow({
@@ -51,12 +50,10 @@ export default function EventRow({
     return (
       <TouchableOpacity
         onPress={openEvent}
-        style={tw`w-full flex flex-row py-2 dark:border-darkGrey border-lightGrey border-b`}
+        className="w-full flex flex-row py-2 border-darkGrey border-b-2"
       >
-        <View
-          style={tw`py-2 flex flex-row w-full items-center justify-between`}
-        >
-          <View style={tw`w-1/4 h-11`}>
+        <View className="py-2 flex flex-row w-full items-center justify-between">
+          <View className="w-1/4 h-11">
             <Image
               style={{
                 flex: 1,
@@ -75,15 +72,13 @@ export default function EventRow({
               source={photoLibrary[event.promotion_name]}
             />
           </View>
-          <View style={tw`w-1/3 justify-center`}>
-            <Text style={tw`text-center dark:text-white text-grey font-medium`}>
+          <View className="w-1/3 justify-center">
+            <Text className="text-center text-white font-bold">
               {event.title}
             </Text>
           </View>
-          <View style={tw`w-1/4 justify-center items-end`}>
-            <Text style={tw`dark:text-white text-grey font-medium`}>
-              {event.date}
-            </Text>
+          <View className="w-1/4 justify-center items-end">
+            <Text className="text-white font-bold">{event.date}</Text>
           </View>
         </View>
       </TouchableOpacity>
@@ -94,27 +89,54 @@ export default function EventRow({
     return (
       <TouchableOpacity
         onPress={openEvent}
-        style={tw`w-full flex flex-row py-2 border-b dark:border-grey border-lightGrey`}
+        className="w-full flex flex-row py-2 border-b-2 border-grey"
       >
-        <View
-          style={tw`py-2 flex flex-row w-full items-center justify-between`}
-        >
-          <View style={tw`w-1/4`}>
+        <View className="py-2 flex flex-row w-full items-center justify-between">
+          <View className="w-1/4">
             <Text
-              style={tw`text-center dark:text-white font-bold ${setColorToDisplay(event.avg_rating)}`}
+              className={`text-center text-white font-bold ${setColorToDisplay(event.avg_rating)}`}
             >
               {event.avg_rating || "-"}
             </Text>
           </View>
-          <View style={tw`w-1/3 justify-center`}>
-            <Text style={tw`text-center text-grey dark:text-white font-medium`}>
+          <View className="w-1/3 justify-center">
+            <Text className="text-center text-white font-bold">
               {event.title}
             </Text>
           </View>
-          <View style={tw`w-1/4 justify-center items-end`}>
-            <Text style={tw`text-grey dark:text-white font-medium`}>
-              {event.date}
+          <View className="w-1/4 justify-center items-end">
+            <Text className="text-white font-bold">{event.date}</Text>
+          </View>
+        </View>
+      </TouchableOpacity>
+    );
+  }
+
+  if (display === "RecentEvents") {
+    return (
+      <TouchableOpacity
+        onPress={openEvent}
+        className="w-full flex flex-row py-2 border-grey border-b-2"
+      >
+        <View className="py-2 flex flex-row w-full items-center justify-between">
+          <View className="w-1/4 h-11">
+            <Image
+              style={{
+                flex: 1,
+                width: undefined,
+                height: undefined,
+                resizeMode: `${formatImg(event.promotion_name)}`,
+              }}
+              source={photoLibrary[event.promotion_name]}
+            />
+          </View>
+          <View className="w-1/3 justify-center">
+            <Text className="text-center text-white font-bold">
+              {event.title}
             </Text>
+          </View>
+          <View className="w-1/4 justify-center items-end">
+            <Text className="text-white font-bold">{event.date}</Text>
           </View>
         </View>
       </TouchableOpacity>

@@ -1,24 +1,36 @@
 import { useState } from "react";
 import { Keyboard, View } from "react-native";
 import { Dropdown } from "react-native-element-dropdown";
-import tw from "../tailwind";
-import { useAppColorScheme } from "twrnc";
 
 const DropdownComponent = ({ searchParam, setSearchParam, data }) => {
   const [isFocus, setIsFocus] = useState(false);
   const [colorScheme] = useAppColorScheme(tw);
 
   return (
-    <View style={tw`w-full mt-2`}>
+    <View className="w-full mt-3">
       <Dropdown
-        style={tw`dark:bg-grey bg-white h-10 px-3 border border-grey rounded-md`}
-        containerStyle={tw`dark:bg-grey bg-white pl-[2.5%] border`}
-        itemContainerStyle={tw`border-b border-lightGrey w-[95%] py-2`}
-        placeholderStyle={tw`dark:text-white text-grey`}
-        iconColor={colorScheme === "light" ? "grey" : "white"}
-        selectedTextStyle={tw`dark:text-white text-grey`}
+        style={{
+          backgroundColor: "#222222",
+          height: 40,
+          paddingHorizontal: 12,
+          borderWidth: 2,
+          borderRadius: 5,
+        }}
+        containerStyle={{
+          backgroundColor: "#222222",
+          borderWidth: 0,
+          paddingLeft: "2.5%",
+        }}
+        itemContainerStyle={{
+          borderBottomWidth: 2,
+          paddingVertical: 4,
+          width: "95%",
+        }}
+        placeholderStyle={{ fontWeight: "bold", color: "white" }}
+        iconColor="white"
+        selectedTextStyle={{ fontWeight: "bold", color: "white" }}
         activeColor="darkGrey"
-        itemTextStyle={tw`dark:text-white text-grey text-center`}
+        itemTextStyle={{ color: "white", textAlign: "center" }}
         data={data}
         maxHeight={300}
         labelField="label"

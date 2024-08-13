@@ -44,7 +44,7 @@ export default function EventRow({
             ? "text-orange"
             : rating >= 0.01
               ? "text-red"
-              : "text-white";
+              : "text-lightGrey";
   }
 
   if (display === "Table") {
@@ -97,18 +97,20 @@ export default function EventRow({
         >
           <View style={tw`w-1/4`}>
             <Text
-              style={tw`text-center text-white font-bold ${setColorToDisplay(event.avg_rating)}`}
+              style={tw`text-center dark:text-white font-bold ${setColorToDisplay(event.avg_rating)}`}
             >
               {event.avg_rating || "-"}
             </Text>
           </View>
           <View style={tw`w-1/3 justify-center`}>
-            <Text style={tw`text-center text-white font-bold`}>
+            <Text style={tw`text-center text-grey dark:text-white font-medium`}>
               {event.title}
             </Text>
           </View>
           <View style={tw`w-1/4 justify-center items-end`}>
-            <Text style={tw`text-white font-bold`}>{event.date}</Text>
+            <Text style={tw`text-grey dark:text-white font-medium`}>
+              {event.date}
+            </Text>
           </View>
         </View>
       </TouchableOpacity>

@@ -35,7 +35,7 @@ export default function TopMatches() {
   return (
     <View className="flex-1 dark:bg-darkGrey bg-white items-center">
       <FlatList
-        style={{ width: "95%" }}
+        className="w-[95%]"
         data={matches}
         renderItem={({ item, index }) => (
           <MatchRow

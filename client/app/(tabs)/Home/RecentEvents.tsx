@@ -31,7 +31,7 @@ export default function RecentEvents() {
   return (
     <View className="bg-white dark:bg-darkGrey items-center">
       <FlatList
-        style={{ width: "95%" }}
+        className="w-[95%]"
         data={events}
         renderItem={({ item, index }) => (
           <EventRow

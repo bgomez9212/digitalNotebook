@@ -2,21 +2,23 @@ import { useState } from "react";
 import { Keyboard, View } from "react-native";
 import { Dropdown } from "react-native-element-dropdown";
 import tw from "../tailwind";
+import { useAppColorScheme } from "twrnc";
 
 const DropdownComponent = ({ searchParam, setSearchParam, data }) => {
   const [isFocus, setIsFocus] = useState(false);
+  const [colorScheme] = useAppColorScheme(tw);
 
   return (
     <View style={tw`w-full mt-2`}>
       <Dropdown
-        style={tw`bg-grey h-10 px-3 border-2 rounded-md`}
-        containerStyle={tw`bg-grey pl-[2.5%] border-0`}
-        itemContainerStyle={tw`border-b-2 w-[95%] py-2`}
-        placeholderStyle={tw`text-white font-bold`}
-        iconColor="white"
-        selectedTextStyle={tw`text-white font-bold`}
+        style={tw`dark:bg-grey bg-white h-10 px-3 border border-grey rounded-md`}
+        containerStyle={tw`dark:bg-grey bg-white pl-[2.5%] border`}
+        itemContainerStyle={tw`border-b border-lightGrey w-[95%] py-2`}
+        placeholderStyle={tw`dark:text-white text-grey`}
+        iconColor={colorScheme === "light" ? "grey" : "white"}
+        selectedTextStyle={tw`dark:text-white text-grey`}
         activeColor="darkGrey"
-        itemTextStyle={tw`text-white text-center`}
+        itemTextStyle={tw`dark:text-white text-grey text-center`}
         data={data}
         maxHeight={300}
         labelField="label"

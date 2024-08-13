@@ -19,7 +19,7 @@ export default function RecentEventTable() {
   // if (isPending) return 'Loading...'
   if (isPending || error) {
     return (
-      <View style={tw`bg-grey w-[95%] mt-12 rounded-md`}>
+      <View style={tw`dark:bg-grey w-[95%] mt-12 rounded-md`}>
         <View style={tw`items-center justify-center py-3 border-b-2`}>
           <Text style={tw`text-white font-bold text-lg`}>
             Most Recent Shows
@@ -37,11 +37,13 @@ export default function RecentEventTable() {
   }
 
   return (
-    <View style={tw`bg-grey w-[95%] mt-12 rounded-md px-2`}>
+    <View style={tw`dark:bg-grey bg-white w-[95%] mt-12 rounded-md px-2`}>
       <View
-        style={tw`items-center justify-center py-3 border-b-2 border-darkGrey`}
+        style={tw`items-center justify-center py-3 border-b dark:border-darkGrey border-lightGrey`}
       >
-        <Text style={tw`text-white font-bold text-lg`}>Most Recent Shows</Text>
+        <Text style={tw`dark:text-white text-grey font-bold text-lg`}>
+          Most Recent Shows
+        </Text>
       </View>
       {events.map((event, i) => (
         <EventRow

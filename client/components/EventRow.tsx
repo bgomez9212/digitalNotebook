@@ -47,11 +47,16 @@ export default function EventRow({
               : "text-white";
   }
 
+  function renderBackgroundColor(promotionName: string) {
+    const promotions = ["AEW", "WWE"];
+    return promotions.includes(promotionName) ? "black" : null;
+  }
+
   if (display === "Table") {
     return (
       <TouchableOpacity
         onPress={openEvent}
-        style={tw`w-full flex flex-row py-2 border-darkGrey border-b-2`}
+        style={tw`w-full flex flex-row py-2 dark:border-darkGrey border-lightGrey border-b`}
       >
         <View
           style={tw`py-2 flex flex-row w-full items-center justify-between`}
@@ -63,17 +68,20 @@ export default function EventRow({
                 width: undefined,
                 height: undefined,
                 resizeMode: `${formatImg(event.promotion_name)}`,
+                backgroundColor: `${renderBackgroundColor(event.promotion_name)}`,
               }}
               source={photoLibrary[event.promotion_name]}
             />
           </View>
           <View style={tw`w-1/3 justify-center`}>
-            <Text style={tw`text-center text-white font-bold`}>
+            <Text style={tw`text-center dark:text-white text-grey font-bold`}>
               {event.title}
             </Text>
           </View>
           <View style={tw`w-1/4 justify-center items-end`}>
-            <Text style={tw`text-white font-bold`}>{event.date}</Text>
+            <Text style={tw`dark:text-white text-grey font-bold`}>
+              {event.date}
+            </Text>
           </View>
         </View>
       </TouchableOpacity>

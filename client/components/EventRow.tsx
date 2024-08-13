@@ -47,11 +47,6 @@ export default function EventRow({
               : "text-white";
   }
 
-  function renderBackgroundColor(promotionName: string) {
-    const promotions = ["AEW", "WWE"];
-    return promotions.includes(promotionName) ? "black" : null;
-  }
-
   if (display === "Table") {
     return (
       <TouchableOpacity
@@ -68,7 +63,10 @@ export default function EventRow({
                 width: undefined,
                 height: undefined,
                 resizeMode: `${formatImg(event.promotion_name)}`,
-                backgroundColor: `${renderBackgroundColor(event.promotion_name)}`,
+                shadowColor: "#000",
+                shadowOffset: { width: 0, height: 2 },
+                shadowOpacity: 0.8,
+                shadowRadius: 1,
               }}
               source={photoLibrary[event.promotion_name]}
             />

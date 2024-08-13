@@ -22,7 +22,9 @@ export default function PromotionsButtonsContainer() {
 
   return (
     <View style={tw`mb-12 items-center`}>
-      <Text style={tw`text-white font-bold text-xl mb-6`}>Promotions</Text>
+      <Text style={tw`dark:text-white text-grey font-bold text-xl mb-6`}>
+        Promotions
+      </Text>
       <View
         style={tw`flex-wrap w-[95%] justify-between flex-row flex-wrap items-center`}
       >
@@ -37,7 +39,7 @@ export default function PromotionsButtonsContainer() {
                 })
               }
               key={promotion.id}
-              style={tw`w-[48%] h-30 justify-center items-center my-2 rounded-md`}
+              style={tw`w-[48%] h-30 justify-center items-center my-2 rounded-md shadow-2xl dark:shadow-none`}
             >
               <Image
                 style={{

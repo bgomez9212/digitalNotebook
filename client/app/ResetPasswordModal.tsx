@@ -3,11 +3,9 @@ import {
   KeyboardAvoidingView,
   Platform,
   Text,
-  TextInput,
   TouchableWithoutFeedback,
   View,
 } from "react-native";
-import tw from "../tailwind";
 import { getAuth, sendPasswordResetEmail } from "firebase/auth";
 import { useState } from "react";
 import LandingButton from "../components/LandingButton";
@@ -36,16 +34,14 @@ export default function ResetPasswordModal() {
       style={{ flex: 1 }}
     >
       <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
-        <View
-          style={tw`flex-1 bg-white2 dark:bg-darkGrey items-center justify-center`}
-        >
+        <View className="flex-1 bg-darkGrey items-center justify-center">
           {uiState.success ? (
-            <View style={tw`items-center justify-center`}>
-              <Text style={tw`text-white text-2xl mb-5`}>Email Sent!</Text>
+            <View className="items-center justify-center">
+              <Text className="text-white text-2xl mb-5">Email Sent!</Text>
               <LandingLink fn={() => router.back()} text={"close"} />
             </View>
           ) : (
-            <View style={tw`items-center justify-center`}>
+            <View className="items-center justify-center">
               <View>
                 <StyledTextInput
                   inputValue={email}

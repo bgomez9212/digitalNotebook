@@ -15,7 +15,6 @@ import {
 } from "firebase/auth";
 import { useState } from "react";
 import LandingButton from "../components/LandingButton";
-import tw from "../tailwind";
 import LandingLink from "../components/LandingLink";
 import { router } from "expo-router";
 import { useQuery } from "@tanstack/react-query";
@@ -114,15 +113,16 @@ export default function Landing() {
       behavior={Platform.OS === "ios" ? "padding" : "height"}
     >
       <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
-        <View
-          data-testid="landing-page"
-          style={tw`h-full bg-white dark:bg-darkGrey`}
-        >
+        <View data-testid="landing-page" style={tw`h-full bg-black`}>
           <View style={tw`items-center justify-center flex-3`}>
-            <Image source={icon} resizeMode="contain" style={tw`w-90`} />
+            <Image
+              source={require("../assets/Notebook.png")}
+              resizeMode="contain"
+              style={tw`w-90`}
+            />
           </View>
           {uiState.displaySignup ? (
-            <View style={tw`items-center justify-start flex-2`}>
+            <View className="items-center justify-start flex-2">
               <View>
                 <Controller
                   control={control}
@@ -136,7 +136,7 @@ export default function Landing() {
                   name="signupUsername"
                 />
                 {userId && userId.length > 0 && (
-                  <Text style={tw`text-center text-red font-bold`}>
+                  <Text className="text-center text-red font-bold">
                     Username unavailable
                   </Text>
                 )}
@@ -184,9 +184,7 @@ export default function Landing() {
                   loading={uiState.loading}
                 />
                 {uiState.signUpError && (
-                  <Text
-                    style={tw`text-red mt-1 text-base border w-60 text-center`}
-                  >
+                  <Text className="text-red mt-1 text-base border w-60 text-center">
                     {uiState.signUpError}
                   </Text>
                 )}
@@ -204,7 +202,7 @@ export default function Landing() {
               />
             </View>
           ) : (
-            <View style={tw`flex justify-start items-center flex-2`}>
+            <View className="flex justify-start items-center flex-2">
               <View>
                 <Controller
                   control={control}
@@ -241,7 +239,7 @@ export default function Landing() {
                   loading={uiState.loading}
                 />
                 {uiState.loginError && (
-                  <Text style={tw`text-red my-3 text-center text-base`}>
+                  <Text className="text-red my-3 text-center text-base">
                     Incorrect email or password
                   </Text>
                 )}

@@ -9,7 +9,6 @@ import {
 import { Picker } from "@react-native-picker/picker";
 import { router, useLocalSearchParams } from "expo-router";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import tw from "../tailwind";
 import { useState } from "react";
 import { getAuth } from "firebase/auth";
 import StarView from "../components/StarView";
@@ -79,19 +78,15 @@ export default function RatingModal() {
   }
 
   return (
-    <View
-      style={tw`flex-1 items-center justify-center bg-white2 dark:bg-darkGrey`}
-    >
-      <View style={tw`w-4/5`}>
-        <Text style={tw`text-gold shadow dark:none pb-3`}>{championships}</Text>
-        <Text style={tw`text-grey dark:text-white text-xl pb-3`}>
-          {participants}
-        </Text>
-        <Text style={tw`text-grey dark:text-white pb-3`}>
+    <View className="flex-1 items-center justify-center bg-black">
+      <View className="w-[80%]">
+        <Text className="text-gold pb-3">{championships}</Text>
+        <Text className="text-white text-xl pb-3">{participants}</Text>
+        <Text className="text-white pb-3">
           From {promotion} {event_title}
         </Text>
         <View
-          style={tw`flex flex-row ${user_rating ? "justify-between" : "justify-end"}`}
+          className={`flex flex-row ${user_rating ? "justify-between" : "justify-end"}`}
         >
           {user_rating && (
             <StarView display="User" rating={Number(user_rating)} />
@@ -104,10 +99,14 @@ export default function RatingModal() {
         </View>
       </View>
       {showPicker ? (
-        <View style={tw`w-full items-center`}>
+        <View className="w-full items-center">
           <Picker
             mode="dropdown"
-            style={tw`w-1/2 android:mt-3 android:bg-white`}
+            style={{
+              width: "50%",
+              marginTop: Platform.OS !== "ios" ? 3 : 0,
+              backgroundColor: Platform.OS !== "ios" ? "white" : "",
+            }}
             selectedValue={rating}
             onValueChange={(itemValue) => setRating(itemValue)}
           >
@@ -132,15 +131,11 @@ export default function RatingModal() {
             <Picker.Item label="4 ¾" value={4.75} color={dropdownFontColor} />
             <Picker.Item label="5" value={5} color={dropdownFontColor} />
           </Picker>
-          <View style={tw`py-4`}>
+          <View className="py-4">
             {rating > 1 ? (
-              <Text style={tw`text-grey dark:text-white`}>
-                Rate this match {rating} stars
-              </Text>
+              <Text className="text-white">Rate this match {rating} stars</Text>
             ) : (
-              <Text style={tw`text-grey dark:text-white`}>
-                Rate this match {rating} star
-              </Text>
+              <Text className="text-white">Rate this match {rating} star</Text>
             )}
           </View>
           <TouchableOpacity
@@ -148,36 +143,36 @@ export default function RatingModal() {
             onPress={async () => {
               await addRatingMutation({ matchId: match_id, uid, rating });
             }}
-            style={tw`bg-blue w-1/3 h-14 items-center justify-center rounded-md`}
+            className="bg-blue w-1/3 h-14 items-center justify-center rounded-md"
           >
             {addRatingPending ? (
               <ActivityIndicator />
             ) : (
-              <Text style={tw`text-white text-lg`}>Submit</Text>
+              <Text className="text-white text-lg">Submit</Text>
             )}
           </TouchableOpacity>
           {showPicker && (
             <TouchableOpacity
               onPress={cancelEdit}
-              style={tw`bg-lightGrey w-1/3 p-4 items-center justify-center rounded-md mt-5`}
+              className="bg-lightGrey w-1/3 p-4 items-center justify-center rounded-md mt-5"
             >
-              <Text style={tw`text-black text-lg`}>Cancel</Text>
+              <Text className="text-black text-lg">Cancel</Text>
             </TouchableOpacity>
           )}
         </View>
       ) : (
-        <View style={tw`w-4/5 flex-row justify-center mt-30`}>
+        <View className="w-4/5 flex-row justify-center mt-16">
           <TouchableOpacity
             onPress={() => setShowPicker(true)}
-            style={tw`bg-blue w-1/3 p-4 items-center justify-center rounded-md`}
+            className="bg-blue w-1/3 p-4 items-center justify-center rounded-md"
           >
-            <Text style={tw`text-white text-lg`}>Edit</Text>
+            <Text className="text-white text-lg">Edit</Text>
           </TouchableOpacity>
           <TouchableOpacity
             onPress={displayAlert}
-            style={tw`bg-red w-1/3 p-4 items-center justify-center rounded-md ml-10`}
+            className="bg-red w-1/3 p-4 items-center justify-center rounded-md ml-10"
           >
-            <Text style={tw`text-white text-lg`}>Delete</Text>
+            <Text className="text-white text-lg">Delete</Text>
           </TouchableOpacity>
         </View>
       )}

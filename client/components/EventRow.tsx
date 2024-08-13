@@ -90,7 +90,7 @@ export default function EventRow({
     return (
       <TouchableOpacity
         onPress={openEvent}
-        style={tw`w-full flex flex-row py-2 border-b-2 border-grey`}
+        style={tw`w-full flex flex-row py-2 border-b dark:border-grey border-lightGrey`}
       >
         <View
           style={tw`py-2 flex flex-row w-full items-center justify-between`}
@@ -119,7 +119,7 @@ export default function EventRow({
     return (
       <TouchableOpacity
         onPress={openEvent}
-        style={tw`w-full flex flex-row py-2 border-grey border-b-2`}
+        style={tw`w-full flex flex-row py-2 border-lightGrey dark:border-grey border-b`}
       >
         <View
           style={tw`py-2 flex flex-row w-full items-center justify-between`}
@@ -131,17 +131,23 @@ export default function EventRow({
                 width: undefined,
                 height: undefined,
                 resizeMode: `${formatImg(event.promotion_name)}`,
+                shadowColor: "#000",
+                shadowOffset: { width: 0, height: 2 },
+                shadowOpacity: 0.8,
+                shadowRadius: 1,
               }}
               source={photoLibrary[event.promotion_name]}
             />
           </View>
           <View style={tw`w-1/3 justify-center`}>
-            <Text style={tw`text-center text-white font-bold`}>
+            <Text style={tw`text-center dark:text-white text-grey font-medium`}>
               {event.title}
             </Text>
           </View>
           <View style={tw`w-1/4 justify-center items-end`}>
-            <Text style={tw`text-white font-bold`}>{event.date}</Text>
+            <Text style={tw`dark:text-white text-grey font-medium`}>
+              {event.date}
+            </Text>
           </View>
         </View>
       </TouchableOpacity>

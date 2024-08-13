@@ -1,10 +1,9 @@
 import { useQuery } from "@tanstack/react-query";
-import { Stack, router, usePathname } from "expo-router";
+import { Stack, router } from "expo-router";
 import { getAuth } from "firebase/auth";
 import { getUsername } from "../../../api/users";
 import { TouchableOpacity } from "react-native";
 import { FontAwesome } from "@expo/vector-icons";
-import tw from "../../../tailwind";
 import React from "react";
 import { useAppColorScheme } from "twrnc";
 const blue = "#477CB9";
@@ -13,7 +12,6 @@ export const unstable_settings = {
 };
 export default function Layout() {
   const auth = getAuth();
-  const [colorScheme] = useAppColorScheme(tw);
   const { data: username } = useQuery({
     queryKey: ["username", auth.currentUser.uid],
     queryFn: () => getUsername(auth.currentUser.uid),
@@ -29,7 +27,7 @@ export default function Layout() {
           headerTintColor: "#EBF2FA",
           headerRight: () => (
             <TouchableOpacity
-              style={tw`mr-4`}
+              className="mr-4"
               onPress={() => router.navigate("Profile/AccountInfo")}
             >
               <FontAwesome name="gear" size={24} color="white" />

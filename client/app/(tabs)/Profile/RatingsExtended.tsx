@@ -1,5 +1,4 @@
 import { View, Text, FlatList, TouchableOpacity } from "react-native";
-import tw from "../../../tailwind";
 import { useQuery } from "@tanstack/react-query";
 import { getUserRatings } from "../../../api/users";
 import { getAuth } from "firebase/auth";
@@ -108,9 +107,7 @@ export default function RatingsExtended() {
 
   if (isError) {
     return (
-      <View
-        style={tw`flex-1 bg-white dark:bg-darkGrey justify-center items-center`}
-      >
+      <View className="flex-1 bg-darkGrey justify-center items-center">
         <Text>There seems to be an error. Please try again later.</Text>
       </View>
     );
@@ -119,11 +116,9 @@ export default function RatingsExtended() {
   return (
     <GestureHandlerRootView>
       <BottomSheetModalProvider>
-        <View style={tw`flex-1 bg-white dark:bg-darkGrey items-center`}>
-          <View
-            style={tw`pt-2 px-3 flex flex-row justify-between w-full items-center`}
-          >
-            <Text style={tw`text-grey dark:text-white`}>
+        <View className="flex-1 bg-darkGrey items-center">
+          <View className="pt-2 px-3 flex flex-row justify-between w-full items-center">
+            <Text className="text-white">
               Sorted By: {sortParams.sortByLabel}, {sortParams.sortOrderLabel}
               {promotionName ? `, ${promotionName}` : ""}
             </Text>
@@ -136,7 +131,7 @@ export default function RatingsExtended() {
             </TouchableOpacity>
           </View>
           {isFetching ? (
-            <View style={tw`flex-1 justify-center items-center`}>
+            <View className="flex-1 justify-center items-center">
               <ActivityIndicator color="#477CB9" />
             </View>
           ) : (
@@ -159,10 +154,8 @@ export default function RatingsExtended() {
             index={1}
             snapPoints={snapPoints}
           >
-            <BottomSheetView
-              style={tw`flex flex-1 justify-center items-center`}
-            >
-              <View style={tw`flex-row gap-10 mb-2`}>
+            <BottomSheetView className="flex flex-1 justify-center items-center">
+              <View className="flex-row gap-10 mb-2">
                 <RadioButton.Group
                   onValueChange={(newValue) =>
                     setForm({ ...form, sortBy: newValue })
@@ -173,7 +166,7 @@ export default function RatingsExtended() {
                   {sortRadios.map((param) => (
                     <View
                       key={param.value}
-                      style={tw`flex-row border-b justify-between items-center`}
+                      className="flex-row border-b justify-between items-center"
                     >
                       <Text>{param.label}</Text>
                       <RadioButton value={param.value} />
@@ -190,7 +183,7 @@ export default function RatingsExtended() {
                   {sortOrder.map((param) => (
                     <View
                       key={param.value}
-                      style={tw`flex-row border-b justify-between items-center`}
+                      className="flex-row border-b justify-between items-center"
                     >
                       <Text>{param.label}</Text>
                       <RadioButton value={param.value} />

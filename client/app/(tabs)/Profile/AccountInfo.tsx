@@ -6,7 +6,6 @@ import {
   TouchableWithoutFeedback,
   View,
 } from "react-native";
-import tw from "../../../tailwind";
 import {
   getAuth,
   signOut,
@@ -176,9 +175,7 @@ export default function AccountInfo() {
 
   return (
     <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
-      <View
-        style={tw`flex-1 bg-white2 dark:bg-darkGrey p-3 items-center justify-between pb-10`}
-      >
+      <View className="flex-1 bg-darkGrey p-3 items-center justify-between pb-10">
         <View>
           <AccountDropdown
             setting={"Username"}
@@ -190,9 +187,7 @@ export default function AccountInfo() {
             }
             display={uiState.showChangeUsername}
           >
-            <Text style={tw`text-grey dark:text-white text-lg`}>
-              {username}
-            </Text>
+            <Text className="text-white text-lg">{username}</Text>
             <StyledTextInput
               inputValue={inputValues.username}
               label={"new username"}
@@ -201,7 +196,7 @@ export default function AccountInfo() {
               }
             />
             {userId && userId.length > 0 && (
-              <Text style={tw`mt-1 text-center text-red`}>
+              <Text className="mt-1 text-center text-red">
                 Username unavailable
               </Text>
             )}
@@ -225,7 +220,7 @@ export default function AccountInfo() {
               width="full"
             />
             {uiState.usernameError && (
-              <Text style={tw`text-red text-center`}>
+              <Text className="text-red text-center">
                 {uiState.usernameError}
               </Text>
             )}
@@ -240,9 +235,7 @@ export default function AccountInfo() {
               })
             }
           >
-            <Text style={tw`text-grey dark:text-white text-lg`}>
-              {user.email}
-            </Text>
+            <Text className="text-white text-lg">{user.email}</Text>
             <StyledTextInput
               inputValue={inputValues.email}
               label={"new email"}
@@ -277,7 +270,7 @@ export default function AccountInfo() {
               width="full"
             />
             {uiState.emailError && (
-              <Text style={tw`text-red text-center`}>{uiState.emailError}</Text>
+              <Text className="text-red text-center">{uiState.emailError}</Text>
             )}
           </AccountDropdown>
           <AccountDropdown
@@ -327,7 +320,7 @@ export default function AccountInfo() {
               }
             />
             {uiState.passwordError && (
-              <Text style={tw`text-red text-center`}>
+              <Text className="text-red text-center">
                 {uiState.passwordError}
               </Text>
             )}
@@ -342,10 +335,10 @@ export default function AccountInfo() {
               })
             }
           >
-            <Text style={tw`text-red`}>
+            <Text className="text-red">
               Warning: this action is irreversible
             </Text>
-            <Text style={tw`text-red`}>
+            <Text className="text-red">
               To confirm deactivation, re-enter your password
             </Text>
             <StyledTextInput
@@ -367,7 +360,7 @@ export default function AccountInfo() {
               loading={false}
             />
             {uiState.deleteError && (
-              <Text style={tw`text-red text-center`}>
+              <Text className="text-red text-center">
                 {uiState.deleteError}
               </Text>
             )}
@@ -375,10 +368,10 @@ export default function AccountInfo() {
         </View>
         <View>
           <TouchableOpacity
-            style={tw`h-15 w-30 bg-blue flex justify-center items-center rounded-xl mt-5`}
+            className="h-15 w-30 bg-blue flex justify-center items-center rounded-xl mt-5"
             onPress={displaySignOutAlert}
           >
-            <Text style={tw`text-white text-lg`}>Sign Out</Text>
+            <Text className="text-white text-lg">Sign Out</Text>
           </TouchableOpacity>
         </View>
       </View>

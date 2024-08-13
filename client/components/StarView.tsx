@@ -19,7 +19,7 @@ export default function StarView({
       <View style={tw`flex flex-row items-end flex flex-col`}>
         <View style={tw`w-25 rounded-md`}>
           <MaskedView
-            style={tw`h-7 w-full ${Platform.OS !== "ios" ? "px-1.5" : ""}`}
+            style={tw`h-7 w-full android:px-1.5`}
             maskElement={<Text style={tw`text-xl text-center`}>★★★★★</Text>}
           >
             <View style={tw`h-full flex flex-row`}>
@@ -43,7 +43,7 @@ export default function StarView({
       <View style={tw`flex flex-col items-end justify-end`}>
         <View style={tw`w-24.5 rounded-md`}>
           <MaskedView
-            style={tw`h-7 w-full ${Platform.OS !== "ios" ? "px-1.5" : ""}`}
+            style={tw`h-7 w-full android:px-1.5`}
             maskElement={<Text style={tw`text-xl text-center`}>★★★★★</Text>}
           >
             <View style={tw`h-full flex flex-row`}>
@@ -66,7 +66,7 @@ export default function StarView({
         <View style={tw`flex flex-row items-start flex flex-col`}>
           <View style={tw`w-25 rounded-md bg-blue`}>
             <MaskedView
-              style={tw`h-7 w-full ${Platform.OS !== "ios" ? "px-1.5" : ""}`}
+              style={tw`h-7 w-full android:px-1.5`}
               maskElement={<Text style={tw`text-xl text-center`}>★★★★★</Text>}
             >
               <View style={tw`h-full flex flex-row`}>

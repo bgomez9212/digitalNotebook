@@ -15,7 +15,7 @@ export default function MatchRow({
   if (display === "Home") {
     return (
       <TouchableOpacity
-        style={tw`${hideBottomBorder ? "" : "border-b-2"} border-black py-4`}
+        style={tw`${hideBottomBorder ? "" : "border-b"} border-black py-4`}
         key={match.match_id}
         onPress={() =>
           router.navigate({
@@ -63,7 +63,7 @@ export default function MatchRow({
   if (display === "Search") {
     return (
       <TouchableOpacity
-        style={tw`${hideBottomBorder ? "" : "border-b-2"} border-grey py-4`}
+        style={tw`${hideBottomBorder ? "" : "border-b"} border-grey py-4`}
         key={match.match_id}
         onPress={() =>
           router.navigate({

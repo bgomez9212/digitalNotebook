@@ -22,6 +22,7 @@ import { useQuery } from "@tanstack/react-query";
 import { useDebounce } from "use-debounce";
 import { createUser, getUserId } from "../api/users";
 import StyledTextInput from "../components/StyledTextInput";
+import { useAppColorScheme } from "twrnc";
 
 type uiStateTypes = {
   displaySignup: boolean;
@@ -95,7 +96,10 @@ export default function Landing() {
   });
 
   const [debouncedUsername] = useDebounce(watch("signupUsername"), 400);
-
+  const [colorScheme] = useAppColorScheme(tw);
+  const darkPhoto = require("../assets/Notebook-dark.png");
+  const lightPhoto = require("../assets/Notebook-light.png");
+  let icon = colorScheme === "dark" ? darkPhoto : lightPhoto;
   const { data: userId } = useQuery({
     queryKey: ["userId", debouncedUsername],
     queryFn: () => getUserId(debouncedUsername),
@@ -110,13 +114,12 @@ export default function Landing() {
       behavior={Platform.OS === "ios" ? "padding" : "height"}
     >
       <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
-        <View data-testid="landing-page" style={tw`h-full bg-black`}>
+        <View
+          data-testid="landing-page"
+          style={tw`h-full bg-white dark:bg-darkGrey`}
+        >
           <View style={tw`items-center justify-center flex-3`}>
-            <Image
-              source={require("../assets/Notebook.png")}
-              resizeMode="contain"
-              style={tw`w-90`}
-            />
+            <Image source={icon} resizeMode="contain" style={tw`w-90`} />
           </View>
           {uiState.displaySignup ? (
             <View style={tw`items-center justify-start flex-2`}>

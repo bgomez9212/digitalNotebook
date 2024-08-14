@@ -8,7 +8,7 @@
     "icon": "./assets/app-icon.png",
     "userInterfaceStyle": "automatic",
     "splash": {
-      "image": "./assets/Notebook.png",
+      "image": "./assets/Notebook-dark.png",
       "resizeMode": "contain",
       "backgroundColor": "#000000"
     },

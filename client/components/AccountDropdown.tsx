@@ -12,7 +12,7 @@ export default function AccountDropdown({
   const [colorScheme] = useAppColorScheme(tw);
   return (
     <View
-      style={tw`border border-lightGrey dark:border-white items-center px-2 py-3 rounded-md mb-2`}
+      style={tw`border border-grey dark:border-white items-center px-2 py-3 rounded-md mb-2`}
     >
       <TouchableOpacity onPress={displayfn}>
         <View style={tw`justify-between w-full flex-row items-center`}>
@@ -21,13 +21,13 @@ export default function AccountDropdown({
             <AntDesign
               name="upcircleo"
               size={24}
-              color={colorScheme === "light" ? "#E5E4E2" : "white"}
+              color={colorScheme === "light" ? "#222222" : "white"}
             />
           ) : (
             <AntDesign
               name="downcircleo"
               size={24}
-              color={colorScheme === "light" ? "#E5E4E2" : "white"}
+              color={colorScheme === "light" ? "#222222" : "white"}
             />
           )}
         </View>

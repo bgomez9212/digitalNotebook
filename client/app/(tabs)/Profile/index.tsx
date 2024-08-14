@@ -85,7 +85,7 @@ export default function Profile() {
   if (isLoading) {
     return (
       <View
-        style={tw`flex-1 bg-lightGrey dark:bg-darkGrey justify-center items-center`}
+        style={tw`flex-1 bg-white2 dark:bg-darkGrey justify-center items-center`}
       >
         <ActivityIndicator color="#477CB9" />
       </View>
@@ -95,9 +95,9 @@ export default function Profile() {
   return (
     <ScrollView
       nestedScrollEnabled={true}
-      style={tw`bg-lightGrey dark:bg-darkGrey`}
+      style={tw`bg-white2 dark:bg-darkGrey`}
     >
-      <View style={tw`flex-1 bg-lightGrey dark:bg-darkGrey items-center`}>
+      <View style={tw`flex-1 bg-white2 dark:bg-darkGrey items-center`}>
         <PieChart
           style={tw`flex justify-center items-center`}
           data={pieChartData}

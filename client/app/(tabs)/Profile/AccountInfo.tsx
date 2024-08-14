@@ -176,7 +176,7 @@ export default function AccountInfo() {
   return (
     <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
       <View
-        style={tw`flex-1 bg-white dark:bg-darkGrey p-3 items-center justify-between pb-10`}
+        style={tw`flex-1 bg-white2 dark:bg-darkGrey p-3 items-center justify-between pb-10`}
       >
         <View>
           <AccountDropdown
@@ -239,7 +239,9 @@ export default function AccountInfo() {
               })
             }
           >
-            <Text style={tw`text-white text-lg`}>{user.email}</Text>
+            <Text style={tw`text-grey dark:text-white text-lg`}>
+              {user.email}
+            </Text>
             <StyledTextInput
               inputValue={inputValues.email}
               label={"new email"}

@@ -64,9 +64,13 @@ export default function EventRow({
                 height: undefined,
                 resizeMode: `${formatImg(event.promotion_name)}`,
                 shadowColor: "#000",
-                shadowOffset: { width: 0, height: 2 },
-                shadowOpacity: 0.8,
-                shadowRadius: 1,
+                shadowOffset: { width: 0, height: 0 },
+                shadowOpacity:
+                  event.promotion_name === "AEW" ||
+                  event.promotion_name === "WWE"
+                    ? 0.8
+                    : 0,
+                shadowRadius: 0.5,
               }}
               source={photoLibrary[event.promotion_name]}
             />
@@ -109,45 +113,6 @@ export default function EventRow({
           </View>
           <View style={tw`w-1/4 justify-center items-end`}>
             <Text style={tw`text-grey dark:text-white font-medium`}>
-              {event.date}
-            </Text>
-          </View>
-        </View>
-      </TouchableOpacity>
-    );
-  }
-
-  if (display === "RecentEvents") {
-    return (
-      <TouchableOpacity
-        onPress={openEvent}
-        style={tw`w-full flex flex-row py-2 border-lightGrey dark:border-grey border-b`}
-      >
-        <View
-          style={tw`py-2 flex flex-row w-full items-center justify-between`}
-        >
-          <View style={tw`w-1/4 h-11`}>
-            <Image
-              style={{
-                flex: 1,
-                width: undefined,
-                height: undefined,
-                resizeMode: `${formatImg(event.promotion_name)}`,
-                shadowColor: "#000",
-                shadowOffset: { width: 0, height: 2 },
-                shadowOpacity: 0.8,
-                shadowRadius: 1,
-              }}
-              source={photoLibrary[event.promotion_name]}
-            />
-          </View>
-          <View style={tw`w-1/3 justify-center`}>
-            <Text style={tw`text-center dark:text-white text-grey font-medium`}>
-              {event.title}
-            </Text>
-          </View>
-          <View style={tw`w-1/4 justify-center items-end`}>
-            <Text style={tw`dark:text-white text-grey font-medium`}>
               {event.date}
             </Text>
           </View>

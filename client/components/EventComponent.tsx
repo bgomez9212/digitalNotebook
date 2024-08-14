@@ -60,9 +60,12 @@ export default function EventComponent() {
             resizeMode: "contain",
             marginTop: 4,
             shadowColor: "#000",
-            shadowOffset: { width: 0, height: 2 },
-            shadowOpacity: 0.8,
-            shadowRadius: 1,
+            shadowOffset: { width: 0, height: 0 },
+            shadowOpacity:
+              event.promotion_name === "AEW" || event.promotion_name === "WWE"
+                ? 0.8
+                : 0,
+            shadowRadius: 0.5,
           }}
           source={photoLibrary[event.promotion_name]}
         />

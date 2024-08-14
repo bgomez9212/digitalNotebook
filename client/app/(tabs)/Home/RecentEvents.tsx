@@ -44,7 +44,7 @@ export default function RecentEvents() {
           <EventRow
             event={item}
             hideBorder={events.length - 1 === index}
-            display="RecentEvents"
+            display="Table"
           />
         )}
         keyExtractor={(item) => item.id}

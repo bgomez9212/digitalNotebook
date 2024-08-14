@@ -6,13 +6,14 @@ import { TouchableOpacity } from "react-native";
 import { FontAwesome } from "@expo/vector-icons";
 import tw from "../../../tailwind";
 import React from "react";
+import { useAppColorScheme } from "twrnc";
 const blue = "#477CB9";
 export const unstable_settings = {
   initialRouteName: "index",
 };
 export default function Layout() {
   const auth = getAuth();
-  const route = usePathname();
+  const [colorScheme] = useAppColorScheme(tw);
   const { data: username } = useQuery({
     queryKey: ["username", auth.currentUser.uid],
     queryFn: () => getUsername(auth.currentUser.uid),
@@ -40,7 +41,9 @@ export default function Layout() {
         name="AccountInfo"
         options={{
           title: "Account Information",
-          headerStyle: { backgroundColor: "#141414" },
+          headerStyle: {
+            backgroundColor: colorScheme === "light" ? "#222222" : "#141414",
+          },
           headerTitleStyle: { color: "white" },
           headerShown: true,
           headerTintColor: "white",

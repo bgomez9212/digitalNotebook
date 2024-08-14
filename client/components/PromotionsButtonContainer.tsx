@@ -1,4 +1,4 @@
-import { Image, Text, TouchableOpacity, View } from "react-native";
+import { Image, Text, TouchableOpacity, View, StyleSheet } from "react-native";
 import tw from "../tailwind";
 import { useQuery } from "@tanstack/react-query";
 import { ActivityIndicator } from "react-native-paper";
@@ -22,7 +22,9 @@ export default function PromotionsButtonsContainer() {
 
   return (
     <View style={tw`mb-12 items-center`}>
-      <Text style={tw`text-white font-bold text-xl mb-6`}>Promotions</Text>
+      <Text style={tw`dark:text-white text-grey font-bold text-xl mb-6`}>
+        Promotions
+      </Text>
       <View
         style={tw`flex-wrap w-[95%] justify-between flex-row flex-wrap items-center`}
       >
@@ -45,6 +47,13 @@ export default function PromotionsButtonsContainer() {
                   width: 150,
                   height: 150,
                   resizeMode: "contain",
+                  shadowColor: "#000",
+                  shadowOffset: { width: 0, height: 0 },
+                  shadowOpacity:
+                    promotion.name === "AEW" || promotion.name === "WWE"
+                      ? 0.8
+                      : 0,
+                  shadowRadius: 1,
                 }}
                 source={photoLibrary[promotion.name]}
               />

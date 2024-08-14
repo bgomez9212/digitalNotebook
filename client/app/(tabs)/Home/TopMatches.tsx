@@ -19,7 +19,9 @@ export default function TopMatches() {
 
   if (isFetching) {
     return (
-      <View style={tw`flex-1 bg-darkGrey justify-center items-center`}>
+      <View
+        style={tw`flex-1 dark:bg-darkGrey bg-white justify-center items-center`}
+      >
         <ActivityIndicator color="#477CB9" />
       </View>
     );
@@ -27,14 +29,16 @@ export default function TopMatches() {
 
   if (isError) {
     return (
-      <View style={tw`flex-1 bg-darkGrey justify-center items-center`}>
+      <View
+        style={tw`flex-1 dark:bg-darkGrey bg-white justify-center items-center`}
+      >
         <Text>Unable to get matches</Text>
       </View>
     );
   }
 
   return (
-    <View style={tw`flex-1 bg-darkGrey items-center`}>
+    <View style={tw`flex-1 dark:bg-darkGrey bg-white items-center`}>
       <FlatList
         style={tw`w-9.5/10`}
         data={matches}
@@ -46,6 +50,7 @@ export default function TopMatches() {
           />
         )}
         keyExtractor={(item) => item.match_id}
+        showsVerticalScrollIndicator={false}
       />
     </View>
   );

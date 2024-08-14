@@ -20,21 +20,27 @@ export default function Promotions() {
 
   if (isFetching) {
     return (
-      <View style={tw`flex-1 bg-darkGrey justify-center items-center`}>
+      <View
+        style={tw`flex-1 dark:bg-darkGrey bg-white justify-center items-center`}
+      >
         <ActivityIndicator color="#477CB9" />
       </View>
     );
   }
   if (isError) {
     return (
-      <View style={tw`flex-1 bg-darkGrey justify-center items-center`}>
-        <Text style={tw`text-white`}>There seems to be a problem</Text>
+      <View
+        style={tw`flex-1 dark:bg-darkGrey bg-white justify-center items-center`}
+      >
+        <Text style={tw`text-grey dark:text-white`}>
+          There seems to be a problem
+        </Text>
       </View>
     );
   }
 
   return (
-    <View style={tw`flex-1 bg-darkGrey items-center`}>
+    <View style={tw`flex-1 dark:bg-darkGrey bg-white items-center`}>
       <FlatList
         style={tw`w-9.5/10`}
         data={events.results}

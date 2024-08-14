@@ -17,20 +17,26 @@ export default function RecentEvents() {
 
   if (isPending) {
     return (
-      <View style={tw`flex-1 bg-darkGrey justify-center items-center`}>
+      <View
+        style={tw`flex-1 bg-white dark:bg-darkGrey justify-center items-center`}
+      >
         <ActivityIndicator color="#477CB9" />
       </View>
     );
   }
   if (isError) {
     return (
-      <View style={tw`flex-1 bg-darkGrey justify-center items-center`}>
-        <Text style={tw`text-white`}>There seems to be a problem</Text>
+      <View
+        style={tw`flex-1 bg-white dark:bg-darkGrey justify-center items-center`}
+      >
+        <Text style={tw`dark:text-white text-grey`}>
+          There seems to be a problem
+        </Text>
       </View>
     );
   }
   return (
-    <View style={tw`bg-darkGrey items-center`}>
+    <View style={tw`bg-white dark:bg-darkGrey items-center`}>
       <FlatList
         style={tw`w-9.5/10`}
         data={events}
@@ -38,7 +44,7 @@ export default function RecentEvents() {
           <EventRow
             event={item}
             hideBorder={events.length - 1 === index}
-            display="RecentEvents"
+            display="Table"
           />
         )}
         keyExtractor={(item) => item.id}

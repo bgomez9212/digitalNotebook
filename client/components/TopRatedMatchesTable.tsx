@@ -21,11 +21,11 @@ export default function TopRatedMatchesTable() {
 
   if (isFetching || error) {
     return (
-      <View style={tw`bg-grey w-[95%] my-12 rounded-md`}>
+      <View style={tw`bg-white dark:bg-grey w-[95%] my-12 rounded-md`}>
         <View
-          style={tw`items-center justify-center py-3 border-b-2 border-darkGrey`}
+          style={tw`items-center justify-center py-3 border-b border-lightGrey dark:border-darkGrey`}
         >
-          <Text style={tw`text-white font-bold text-lg`}>
+          <Text style={tw`text-grey dark:text-white font-bold text-lg`}>
             Top Matches of the Last 30 Days
           </Text>
         </View>
@@ -33,7 +33,9 @@ export default function TopRatedMatchesTable() {
           {isFetching ? (
             <ActivityIndicator color="#477CB9" />
           ) : (
-            <Text style={tw`text-white`}>Error getting the top matches</Text>
+            <Text style={tw`text-grey dark:text-white`}>
+              Error getting the top matches
+            </Text>
           )}
         </View>
       </View>
@@ -41,11 +43,11 @@ export default function TopRatedMatchesTable() {
   }
 
   return (
-    <View style={tw`bg-grey w-[95%] my-12 rounded-md px-2`}>
+    <View style={tw`bg-white dark:bg-grey w-[95%] my-12 rounded-md px-2`}>
       <View
-        style={tw`items-center justify-center py-3 border-b-2 border-darkGrey`}
+        style={tw`items-center justify-center py-3 border-b dark:border-darkGrey border-lightGrey`}
       >
-        <Text style={tw`text-white font-bold text-lg`}>
+        <Text style={tw`dark:text-white text-grey font-bold text-lg`}>
           Top Matches of the Last 30 Days
         </Text>
       </View>

@@ -19,22 +19,26 @@ export default function StarView({
       <View style={tw`flex flex-row items-end flex flex-col`}>
         <View style={tw`w-25 rounded-md`}>
           <MaskedView
-            style={tw`h-7 w-full ${Platform.OS !== "ios" ? "px-1.5" : ""}`}
+            style={tw`h-7 w-full android:px-1.5`}
             maskElement={<Text style={tw`text-xl text-center`}>★★★★★</Text>}
           >
             <View style={tw`h-full flex flex-row`}>
-              <View style={tw`bg-yellow w-[${starPercentage}%] h-full`} />
-              <View style={tw`bg-grey w-[${emptyPercentage}%] h-full`} />
+              <View
+                style={tw`dark:bg-yellow bg-grey w-[${starPercentage}%] h-full`}
+              />
+              <View
+                style={tw`dark:bg-grey bg-lightGrey w-[${emptyPercentage}%] h-full`}
+              />
             </View>
           </MaskedView>
         </View>
         <Text
-          style={tw`text-white text-right`}
+          style={tw`dark:text-white text-grey text-right`}
         >{`${rating} (${rating_count})`}</Text>
       </View>
     ) : (
       <View style={tw`w-full flex items-end`}>
-        <Text style={tw`text-white pt-1`}>No ratings yet</Text>
+        <Text style={tw`dark:text-white text-grey pt-1`}>No ratings yet</Text>
       </View>
     );
   }
@@ -43,17 +47,21 @@ export default function StarView({
       <View style={tw`flex flex-col items-end justify-end`}>
         <View style={tw`w-24.5 rounded-md`}>
           <MaskedView
-            style={tw`h-7 w-full ${Platform.OS !== "ios" ? "px-1.5" : ""}`}
+            style={tw`h-7 w-full android:px-1.5`}
             maskElement={<Text style={tw`text-xl text-center`}>★★★★★</Text>}
           >
             <View style={tw`h-full flex flex-row`}>
-              <View style={tw`bg-lightGrey w-[${starPercentage}%] h-full`} />
-              <View style={tw`bg-black w-[${emptyPercentage}%] h-full`} />
+              <View
+                style={tw`dark:bg-lightGrey bg-black w-[${starPercentage}%] h-full`}
+              />
+              <View
+                style={tw`dark:bg-black bg-lightGrey w-[${emptyPercentage}%] h-full`}
+              />
             </View>
           </MaskedView>
         </View>
         <Text
-          style={tw`text-white text-xs`}
+          style={tw`dark:text-white text-grey text-xs`}
         >{`${rating} (${rating_count})`}</Text>
       </View>
     ) : (
@@ -66,7 +74,7 @@ export default function StarView({
         <View style={tw`flex flex-row items-start flex flex-col`}>
           <View style={tw`w-25 rounded-md bg-blue`}>
             <MaskedView
-              style={tw`h-7 w-full ${Platform.OS !== "ios" ? "px-1.5" : ""}`}
+              style={tw`h-7 w-full android:px-1.5`}
               maskElement={<Text style={tw`text-xl text-center`}>★★★★★</Text>}
             >
               <View style={tw`h-full flex flex-row`}>
@@ -75,7 +83,9 @@ export default function StarView({
               </View>
             </MaskedView>
           </View>
-          <Text style={tw`text-white pt-1 pl-1`}>{`${rating}`}</Text>
+          <Text
+            style={tw`dark:text-white text-grey pt-1 pl-1`}
+          >{`${rating}`}</Text>
         </View>
       )
     );

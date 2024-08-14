@@ -14,8 +14,10 @@ import { useState } from "react";
 import { getAuth } from "firebase/auth";
 import StarView from "../components/StarView";
 import { addRating, deleteRating } from "../api/matches";
+import { useAppColorScheme } from "twrnc";
 
 export default function RatingModal() {
+  const [colorScheme] = useAppColorScheme(tw);
   const auth = getAuth();
   const { uid } = auth.currentUser;
   const {
@@ -32,7 +34,8 @@ export default function RatingModal() {
   const [rating, setRating] = useState(Number(user_rating) || 2);
   const [showPicker, setShowPicker] = useState(!user_rating);
 
-  const dropdownFontColor = Platform.OS === "ios" ? "white" : "black";
+  const dropdownFontColor =
+    Platform.OS === "ios" && colorScheme === "dark" ? "white" : "black";
 
   const { mutateAsync: addRatingMutation, isPending: addRatingPending } =
     useMutation({
@@ -76,11 +79,15 @@ export default function RatingModal() {
   }
 
   return (
-    <View style={tw`flex-1 items-center justify-center bg-black`}>
+    <View
+      style={tw`flex-1 items-center justify-center bg-white2 dark:bg-darkGrey`}
+    >
       <View style={tw`w-4/5`}>
-        <Text style={tw`text-gold pb-3`}>{championships}</Text>
-        <Text style={tw`text-white text-xl pb-3`}>{participants}</Text>
-        <Text style={tw`text-white pb-3`}>
+        <Text style={tw`text-gold shadow dark:none pb-3`}>{championships}</Text>
+        <Text style={tw`text-grey dark:text-white text-xl pb-3`}>
+          {participants}
+        </Text>
+        <Text style={tw`text-grey dark:text-white pb-3`}>
           From {promotion} {event_title}
         </Text>
         <View
@@ -100,7 +107,7 @@ export default function RatingModal() {
         <View style={tw`w-full items-center`}>
           <Picker
             mode="dropdown"
-            style={tw`w-1/2 ${Platform.OS !== "ios" ? "mt-3 bg-white" : ""}`}
+            style={tw`w-1/2 android:mt-3 android:bg-white`}
             selectedValue={rating}
             onValueChange={(itemValue) => setRating(itemValue)}
           >
@@ -127,9 +134,13 @@ export default function RatingModal() {
           </Picker>
           <View style={tw`py-4`}>
             {rating > 1 ? (
-              <Text style={tw`text-white`}>Rate this match {rating} stars</Text>
+              <Text style={tw`text-grey dark:text-white`}>
+                Rate this match {rating} stars
+              </Text>
             ) : (
-              <Text style={tw`text-white`}>Rate this match {rating} star</Text>
+              <Text style={tw`text-grey dark:text-white`}>
+                Rate this match {rating} star
+              </Text>
             )}
           </View>
           <TouchableOpacity

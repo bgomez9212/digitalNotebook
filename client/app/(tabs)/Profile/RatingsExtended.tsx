@@ -14,13 +14,13 @@ import { GestureHandlerRootView } from "react-native-gesture-handler";
 import { ActivityIndicator, RadioButton } from "react-native-paper";
 import LandingButton from "../../../components/LandingButton";
 import { useLocalSearchParams } from "expo-router";
-import { useAppColorScheme } from "twrnc";
+import { useColorScheme } from "nativewind";
 
 export default function RatingsExtended() {
   const auth = getAuth();
   const user = auth.currentUser;
-  const [colorScheme] = useAppColorScheme(tw);
   const { promotionName } = useLocalSearchParams();
+  const { colorScheme } = useColorScheme();
 
   const [sortParams, setSortParams] = useState({
     sortBy: "ratingDate",
@@ -107,7 +107,7 @@ export default function RatingsExtended() {
 
   if (isError) {
     return (
-      <View className="flex-1 bg-darkGrey justify-center items-center">
+      <View className="flex-1 bg-white dark:bg-darkGrey justify-center items-center">
         <Text>There seems to be an error. Please try again later.</Text>
       </View>
     );
@@ -116,9 +116,9 @@ export default function RatingsExtended() {
   return (
     <GestureHandlerRootView>
       <BottomSheetModalProvider>
-        <View className="flex-1 bg-darkGrey items-center">
-          <View className="pt-2 px-3 flex flex-row justify-between w-full items-center">
-            <Text className="text-white">
+        <View className="flex-1 bg-white dark:bg-darkGrey items-center">
+          <View className="flex flex-row w-[98%] justify-between items-center py-2 border-b border-lightGrey dark:border-grey">
+            <Text className="text-grey dark:text-white font-medium">
               Sorted By: {sortParams.sortByLabel}, {sortParams.sortOrderLabel}
               {promotionName ? `, ${promotionName}` : ""}
             </Text>
@@ -153,9 +153,21 @@ export default function RatingsExtended() {
             ref={bottomSheetModalRef}
             index={1}
             snapPoints={snapPoints}
+            style={{
+              borderWidth: 1,
+              borderTopLeftRadius: 10,
+              borderTopRightRadius: 10,
+            }}
           >
-            <BottomSheetView className="flex flex-1 justify-center items-center">
-              <View className="flex-row gap-10 mb-2">
+            <BottomSheetView
+              style={{
+                display: "flex",
+                justifyContent: "center",
+                alignItems: "center",
+                height: "100%",
+              }}
+            >
+              <View className="flex flex-row w-[75%] justify-between mb-5">
                 <RadioButton.Group
                   onValueChange={(newValue) =>
                     setForm({ ...form, sortBy: newValue })

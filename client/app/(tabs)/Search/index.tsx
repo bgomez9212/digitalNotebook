@@ -39,7 +39,7 @@ export default function Profile() {
   });
   return (
     <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
-      <View className="flex-1 bg-white dark:bg-darkGrey w-full pt-12 items-center">
+      <View className="flex-1 bg-white2 dark:bg-darkGrey w-full pt-12 items-center">
         <View className="w-[90%] mb-12">
           <StyledTextInput
             inputValue={userSearch.searchText}

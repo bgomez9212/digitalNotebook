@@ -90,8 +90,11 @@ export default function Profile() {
   }
 
   return (
-    <ScrollView nestedScrollEnabled={true} className="bg-darkGrey">
-      <View className="flex-1 bg-darkGrey items-center">
+    <ScrollView
+      nestedScrollEnabled={true}
+      className="bg-white2 dark:bg-darkGrey"
+    >
+      <View className="flex-1 bg-white2 dark:bg-darkGrey items-center">
         <PieChart
           style={{
             display: "flex",
@@ -122,10 +125,13 @@ export default function Profile() {
                 className="flex-row items-center justify-center mb-2 w-1/3 py-1"
               >
                 <View
-                  className={`h-3 w-3 mr-1 border`}
+                  className={`h-3 w-3 mr-1`}
                   style={{ backgroundColor: promotion.color }}
                 ></View>
-                <Text className="text-white" key={promotion.promotionName}>
+                <Text
+                  className="text-grey dark:text-white"
+                  key={promotion.promotionName}
+                >
                   {`${promotion.promotionName} (${promotion.matchCount})`}
                 </Text>
               </TouchableOpacity>
@@ -134,14 +140,14 @@ export default function Profile() {
         ) : null}
 
         {!userRatings?.length && (
-          <Text className="text-white">
+          <Text className="text-grey dark:text-white">
             This pie chart will fill when you have rated some matches
           </Text>
         )}
-        <Text className="text-xl text-white underline my-5">
+        <Text className="text-xl text-grey dark:text-white underline my-5 font-medium">
           Most Recently Rated
         </Text>
-        <View className="bg-grey w-[95%] rounded-md px-2 mb-5">
+        <View className="bg-white dark:bg-grey w-[95%] rounded-md px-2 mb-5">
           {isError ? (
             <Text>There seems to be an error..</Text>
           ) : isLoading ? (

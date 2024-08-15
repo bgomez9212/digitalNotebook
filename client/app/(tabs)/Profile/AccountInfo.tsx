@@ -24,9 +24,6 @@ import { useDebounce } from "use-debounce";
 import StyledTextInput from "../../../components/StyledTextInput";
 import AccountDropdown from "../../../components/AccountDropdown";
 import { deleteUserFromDb } from "../../../api/users";
-import ThemeToggle from "../../../components/ThemeToggle";
-import tw from "../../../tailwind";
-import { useAppColorScheme } from "twrnc";
 export default function AccountInfo() {
   const auth = getAuth();
   const user = auth.currentUser;
@@ -55,8 +52,6 @@ export default function AccountInfo() {
     confirmNewPassword: "",
     currentPasswordDeactivate: "",
   });
-  const [colorScheme] = useAppColorScheme(tw);
-
   const [debouncedUsername] = useDebounce(inputValues.username, 500);
 
   const { data: userId } = useQuery({
@@ -178,7 +173,7 @@ export default function AccountInfo() {
 
   return (
     <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
-      <View className="flex-1 bg-darkGrey p-3 items-center justify-between pb-10">
+      <View className="flex-1 bg-white2 dark:bg-darkGrey p-3 items-center justify-between pb-10">
         <View>
           <AccountDropdown
             setting={"Username"}

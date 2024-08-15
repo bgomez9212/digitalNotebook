@@ -50,7 +50,7 @@ export default function EventRow({
     return (
       <TouchableOpacity
         onPress={openEvent}
-        className="w-full flex flex-row py-2 border-darkGrey border-b-2"
+        className="w-full flex flex-row py-2 border-lightGrey dark:border-darkGrey border-b"
       >
         <View className="py-2 flex flex-row w-full items-center justify-between">
           <View className="w-1/4 h-11">
@@ -73,12 +73,14 @@ export default function EventRow({
             />
           </View>
           <View className="w-1/3 justify-center">
-            <Text className="text-center text-white font-bold">
+            <Text className="text-center text-grey dark:text-white font-medium">
               {event.title}
             </Text>
           </View>
           <View className="w-1/4 justify-center items-end">
-            <Text className="text-white font-bold">{event.date}</Text>
+            <Text className="text-grey dark:text-white font-medium">
+              {event.date}
+            </Text>
           </View>
         </View>
       </TouchableOpacity>
@@ -89,54 +91,23 @@ export default function EventRow({
     return (
       <TouchableOpacity
         onPress={openEvent}
-        className="w-full flex flex-row py-2 border-b-2 border-grey"
+        className="w-full flex flex-row py-2 border-b border-grey"
       >
         <View className="py-2 flex flex-row w-full items-center justify-between">
           <View className="w-1/4">
             <Text
-              className={`text-center text-white font-bold ${setColorToDisplay(event.avg_rating)}`}
+              className={`text-center text-white font-medium ${setColorToDisplay(event.avg_rating)}`}
             >
               {event.avg_rating || "-"}
             </Text>
           </View>
           <View className="w-1/3 justify-center">
-            <Text className="text-center text-white font-bold">
+            <Text className="text-center text-white font-medium">
               {event.title}
             </Text>
           </View>
           <View className="w-1/4 justify-center items-end">
-            <Text className="text-white font-bold">{event.date}</Text>
-          </View>
-        </View>
-      </TouchableOpacity>
-    );
-  }
-
-  if (display === "RecentEvents") {
-    return (
-      <TouchableOpacity
-        onPress={openEvent}
-        className="w-full flex flex-row py-2 border-grey border-b-2"
-      >
-        <View className="py-2 flex flex-row w-full items-center justify-between">
-          <View className="w-1/4 h-11">
-            <Image
-              style={{
-                flex: 1,
-                width: undefined,
-                height: undefined,
-                resizeMode: `${formatImg(event.promotion_name)}`,
-              }}
-              source={photoLibrary[event.promotion_name]}
-            />
-          </View>
-          <View className="w-1/3 justify-center">
-            <Text className="text-center text-white font-bold">
-              {event.title}
-            </Text>
-          </View>
-          <View className="w-1/4 justify-center items-end">
-            <Text className="text-white font-bold">{event.date}</Text>
+            <Text className="text-white font-medium">{event.date}</Text>
           </View>
         </View>
       </TouchableOpacity>

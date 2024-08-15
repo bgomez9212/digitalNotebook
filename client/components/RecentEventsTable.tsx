@@ -1,6 +1,5 @@
 import { View, Text, TouchableOpacity } from "react-native";
 import { ActivityIndicator } from "react-native-paper";
-import tw from "../tailwind";
 import { useQuery } from "@tanstack/react-query";
 import EventRow from "./EventRow";
 import { router } from "expo-router";
@@ -19,17 +18,17 @@ export default function RecentEventTable() {
   // if (isPending) return 'Loading...'
   if (isPending || error) {
     return (
-      <View style={tw`dark:bg-grey w-[95%] mt-12 rounded-md`}>
-        <View style={tw`items-center justify-center py-3 border-b-2`}>
-          <Text style={tw`text-white font-bold text-lg`}>
+      <View className="dark:bg-grey w-[95%] mt-12 rounded-md">
+        <View className="items-center justify-center py-3 border-b-2">
+          <Text className="text-white font-bold text-lg">
             Most Recent Shows
           </Text>
         </View>
-        <View style={tw`h-96 justify-center items-center`}>
+        <View className="h-96 justify-center items-center">
           {isPending ? (
             <ActivityIndicator color="#477CB9" />
           ) : (
-            <Text style={tw`text-white`}>Error getting the recent events</Text>
+            <Text className="text-white">Error getting the recent events</Text>
           )}
         </View>
       </View>
@@ -37,11 +36,9 @@ export default function RecentEventTable() {
   }
 
   return (
-    <View style={tw`dark:bg-grey bg-white w-[95%] mt-12 rounded-md px-2`}>
-      <View
-        style={tw`items-center justify-center py-3 border-b dark:border-darkGrey border-lightGrey`}
-      >
-        <Text style={tw`dark:text-white text-grey font-bold text-lg`}>
+    <View className="dark:bg-grey bg-white w-[95%] mt-12 rounded-md px-2">
+      <View className="items-center justify-center py-3 border-b dark:border-darkGrey border-lightGrey">
+        <Text className="dark:text-white text-grey font-bold text-lg">
           Most Recent Shows
         </Text>
       </View>
@@ -53,12 +50,12 @@ export default function RecentEventTable() {
           display="Table"
         />
       ))}
-      <View style={tw`h-10 flex justify-center items-center`}>
+      <View className="h-10 flex justify-center items-center">
         <TouchableOpacity
           onPress={() => router.push(`/(tabs)/Home/RecentEvents`)}
-          style={tw`px-20`}
+          className="px-20"
         >
-          <Text style={tw`text-blue font-bold underline`}>See More</Text>
+          <Text className="text-blue font-bold underline">See More</Text>
         </TouchableOpacity>
       </View>
     </View>

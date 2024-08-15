@@ -51,7 +51,7 @@ export default function MatchRow({
           >
             <StarView display={"User"} rating={match.user_rating} />
             <StarView
-              display="Home"
+              display="Total"
               rating={match.community_rating}
               rating_count={match.rating_count}
             />

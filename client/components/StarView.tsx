@@ -12,80 +12,52 @@ export default function StarView({
   display: "Total" | "User" | "Home";
 }) {
   const starPercentage: number = rating * 20;
-  const emptyPercentage: number = 100 - rating;
 
   if (display === "Total") {
     return rating ? (
-      <View style={tw`flex flex-row items-end flex flex-col`}>
-        <View style={tw`w-25 rounded-md`}>
+      <View className="flex flex-col items-end">
+        <View className="w-[99px] h-7 rounded-md">
           <MaskedView
-            style={tw`h-7 w-full android:px-1.5`}
-            maskElement={<Text style={tw`text-xl text-center`}>★★★★★</Text>}
+            className="w-full android:px-1.5"
+            maskElement={<Text className="text-xl text-center">★★★★★</Text>}
           >
-            <View style={tw`h-full flex flex-row`}>
+            <View className="h-full flex flex-row">
               <View
-                style={tw`dark:bg-yellow bg-grey w-[${starPercentage}%] h-full`}
+                className={`bg-black h-full`}
+                style={{ width: `${starPercentage}%` }}
               />
-              <View
-                style={tw`dark:bg-grey bg-lightGrey w-[${emptyPercentage}%] h-full`}
-              />
+              <View className={`bg-lightGrey w-[100%] h-full`} />
             </View>
           </MaskedView>
         </View>
-        <Text
-          style={tw`dark:text-white text-grey text-right`}
-        >{`${rating} (${rating_count})`}</Text>
+        <Text className="dark:text-white text-grey text-right">{`${rating} (${rating_count})`}</Text>
       </View>
     ) : (
-      <View style={tw`w-full flex items-end`}>
-        <Text style={tw`dark:text-white text-grey pt-1`}>No ratings yet</Text>
+      <View className="w-full flex items-end">
+        <Text className="dark:text-white text-grey pt-1">No ratings yet</Text>
       </View>
     );
   }
-  if (display === "Home") {
-    return rating ? (
-      <View style={tw`flex flex-col items-end justify-end`}>
-        <View style={tw`w-24.5 rounded-md`}>
-          <MaskedView
-            style={tw`h-7 w-full android:px-1.5`}
-            maskElement={<Text style={tw`text-xl text-center`}>★★★★★</Text>}
-          >
-            <View style={tw`h-full flex flex-row`}>
-              <View
-                style={tw`dark:bg-lightGrey bg-black w-[${starPercentage}%] h-full`}
-              />
-              <View
-                style={tw`dark:bg-black bg-lightGrey w-[${emptyPercentage}%] h-full`}
-              />
-            </View>
-          </MaskedView>
-        </View>
-        <Text
-          style={tw`dark:text-white text-grey text-xs`}
-        >{`${rating} (${rating_count})`}</Text>
-      </View>
-    ) : (
-      <Text style={tw`text-white pt-1`}>No ratings yet</Text>
-    );
-  }
+
   if (display === "User") {
     return (
       rating && (
-        <View style={tw`flex flex-row items-start flex flex-col`}>
-          <View style={tw`w-25 rounded-md bg-blue`}>
+        <View className="items-start flex flex-col">
+          <View className="w-[99px] rounded-md bg-blue h-7">
             <MaskedView
-              style={tw`h-7 w-full android:px-1.5`}
-              maskElement={<Text style={tw`text-xl text-center`}>★★★★★</Text>}
+              className="w-full android:px-1.5"
+              maskElement={<Text className="text-xl text-center">★★★★★</Text>}
             >
-              <View style={tw`h-full flex flex-row`}>
-                <View style={tw`bg-yellow w-[${starPercentage}%] h-full`} />
-                <View style={tw`bg-grey w-[${emptyPercentage}%] h-full`} />
+              <View className="h-full flex flex-row">
+                <View
+                  className={`bg-yellow h-full`}
+                  style={{ width: `${starPercentage}%` }}
+                />
+                <View className={`bg-grey w-[100%] h-full`} />
               </View>
             </MaskedView>
           </View>
-          <Text
-            style={tw`dark:text-white text-grey pt-1 pl-1`}
-          >{`${rating}`}</Text>
+          <Text className="dark:text-white text-grey pt-1 pl-1">{`${rating}`}</Text>
         </View>
       )
     );

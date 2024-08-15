@@ -1,5 +1,4 @@
 import { FlatList, RefreshControl, Text, View } from "react-native";
-import tw from "../tailwind";
 import EventRow from "./EventRow";
 import MatchRow from "./MatchRow";
 import { useQueryClient } from "@tanstack/react-query";
@@ -13,14 +12,14 @@ export default function SearchResults({ data }) {
   if (!data.results.length) {
     return (
       <View>
-        <Text style={tw`text-white`}>No results</Text>
+        <Text className="text-white">No results</Text>
       </View>
     );
   }
   if (data.results.length && data.search_param === "events") {
     return (
       <FlatList
-        style={tw`w-9.5/10`}
+        className="w-[95%]"
         data={data.results}
         keyExtractor={(item) => item.id}
         renderItem={({ item, index }) => (
@@ -39,7 +38,7 @@ export default function SearchResults({ data }) {
   ) {
     return (
       <FlatList
-        style={tw`w-9.5/10`}
+        className="w-[95%]"
         showsVerticalScrollIndicator={false}
         data={data.results}
         keyExtractor={(item) => item.match_id}

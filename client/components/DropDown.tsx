@@ -1,35 +1,48 @@
 import { useState } from "react";
 import { Keyboard, View } from "react-native";
 import { Dropdown } from "react-native-element-dropdown";
+import { useColorScheme } from "nativewind";
 
 const DropdownComponent = ({ searchParam, setSearchParam, data }) => {
   const [isFocus, setIsFocus] = useState(false);
+  const { colorScheme } = useColorScheme();
 
   return (
     <View className="w-full mt-3">
       <Dropdown
         style={{
-          backgroundColor: "#222222",
+          backgroundColor: colorScheme === "light" ? "white" : "#222222",
           height: 40,
           paddingHorizontal: 12,
-          borderWidth: 2,
+          borderWidth: 1,
           borderRadius: 5,
+          borderColor: colorScheme === "light" ? "grey" : "white",
         }}
         containerStyle={{
-          backgroundColor: "#222222",
+          backgroundColor: colorScheme === "light" ? "white" : "#222222",
           borderWidth: 0,
           paddingLeft: "2.5%",
         }}
         itemContainerStyle={{
-          borderBottomWidth: 2,
+          borderBottomWidth: 1,
+          borderColor: colorScheme === "light" ? "grey" : "white",
           paddingVertical: 4,
           width: "95%",
         }}
-        placeholderStyle={{ fontWeight: "bold", color: "white" }}
-        iconColor="white"
-        selectedTextStyle={{ fontWeight: "bold", color: "white" }}
+        placeholderStyle={{
+          fontWeight: "medium",
+          color: colorScheme === "light" ? "grey" : "white",
+        }}
+        iconColor={colorScheme === "light" ? "grey" : "white"}
+        selectedTextStyle={{
+          fontWeight: "bold",
+          color: colorScheme === "light" ? "black" : "white",
+        }}
         activeColor="darkGrey"
-        itemTextStyle={{ color: "white", textAlign: "center" }}
+        itemTextStyle={{
+          color: colorScheme === "light" ? "black" : "white",
+          textAlign: "center",
+        }}
         data={data}
         maxHeight={300}
         labelField="label"

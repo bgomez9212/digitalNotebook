@@ -1,12 +1,11 @@
 import { TextInput } from "react-native-paper";
-import tw from "../tailwind";
-import { useAppColorScheme } from "twrnc";
+import { useColorScheme } from "nativewind";
 
 export default function StyledTextInput({ inputValue, label, changeFn }) {
-  const [colorScheme] = useAppColorScheme(tw);
+  const { colorScheme } = useColorScheme();
   return (
     <TextInput
-      style={tw`dark:bg-grey bg-white h-10`}
+      className="bg-white dark:bg-grey h-10"
       value={inputValue}
       label={label}
       onChangeText={(text) => changeFn(text)}

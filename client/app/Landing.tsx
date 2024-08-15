@@ -22,6 +22,7 @@ import { useDebounce } from "use-debounce";
 import { createUser, getUserId } from "../api/users";
 import StyledTextInput from "../components/StyledTextInput";
 import { useAppColorScheme } from "twrnc";
+import tw from "../tailwind";
 
 type uiStateTypes = {
   displaySignup: boolean;
@@ -116,7 +117,7 @@ export default function Landing() {
         <View data-testid="landing-page" style={tw`h-full bg-black`}>
           <View style={tw`items-center justify-center flex-3`}>
             <Image
-              source={require("../assets/Notebook.png")}
+              source={require("../assets/Notebook-dark.png")}
               resizeMode="contain"
               style={tw`w-90`}
             />

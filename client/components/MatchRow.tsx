@@ -1,6 +1,5 @@
 import { router } from "expo-router";
 import { TouchableOpacity, View, Text } from "react-native";
-import tw from "../tailwind";
 import StarView from "./StarView";
 import { Match } from "../types/types";
 export default function MatchRow({
@@ -15,7 +14,7 @@ export default function MatchRow({
   if (display === "Home") {
     return (
       <TouchableOpacity
-        style={tw`${hideBottomBorder ? "" : "border-b"} dark:border-black border-lightGrey py-4`}
+        className={`${hideBottomBorder ? "" : "border-b"} dark:border-black border-lightGrey py-4`}
         key={match.match_id}
         onPress={() =>
           router.navigate({
@@ -24,35 +23,31 @@ export default function MatchRow({
           })
         }
       >
-        <View style={tw`flex flex-col w-full`}>
+        <View className="flex flex-col w-full">
           {match.event_title && (
-            <View
-              style={tw`w-full flex-row items-center justify-between items-start`}
-            >
-              <Text style={tw`dark:text-white text-grey italic w-5/8`}>
+            <View className="w-full flex-row justify-between items-start">
+              <Text className="dark:text-white text-grey italic w-5/8">
                 {match.event_title}
               </Text>
-              <Text style={tw`dark:text-white text-grey italic`}>
+              <Text className="dark:text-white text-grey italic">
                 {match.date}
               </Text>
             </View>
           )}
           {match.championships && (
-            <View style={tw``}>
-              <Text
-                style={tw`text-gold text-sm text-center pt-2 shadow dark:shadow-none`}
-              >
+            <View>
+              <Text className="text-gold text-sm text-center pt-2 shadow dark:shadow-none">
                 {match.championships}
               </Text>
             </View>
           )}
-          <View style={tw`py-2`}>
-            <Text style={tw`dark:text-white text-grey text-lg`}>
+          <View className="py-2">
+            <Text className="dark:text-white text-grey text-lg">
               {match.participants}
             </Text>
           </View>
           <View
-            style={tw`flex flex-row ${match.user_rating ? "justify-between" : "justify-end"}`}
+            className={`flex flex-row ${match.user_rating ? "justify-between" : "justify-end"}`}
           >
             <StarView display={"User"} rating={match.user_rating} />
             <StarView
@@ -69,7 +64,7 @@ export default function MatchRow({
   if (display === "Search") {
     return (
       <TouchableOpacity
-        style={tw`${hideBottomBorder ? "" : "border-b"} dark:border-grey border-lightGrey py-4`}
+        className={`${hideBottomBorder ? "" : "border-b"} dark:border-grey border-lightGrey py-4`}
         key={match.match_id}
         onPress={() =>
           router.navigate({
@@ -78,35 +73,31 @@ export default function MatchRow({
           })
         }
       >
-        <View style={tw`flex flex-col w-full`}>
+        <View className="flex flex-col w-full">
           {match.event_title && (
-            <View style={tw`w-full flex-row items-start`}>
-              <Text style={tw`dark:text-white text-grey italic flex-1`}>
+            <View className="w-full flex-row items-start">
+              <Text className="dark:text-white text-grey italic flex-1">
                 {match.event_title}
               </Text>
-              <Text
-                style={tw`dark:text-white text-grey italic flex-1 text-right`}
-              >
+              <Text className="dark:text-white text-grey italic flex-1 text-right">
                 {match.date}
               </Text>
             </View>
           )}
           {match.championships && (
-            <View style={tw``}>
-              <Text
-                style={tw`text-gold text-sm text-center pt-2 shadow dark:shadow-none`}
-              >
+            <View>
+              <Text className="text-gold text-sm text-center pt-2 shadow dark:shadow-none">
                 {match.championships}
               </Text>
             </View>
           )}
-          <View style={tw`py-2`}>
-            <Text style={tw`dark:text-white text-grey text-lg`}>
+          <View className="py-2`">
+            <Text className="dark:text-white text-grey text-lg">
               {match.participants}
             </Text>
           </View>
           <View
-            style={tw`flex flex-row ${match.user_rating ? "justify-between" : "justify-end"}`}
+            className={`flex flex-row ${match.user_rating ? "justify-between" : "justify-end"}`}
           >
             <StarView display={"User"} rating={match.user_rating} />
             <StarView
@@ -123,7 +114,7 @@ export default function MatchRow({
   if (display === "Event") {
     return (
       <TouchableOpacity
-        style={tw`${hideBottomBorder ? "" : "border-b"} dark:border-grey border-lightGrey py-4`}
+        className={`${hideBottomBorder ? "" : "border-b"} dark:border-grey border-lightGrey py-4`}
         key={match.match_id}
         onPress={() =>
           router.navigate({
@@ -132,21 +123,21 @@ export default function MatchRow({
           })
         }
       >
-        <View style={tw`flex flex-col w-full`}>
+        <View className="flex flex-col w-full">
           {match.championships && (
-            <View style={tw``}>
-              <Text style={tw`text-gold text-sm text-center`}>
+            <View>
+              <Text className="text-gold text-sm text-center">
                 {match.championships}
               </Text>
             </View>
           )}
-          <View style={tw`py-2`}>
-            <Text style={tw`dark:text-white text-grey text-lg`}>
+          <View className="py-2">
+            <Text className="dark:text-white text-grey text-lg">
               {match.participants}
             </Text>
           </View>
           <View
-            style={tw`flex flex-row ${match.user_rating ? "justify-between" : "justify-end"}`}
+            className={`flex flex-row ${match.user_rating ? "justify-between" : "justify-end"}`}
           >
             <StarView display={"User"} rating={match.user_rating} />
             <StarView

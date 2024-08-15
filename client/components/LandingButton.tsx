@@ -1,5 +1,4 @@
 import { Text, TouchableOpacity, View } from "react-native";
-import tw from "../tailwind";
 import { ActivityIndicator } from "react-native-paper";
 
 type LandingButtonProps = {
@@ -21,17 +20,17 @@ export default function LandingButton({
 }: LandingButtonProps) {
   return loading ? (
     <View
-      style={tw`bg-${color ? color : "blue"} w-${width ? width : 60} flex items-center justify-center p-1.6 mb-2 rounded mt-2`}
+      className={`bg-${color ? color : "blue"} w-${width ? width : 60} flex items-center justify-center p-1.6 mb-2 rounded mt-2`}
     >
       <ActivityIndicator color="white" />
     </View>
   ) : (
     <TouchableOpacity
       disabled={disabled}
-      style={tw`bg-${color ? color : "blue"} h-10 w-${width ? width : 60} flex items-center justify-center rounded ${disabled ? "opacity-50" : ""} mt-2`}
+      className={`bg-${color ? color : "blue"} h-10 w-${width ? width : 60} flex items-center justify-center rounded ${disabled ? "opacity-50" : ""} mt-2`}
       onPress={fn}
     >
-      <Text style={tw`text-white`}>{text}</Text>
+      <Text className="text-white">{text}</Text>
     </TouchableOpacity>
   );
 }

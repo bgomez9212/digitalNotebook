@@ -1,5 +1,4 @@
 import { Image, Text, TouchableOpacity, View, StyleSheet } from "react-native";
-import tw from "../tailwind";
 import { useQuery } from "@tanstack/react-query";
 import { ActivityIndicator } from "react-native-paper";
 import { router } from "expo-router";
@@ -21,13 +20,11 @@ export default function PromotionsButtonsContainer() {
   }
 
   return (
-    <View style={tw`mb-12 items-center`}>
-      <Text style={tw`dark:text-white text-grey font-bold text-xl mb-6`}>
+    <View className="mb-12 items-center">
+      <Text className="dark:text-white text-grey font-bold text-xl mb-6">
         Promotions
       </Text>
-      <View
-        style={tw`flex-wrap w-[95%] justify-between flex-row flex-wrap items-center`}
-      >
+      <View className="flex-wrap w-[95%] justify-between flex-row items-center">
         {promotions
           .sort((a, b) => (a.name > b.name ? 1 : -1))
           .map((promotion) => (
@@ -39,7 +36,7 @@ export default function PromotionsButtonsContainer() {
                 })
               }
               key={promotion.id}
-              style={tw`w-[48%] h-30 justify-center items-center my-2 rounded-md`}
+              className="w-[48%] h-30 justify-center items-center my-2 rounded-md"
             >
               <Image
                 style={{

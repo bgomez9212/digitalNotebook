@@ -1,6 +1,6 @@
 import { TouchableOpacity, View, Text } from "react-native";
 import { AntDesign } from "@expo/vector-icons";
-import { useAppColorScheme } from "twrnc";
+import { useColorScheme } from "nativewind";
 
 export default function AccountDropdown({
   displayfn,
@@ -8,7 +8,7 @@ export default function AccountDropdown({
   setting,
   children,
 }) {
-  const [colorScheme] = useAppColorScheme(tw);
+  const { colorScheme } = useColorScheme();
   return (
     <View className="border border-white items-center px-2 py-3 rounded-md mb-2">
       <TouchableOpacity onPress={displayfn}>

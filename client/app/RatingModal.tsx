@@ -14,6 +14,7 @@ import { getAuth } from "firebase/auth";
 import StarView from "../components/StarView";
 import { addRating, deleteRating } from "../api/matches";
 import { useAppColorScheme } from "twrnc";
+import tw from "../tailwind";
 
 export default function RatingModal() {
   const [colorScheme] = useAppColorScheme(tw);

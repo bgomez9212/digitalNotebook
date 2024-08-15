@@ -2,7 +2,6 @@ import { View, Image } from "react-native";
 import tw from "../tailwind";
 
 export default function index() {
-  useDeviceContext(tw);
   return (
     <View className="flex-1 justify-center items-center bg-black">
       <Image

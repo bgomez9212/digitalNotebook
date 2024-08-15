@@ -25,6 +25,8 @@ import StyledTextInput from "../../../components/StyledTextInput";
 import AccountDropdown from "../../../components/AccountDropdown";
 import { deleteUserFromDb } from "../../../api/users";
 import ThemeToggle from "../../../components/ThemeToggle";
+import tw from "../../../tailwind";
+import { useAppColorScheme } from "twrnc";
 export default function AccountInfo() {
   const auth = getAuth();
   const user = auth.currentUser;
@@ -53,6 +55,7 @@ export default function AccountInfo() {
     confirmNewPassword: "",
     currentPasswordDeactivate: "",
   });
+  const [colorScheme] = useAppColorScheme(tw);
 
   const [debouncedUsername] = useDebounce(inputValues.username, 500);
 

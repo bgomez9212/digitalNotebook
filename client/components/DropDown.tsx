@@ -4,7 +4,6 @@ import { Dropdown } from "react-native-element-dropdown";
 
 const DropdownComponent = ({ searchParam, setSearchParam, data }) => {
   const [isFocus, setIsFocus] = useState(false);
-  const [colorScheme] = useAppColorScheme(tw);
 
   return (
     <View className="w-full mt-3">

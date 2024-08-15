@@ -25,6 +25,7 @@ import { useDebounce } from "use-debounce";
 import StyledTextInput from "../../../components/StyledTextInput";
 import AccountDropdown from "../../../components/AccountDropdown";
 import { deleteUserFromDb } from "../../../api/users";
+import ThemeToggle from "../../../components/ThemeToggle";
 export default function AccountInfo() {
   const auth = getAuth();
   const user = auth.currentUser;

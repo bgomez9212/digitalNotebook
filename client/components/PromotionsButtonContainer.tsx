@@ -36,7 +36,7 @@ export default function PromotionsButtonsContainer() {
                 })
               }
               key={promotion.id}
-              className="w-[48%] h-30 justify-center items-center my-2 rounded-md"
+              className="w-[48%] h-[100px] justify-center items-center my-2 rounded-md"
             >
               <Image
                 style={{

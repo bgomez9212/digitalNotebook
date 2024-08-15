@@ -372,7 +372,6 @@ export default function AccountInfo() {
               </Text>
             )}
           </AccountDropdown>
-          <ThemeToggle />
         </View>
         <View>
           <TouchableOpacity

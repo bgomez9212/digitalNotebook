@@ -10,14 +10,14 @@ export default function Home() {
   const refreshing = false;
   const queryClient = useQueryClient();
   return (
-    <ScrollView style={tw`dark:bg-darkGrey bg-white2`}>
+    <ScrollView className="dark:bg-darkGrey bg-white2">
       <StatusBar style="light" />
       <RefreshControl
         refreshing={refreshing}
         onRefresh={() => queryClient.invalidateQueries()}
         tintColor="white"
       />
-      <View style={tw`flex items-center`}>
+      <View className="flex items-center">
         <RecentEventsTable />
         <TopRatedMatchesTable />
         <PromotionsButtonsContainer />

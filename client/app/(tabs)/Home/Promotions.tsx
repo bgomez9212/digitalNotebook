@@ -1,5 +1,4 @@
 import { View, FlatList, Text } from "react-native";
-import tw from "../../../tailwind";
 import { useLocalSearchParams } from "expo-router";
 import { useQuery } from "@tanstack/react-query";
 import { ActivityIndicator } from "react-native-paper";
@@ -20,19 +19,15 @@ export default function Promotions() {
 
   if (isFetching) {
     return (
-      <View
-        style={tw`flex-1 dark:bg-darkGrey bg-white justify-center items-center`}
-      >
+      <View className="flex-1 bg-white dark:bg-darkGrey justify-center items-center">
         <ActivityIndicator color="#477CB9" />
       </View>
     );
   }
   if (isError) {
     return (
-      <View
-        style={tw`flex-1 dark:bg-darkGrey bg-white justify-center items-center`}
-      >
-        <Text style={tw`text-grey dark:text-white`}>
+      <View className="flex-1 bg-white dark:bg-darkGrey justify-center items-center">
+        <Text className="text-grey dark:text-white">
           There seems to be a problem
         </Text>
       </View>
@@ -40,9 +35,9 @@ export default function Promotions() {
   }
 
   return (
-    <View style={tw`flex-1 dark:bg-darkGrey bg-white items-center`}>
+    <View className="flex-1 dark:bg-darkGrey bg-white items-center">
       <FlatList
-        style={tw`w-9.5/10`}
+        style={{ width: "95%" }}
         data={events.results}
         renderItem={({ item, index }) => {
           return (

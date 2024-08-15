@@ -1,6 +1,5 @@
 import { useQuery } from "@tanstack/react-query";
 import { View, Text, FlatList } from "react-native";
-import tw from "../../../tailwind";
 import EventRow from "../../../components/EventRow";
 import { ActivityIndicator } from "react-native-paper";
 import { getRecentEvents } from "../../../api/events";
@@ -17,28 +16,22 @@ export default function RecentEvents() {
 
   if (isPending) {
     return (
-      <View
-        style={tw`flex-1 bg-white dark:bg-darkGrey justify-center items-center`}
-      >
+      <View className="flex-1 bg-white dark:bg-darkGrey justify-center items-center">
         <ActivityIndicator color="#477CB9" />
       </View>
     );
   }
   if (isError) {
     return (
-      <View
-        style={tw`flex-1 bg-white dark:bg-darkGrey justify-center items-center`}
-      >
-        <Text style={tw`dark:text-white text-grey`}>
-          There seems to be a problem
-        </Text>
+      <View className="flex-1 bg-white dark:bg-darkGrey justify-center items-center">
+        <Text className="text-white">There seems to be a problem</Text>
       </View>
     );
   }
   return (
-    <View style={tw`bg-white dark:bg-darkGrey items-center`}>
+    <View className="bg-white dark:bg-darkGrey items-center">
       <FlatList
-        style={tw`w-9.5/10`}
+        style={{ width: "95%" }}
         data={events}
         renderItem={({ item, index }) => (
           <EventRow

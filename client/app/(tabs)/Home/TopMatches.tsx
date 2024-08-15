@@ -1,6 +1,5 @@
 import { useQuery } from "@tanstack/react-query";
 import { FlatList, Text, View } from "react-native";
-import tw from "../../../tailwind";
 import MatchRow from "../../../components/MatchRow";
 import { ActivityIndicator } from "react-native-paper";
 import { getTopMatches } from "../../../api/matches";
@@ -19,9 +18,7 @@ export default function TopMatches() {
 
   if (isFetching) {
     return (
-      <View
-        style={tw`flex-1 dark:bg-darkGrey bg-white justify-center items-center`}
-      >
+      <View className="flex-1 dark:bg-darkGrey bg-white justify-center items-center">
         <ActivityIndicator color="#477CB9" />
       </View>
     );
@@ -29,18 +26,16 @@ export default function TopMatches() {
 
   if (isError) {
     return (
-      <View
-        style={tw`flex-1 dark:bg-darkGrey bg-white justify-center items-center`}
-      >
+      <View className="flex-1 dark:bg-darkGrey bg-whitejustify-center items-center">
         <Text>Unable to get matches</Text>
       </View>
     );
   }
 
   return (
-    <View style={tw`flex-1 dark:bg-darkGrey bg-white items-center`}>
+    <View className="flex-1 dark:bg-darkGrey bg-white items-center">
       <FlatList
-        style={tw`w-9.5/10`}
+        style={{ width: "95%" }}
         data={matches}
         renderItem={({ item, index }) => (
           <MatchRow

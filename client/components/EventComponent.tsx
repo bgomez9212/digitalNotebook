@@ -1,6 +1,5 @@
 import { useLocalSearchParams } from "expo-router";
 import { FlatList, Image, SafeAreaView, Text, View } from "react-native";
-import tw from "../tailwind";
 import { useQuery } from "@tanstack/react-query";
 import { ActivityIndicator } from "react-native-paper";
 import MatchRow from "../components/MatchRow";
@@ -36,7 +35,7 @@ export default function EventComponent() {
 
   if (isLoading) {
     return (
-      <View style={tw`flex-1 justify-center bg-white dark:bg-darkGrey`}>
+      <View className="flex-1 justify-center bg-white dark:bg-darkGrey">
         <ActivityIndicator color="#477CB9" />
       </View>
     );
@@ -51,7 +50,7 @@ export default function EventComponent() {
 
   function eventHeader() {
     return (
-      <View style={tw`bg-white dark:bg-darkGrey`}>
+      <View className="bg-white dark:bg-darkGrey">
         <Image
           style={{
             flex: 1,
@@ -69,19 +68,19 @@ export default function EventComponent() {
           }}
           source={photoLibrary[event.promotion_name]}
         />
-        <View style={tw`mt-8 mb-8 items-center`}>
-          <Text style={tw`dark:text-white text-grey text-3xl text-center pb-2`}>
+        <View className="mt-8 mb-8 items-center">
+          <Text className="text-grey dark:text-white text-3xl text-center pb-2">
             {event.title}
           </Text>
-          <Text style={tw`dark:text-white text-grey pb-2`}>{event.date}</Text>
-          <Text style={tw`dark:text-white text-grey pb-2`}>
+          <Text className="text-grey dark:text-white pb-2">{event.date}</Text>
+          <Text className="text-grey dark:text-white pb-2">
             {event.venue_name}
           </Text>
-          <Text style={tw`dark:text-white text-grey pb-2`}>
+          <Text className="text-grey dark:text-white pb-2">
             {event.city}, {event.state} ({event.country})
           </Text>
           <Text
-            style={tw`text-lg shadow ${setColorToDisplay(event.avg_rating)}`}
+            className={`text-lg shadow ${setColorToDisplay(event.avg_rating)}`}
           >
             {event.avg_rating}
           </Text>
@@ -91,11 +90,11 @@ export default function EventComponent() {
   }
 
   return (
-    <SafeAreaView style={tw`flex-1`}>
-      <View style={tw`bg-white dark:bg-darkGrey flex-1 items-center pb-3`}>
+    <SafeAreaView className="flex-1">
+      <View className="bg-white dark:bg-darkGrey flex-1 items-center pb-3">
         <FlatList
           showsVerticalScrollIndicator={false}
-          style={tw`w-9/10`}
+          style={{ width: "95%" }}
           ListHeaderComponent={eventHeader}
           keyExtractor={(item) => item.match_id}
           data={event.matches}

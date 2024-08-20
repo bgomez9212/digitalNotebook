@@ -185,7 +185,9 @@ export default function AccountInfo() {
             }
             display={uiState.showChangeUsername}
           >
-            <Text className="text-white text-lg">{username}</Text>
+            <Text className="text-grey dark:text-white text-lg">
+              {username}
+            </Text>
             <StyledTextInput
               inputValue={inputValues.username}
               label={"new username"}
@@ -233,7 +235,9 @@ export default function AccountInfo() {
               })
             }
           >
-            <Text className="text-white text-lg">{user.email}</Text>
+            <Text className="text-grey dark:text-white text-lg">
+              {user.email}
+            </Text>
             <StyledTextInput
               inputValue={inputValues.email}
               label={"new email"}
@@ -366,7 +370,7 @@ export default function AccountInfo() {
         </View>
         <View>
           <TouchableOpacity
-            className="h-15 w-30 bg-blue flex justify-center items-center rounded-xl mt-5"
+            className="bg-blue flex justify-center items-center rounded-xl mt-5 px-5 py-3"
             onPress={displaySignOutAlert}
           >
             <Text className="text-white text-lg">Sign Out</Text>

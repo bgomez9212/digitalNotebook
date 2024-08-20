@@ -13,11 +13,10 @@ import { useState } from "react";
 import { getAuth } from "firebase/auth";
 import StarView from "../components/StarView";
 import { addRating, deleteRating } from "../api/matches";
-import { useAppColorScheme } from "twrnc";
-import tw from "../tailwind";
+import { useColorScheme } from "nativewind";
 
 export default function RatingModal() {
-  const [colorScheme] = useAppColorScheme(tw);
+  const { colorScheme } = useColorScheme();
   const auth = getAuth();
   const { uid } = auth.currentUser;
   const {
@@ -79,11 +78,13 @@ export default function RatingModal() {
   }
 
   return (
-    <View className="flex-1 items-center justify-center bg-black">
+    <View className="flex-1 items-center justify-center bg-white dark:bg-black">
       <View className="w-[80%]">
         <Text className="text-gold pb-3">{championships}</Text>
-        <Text className="text-white text-xl pb-3">{participants}</Text>
-        <Text className="text-white pb-3">
+        <Text className="text-grey dark:text-white text-xl pb-3">
+          {participants}
+        </Text>
+        <Text className="text-grey dark:text-white pb-3">
           From {promotion} {event_title}
         </Text>
         <View
@@ -134,9 +135,13 @@ export default function RatingModal() {
           </Picker>
           <View className="py-4">
             {rating > 1 ? (
-              <Text className="text-white">Rate this match {rating} stars</Text>
+              <Text className="text-grey dark:text-white">
+                Rate this match {rating} stars
+              </Text>
             ) : (
-              <Text className="text-white">Rate this match {rating} star</Text>
+              <Text className="text-grey dark:text-white">
+                Rate this match {rating} star
+              </Text>
             )}
           </View>
           <TouchableOpacity

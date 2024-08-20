@@ -34,14 +34,21 @@ export default function ResetPasswordModal() {
       style={{ flex: 1 }}
     >
       <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
-        <View className="flex-1 bg-darkGrey items-center justify-center">
+        <View className="flex-1 bg-white dark:bg-darkGrey items-center justify-center">
           {uiState.success ? (
             <View className="items-center justify-center">
-              <Text className="text-white text-2xl mb-5">Email Sent!</Text>
+              <Text className="text-grey dark:text-white text-2xl mb-5">
+                Email Sent!
+              </Text>
               <LandingLink fn={() => router.back()} text={"close"} />
             </View>
           ) : (
             <View className="items-center justify-center">
+              <View className="w-3/4 pb-2">
+                <Text className="text-center">
+                  Enter your email and we'll send password reset instructions
+                </Text>
+              </View>
               <View>
                 <StyledTextInput
                   inputValue={email}
@@ -55,7 +62,9 @@ export default function ResetPasswordModal() {
                   loading={uiState.loading}
                 />
               </View>
-              <LandingLink fn={() => router.back()} text={"cancel"} />
+              <View className="pt-2">
+                <LandingLink fn={() => router.back()} text={"cancel"} />
+              </View>
             </View>
           )}
         </View>

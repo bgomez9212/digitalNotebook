@@ -9,7 +9,7 @@ export default function Home() {
   const refreshing = false;
   const queryClient = useQueryClient();
   return (
-    <ScrollView className="dark:bg-darkGrey bg-white2">
+    <ScrollView className="bg-white2 dark:bg-darkGrey">
       <StatusBar style="light" />
       <RefreshControl
         refreshing={refreshing}

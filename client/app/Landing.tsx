@@ -21,8 +21,7 @@ import { useQuery } from "@tanstack/react-query";
 import { useDebounce } from "use-debounce";
 import { createUser, getUserId } from "../api/users";
 import StyledTextInput from "../components/StyledTextInput";
-import { useAppColorScheme } from "twrnc";
-import tw from "../tailwind";
+import { useColorScheme } from "nativewind";
 
 type uiStateTypes = {
   displaySignup: boolean;
@@ -33,6 +32,7 @@ type uiStateTypes = {
 
 export default function Landing() {
   const firebaseAuth = auth;
+  const { colorScheme } = useColorScheme();
   const [uiState, setUiState] = useState<uiStateTypes>({
     displaySignup: false,
     loading: false,
@@ -96,7 +96,6 @@ export default function Landing() {
   });
 
   const [debouncedUsername] = useDebounce(watch("signupUsername"), 400);
-  const [colorScheme] = useAppColorScheme(tw);
   const darkPhoto = require("../assets/Notebook-dark.png");
   const lightPhoto = require("../assets/Notebook-light.png");
   let icon = colorScheme === "dark" ? darkPhoto : lightPhoto;
@@ -108,22 +107,21 @@ export default function Landing() {
 
   const onLogin = (data) => login(data);
   const onSignup = (data) => signup(data);
-
   return (
     <KeyboardAvoidingView
       behavior={Platform.OS === "ios" ? "padding" : "height"}
+      className="flex-1"
     >
       <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
-        <View data-testid="landing-page" style={tw`h-full bg-black`}>
-          <View style={tw`items-center justify-center flex-3`}>
-            <Image
-              source={require("../assets/Notebook-dark.png")}
-              resizeMode="contain"
-              style={tw`w-90`}
-            />
+        <View
+          data-testid="landing-page"
+          className="h-full bg-white dark:bg-black"
+        >
+          <View className="items-center justify-center h-[61%]">
+            <Image source={icon} resizeMode="contain" className="w-[90%]" />
           </View>
           {uiState.displaySignup ? (
-            <View className="items-center justify-start flex-2">
+            <View className="items-center justify-start">
               <View>
                 <Controller
                   control={control}

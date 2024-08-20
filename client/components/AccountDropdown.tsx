@@ -10,7 +10,7 @@ export default function AccountDropdown({
 }) {
   const { colorScheme } = useColorScheme();
   return (
-    <View className="border border-grey dark:border-white items-center px-2 py-3 rounded-md mb-2">
+    <View className="bg-white border-grey dark:border-white items-center px-2 py-3 rounded-md mb-2">
       <TouchableOpacity onPress={displayfn}>
         <View className="justify-between w-full flex-row items-center">
           <Text className="text-grey dark:text-white font-bold">{setting}</Text>

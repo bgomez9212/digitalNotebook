@@ -1,5 +1,4 @@
 import MaskedView from "@react-native-masked-view/masked-view";
-import tw from "../tailwind";
 import { View, Text, Platform } from "react-native";
 
 export default function StarView({

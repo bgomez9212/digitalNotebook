@@ -44,10 +44,19 @@ export default function PromotionsButtonsContainer() {
                   width: 150,
                   height: 150,
                   resizeMode: "contain",
-                  shadowColor: "#000",
+                  shadowColor:
+                    promotion.name === "DDT" ||
+                    promotion.name === "ROH" ||
+                    promotion.name === "NOAH"
+                      ? "#FFF"
+                      : "#000",
                   shadowOffset: { width: 0, height: 0 },
                   shadowOpacity:
-                    promotion.name === "AEW" || promotion.name === "WWE"
+                    promotion.name === "AEW" ||
+                    promotion.name === "WWE" ||
+                    promotion.name === "DDT" ||
+                    promotion.name === "ROH" ||
+                    promotion.name === "NOAH"
                       ? 0.8
                       : 0,
                   shadowRadius: 1,

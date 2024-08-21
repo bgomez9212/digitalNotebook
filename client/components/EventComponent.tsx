@@ -57,7 +57,7 @@ export default function EventComponent() {
             width: undefined,
             height: 200,
             resizeMode: "contain",
-            marginTop: 4,
+            marginTop: 10,
             shadowColor:
               event.promotion_name === "DDT" ||
               event.promotion_name === "ROH" ||

@@ -1,6 +1,7 @@
 import { router, usePathname } from "expo-router";
 import { TouchableOpacity, View, Text, Image } from "react-native";
 import { photoLibrary } from "../assets";
+import { shadows, whiteShadows } from "../types/types";
 
 export default function EventRow({
   event,
@@ -60,13 +61,11 @@ export default function EventRow({
                 width: undefined,
                 height: undefined,
                 resizeMode: `${formatImg(event.promotion_name)}`,
-                shadowColor: "#000",
+                shadowColor: whiteShadows.includes(event.promotion_name)
+                  ? "#FFF"
+                  : "#000",
                 shadowOffset: { width: 0, height: 0 },
-                shadowOpacity:
-                  event.promotion_name === "AEW" ||
-                  event.promotion_name === "WWE"
-                    ? 0.8
-                    : 0,
+                shadowOpacity: shadows.includes(event.promotion_name) ? 0.8 : 0,
                 shadowRadius: 0.5,
               }}
               source={photoLibrary[event.promotion_name]}

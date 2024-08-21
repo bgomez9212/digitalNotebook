@@ -58,13 +58,22 @@ export default function EventComponent() {
             height: 200,
             resizeMode: "contain",
             marginTop: 4,
-            shadowColor: "#000",
+            shadowColor:
+              event.promotion_name === "DDT" ||
+              event.promotion_name === "ROH" ||
+              event.promotion_name === "NOAH"
+                ? "#FFF"
+                : "#000",
             shadowOffset: { width: 0, height: 0 },
             shadowOpacity:
-              event.promotion_name === "AEW" || event.promotion_name === "WWE"
+              event.promotion_name === "AEW" ||
+              event.promotion_name === "WWE" ||
+              event.promotion_name === "DDT" ||
+              event.promotion_name === "ROH" ||
+              event.promotion_name === "NOAH"
                 ? 0.8
                 : 0,
-            shadowRadius: 0.5,
+            shadowRadius: 1,
           }}
           source={photoLibrary[event.promotion_name]}
         />

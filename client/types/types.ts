@@ -9,3 +9,6 @@ export type Match = {
   user_rating: number;
   date: string;
 };
+
+export const whiteShadows = ["DDT", "ROH", "NOAH"];
+export const shadows = ["DDT", "ROH", "NOAH", "WWE", "AEW"];

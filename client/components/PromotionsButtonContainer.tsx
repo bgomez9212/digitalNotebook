@@ -21,7 +21,7 @@ export default function PromotionsButtonsContainer() {
 
   return (
     <View className="mb-12 items-center">
-      <Text className="dark:text-white text-grey font-bold text-xl mb-6">
+      <Text className="text-grey dark:text-white font-bold text-xl mb-6">
         Promotions
       </Text>
       <View className="flex-wrap w-[95%] justify-between flex-row items-center">

@@ -12,7 +12,7 @@ export default function SearchResults({ data }) {
   if (!data.results.length) {
     return (
       <View>
-        <Text className="text-white">No results</Text>
+        <Text className="text-grey dark:text-white">No results</Text>
       </View>
     );
   }

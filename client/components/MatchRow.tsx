@@ -14,7 +14,7 @@ export default function MatchRow({
   if (display === "Home") {
     return (
       <TouchableOpacity
-        className={`${hideBottomBorder ? "" : "border-b"} dark:border-black border-lightGrey py-4`}
+        className={`${hideBottomBorder ? "" : "border-b"} border-lightGrey dark:border-black py-4`}
         key={match.match_id}
         onPress={() =>
           router.navigate({
@@ -26,10 +26,10 @@ export default function MatchRow({
         <View className="flex flex-col w-full">
           {match.event_title && (
             <View className="w-full flex-row justify-between items-start">
-              <Text className="dark:text-white text-grey italic w-5/8">
+              <Text className="text-grey dark:text-white italic w-5/8">
                 {match.event_title}
               </Text>
-              <Text className="dark:text-white text-grey italic">
+              <Text className="text-grey dark:text-white italic">
                 {match.date}
               </Text>
             </View>
@@ -42,7 +42,7 @@ export default function MatchRow({
             </View>
           )}
           <View className="py-2">
-            <Text className="dark:text-white text-grey text-lg">
+            <Text className="text-grey dark:text-white text-lg">
               {match.participants}
             </Text>
           </View>
@@ -64,7 +64,7 @@ export default function MatchRow({
   if (display === "Search") {
     return (
       <TouchableOpacity
-        className={`${hideBottomBorder ? "" : "border-b"} dark:border-grey border-lightGrey py-4`}
+        className={`${hideBottomBorder ? "" : "border-b"} border-lightGrey dark:border-grey py-4`}
         key={match.match_id}
         onPress={() =>
           router.navigate({
@@ -76,10 +76,10 @@ export default function MatchRow({
         <View className="flex flex-col w-full">
           {match.event_title && (
             <View className="w-full flex-row items-start">
-              <Text className="dark:text-white text-grey italic flex-1">
+              <Text className="text-grey dark:text-white italic flex-1">
                 {match.event_title}
               </Text>
-              <Text className="dark:text-white text-grey italic flex-1 text-right">
+              <Text className="text-grey dark:text-white italic flex-1 text-right">
                 {match.date}
               </Text>
             </View>
@@ -92,7 +92,7 @@ export default function MatchRow({
             </View>
           )}
           <View className="py-2`">
-            <Text className="dark:text-white text-grey text-lg">
+            <Text className="text-grey dark:text-white text-lg">
               {match.participants}
             </Text>
           </View>
@@ -114,7 +114,7 @@ export default function MatchRow({
   if (display === "Event") {
     return (
       <TouchableOpacity
-        className={`${hideBottomBorder ? "" : "border-b"} dark:border-grey border-lightGrey py-4`}
+        className={`${hideBottomBorder ? "" : "border-b"} border-lightGrey dark:border-grey py-4`}
         key={match.match_id}
         onPress={() =>
           router.navigate({
@@ -132,7 +132,7 @@ export default function MatchRow({
             </View>
           )}
           <View className="py-2">
-            <Text className="dark:text-white text-grey text-lg">
+            <Text className="text-grey dark:text-white text-lg">
               {match.participants}
             </Text>
           </View>

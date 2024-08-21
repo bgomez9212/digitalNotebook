@@ -18,7 +18,7 @@ export default function TopMatches() {
 
   if (isFetching) {
     return (
-      <View className="flex-1 dark:bg-darkGrey bg-white justify-center items-center">
+      <View className="flex-1 bg-white dark:bg-darkGrey justify-center items-center">
         <ActivityIndicator color="#477CB9" />
       </View>
     );
@@ -26,14 +26,14 @@ export default function TopMatches() {
 
   if (isError) {
     return (
-      <View className="flex-1 dark:bg-darkGrey bg-whitejustify-center items-center">
+      <View className="flex-1 bg-white dark:bg-darkGrey justify-center items-center">
         <Text>Unable to get matches</Text>
       </View>
     );
   }
 
   return (
-    <View className="flex-1 dark:bg-darkGrey bg-white items-center">
+    <View className="flex-1 bg-white dark:bg-darkGrey items-center">
       <FlatList
         className="w-[95%]"
         data={matches}

@@ -23,18 +23,20 @@ export default function StarView({
           >
             <View className="h-full flex flex-row">
               <View
-                className={`bg-black h-full`}
+                className={`bg-black dark:bg-lightGrey h-full`}
                 style={{ width: `${starPercentage}%` }}
               />
-              <View className={`bg-lightGrey w-[100%] h-full`} />
+              <View
+                className={`bg-lightGrey dark:bg-darkGrey w-[100%] h-full`}
+              />
             </View>
           </MaskedView>
         </View>
-        <Text className="dark:text-white text-grey text-right">{`${rating} (${rating_count})`}</Text>
+        <Text className="text-grey dark:text-white text-right">{`${rating} (${rating_count})`}</Text>
       </View>
     ) : (
       <View className="w-full flex items-end">
-        <Text className="dark:text-white text-grey pt-1">No ratings yet</Text>
+        <Text className="text-grey dark:text-white pt-1">No ratings yet</Text>
       </View>
     );
   }
@@ -57,7 +59,7 @@ export default function StarView({
               </View>
             </MaskedView>
           </View>
-          <Text className="dark:text-white text-grey pt-1 pl-1">{`${rating}`}</Text>
+          <Text className="text-grey dark:text-white pt-1 pl-1">{`${rating}`}</Text>
         </View>
       )
     );

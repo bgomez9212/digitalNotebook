@@ -35,7 +35,7 @@ export default function Promotions() {
   }
 
   return (
-    <View className="flex-1 dark:bg-darkGrey bg-white items-center">
+    <View className="flex-1 bg-white dark:bg-darkGrey items-center">
       <FlatList
         style={{ width: "95%" }}
         data={events.results}

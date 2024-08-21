@@ -24,6 +24,7 @@ import { useDebounce } from "use-debounce";
 import StyledTextInput from "../../../components/StyledTextInput";
 import AccountDropdown from "../../../components/AccountDropdown";
 import { deleteUserFromDb } from "../../../api/users";
+import ThemeToggle from "../../../components/ThemeToggle";
 export default function AccountInfo() {
   const auth = getAuth();
   const user = auth.currentUser;
@@ -367,6 +368,10 @@ export default function AccountInfo() {
               </Text>
             )}
           </AccountDropdown>
+          <View className="flex flex-row items-center justify-between px-2 bg-white dark:bg-grey py-2 rounded-md">
+            <Text className="text-grey dark:text-white font-bold">Theme</Text>
+            <ThemeToggle />
+          </View>
         </View>
         <View>
           <TouchableOpacity

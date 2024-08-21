@@ -16,16 +16,16 @@ const DropdownComponent = ({ searchParam, setSearchParam, data }) => {
           paddingHorizontal: 12,
           borderWidth: 1,
           borderRadius: 5,
-          borderColor: colorScheme === "light" ? "grey" : "white",
+          borderColor: colorScheme === "light" ? "grey" : "#6f6b74",
         }}
         containerStyle={{
           backgroundColor: colorScheme === "light" ? "white" : "#222222",
           borderWidth: 0,
-          paddingLeft: "2.5%",
+          paddingLeft: "5%",
         }}
         itemContainerStyle={{
-          borderBottomWidth: 1,
-          borderColor: colorScheme === "light" ? "grey" : "white",
+          borderBottomWidth: 0.5,
+          borderColor: colorScheme === "light" ? "grey" : "#6f6b74",
           paddingVertical: 4,
           width: "95%",
         }}

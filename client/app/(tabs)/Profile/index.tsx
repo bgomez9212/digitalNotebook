@@ -75,7 +75,7 @@ export default function Profile() {
 
   if (isError) {
     return (
-      <View>
+      <View className="flex-1 bg-white2 dark:bg-darkGrey justify-center items-center">
         <Text>Error</Text>
       </View>
     );
@@ -83,7 +83,7 @@ export default function Profile() {
 
   if (isLoading) {
     return (
-      <View className="flex-1 bg-darkGrey justify-center items-center">
+      <View className="flex-1 bg-white2 dark:bg-darkGrey justify-center items-center">
         <ActivityIndicator color="#477CB9" />
       </View>
     );
@@ -112,7 +112,7 @@ export default function Profile() {
           center={[screenWidth - 300, 0]}
         />
         {userRatings?.length ? (
-          <View className="flex-row w-9/10 mb-10 flex-wrap justify-between">
+          <View className="flex-row w-[95%] mb-10 flex-wrap justify-between">
             {pieChartData.map((promotion) => (
               <TouchableOpacity
                 onPress={() =>
@@ -153,13 +153,13 @@ export default function Profile() {
           ) : isLoading ? (
             <ActivityIndicator />
           ) : !userRatings.length ? (
-            <Text className="text-white text-center">
+            <Text className="text-grey dark:text-white text-center">
               You haven't rated any matches yet.
             </Text>
           ) : (
             userRatings
               .slice(0, 5)
-              .map((match, i) => (
+              .map((match) => (
                 <MatchRow
                   key={match.match_id}
                   match={match}

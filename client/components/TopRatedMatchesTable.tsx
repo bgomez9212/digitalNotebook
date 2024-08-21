@@ -41,8 +41,8 @@ export default function TopRatedMatchesTable() {
 
   return (
     <View className="bg-white dark:bg-grey w-[95%] my-12 rounded-md px-2">
-      <View className="items-center justify-center py-3 border-b dark:border-darkGrey border-lightGrey">
-        <Text className="dark:text-white text-grey font-bold text-lg">
+      <View className="items-center justify-center py-3 border-b border-lightGrey dark:border-darkGrey">
+        <Text className=" text-grey dark:text-white font-bold text-lg">
           Top Matches of the Last 30 Days
         </Text>
       </View>

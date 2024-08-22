@@ -75,7 +75,7 @@ export default function MatchRow({
       >
         <View className="flex flex-col w-full">
           {match.event_title && (
-            <View className="w-full flex-row items-start">
+            <View className="w-full flex-row items-start pb-2">
               <Text className="text-grey dark:text-white italic flex-1">
                 {match.event_title}
               </Text>
@@ -86,12 +86,12 @@ export default function MatchRow({
           )}
           {match.championships && (
             <View>
-              <Text className="text-gold text-sm text-center pt-2 shadow dark:shadow-none">
+              <Text className="text-gold text-sm text-center shadow dark:shadow-none pb-2">
                 {match.championships}
               </Text>
             </View>
           )}
-          <View className="py-2`">
+          <View className="pb-2">
             <Text className="text-grey dark:text-white text-lg">
               {match.participants}
             </Text>

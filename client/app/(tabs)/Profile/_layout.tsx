@@ -5,14 +5,13 @@ import { getUsername } from "../../../api/users";
 import { TouchableOpacity } from "react-native";
 import { FontAwesome } from "@expo/vector-icons";
 import React from "react";
-import { useAppColorScheme } from "twrnc";
-import tw from "../../../tailwind";
+import { useColorScheme } from "nativewind";
 const blue = "#477CB9";
 export const unstable_settings = {
   initialRouteName: "index",
 };
 export default function Layout() {
-  const [colorScheme] = useAppColorScheme(tw);
+  const { colorScheme } = useColorScheme();
   const auth = getAuth();
   const { data: username } = useQuery({
     queryKey: ["username", auth.currentUser.uid],

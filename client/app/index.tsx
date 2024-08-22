@@ -1,5 +1,4 @@
 import { View, Image } from "react-native";
-import tw from "../tailwind";
 
 export default function index() {
   return (

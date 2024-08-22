@@ -6,6 +6,7 @@ import MatchRow from "../components/MatchRow";
 import { photoLibrary } from "../assets";
 import { getEvent } from "../api/events";
 import { getAuth } from "firebase/auth";
+import { whiteShadows, shadows } from "../types/types";
 export default function EventComponent() {
   const { eventId } = useLocalSearchParams();
   const auth = getAuth();
@@ -57,14 +58,13 @@ export default function EventComponent() {
             width: undefined,
             height: 200,
             resizeMode: "contain",
-            marginTop: 4,
-            shadowColor: "#000",
+            marginTop: 10,
+            shadowColor: whiteShadows.includes(event.promotion_name)
+              ? "#FFF"
+              : "#000",
             shadowOffset: { width: 0, height: 0 },
-            shadowOpacity:
-              event.promotion_name === "AEW" || event.promotion_name === "WWE"
-                ? 0.8
-                : 0,
-            shadowRadius: 0.5,
+            shadowOpacity: shadows.includes(event.promotion_name) ? 0.8 : 0,
+            shadowRadius: 1,
           }}
           source={photoLibrary[event.promotion_name]}
         />

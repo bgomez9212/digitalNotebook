@@ -1,5 +1,4 @@
 import MaskedView from "@react-native-masked-view/masked-view";
-import tw from "../tailwind";
 import { View, Text, Platform } from "react-native";
 
 export default function StarView({
@@ -26,9 +25,7 @@ export default function StarView({
                 className={`bg-black dark:bg-lightGrey h-full`}
                 style={{ width: `${starPercentage}%` }}
               />
-              <View
-                className={`bg-lightGrey dark:bg-darkGrey w-[100%] h-full`}
-              />
+              <View className={`bg-lightGrey dark:bg-black w-[100%] h-full`} />
             </View>
           </MaskedView>
         </View>

@@ -4,6 +4,7 @@ import { ActivityIndicator } from "react-native-paper";
 import { router } from "expo-router";
 import { photoLibrary } from "../assets";
 import { getPromotions } from "../api/promotions";
+import { whiteShadows, shadows } from "../types/types";
 
 export default function PromotionsButtonsContainer() {
   const {
@@ -17,6 +18,14 @@ export default function PromotionsButtonsContainer() {
 
   if (isFetching) {
     return <ActivityIndicator color="#477CB9" />;
+  }
+
+  if (isError) {
+    return (
+      <Text className="text-grey dark:text-white">
+        There was a problem getting promotions
+      </Text>
+    );
   }
 
   return (
@@ -44,12 +53,11 @@ export default function PromotionsButtonsContainer() {
                   width: 150,
                   height: 150,
                   resizeMode: "contain",
-                  shadowColor: "#000",
+                  shadowColor: whiteShadows.includes(promotion.name)
+                    ? "#FFF"
+                    : "#000",
                   shadowOffset: { width: 0, height: 0 },
-                  shadowOpacity:
-                    promotion.name === "AEW" || promotion.name === "WWE"
-                      ? 0.8
-                      : 0,
+                  shadowOpacity: shadows.includes(promotion.name) ? 0.8 : 0,
                   shadowRadius: 1,
                 }}
                 source={photoLibrary[promotion.name]}

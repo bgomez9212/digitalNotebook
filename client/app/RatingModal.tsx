@@ -78,7 +78,7 @@ export default function RatingModal() {
   }
 
   return (
-    <View className="flex-1 items-center justify-center bg-white dark:bg-black">
+    <View className="flex-1 items-center justify-center bg-white dark:bg-darkGrey pb-10">
       <View className="w-[80%]">
         <Text className="text-gold pb-3">{championships}</Text>
         <Text className="text-grey dark:text-white text-xl pb-3">

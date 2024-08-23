@@ -2,7 +2,7 @@ import { useColorScheme } from "nativewind";
 import { useRef, useState } from "react";
 import { Animated, Pressable, Text, View } from "react-native";
 
-export default function CustomDropdown({
+export default function SearchDropdown({
   searchParam,
   setSearchParam,
   dropdownData,

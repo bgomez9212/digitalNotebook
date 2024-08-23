@@ -13,7 +13,7 @@ import SearchResults from "../../../components/SearchResults";
 import { getSearchResults } from "../../../api/search";
 import StyledTextInput from "../../../components/StyledTextInput";
 import { getAuth } from "firebase/auth";
-import CustomDropdown from "../../../components/CustomDropdown";
+import SearchDropdown from "../../../components/SearchDropdown";
 export default function Profile() {
   const [userSearch, setUserSearch] = useState({
     searchParam: null,
@@ -43,7 +43,7 @@ export default function Profile() {
       <View className="flex-1 bg-white2 dark:bg-darkGrey w-full pt-12 items-center">
         <View className="w-[90%] mb-5 z-50">
           <View style={{ height: 40, zIndex: 40, marginTop: 10 }}>
-            <CustomDropdown
+            <SearchDropdown
               searchParam={userSearch.searchParam}
               setSearchParam={setSearchParam}
               dropdownData={dropdownData}

@@ -1,3 +1,4 @@
+import { useColorScheme } from "nativewind";
 import { useRef, useState } from "react";
 import { Animated, Pressable, Text, View } from "react-native";
 
@@ -9,6 +10,7 @@ export default function CustomDropdown({
   const translation = useRef(new Animated.Value(1)).current;
   const [parentHeight, setParentHeight] = useState(40);
   const [displayed, setDisplayed] = useState(false);
+  const { colorScheme } = useColorScheme();
 
   function handleClick() {
     if (!displayed) {
@@ -42,10 +44,10 @@ export default function CustomDropdown({
           width: `${100}%`,
           height: 40,
           zIndex: 20,
-          backgroundColor: "#222222",
+          backgroundColor: colorScheme === "dark" ? "#222222" : "white",
           transform: [{ scaleY: translation }],
           transformOrigin: "top",
-          borderRadius: 1,
+          borderRadius: 5,
         }}
       />
       <View style={{ zIndex: 50, width: `${100}%` }}></View>
@@ -55,7 +57,7 @@ export default function CustomDropdown({
           height: 40,
           zIndex: 100,
           position: "absolute",
-          backgroundColor: "#222222",
+          backgroundColor: colorScheme === "dark" ? "#222222" : "white",
           borderWidth: 1,
           borderColor: "#726e77",
           borderRadius: 3,
@@ -67,7 +69,7 @@ export default function CustomDropdown({
           onPress={handleClick}
         >
           <Text
-            className={`${searchParam ? "text-white" : "text-placeholder"} font-medium`}
+            className={`${searchParam ? "text-grey dark:text-white" : "text-placeholder"} font-medium`}
           >
             {searchParam?.charAt(0).toUpperCase() + searchParam?.slice(1) ||
               "Search By"}
@@ -87,7 +89,7 @@ export default function CustomDropdown({
             }}
             onPress={() => selectSearchParam(dropdownOption.value)}
           >
-            <Text className="text-white text-center">
+            <Text className="text-grey dark:text-white text-center">
               {dropdownOption.label}
             </Text>
           </Pressable>

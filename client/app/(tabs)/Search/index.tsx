@@ -13,6 +13,7 @@ import SearchResults from "../../../components/SearchResults";
 import { getSearchResults } from "../../../api/search";
 import StyledTextInput from "../../../components/StyledTextInput";
 import { getAuth } from "firebase/auth";
+import CustomDropdown from "../../../components/CustomDropdown";
 export default function Profile() {
   const [userSearch, setUserSearch] = useState({
     searchParam: null,
@@ -48,21 +49,30 @@ export default function Profile() {
               setUserSearch({ ...userSearch, searchText: text })
             }
           />
-          <DropdownComponent
+          {/* <DropdownComponent
             searchParam={userSearch.searchParam}
             setSearchParam={setSearchParam}
             data={dropdownData}
-          />
-          <TouchableOpacity
-            className={`w-full mt-2 bg-blue h-10 justify-center items-center rounded-md ${!userSearch.searchParam || !userSearch.searchText ? "opacity-50" : ""}`}
-            onPress={() => {
-              Keyboard.dismiss();
-              refetch();
-            }}
-            disabled={!userSearch.searchParam || !userSearch.searchText}
-          >
-            <Text className="text-lg font-bold text-white">Submit</Text>
-          </TouchableOpacity>
+          /> */}
+          <View style={{ height: 40, zIndex: 20, marginTop: 10 }}>
+            <CustomDropdown
+              searchParam={userSearch.searchParam}
+              setSearchParam={setSearchParam}
+              dropdownData={dropdownData}
+            />
+          </View>
+          <View>
+            <TouchableOpacity
+              className={`w-full mt-2 bg-blue h-10 justify-center items-center rounded-md ${!userSearch.searchParam || !userSearch.searchText ? "opacity-50" : ""}`}
+              onPress={() => {
+                Keyboard.dismiss();
+                refetch();
+              }}
+              disabled={!userSearch.searchParam || !userSearch.searchText}
+            >
+              <Text className="text-lg font-bold text-white">Submit</Text>
+            </TouchableOpacity>
+          </View>
         </View>
         {isFetching ? (
           <ActivityIndicator color="#477CB9" />

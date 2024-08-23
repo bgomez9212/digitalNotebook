@@ -41,7 +41,14 @@ export default function Profile() {
   return (
     <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
       <View className="flex-1 bg-white2 dark:bg-darkGrey w-full pt-12 items-center">
-        <View className="w-[90%] mb-12">
+        <View className="w-[90%] mb-5 z-50">
+          <View style={{ height: 40, zIndex: 40, marginTop: 10 }}>
+            <CustomDropdown
+              searchParam={userSearch.searchParam}
+              setSearchParam={setSearchParam}
+              dropdownData={dropdownData}
+            />
+          </View>
           <StyledTextInput
             inputValue={userSearch.searchText}
             label={"search"}
@@ -49,18 +56,6 @@ export default function Profile() {
               setUserSearch({ ...userSearch, searchText: text })
             }
           />
-          {/* <DropdownComponent
-            searchParam={userSearch.searchParam}
-            setSearchParam={setSearchParam}
-            data={dropdownData}
-          /> */}
-          <View style={{ height: 40, zIndex: 20, marginTop: 10 }}>
-            <CustomDropdown
-              searchParam={userSearch.searchParam}
-              setSearchParam={setSearchParam}
-              dropdownData={dropdownData}
-            />
-          </View>
           <View>
             <TouchableOpacity
               className={`w-full mt-2 bg-blue h-10 justify-center items-center rounded-md ${!userSearch.searchParam || !userSearch.searchText ? "opacity-50" : ""}`}

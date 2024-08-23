@@ -9,6 +9,7 @@ export default function CustomDropdown({
   const translation = useRef(new Animated.Value(1)).current;
   const [parentHeight, setParentHeight] = useState(40);
   const [displayed, setDisplayed] = useState(false);
+
   function handleClick() {
     if (!displayed) {
       setDisplayed(true);
@@ -23,6 +24,11 @@ export default function CustomDropdown({
         useNativeDriver: true,
       }).start();
     }
+  }
+
+  function selectSearchParam(searchParam) {
+    setSearchParam(searchParam);
+    handleClick();
   }
 
   translation.addListener(({ value }) => {
@@ -47,7 +53,7 @@ export default function CustomDropdown({
         style={{
           width: `${100}%`,
           height: 40,
-          zIndex: 30,
+          zIndex: 100,
           position: "absolute",
           backgroundColor: "#222222",
           borderWidth: 1,
@@ -60,7 +66,12 @@ export default function CustomDropdown({
           style={{ height: 40 }}
           onPress={handleClick}
         >
-          <Text className="text-placeholder font-medium">Search By</Text>
+          <Text
+            className={`${searchParam ? "text-white" : "text-placeholder"} font-medium`}
+          >
+            {searchParam?.charAt(0).toUpperCase() + searchParam?.slice(1) ||
+              "Search By"}
+          </Text>
         </Pressable>
       </View>
       <View style={{ zIndex: 50, paddingHorizontal: 30 }}>
@@ -74,6 +85,7 @@ export default function CustomDropdown({
               display: "flex",
               justifyContent: "center",
             }}
+            onPress={() => selectSearchParam(dropdownOption.value)}
           >
             <Text className="text-white text-center">
               {dropdownOption.label}

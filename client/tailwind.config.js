@@ -22,6 +22,7 @@ module.exports = {
       yellowGreen: "#C9FF27",
       orange: "#FFA500",
       white2: "#f2f2f2",
+      placeholder: "#45414b",
     },
   },
   plugins: [],

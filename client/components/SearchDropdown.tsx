@@ -1,6 +1,7 @@
 import { useColorScheme } from "nativewind";
 import { useRef, useState } from "react";
 import { Animated, Pressable, Text, View } from "react-native";
+import AntDesign from "@expo/vector-icons/AntDesign";
 
 export default function SearchDropdown({
   searchParam,
@@ -64,7 +65,7 @@ export default function SearchDropdown({
         }}
       >
         <Pressable
-          className="flex justify-center pl-3"
+          className="flex justify-between px-3 flex-row items-center"
           style={{ height: 40 }}
           onPress={handleClick}
         >
@@ -74,6 +75,11 @@ export default function SearchDropdown({
             {searchParam?.charAt(0).toUpperCase() + searchParam?.slice(1) ||
               "Search By"}
           </Text>
+          {displayed ? (
+            <AntDesign name="up" size={16} color="#45414b" />
+          ) : (
+            <AntDesign name="down" size={16} color="#45414b" />
+          )}
         </Pressable>
       </View>
       <View style={{ zIndex: 50, paddingHorizontal: 30 }}>

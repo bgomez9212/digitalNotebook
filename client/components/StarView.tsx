@@ -13,7 +13,7 @@ export default function StarView({
   const starPercentage: number = Number(rating) * 20;
 
   if (display === "Total") {
-    return rating !== null && !Number.isNaN(rating) ? (
+    return rating !== undefined && rating !== null ? (
       <View className="flex flex-col items-end">
         <View className="w-[99px] h-7 rounded-md">
           <MaskedView

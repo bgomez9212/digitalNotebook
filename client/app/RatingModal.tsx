@@ -112,6 +112,7 @@ export default function RatingModal() {
             selectedValue={rating}
             onValueChange={(itemValue) => setRating(itemValue)}
           >
+            <Picker.Item label="DUD" value={0} color={dropdownFontColor} />
             <Picker.Item label="¼" value={0.25} color={dropdownFontColor} />
             <Picker.Item label="½" value={0.5} color={dropdownFontColor} />
             <Picker.Item label="¾" value={0.75} color={dropdownFontColor} />

@@ -6,7 +6,7 @@ export default function StarView({
   rating_count,
   display,
 }: {
-  rating: number;
+  rating: number | string;
   rating_count?: number;
   display: "Total" | "User" | "Home";
 }) {

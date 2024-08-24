@@ -104,7 +104,7 @@ export default function RatingModal() {
           )}
           <StarView
             display="Total"
-            rating={Number(community_rating)}
+            rating={community_rating}
             rating_count={Number(rating_count)}
           />
         </View>

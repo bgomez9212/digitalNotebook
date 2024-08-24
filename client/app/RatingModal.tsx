@@ -28,6 +28,15 @@ export default function RatingModal() {
     user_rating,
     community_rating,
     rating_count,
+  }: {
+    championships: string;
+    event_title: string;
+    match_id: string;
+    participants: string;
+    promotion: string;
+    user_rating: string;
+    community_rating: string;
+    rating_count: string;
   } = useLocalSearchParams();
   const queryClient = useQueryClient();
   const [rating, setRating] = useState(Number(user_rating) || 2);
@@ -90,12 +99,10 @@ export default function RatingModal() {
         <View
           className={`flex flex-row ${user_rating ? "justify-between" : "justify-end"}`}
         >
-          {user_rating && (
-            <StarView display="User" rating={Number(user_rating)} />
-          )}
+          {user_rating && <StarView display="User" rating={user_rating} />}
           <StarView
             display="Total"
-            rating={Number(community_rating)}
+            rating={community_rating}
             rating_count={Number(rating_count)}
           />
         </View>

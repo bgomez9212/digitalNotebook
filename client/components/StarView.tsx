@@ -6,11 +6,11 @@ export default function StarView({
   rating_count,
   display,
 }: {
-  rating: number;
+  rating: string;
   rating_count?: number;
   display: "Total" | "User" | "Home";
 }) {
-  const starPercentage: number = rating * 20;
+  const starPercentage: number = Number(rating) * 20;
 
   if (display === "Total") {
     return rating !== null && !Number.isNaN(rating) ? (

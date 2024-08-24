@@ -11,6 +11,7 @@ export default function MatchRow({
   display: "Home" | "Search" | "Event";
   hideBottomBorder: boolean;
 }) {
+  console.log(match);
   if (display === "Home") {
     return (
       <TouchableOpacity

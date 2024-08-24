@@ -110,7 +110,7 @@ export default function RatingModal() {
               backgroundColor: Platform.OS !== "ios" ? "white" : "",
             }}
             selectedValue={rating}
-            onValueChange={(itemValue) => setRating(itemValue)}
+            onValueChange={(itemValue) => setRating(Number(itemValue))}
           >
             <Picker.Item label="DUD" value={0} color={dropdownFontColor} />
             <Picker.Item label="¼" value={0.25} color={dropdownFontColor} />
@@ -135,15 +135,10 @@ export default function RatingModal() {
             <Picker.Item label="5" value={5} color={dropdownFontColor} />
           </Picker>
           <View className="py-4">
-            {rating > 1 ? (
-              <Text className="text-grey dark:text-white">
-                Rate this match {rating} stars
-              </Text>
-            ) : (
-              <Text className="text-grey dark:text-white">
-                Rate this match {rating} star
-              </Text>
-            )}
+            <Text className="text-grey dark:text-white">
+              Rate this match {rating} star
+              {rating === 0 ? "s" : rating <= 1 ? "" : "s"}
+            </Text>
           </View>
           <TouchableOpacity
             disabled={addRatingPending}

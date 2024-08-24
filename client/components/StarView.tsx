@@ -6,7 +6,7 @@ export default function StarView({
   rating_count,
   display,
 }: {
-  rating: string;
+  rating: number;
   rating_count?: number;
   display: "Total" | "User" | "Home";
 }) {
@@ -56,7 +56,7 @@ export default function StarView({
               </View>
             </MaskedView>
           </View>
-          <Text className="text-grey dark:text-white pt-1 pl-1">{`${rating}`}</Text>
+          <Text className="text-grey dark:text-white pt-1 pl-1">{`${Number(rating) === 0 ? "Dud" : rating}`}</Text>
         </View>
       )
     );

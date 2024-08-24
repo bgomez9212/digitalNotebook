@@ -99,10 +99,12 @@ export default function RatingModal() {
         <View
           className={`flex flex-row ${user_rating ? "justify-between" : "justify-end"}`}
         >
-          {user_rating && <StarView display="User" rating={user_rating} />}
+          {user_rating && (
+            <StarView display="User" rating={Number(user_rating)} />
+          )}
           <StarView
             display="Total"
-            rating={community_rating}
+            rating={Number(community_rating)}
             rating_count={Number(rating_count)}
           />
         </View>

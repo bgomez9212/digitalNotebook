@@ -23,7 +23,7 @@ function parseMatchData(matchArr) {
     championships: [],
     date: matchArr[0].date,
     user_rating: matchArr[0].user_rating,
-    community_rating: matchArr[0].community_rating,
+    community_rating: parseFloat(matchArr[0].community_rating).toFixed(2),
     rating_count: matchArr[0].rating_count,
     rating_date: matchArr[0].rating_date,
   };

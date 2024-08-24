@@ -4,9 +4,9 @@ export type Match = {
   event_title: string;
   participants: string;
   championships: string;
-  community_rating: string;
+  community_rating: number;
   rating_count: number;
-  user_rating: string;
+  user_rating: number;
   date: string;
   promotion?: string;
 };

@@ -42,7 +42,7 @@ export default function EventRow({
           ? "text-yellow"
           : rating >= 1
             ? "text-orange"
-            : rating >= 0.01
+            : rating
               ? "text-red"
               : "text-lightGrey";
   }

@@ -1,19 +1,19 @@
 import MaskedView from "@react-native-masked-view/masked-view";
-import { View, Text, Platform } from "react-native";
+import { View, Text } from "react-native";
 
 export default function StarView({
   rating,
   rating_count,
   display,
 }: {
-  rating: number;
+  rating: number | string;
   rating_count?: number;
   display: "Total" | "User" | "Home";
 }) {
-  const starPercentage: number = rating * 20;
+  const starPercentage: number = Number(rating) * 20;
 
   if (display === "Total") {
-    return rating ? (
+    return rating !== undefined && rating !== null ? (
       <View className="flex flex-col items-end">
         <View className="w-[99px] h-7 rounded-md">
           <MaskedView
@@ -40,7 +40,7 @@ export default function StarView({
 
   if (display === "User") {
     return (
-      rating && (
+      rating !== null && (
         <View className="items-start flex flex-col">
           <View className="w-[99px] rounded-md bg-blue h-7">
             <MaskedView
@@ -56,7 +56,7 @@ export default function StarView({
               </View>
             </MaskedView>
           </View>
-          <Text className="text-grey dark:text-white pt-1 pl-1">{`${rating}`}</Text>
+          <Text className="text-grey dark:text-white pt-1 pl-1">{`${Number(rating) === 0 ? "Dud" : rating}`}</Text>
         </View>
       )
     );

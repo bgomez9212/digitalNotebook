@@ -51,7 +51,15 @@ export default function Profile() {
           </View>
           <StyledTextInput
             inputValue={userSearch.searchText}
-            label={"search"}
+            label={
+              userSearch.searchParam === "matches"
+                ? "enter a comma separated list of participants"
+                : userSearch.searchParam === "events"
+                  ? "enter an event name"
+                  : userSearch.searchParam === "championships"
+                    ? "enter a championship name"
+                    : "search"
+            }
             changeFn={(text) =>
               setUserSearch({ ...userSearch, searchText: text })
             }

@@ -20,14 +20,14 @@ export default function LandingButton({
 }: LandingButtonProps) {
   return loading ? (
     <View
-      className={`bg-${color ? color : "blue"} w-${width ? width : 60} flex items-center justify-center p-1.6 mb-2 rounded mt-2`}
+      className={`bg-${color ? color : "blue"} w-${width ? width : 60} flex items-center justify-center h-9 my-2 rounded`}
     >
       <ActivityIndicator color="white" />
     </View>
   ) : (
     <TouchableOpacity
       disabled={disabled}
-      className={`bg-${color ? color : "blue"} h-10 w-${width ? width : 60} flex items-center justify-center rounded ${disabled ? "opacity-50" : ""} mt-2`}
+      className={`bg-${color ? color : "blue"} w-${width ? width : 60} flex items-center justify-center rounded ${disabled ? "opacity-50" : ""} my-2 h-9`}
       onPress={fn}
     >
       <Text className="text-white">{text}</Text>

@@ -15,6 +15,7 @@ import { ActivityIndicator, RadioButton } from "react-native-paper";
 import LandingButton from "../../../components/LandingButton";
 import { useLocalSearchParams } from "expo-router";
 import { useColorScheme } from "nativewind";
+import Checkbox from "expo-checkbox";
 
 export default function RatingsExtended() {
   const auth = getAuth();
@@ -88,6 +89,20 @@ export default function RatingsExtended() {
     .map((ratings) => ratings.promotion)
     .filter((value, index, array) => array.indexOf(value) === index)
     .sort();
+
+  const [selectedPromotions, setSelectedPromotions] = useState(promotions);
+
+  function selectPromotion(promotion) {
+    if (selectedPromotions.includes(promotion)) {
+      setSelectedPromotions(
+        selectedPromotions.filter((item) => item !== promotion)
+      );
+    } else {
+      setSelectedPromotions((prevArr) => [...prevArr, promotion]);
+    }
+  }
+
+  console.log(selectedPromotions);
 
   const bottomSheetModalRef = useRef<BottomSheetModal>(null);
   const snapPoints = useMemo(() => ["25%", "60%"], []);
@@ -172,6 +187,19 @@ export default function RatingsExtended() {
                 height: "100%",
               }}
             >
+              <View className="flex flex-row w-[75%] flex-wrap mb-4">
+                {promotions.map((promotion) => (
+                  <View key={promotion} className="flex flex-row mr-3 my-1">
+                    <Checkbox
+                      className="mr-1"
+                      value={selectedPromotions.includes(promotion)}
+                      color={"#477CB9"}
+                      onValueChange={() => selectPromotion(promotion)}
+                    />
+                    <Text key={promotion}>{promotion}</Text>
+                  </View>
+                ))}
+              </View>
               <View className="flex flex-row w-[75%] justify-between mb-5">
                 <RadioButton.Group
                   onValueChange={(newValue) =>

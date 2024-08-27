@@ -84,8 +84,13 @@ export default function RatingsExtended() {
     select: sortAndFilterRatings,
   });
 
+  const promotions = userRatings
+    .map((ratings) => ratings.promotion)
+    .filter((value, index, array) => array.indexOf(value) === index)
+    .sort();
+
   const bottomSheetModalRef = useRef<BottomSheetModal>(null);
-  const snapPoints = useMemo(() => ["25%", "50%"], []);
+  const snapPoints = useMemo(() => ["25%", "60%"], []);
   const handlePresentModalPress = useCallback(() => {
     bottomSheetModalRef.current?.present();
     bottomSheetModalRef.current?.close();

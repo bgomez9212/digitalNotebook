@@ -94,7 +94,7 @@ export default function RatingsExtended() {
     if (promotionName) {
       setSelectedPromotions([promotionName]);
       setChangeParams(!changeParams);
-      selectedPromotionsDisplay.current = selectedPromotions;
+      selectedPromotionsDisplay.current = [promotionName];
     } else {
       setSelectedPromotions(promotions.current);
       selectedPromotionsDisplay.current = promotions.current;

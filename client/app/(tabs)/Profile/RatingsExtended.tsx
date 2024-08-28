@@ -45,6 +45,7 @@ export default function RatingsExtended() {
   ];
 
   const [selectedPromotions, setSelectedPromotions] = useState([]);
+  const selectedPromotionsDisplay = useRef([]);
 
   const sortAndFilterRatings = useCallback(
     (userRatings) => {
@@ -93,8 +94,10 @@ export default function RatingsExtended() {
     if (promotionName) {
       setSelectedPromotions([promotionName]);
       setChangeParams(!changeParams);
+      selectedPromotionsDisplay.current = selectedPromotions;
     } else {
       setSelectedPromotions(promotions.current);
+      selectedPromotionsDisplay.current = promotions.current;
     }
   }, []);
 
@@ -125,6 +128,7 @@ export default function RatingsExtended() {
         (param) => param.value === sortParams.sortOrder
       )[0].label,
     });
+    selectedPromotionsDisplay.current = selectedPromotions;
     setChangeParams(!changeParams);
     bottomSheetModalRef.current?.close();
   }
@@ -147,7 +151,9 @@ export default function RatingsExtended() {
                 Sorted By: {sortParams.sortByLabel}, {sortParams.sortOrderLabel}
               </Text>
               <Text className="text-grey dark:text-white font-medium">
-                {selectedPromotions ? `${selectedPromotions.join(", ")}` : ""}
+                {selectedPromotionsDisplay.current
+                  ? `${selectedPromotionsDisplay.current.join(", ")}`
+                  : ""}
               </Text>
             </View>
             <TouchableOpacity onPress={handlePresentModalPress}>

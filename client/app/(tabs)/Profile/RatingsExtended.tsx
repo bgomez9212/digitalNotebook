@@ -145,12 +145,13 @@ export default function RatingsExtended() {
     <GestureHandlerRootView>
       <BottomSheetModalProvider>
         <View className="flex-1 bg-white dark:bg-darkGrey items-center">
-          <View className="flex flex-row w-[98%] justify-between items-center py-2 border-b border-lightGrey dark:border-grey">
+          <View className="flex flex-row w-[98%] justify-between items-center py-2 border-b border-lightGrey dark:border-grey px-1">
             <View className="w-4/5">
               <Text className="text-grey dark:text-white font-medium">
                 Sorted By: {sortParams.sortByLabel}, {sortParams.sortOrderLabel}
               </Text>
-              <Text className="text-grey dark:text-white font-medium">
+              <Text className="text-grey dark:text-white font-medium mt-1">
+                Promotions:{" "}
                 {selectedPromotionsDisplay.current
                   ? `${selectedPromotionsDisplay.current.join(", ")}`
                   : ""}
@@ -201,7 +202,7 @@ export default function RatingsExtended() {
                 height: "100%",
               }}
             >
-              <View className="flex flex-row w-[75%] flex-wrap mb-4">
+              <View className="flex flex-row w-[75%] flex-wrap mb-4 justify-between">
                 {promotions.current.map((promotion) => (
                   <View key={promotion} className="flex flex-row mr-3 my-1">
                     <Checkbox

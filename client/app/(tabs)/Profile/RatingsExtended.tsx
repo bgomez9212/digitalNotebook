@@ -142,10 +142,14 @@ export default function RatingsExtended() {
       <BottomSheetModalProvider>
         <View className="flex-1 bg-white dark:bg-darkGrey items-center">
           <View className="flex flex-row w-[98%] justify-between items-center py-2 border-b border-lightGrey dark:border-grey">
-            <Text className="text-grey dark:text-white font-medium">
-              Sorted By: {sortParams.sortByLabel}, {sortParams.sortOrderLabel}
-              {promotionName ? `, ${promotionName}` : ""}
-            </Text>
+            <View className="w-4/5">
+              <Text className="text-grey dark:text-white font-medium">
+                Sorted By: {sortParams.sortByLabel}, {sortParams.sortOrderLabel}
+              </Text>
+              <Text className="text-grey dark:text-white font-medium">
+                {selectedPromotions ? `${selectedPromotions.join(", ")}` : ""}
+              </Text>
+            </View>
             <TouchableOpacity onPress={handlePresentModalPress}>
               <Ionicons
                 name="options"

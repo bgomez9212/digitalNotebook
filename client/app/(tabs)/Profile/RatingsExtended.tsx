@@ -55,7 +55,6 @@ export default function RatingsExtended() {
           return a[key] <= b[key] ? 1 : -1;
         }
       };
-
       if (selectedPromotions.length) {
         userRatings = userRatings.filter((matchObj) =>
           selectedPromotions.includes(matchObj.promotion)
@@ -77,7 +76,6 @@ export default function RatingsExtended() {
     data: userRatings,
     isError,
     isFetching,
-    // refetch,
   } = useQuery({
     queryKey: ["userRatings"],
     queryFn: () => getUserRatings(user.uid),
@@ -93,7 +91,8 @@ export default function RatingsExtended() {
 
   useEffect(() => {
     if (promotionName) {
-      setSelectedPromotions((prev) => [...prev, promotionName]);
+      setSelectedPromotions([promotionName]);
+      setChangeParams(!changeParams);
     } else {
       setSelectedPromotions(promotions.current);
     }

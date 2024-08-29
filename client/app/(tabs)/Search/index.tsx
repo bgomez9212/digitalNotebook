@@ -5,7 +5,6 @@ import {
   TouchableWithoutFeedback,
   View,
 } from "react-native";
-import DropdownComponent from "../../../components/DropDown";
 import { useState } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { ActivityIndicator } from "react-native-paper";
@@ -26,11 +25,12 @@ export default function Profile() {
     setUserSearch({ ...userSearch, searchParam: selectedParam });
   }
 
-  const dropdownData = [
-    { label: "Matches", value: "matches" },
-    { label: "Event", value: "events" },
-    { label: "Championship", value: "championships" },
-  ];
+  // const dropdownData = [
+  //   { label: "Matches", value: "matches" },
+  //   { label: "Events", value: "events" },
+  //   { label: "Championships", value: "championships" },
+  //   { label: "Wrestlers", value: "wrestlers" },
+  // ];
 
   const { data, isFetching, isError, refetch } = useQuery({
     queryKey: ["searchResults"],
@@ -46,7 +46,7 @@ export default function Profile() {
             <SearchDropdown
               searchParam={userSearch.searchParam}
               setSearchParam={setSearchParam}
-              dropdownData={dropdownData}
+              // dropdownData={dropdownData}
             />
           </View>
           <StyledTextInput

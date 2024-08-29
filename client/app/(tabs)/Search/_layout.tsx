@@ -23,6 +23,15 @@ export default function Layout() {
           headerTintColor: "white",
         }}
       />
+      <Stack.Screen
+        name="wrestlers"
+        options={{
+          title: event_title,
+          headerStyle: { backgroundColor: blue },
+          headerTitleStyle: { color: "white" },
+          headerTintColor: "white",
+        }}
+      />
     </Stack>
   );
 }

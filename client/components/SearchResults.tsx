@@ -30,7 +30,7 @@ export default function SearchResults({ data, error }) {
   if (data.results.length && data.search_param === "events") {
     return (
       <FlatList
-        className="w-[95%]"
+        className="w-[90%]"
         data={data.results}
         keyExtractor={(item) => item.id}
         renderItem={({ item, index }) => (
@@ -49,7 +49,7 @@ export default function SearchResults({ data, error }) {
   ) {
     return (
       <FlatList
-        className="w-[95%]"
+        className="w-[90%]"
         showsVerticalScrollIndicator={false}
         data={data.results}
         keyExtractor={(item) => item.match_id}
@@ -75,7 +75,7 @@ export default function SearchResults({ data, error }) {
   if (data.results.length && data.search_param === "wrestlers") {
     return (
       <FlatList
-        className="w-[95%]"
+        className="w-[90%]"
         showsVerticalScrollIndicator={false}
         data={data.results}
         keyExtractor={(item) => item.id}

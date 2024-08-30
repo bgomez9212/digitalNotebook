@@ -672,4 +672,7 @@ module.exports = {
       throw err;
     }
   },
+  // getWrestlerData: async (wrestler_id, user_id) => {
+  //   const { rows }
+  // }
 };

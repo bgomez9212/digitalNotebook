@@ -13,7 +13,7 @@ import { getSearchResults } from "../../../api/search";
 import StyledTextInput from "../../../components/StyledTextInput";
 import { getAuth } from "firebase/auth";
 import SearchDropdown from "../../../components/SearchDropdown";
-export default function Profile() {
+export default function Search() {
   const [userSearch, setUserSearch] = useState({
     searchParam: null,
     searchText: "",

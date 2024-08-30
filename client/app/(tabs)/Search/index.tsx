@@ -31,7 +31,6 @@ export default function Profile() {
     queryFn: () =>
       getSearchResults(userSearch.searchParam, userSearch.searchText, uid),
   });
-  console.log(data);
   return (
     <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
       <View className="flex-1 bg-white2 dark:bg-darkGrey w-full pt-12 items-center">

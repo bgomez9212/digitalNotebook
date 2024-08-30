@@ -92,7 +92,8 @@ export default function SearchDropdown({ searchParam, setSearchParam }) {
             onPress={() => selectSearchParam(dropdownOption)}
           >
             <Text className="text-grey dark:text-white text-center">
-              {dropdownOption}
+              {dropdownOption.charAt(0).toUpperCase() +
+                dropdownOption?.slice(1)}
             </Text>
           </Pressable>
         ))}

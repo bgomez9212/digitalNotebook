@@ -373,6 +373,20 @@ module.exports = {
         };
         return data;
       }
+      if (search_param === "wrestlers") {
+        const wrestlerQuery = search_text.split(" ").join("|");
+        const { rows: results } = await pool.query(
+          `
+          SELECT name, ts_rank(to_tsvector(name), to_tsquery($1)) as rank
+          FROM wrestlers
+          WHERE to_tsvector(name) @@ to_tsquery($1)
+          ORDER BY rank DESC
+          `,
+          [wrestlerQuery]
+        );
+        console.log(results);
+        return results;
+      }
     } catch (err) {
       console.log(err);
       throw new Error(err.message);

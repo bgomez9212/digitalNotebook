@@ -25,13 +25,6 @@ export default function Profile() {
     setUserSearch({ ...userSearch, searchParam: selectedParam });
   }
 
-  // const dropdownData = [
-  //   { label: "Matches", value: "matches" },
-  //   { label: "Events", value: "events" },
-  //   { label: "Championships", value: "championships" },
-  //   { label: "Wrestlers", value: "wrestlers" },
-  // ];
-
   const { data, isFetching, isError, refetch } = useQuery({
     queryKey: ["searchResults"],
     enabled: false,
@@ -46,7 +39,6 @@ export default function Profile() {
             <SearchDropdown
               searchParam={userSearch.searchParam}
               setSearchParam={setSearchParam}
-              // dropdownData={dropdownData}
             />
           </View>
           <StyledTextInput
@@ -55,10 +47,12 @@ export default function Profile() {
               userSearch.searchParam === "matches"
                 ? "enter a comma separated list of participants"
                 : userSearch.searchParam === "events"
-                  ? "enter an event name"
+                  ? "search by event name"
                   : userSearch.searchParam === "championships"
-                    ? "enter a championship name"
-                    : "search"
+                    ? "search by championship name"
+                    : userSearch.searchParam === "wrestlers"
+                      ? "search by name"
+                      : "search"
             }
             changeFn={(text) =>
               setUserSearch({ ...userSearch, searchText: text })

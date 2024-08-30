@@ -24,8 +24,10 @@ import { useDebounce } from "use-debounce";
 import StyledTextInput from "../../../components/StyledTextInput";
 import AccountDropdown from "../../../components/AccountDropdown";
 import { deleteUserFromDb } from "../../../api/users";
-import ThemeToggle from "../../../components/ThemeToggle";
+import Toggle from "../../../components/Toggle";
+import { useColorScheme } from "nativewind";
 export default function AccountInfo() {
+  const { colorScheme, toggleColorScheme } = useColorScheme();
   const auth = getAuth();
   const user = auth.currentUser;
   const queryClient = useQueryClient();
@@ -370,7 +372,12 @@ export default function AccountInfo() {
           </AccountDropdown>
           <View className="flex flex-row items-center justify-between px-2 bg-white dark:bg-grey py-2 rounded-md">
             <Text className="text-grey dark:text-white font-bold">Theme</Text>
-            <ThemeToggle />
+            <Toggle
+              option1={"Light"}
+              option2={"Dark"}
+              toggleFn={toggleColorScheme}
+              currentOption={colorScheme}
+            />
           </View>
         </View>
         <View>

@@ -1,21 +1,19 @@
 import { Animated, Pressable, Text, View } from "react-native";
 import { useRef } from "react";
-import { useColorScheme } from "nativewind";
 
-export default function ThemeToggle() {
-  const { colorScheme, toggleColorScheme } = useColorScheme();
+export default function Toggle({ option1, option2, toggleFn, currentOption }) {
   const translation = useRef(
-    new Animated.Value(colorScheme === "light" ? 0 : 49.5)
+    new Animated.Value(currentOption === option1.toLowerCase() ? 0 : 49.5)
   ).current;
   const toggleDark = () => {
-    colorScheme === "light" && toggleColorScheme();
+    currentOption === option1.toLowerCase() && toggleFn();
     Animated.timing(translation, {
       toValue: 49.6,
       useNativeDriver: true,
     }).start();
   };
   const toggleLight = () => {
-    colorScheme === "dark" && toggleColorScheme();
+    currentOption === option2.toLowerCase() && toggleFn();
     Animated.timing(translation, {
       toValue: 0,
       useNativeDriver: true,
@@ -45,10 +43,12 @@ export default function ThemeToggle() {
         className="absolute border border-lightGrey2 flex flex-row justify-center items-center"
       >
         <Pressable onPress={toggleLight}>
-          <Text className="font-medium dark:opacity-50">Light</Text>
+          <Text className="font-medium dark:opacity-50">{option1}</Text>
         </Pressable>
         <Pressable onPress={toggleDark}>
-          <Text className="font-medium opacity-50 dark:opacity-100">Dark</Text>
+          <Text className="font-medium opacity-50 dark:opacity-100">
+            {option2}
+          </Text>
         </Pressable>
       </View>
     </View>

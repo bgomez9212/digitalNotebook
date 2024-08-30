@@ -3,7 +3,7 @@ export default function Layout() {
   return (
     <Stack>
       <Stack.Screen
-        name="[wresterId]"
+        name="[wrestlerId]"
         options={{
           headerShown: false,
         }}

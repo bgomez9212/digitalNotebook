@@ -1,8 +1,9 @@
 import { Stack, useGlobalSearchParams } from "expo-router";
 const blue = "#477CB9";
 export default function Layout() {
-  const { event_title } = useGlobalSearchParams() as {
+  const { event_title, wrestler_name } = useGlobalSearchParams() as {
     event_title: string;
+    wrestler_name: string;
   };
   return (
     <Stack>
@@ -26,7 +27,7 @@ export default function Layout() {
       <Stack.Screen
         name="wrestlers"
         options={{
-          title: event_title,
+          title: wrestler_name,
           headerStyle: { backgroundColor: blue },
           headerTitleStyle: { color: "white" },
           headerTintColor: "white",

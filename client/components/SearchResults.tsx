@@ -79,7 +79,7 @@ export default function SearchResults({ data, error }) {
         showsVerticalScrollIndicator={false}
         data={data.results}
         keyExtractor={(item) => item.id}
-        renderItem={({ item }) => <WrestlerRow name={item.name} />}
+        renderItem={({ item }) => <WrestlerRow wrestler={item} />}
       />
     );
   }

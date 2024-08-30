@@ -1,9 +1,9 @@
-import { Text, View } from "react-native";
+import { Text, TouchableOpacity } from "react-native";
 
-export default function WrestlerRow() {
+export default function WrestlerRow({ name }: { name: string }) {
   return (
-    <View>
-      <Text>This is a wrestler row</Text>
-    </View>
+    <TouchableOpacity className="border border-grey dark:border-white rounded-md mb-1 p-5">
+      <Text className="text-grey dark:text-white text-center">{name}</Text>
+    </TouchableOpacity>
   );
 }

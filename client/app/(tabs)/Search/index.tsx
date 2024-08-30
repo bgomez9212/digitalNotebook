@@ -31,6 +31,7 @@ export default function Profile() {
     queryFn: () =>
       getSearchResults(userSearch.searchParam, userSearch.searchText, uid),
   });
+  console.log(data);
   return (
     <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
       <View className="flex-1 bg-white2 dark:bg-darkGrey w-full pt-12 items-center">
@@ -76,7 +77,7 @@ export default function Profile() {
         ) : isError ? (
           <Text className="text-white">There seems to be an error</Text>
         ) : (
-          <SearchResults data={data} />
+          <SearchResults data={data} error={isError} />
         )}
       </View>
     </TouchableWithoutFeedback>

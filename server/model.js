@@ -377,15 +377,18 @@ module.exports = {
         const wrestlerQuery = search_text.split(" ").join("|");
         const { rows: results } = await pool.query(
           `
-          SELECT name, ts_rank(to_tsvector(name), to_tsquery($1)) as rank
+          SELECT id, name, ts_rank(to_tsvector(name), to_tsquery($1)) as rank
           FROM wrestlers
           WHERE to_tsvector(name) @@ to_tsquery($1)
           ORDER BY rank DESC
           `,
           [wrestlerQuery]
         );
-        console.log(results);
-        return results;
+        const data = {
+          search_param: search_param,
+          results: results,
+        };
+        return data;
       }
     } catch (err) {
       console.log(err);

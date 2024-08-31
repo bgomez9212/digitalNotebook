@@ -51,17 +51,17 @@ module.exports = {
       res.status(400).send(err);
     }
   },
-  getUserRating: async (req, res) => {
-    try {
-      const result = await model.getUserRating(
-        req.query.user_id,
-        req.query.match_id
-      );
-      res.status(200).send(result);
-    } catch (err) {
-      res.status(400).send(err);
-    }
-  },
+  // getUserRating: async (req, res) => {
+  //   try {
+  //     const result = await model.getUserRating(
+  //       req.query.user_id,
+  //       req.query.match_id
+  //     );
+  //     res.status(200).send(result);
+  //   } catch (err) {
+  //     res.status(400).send(err);
+  //   }
+  // },
   deleteUserRating: async (req, res) => {
     try {
       const result = await model.deleteUserRating(

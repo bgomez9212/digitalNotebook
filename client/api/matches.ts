@@ -23,7 +23,7 @@ export async function getTopMatches(numOfMatches, uid) {
 
 export async function addRating(ratingObj) {
   await axios
-    .post(`${process.env.API_POST_RATING}`, {
+    .post(`${process.env.API_RATING}`, {
       match_id: ratingObj.matchId,
       user_id: ratingObj.uid,
       rating: ratingObj.rating,
@@ -34,7 +34,7 @@ export async function addRating(ratingObj) {
 
 export async function deleteRating(ratingInfo) {
   await axios
-    .delete(`${process.env.API_DELETE_RATING}`, {
+    .delete(`${process.env.API_RATING}`, {
       params: {
         user_id: ratingInfo.uid,
         match_id: ratingInfo.match_id,

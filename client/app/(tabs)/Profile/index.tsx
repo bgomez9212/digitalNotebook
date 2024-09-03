@@ -26,49 +26,6 @@ export default function Profile() {
     useShadowColorFromDataset: false, // optional
   };
 
-  // const pieChartColorsPromotions = {
-  //   AEW: "#C5AB57",
-  //   AJPW: "#e41c1c",
-  //   CMLL: "#003f91",
-  //   DDT: "#bb08f7",
-  //   "Dragon Gate": "#ff8300",
-  //   NJPW: "#3da9dc",
-  //   NOAH: "#049B3C",
-  //   ROH: "#080404",
-  //   TNA: "#f0e60d",
-  //   WWE: "#737474",
-  // };
-
-  // function getPieChartData(data) {
-  //   if (!data?.length) {
-  //     return [
-  //       {
-  //         promotionName: "you have not rated matches",
-  //         matchCount: 1,
-  //         color: "white",
-  //       },
-  //     ];
-  //   }
-  //   let promotionCount = {};
-  //   for (let matchObj of data) {
-  //     if (!promotionCount[matchObj.promotion]) {
-  //       promotionCount[matchObj.promotion] = 1;
-  //     } else {
-  //       promotionCount[matchObj.promotion] += 1;
-  //     }
-  //   }
-
-  //   return Object.keys(promotionCount).map((promotionName) => {
-  //     return {
-  //       promotionName: promotionName,
-  //       matchCount: promotionCount[promotionName],
-  //       color: pieChartColorsPromotions[promotionName],
-  //     };
-  //   });
-  // }
-
-  // const pieChartData = getPieChartData(userRatings);
-
   if (isError) {
     return (
       <View className="flex-1 bg-white2 dark:bg-darkGrey justify-center items-center">

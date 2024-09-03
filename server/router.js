@@ -11,9 +11,9 @@ router.post("/events", controller.postEvent);
 // number optional query param (number of matches)
 router.get("/matches/topRated", controller.getTopRatedMatches);
 
-router.get("/ratings", controller.getUsersRatedMatches);
-router.post("/ratings", controller.postRating);
-router.delete("/ratings", controller.deleteUserRating);
+router.get("/ratings/:user_id", controller.getUsersRatedMatches);
+router.post("/ratings/:match_id", controller.postRating);
+router.delete("/ratings/:match_id", controller.deleteUserRating);
 
 router.get("/search", controller.getSearchResults);
 

@@ -268,6 +268,44 @@ module.exports = {
       throw err;
     }
   },
+  getUsersRatedMatches: async (user_id) => {
+    const { rows } = await pool.query(
+      `SELECT
+          matches.id AS match_id,
+          matches.event_id AS event_id,
+          events.title AS event_title,
+          TO_CHAR(events.date, 'YYYY-MM-DD') AS date,
+          participants.team AS participants,
+          wrestlers.name AS wrestler_name,
+          championships.name AS championship_name,
+          promotions.name AS promotion_name,
+          ratings.date AS rating_date,
+          ratings.rating AS user_rating,
+          CAST((SELECT COUNT(*) FROM ratings WHERE ratings.match_id = matches.id) AS INTEGER) AS rating_count,
+          ROUND((SELECT AVG(ratings.rating) FROM ratings WHERE ratings.match_id = matches.id)::numeric, 2) AS community_rating
+      FROM matches
+      JOIN participants ON matches.id = participants.match_id
+      JOIN wrestlers ON participants.wrestler_id = wrestlers.id
+      LEFT OUTER JOIN ratings ON matches.id = ratings.match_id AND ratings.user_id = $1
+      LEFT OUTER JOIN matches_championships ON matches_championships.match_id = matches.id
+      LEFT OUTER JOIN events ON events.id = matches.event_id
+      LEFT OUTER JOIN championships ON matches_championships.championship_id = championships.id
+      LEFT OUTER JOIN promotions ON events.promotion_id = promotions.id
+      WHERE ratings.user_id = $1
+      GROUP BY matches.id, participants.team, wrestlers.name, championship_name, participants.match_id, events.title, promotions.name, events.date, ratings.date, ratings.rating
+      ORDER BY ratings.date DESC, participants.match_id, team;`,
+      [user_id]
+    );
+    const userRatings = parseMatchData(rows);
+    const pieChartDataPromotion = getPieChartDataPromotion(userRatings);
+    const pieChartDataRatings = getPieChartDataRatings(userRatings);
+    const results = {
+      userRatings: userRatings,
+      promotions: pieChartDataPromotion,
+      ratings: pieChartDataRatings,
+    };
+    return results;
+  },
   postRating: async (match_id, user_id, rating) => {
     let today = new Date();
     const { rows: results } = await pool.query(
@@ -276,7 +314,7 @@ module.exports = {
     );
     return results;
   },
-  deleteUserRating: async (user_id, match_id) => {
+  deleteUserRating: async (match_id, user_id) => {
     const { rows: results } = await pool.query(
       "DELETE FROM ratings WHERE user_id = $1 AND match_id = $2",
       [user_id, match_id]
@@ -453,44 +491,6 @@ module.exports = {
       console.log(err);
       throw new Error(err.message);
     }
-  },
-  getUsersRatedMatches: async (user_id) => {
-    const { rows } = await pool.query(
-      `SELECT
-          matches.id AS match_id,
-          matches.event_id AS event_id,
-          events.title AS event_title,
-          TO_CHAR(events.date, 'YYYY-MM-DD') AS date,
-          participants.team AS participants,
-          wrestlers.name AS wrestler_name,
-          championships.name AS championship_name,
-          promotions.name AS promotion_name,
-          ratings.date AS rating_date,
-          ratings.rating AS user_rating,
-          CAST((SELECT COUNT(*) FROM ratings WHERE ratings.match_id = matches.id) AS INTEGER) AS rating_count,
-          ROUND((SELECT AVG(ratings.rating) FROM ratings WHERE ratings.match_id = matches.id)::numeric, 2) AS community_rating
-      FROM matches
-      JOIN participants ON matches.id = participants.match_id
-      JOIN wrestlers ON participants.wrestler_id = wrestlers.id
-      LEFT OUTER JOIN ratings ON matches.id = ratings.match_id AND ratings.user_id = $1
-      LEFT OUTER JOIN matches_championships ON matches_championships.match_id = matches.id
-      LEFT OUTER JOIN events ON events.id = matches.event_id
-      LEFT OUTER JOIN championships ON matches_championships.championship_id = championships.id
-      LEFT OUTER JOIN promotions ON events.promotion_id = promotions.id
-      WHERE ratings.user_id = $1
-      GROUP BY matches.id, participants.team, wrestlers.name, championship_name, participants.match_id, events.title, promotions.name, events.date, ratings.date, ratings.rating
-      ORDER BY ratings.date DESC, participants.match_id, team;`,
-      [user_id]
-    );
-    const userRatings = parseMatchData(rows);
-    const pieChartDataPromotion = getPieChartDataPromotion(userRatings);
-    const pieChartDataRatings = getPieChartDataRatings(userRatings);
-    const results = {
-      userRatings: userRatings,
-      promotions: pieChartDataPromotion,
-      ratings: pieChartDataRatings,
-    };
-    return results;
   },
   getPromotions: async () => {
     const { rows: promotions } = await pool.query(

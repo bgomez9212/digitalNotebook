@@ -31,10 +31,18 @@ module.exports = {
       res.status(404).send(err);
     }
   },
+  getUsersRatedMatches: async (req, res) => {
+    try {
+      const results = await model.getUsersRatedMatches(req.params.user_id);
+      res.send(results).status(200);
+    } catch (err) {
+      res.send(err).status(500);
+    }
+  },
   postRating: async (req, res) => {
     try {
       const result = await model.postRating(
-        req.body.match_id,
+        req.params.match_id,
         req.body.user_id,
         req.body.rating
       );
@@ -46,8 +54,8 @@ module.exports = {
   deleteUserRating: async (req, res) => {
     try {
       const result = await model.deleteUserRating(
-        req.query.user_id,
-        req.query.match_id
+        req.params.match_id,
+        req.body.user_id
       );
       res.sendStatus(204);
     } catch (err) {
@@ -64,14 +72,6 @@ module.exports = {
       res.send(result).status(200);
     } catch (err) {
       res.status(500).send(err);
-    }
-  },
-  getUsersRatedMatches: async (req, res) => {
-    try {
-      const results = await model.getUsersRatedMatches(req.query.user_id);
-      res.send(results).status(200);
-    } catch (err) {
-      res.send(err).status(500);
     }
   },
   getPromotions: async (req, res) => {

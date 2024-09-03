@@ -1,6 +1,12 @@
 import axios from "axios";
 
-export async function getTopMatches(numOfMatches, uid) {
+export async function getTopMatches({
+  numOfMatches,
+  uid,
+}: {
+  numOfMatches: number;
+  uid: string;
+}) {
   return axios
     .get(`/matches/topRated`, {
       params: {
@@ -12,24 +18,34 @@ export async function getTopMatches(numOfMatches, uid) {
     .then((res) => res.data);
 }
 
-export async function addRating(ratingObj) {
+export async function addRating(ratingObj: {
+  matchId: number;
+  uid: string;
+  rating: number;
+}) {
   await axios
-    .post(`${process.env.API_RATING}`, {
-      match_id: ratingObj.matchId,
-      user_id: ratingObj.uid,
-      rating: ratingObj.rating,
-    })
+    .post(
+      `/ratings/${ratingObj.matchId}`,
+      {
+        user_id: ratingObj.uid,
+        rating: ratingObj.rating,
+      },
+      { baseURL: process.env.SERVER }
+    )
     .then(() => console.log("success"))
     .catch((err) => console.log(err));
 }
 
-export async function deleteRating(ratingInfo) {
+export async function deleteRating(ratingInfo: {
+  uid: string;
+  match_id: number;
+}) {
   await axios
-    .delete(`${process.env.API_RATING}`, {
-      params: {
+    .delete(`/ratings/${ratingInfo.match_id}`, {
+      data: {
         user_id: ratingInfo.uid,
-        match_id: ratingInfo.match_id,
       },
+      baseURL: process.env.SERVER,
     })
     .then(() => console.log("success"))
     .catch((err) => console.log(err.message));

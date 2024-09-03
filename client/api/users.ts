@@ -8,23 +8,10 @@ export async function getUserId(userName) {
     .then((res) => res.data);
 }
 
-// export async function getUserRating(userUid, matchId) {
-//   return axios
-//     .get(`${process.env.API_USER_RATING}`, {
-//       params: {
-//         user_id: userUid,
-//         match_id: matchId,
-//       },
-//     })
-//     .then((res) => res.data);
-// }
-
 export async function getUserRatings(userUid) {
   return axios
-    .get(process.env.API_RATINGS, {
-      params: {
-        user_id: userUid,
-      },
+    .get(`/ratings/${userUid}`, {
+      baseURL: process.env.SERVER,
     })
     .then((res) => res.data);
 }

@@ -222,7 +222,7 @@ module.exports = {
     );
     return results;
   },
-  getTopRatedMatches: async (numOfMatches, user_id) => {
+  getTopRatedMatches: async (number, user_id) => {
     let today = new Date();
     let lastMonth = new Date(today.setDate(today.getDate() - 30));
     try {
@@ -260,34 +260,13 @@ module.exports = {
         GROUP BY matches.id, participants.team, wrestlers.name, championship_name, participants.match_id, events.title, events.date, promotions.name
         ORDER BY community_rating DESC, match_id, team;
         `,
-        [lastMonth.toISOString().slice(0, 10), numOfMatches, user_id]
+        [lastMonth.toISOString().slice(0, 10), number, user_id]
       );
       return parseMatchData(results);
     } catch (err) {
       console.log(err);
       throw err;
     }
-  },
-  getMatchInfo: async (match_id) => {
-    const { rows: result } = await pool.query(
-      `
-      SELECT
-        matches.id AS match_id,
-        matches.event_id AS event_id,
-        participants.team AS participants,
-        wrestlers.name AS wrestler_name,
-        championships.name AS championship_name
-      FROM matches
-      JOIN participants ON matches.id = participants.match_id
-      JOIN wrestlers ON participants.wrestler_id = wrestlers.id
-      LEFT OUTER JOIN matches_championships ON matches_championships.match_id = matches.id
-      LEFT OUTER JOIN championships ON matches_championships.championship_id = championships.id
-        WHERE matches.id = $1
-      GROUP BY matches.id, participants.team, wrestlers.name, championships.name
-      ORDER BY participants.team ASC;`,
-      [match_id]
-    );
-    return parseMatchData(result);
   },
   postRating: async (match_id, user_id, rating) => {
     let today = new Date();
@@ -297,23 +276,6 @@ module.exports = {
     );
     return results;
   },
-  // Is this used for the rating modal??
-  // getUserRating: async (user_id, match_id) => {
-  //   const { rows: userRating } = await pool.query(
-  //     "SELECT rating FROM ratings WHERE user_id = $1 AND match_id = $2",
-  //     [user_id, match_id]
-  //   );
-  //   const { rows: communityRating } = await pool.query(
-  //     `SELECT
-  //       ROUND(AVG(ratings.rating)::numeric, 2) AS rating,
-  //       (SELECT COUNT(*) FROM ratings WHERE match_id = $1) AS rating_count
-  //     FROM matches
-  //     LEFT OUTER JOIN ratings ON matches.id = ratings.match_id
-  //     WHERE matches.id = $1`,
-  //     [match_id]
-  //   );
-  //   return { userRating: userRating[0], communityRating: communityRating[0] };
-  // },
   deleteUserRating: async (user_id, match_id) => {
     const { rows: results } = await pool.query(
       "DELETE FROM ratings WHERE user_id = $1 AND match_id = $2",

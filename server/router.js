@@ -2,14 +2,14 @@ const express = require("express");
 const router = express.Router();
 const controller = require("./controller.js");
 
-// number optional query param
+// number optional query param (number of results)
 router.get("/events/recent", controller.getRecentEvents);
-// user_id optional query param
+// user_id optional query param (include specific user's ratings)
 router.get("/events/:event_id", controller.getEvent);
 router.post("/events", controller.postEvent);
 
+// number optional query param (number of matches)
 router.get("/matches/topRated", controller.getTopRatedMatches);
-router.get("/matches", controller.getMatchInfo);
 
 router.get("/ratings", controller.getUsersRatedMatches);
 router.post("/ratings", controller.postRating);

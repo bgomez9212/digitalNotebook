@@ -23,20 +23,12 @@ module.exports = {
   getTopRatedMatches: async (req, res) => {
     try {
       const result = await model.getTopRatedMatches(
-        req.query.numOfMatches,
+        req.query.number,
         req.query.user_id
       );
       res.status(200).send(result);
     } catch (err) {
       res.status(404).send(err);
-    }
-  },
-  getMatchInfo: async (req, res) => {
-    try {
-      const result = await model.getMatchInfo(req.query.match_id);
-      res.status(200).send(result[0]);
-    } catch (err) {
-      res.status(400).send(err);
     }
   },
   postRating: async (req, res) => {

@@ -1,22 +1,13 @@
 import axios from "axios";
 
-export async function getMatchInfo(matchId) {
-  return axios
-    .get(`${process.env.API_MATCH}`, {
-      params: {
-        match_id: matchId,
-      },
-    })
-    .then((res) => res.data);
-}
-
 export async function getTopMatches(numOfMatches, uid) {
   return axios
-    .get(`${process.env.API_TOP_RATED}`, {
+    .get(`/matches/topRated`, {
       params: {
-        numOfMatches: numOfMatches,
+        number: numOfMatches,
         user_id: uid,
       },
+      baseURL: process.env.SERVER,
     })
     .then((res) => res.data);
 }

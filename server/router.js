@@ -24,7 +24,9 @@ router.get("/promotions", controller.getPromotions);
 router.get("/users/:user_id", controller.getUsername);
 // body - username
 router.put("/users/:user_id", controller.editUsername);
+// username - query param
 router.get("/users", controller.checkUsernames);
+//
 router.post("/users", controller.createUser);
 router.delete("/users", controller.deleteUser);
 

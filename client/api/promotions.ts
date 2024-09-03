@@ -2,15 +2,18 @@ import axios from "axios";
 
 export async function getPromotion(promotionName) {
   return axios
-    .get(`${process.env.API_SEARCH}`, {
+    .get(`/search`, {
       params: {
         search_param: "promotions",
         search_text: promotionName,
       },
+      baseURL: process.env.SERVER,
     })
     .then((res) => res.data);
 }
 
 export async function getPromotions() {
-  return axios.get(`${process.env.API_PROMOTIONS}`).then((res) => res.data);
+  return axios
+    .get(`/promotions`, { baseURL: process.env.SERVER })
+    .then((res) => res.data);
 }

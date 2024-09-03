@@ -18,20 +18,21 @@ export async function getUserRatings(userUid) {
 
 export async function getUsername(userUid) {
   return axios
-    .get(process.env.API_USERS, {
-      params: {
-        user_id: userUid,
-      },
+    .get(`/users/${userUid}`, {
+      baseURL: process.env.SERVER,
     })
     .then((res) => res.data[0].username);
 }
 
 export async function editUsername(userUid, username) {
   axios
-    .put(process.env.API_USERS, {
-      user_id: userUid,
-      username: username,
-    })
+    .put(
+      `/users/${userUid}`,
+      {
+        username: username,
+      },
+      { baseURL: process.env.SERVER }
+    )
     .then(() => console.log("successfully edited username"))
     .catch((err) => console.log(err));
 }

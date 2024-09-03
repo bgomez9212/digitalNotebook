@@ -103,7 +103,7 @@ module.exports = {
   },
   getUsername: async (req, res) => {
     try {
-      const results = await model.getUsername(req.query.user_id);
+      const results = await model.getUsername(req.params.user_id);
       res.send(results).status(200);
     } catch (err) {
       res.send(err).status(500);
@@ -112,7 +112,7 @@ module.exports = {
   editUsername: async (req, res) => {
     try {
       const results = await model.editUsername(
-        req.body.user_id,
+        req.params.user_id,
         req.body.username
       );
       res.send(results).status(200);

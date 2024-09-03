@@ -4,7 +4,7 @@ module.exports = {
   getEvent: async (req, res) => {
     try {
       const result = await model.getEvent(
-        req.query.event_id,
+        req.params.event_id,
         req.query.user_id
       );
       res.status(200).send(result[0]);
@@ -14,7 +14,7 @@ module.exports = {
   },
   getRecentEvents: async (req, res) => {
     try {
-      const result = await model.getRecentEvents(req.query.numOfResults);
+      const result = await model.getRecentEvents(req.query.number);
       res.status(200).send(result);
     } catch (err) {
       res.status(400).send(err);
@@ -51,17 +51,6 @@ module.exports = {
       res.status(400).send(err);
     }
   },
-  // getUserRating: async (req, res) => {
-  //   try {
-  //     const result = await model.getUserRating(
-  //       req.query.user_id,
-  //       req.query.match_id
-  //     );
-  //     res.status(200).send(result);
-  //   } catch (err) {
-  //     res.status(400).send(err);
-  //   }
-  // },
   deleteUserRating: async (req, res) => {
     try {
       const result = await model.deleteUserRating(

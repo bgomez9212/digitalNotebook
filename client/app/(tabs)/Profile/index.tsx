@@ -11,11 +11,7 @@ import { router } from "expo-router";
 export default function Profile() {
   const auth = getAuth();
   const { uid } = auth.currentUser;
-  const {
-    data: userRatings,
-    isError,
-    isLoading,
-  } = useQuery({
+  const { data, isError, isLoading } = useQuery({
     queryKey: ["userRatings"],
     queryFn: () => getUserRatings(uid),
   });
@@ -30,48 +26,48 @@ export default function Profile() {
     useShadowColorFromDataset: false, // optional
   };
 
-  const pieChartColors = {
-    AEW: "#C5AB57",
-    AJPW: "#e41c1c",
-    CMLL: "#003f91",
-    DDT: "#bb08f7",
-    "Dragon Gate": "#ff8300",
-    NJPW: "#3da9dc",
-    NOAH: "#049B3C",
-    ROH: "#080404",
-    TNA: "#f0e60d",
-    WWE: "#737474",
-  };
+  // const pieChartColorsPromotions = {
+  //   AEW: "#C5AB57",
+  //   AJPW: "#e41c1c",
+  //   CMLL: "#003f91",
+  //   DDT: "#bb08f7",
+  //   "Dragon Gate": "#ff8300",
+  //   NJPW: "#3da9dc",
+  //   NOAH: "#049B3C",
+  //   ROH: "#080404",
+  //   TNA: "#f0e60d",
+  //   WWE: "#737474",
+  // };
 
-  function getPieChartData(data) {
-    if (!data?.length) {
-      return [
-        {
-          promotionName: "you have not rated matches",
-          matchCount: 1,
-          color: "white",
-        },
-      ];
-    }
-    let promotionCount = {};
-    for (let matchObj of data) {
-      if (!promotionCount[matchObj.promotion]) {
-        promotionCount[matchObj.promotion] = 1;
-      } else {
-        promotionCount[matchObj.promotion] += 1;
-      }
-    }
+  // function getPieChartData(data) {
+  //   if (!data?.length) {
+  //     return [
+  //       {
+  //         promotionName: "you have not rated matches",
+  //         matchCount: 1,
+  //         color: "white",
+  //       },
+  //     ];
+  //   }
+  //   let promotionCount = {};
+  //   for (let matchObj of data) {
+  //     if (!promotionCount[matchObj.promotion]) {
+  //       promotionCount[matchObj.promotion] = 1;
+  //     } else {
+  //       promotionCount[matchObj.promotion] += 1;
+  //     }
+  //   }
 
-    return Object.keys(promotionCount).map((promotionName) => {
-      return {
-        promotionName: promotionName,
-        matchCount: promotionCount[promotionName],
-        color: pieChartColors[promotionName],
-      };
-    });
-  }
+  //   return Object.keys(promotionCount).map((promotionName) => {
+  //     return {
+  //       promotionName: promotionName,
+  //       matchCount: promotionCount[promotionName],
+  //       color: pieChartColorsPromotions[promotionName],
+  //     };
+  //   });
+  // }
 
-  const pieChartData = getPieChartData(userRatings);
+  // const pieChartData = getPieChartData(userRatings);
 
   if (isError) {
     return (
@@ -101,7 +97,7 @@ export default function Profile() {
             justifyContent: "center",
             alignItems: "center",
           }}
-          data={pieChartData}
+          data={data.promotions}
           width={screenWidth}
           height={screenWidth}
           chartConfig={chartConfig}
@@ -111,9 +107,9 @@ export default function Profile() {
           hasLegend={false}
           center={[screenWidth - 300, 0]}
         />
-        {userRatings?.length ? (
+        {data?.promotions.length ? (
           <View className="flex-row w-[95%] mb-10 flex-wrap justify-between">
-            {pieChartData.map((promotion) => (
+            {data?.promotions?.map((promotion) => (
               <TouchableOpacity
                 onPress={() =>
                   router.push({
@@ -139,7 +135,7 @@ export default function Profile() {
           </View>
         ) : null}
 
-        {!userRatings?.length && (
+        {!data.userRatings?.length && (
           <Text className="text-grey dark:text-white">
             This pie chart will fill when you have rated some matches
           </Text>
@@ -152,12 +148,12 @@ export default function Profile() {
             <Text>There seems to be an error..</Text>
           ) : isLoading ? (
             <ActivityIndicator />
-          ) : !userRatings.length ? (
+          ) : !data.userRatings.length ? (
             <Text className="text-grey dark:text-white text-center">
               You haven't rated any matches yet.
             </Text>
           ) : (
-            userRatings
+            data.userRatings
               .slice(0, 5)
               .map((match) => (
                 <MatchRow

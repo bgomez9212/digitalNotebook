@@ -206,7 +206,7 @@ module.exports = {
     eventInfo[0].matches = parseMatchData(matches);
     return eventInfo;
   },
-  getRecentEvents: async (numOfResults) => {
+  getRecentEvents: async (number) => {
     const { rows: results } = await pool.query(
       `SELECT
         events.id AS id,
@@ -218,7 +218,7 @@ module.exports = {
       JOIN promotions ON promotions.id = events.promotion_id
       ORDER BY date DESC, id ASC
       LIMIT $1;`,
-      [numOfResults]
+      [number]
     );
     return results;
   },

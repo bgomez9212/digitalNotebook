@@ -48,7 +48,7 @@ export default function RatingsExtended() {
   const selectedPromotionsDisplay = useRef([]);
 
   const sortAndFilterRatings = useCallback(
-    (userRatings) => {
+    (data) => {
       const compare = (a, b, key) => {
         if (sortParams.sortOrder === "ASC") {
           return a[key] >= b[key] ? 1 : -1;
@@ -56,38 +56,34 @@ export default function RatingsExtended() {
           return a[key] <= b[key] ? 1 : -1;
         }
       };
+
       if (selectedPromotions.length) {
-        userRatings = userRatings.filter((matchObj) =>
+        data.userRatings = data.userRatings.filter((matchObj) =>
           selectedPromotions.includes(matchObj.promotion)
         );
       }
 
-      return sortParams.sortBy === "userRatings"
-        ? userRatings?.sort((a, b) => compare(a, b, "user_rating"))
+      sortParams.sortBy === "userRatings"
+        ? data.userRatings?.sort((a, b) => compare(a, b, "user_rating"))
         : sortParams.sortBy === "communityRatings"
-          ? userRatings?.sort((a, b) => compare(a, b, "community_rating"))
+          ? data.userRatings?.sort((a, b) => compare(a, b, "community_rating"))
           : sortParams.sortBy === "eventDate"
-            ? userRatings?.sort((a, b) => compare(a, b, "date"))
-            : userRatings?.sort((a, b) => compare(a, b, "rating_date"));
+            ? data.userRatings?.sort((a, b) => compare(a, b, "date"))
+            : data.userRatings?.sort((a, b) => compare(a, b, "rating_date"));
+
+      return data;
     },
     [changeParams]
   );
 
-  const {
-    data: userRatings,
-    isError,
-    isFetching,
-  } = useQuery({
+  const { data, isError, isFetching } = useQuery({
     queryKey: ["userRatings"],
     queryFn: () => getUserRatings(user.uid),
     select: sortAndFilterRatings,
   });
 
   const promotions = useRef(
-    userRatings
-      .map((ratings) => ratings.promotion)
-      .filter((value, index, array) => array.indexOf(value) === index)
-      .sort()
+    data?.promotions.map((promotion) => promotion.promotionName).sort()
   );
 
   useEffect(() => {
@@ -173,7 +169,7 @@ export default function RatingsExtended() {
             <FlatList
               showsVerticalScrollIndicator={false}
               className="w-[95%]"
-              data={userRatings}
+              data={data?.userRatings}
               renderItem={({ item }) => (
                 <MatchRow
                   match={item}

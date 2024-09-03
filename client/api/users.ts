@@ -2,8 +2,9 @@ import axios from "axios";
 
 export async function getUserId(userName) {
   return axios
-    .get(process.env.API_GET_USERS, {
+    .get("/users", {
       params: { user_name: userName },
+      baseURL: process.env.SERVER,
     })
     .then((res) => res.data);
 }
@@ -39,20 +40,25 @@ export async function editUsername(userUid, username) {
 
 export async function createUser(userUid, username) {
   axios
-    .post(process.env.API_GET_USERS, {
-      user_id: userUid,
-      username: username,
-    })
+    .post(
+      `/users/`,
+      {
+        user_id: userUid,
+        username: username,
+      },
+      { baseURL: process.env.SERVER }
+    )
     .then(() => console.log("successfully created user"))
     .catch((err) => console.log(err));
 }
 
 export async function deleteUserFromDb(userUid) {
   await axios
-    .delete(`${process.env.API_USERS}`, {
+    .delete(`/users`, {
       params: {
         user_id: userUid,
       },
+      baseURL: process.env.SERVER,
     })
     .then(() => console.log("successfully deleted user"))
     .catch((err) => console.log(err.message));

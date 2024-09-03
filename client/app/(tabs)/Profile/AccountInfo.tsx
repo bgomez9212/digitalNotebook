@@ -168,7 +168,7 @@ export default function AccountInfo() {
         getCredential(inputValues.currentPasswordDeactivate)
       );
       await deleteUser(user);
-      router.replace("../../");
+      router.replace("../../Landing");
     } catch (err) {
       setUiState({ ...uiState, deleteError: err.message });
     }

@@ -8,6 +8,12 @@ export default function Layout() {
           headerShown: false,
         }}
       />
+      <Stack.Screen
+        name="RatingsExtended"
+        options={{
+          headerShown: false,
+        }}
+      />
     </Stack>
   );
 }

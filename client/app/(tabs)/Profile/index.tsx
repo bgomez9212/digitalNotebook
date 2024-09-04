@@ -1,4 +1,4 @@
-import { ScrollView, Text, TouchableOpacity, View } from "react-native";
+import { ScrollView, Text, View } from "react-native";
 import { useQuery } from "@tanstack/react-query";
 import { ActivityIndicator } from "react-native-paper";
 import { getAuth } from "firebase/auth";

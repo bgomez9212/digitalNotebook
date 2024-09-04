@@ -58,18 +58,18 @@ export default function RatingsExtended() {
       };
 
       if (selectedPromotions.length) {
-        data.userRatings = data.userRatings.filter((matchObj) =>
+        data.matches = data.matches.filter((matchObj) =>
           selectedPromotions.includes(matchObj.promotion)
         );
       }
 
       sortParams.sortBy === "userRatings"
-        ? data.userRatings?.sort((a, b) => compare(a, b, "user_rating"))
+        ? data.matches?.sort((a, b) => compare(a, b, "user_rating"))
         : sortParams.sortBy === "communityRatings"
-          ? data.userRatings?.sort((a, b) => compare(a, b, "community_rating"))
+          ? data.matches?.sort((a, b) => compare(a, b, "community_rating"))
           : sortParams.sortBy === "eventDate"
-            ? data.userRatings?.sort((a, b) => compare(a, b, "date"))
-            : data.userRatings?.sort((a, b) => compare(a, b, "rating_date"));
+            ? data.matches?.sort((a, b) => compare(a, b, "date"))
+            : data.matches?.sort((a, b) => compare(a, b, "rating_date"));
 
       return data;
     },
@@ -169,7 +169,7 @@ export default function RatingsExtended() {
             <FlatList
               showsVerticalScrollIndicator={false}
               className="w-[95%]"
-              data={data?.userRatings}
+              data={data?.matches}
               renderItem={({ item }) => (
                 <MatchRow
                   match={item}

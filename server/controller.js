@@ -146,4 +146,15 @@ module.exports = {
       }
     }
   },
+  getWrestlerMatches: async (req, res) => {
+    try {
+      const results = await model.getWrestlerMatches(
+        req.params.wrestler_id,
+        req.query.user_id
+      );
+      res.send(results).status(200);
+    } catch (err) {
+      res.send(err).status(500);
+    }
+  },
 };

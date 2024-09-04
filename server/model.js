@@ -116,7 +116,7 @@ function getPieChartDataPromotion(data) {
   });
 }
 
-function getPieChartDataRatings(data) {
+function getPieChartDataRatings(data, ratingType) {
   if (!data?.length) {
     return [
       {
@@ -128,18 +128,20 @@ function getPieChartDataRatings(data) {
   }
   let ratingCount = { 0: 0, 1: 0, 2: 0, 3: 0, 4: 0, 5: 0 };
   for (let matchObj of data) {
-    if (matchObj.user_rating < 1) {
-      ratingCount["0"] += 1;
-    } else if (matchObj.user_rating < 2) {
-      ratingCount["1"] += 1;
-    } else if (matchObj.user_rating < 3) {
-      ratingCount["2"] += 1;
-    } else if (matchObj.user_rating < 4) {
-      ratingCount["3"] += 1;
-    } else if (matchObj.user_rating < 5) {
-      ratingCount["4"] += 1;
-    } else {
-      ratingCount["5"] += 1;
+    if (matchObj[ratingType] !== null) {
+      if (matchObj[ratingType] < 1) {
+        ratingCount["0"] += 1;
+      } else if (matchObj[ratingType] < 2) {
+        ratingCount["1"] += 1;
+      } else if (matchObj[ratingType] < 3) {
+        ratingCount["2"] += 1;
+      } else if (matchObj[ratingType] < 4) {
+        ratingCount["3"] += 1;
+      } else if (matchObj[ratingType] < 5) {
+        ratingCount["4"] += 1;
+      } else {
+        ratingCount["5"] += 1;
+      }
     }
   }
 
@@ -300,7 +302,7 @@ module.exports = {
     const pieChartDataPromotion = getPieChartDataPromotion(userRatings);
     const pieChartDataRatings = getPieChartDataRatings(userRatings);
     const results = {
-      userRatings: userRatings,
+      matches: userRatings,
       promotions: pieChartDataPromotion,
       ratings: pieChartDataRatings,
     };
@@ -727,5 +729,54 @@ module.exports = {
     } catch (err) {
       throw err;
     }
+  },
+  getWrestlerMatches: async (wrestler_id, user_id) => {
+    const { rows } = await pool.query(
+      `SELECT
+      participants.match_id AS match_id,
+      matches.event_id AS event_id,
+      promotions.name AS promotion_name,
+      events.title AS event_title,
+      TO_CHAR(events.date, 'YYYY-MM-DD') AS date,
+      wrestlers.name AS wrestler_name,
+      participants.team AS participants,
+      championships.name AS championship_name,
+      ROUND(AVG(ratings.rating)::numeric, 2) as community_rating,
+      (SELECT rating from ratings WHERE ratings.match_id = participants.match_id AND ratings.user_id = $2) AS user_rating,
+      (SELECT COUNT(*) FROM ratings WHERE ratings.match_id = participants.match_id) AS rating_count
+      FROM participants
+        JOIN wrestlers ON participants.wrestler_id = wrestlers.id
+        JOIN matches ON matches.id = participants.match_id
+        LEFT OUTER JOIN matches_championships ON matches_championships.match_id = participants.match_id
+        LEFT OUTER JOIN championships ON championships.id = matches_championships.championship_id
+        LEFT OUTER JOIN ratings ON ratings.match_id = participants.match_id
+        LEFT OUTER JOIN events ON matches.event_id = events.id
+        LEFT OUTER JOIN promotions ON promotions.id = events.promotion_id
+      WHERE matches.id = ANY(
+        SELECT match_id FROM (
+          SELECT matches.id AS match_id
+          FROM matches
+          JOIN participants ON matches.id = participants.match_id
+          JOIN wrestlers ON participants.wrestler_id = wrestlers.id
+          WHERE wrestler_id = $1
+        )
+        GROUP BY match_id
+      )
+      GROUP BY participants.match_id, matches.event_id, wrestlers.name, participants.team, championships.name, rating_count, events.title, events.date, promotions.name
+      ORDER BY date DESC, match_id, team;`,
+      [wrestler_id, user_id]
+    );
+    const matches = parseMatchData(rows);
+    const pieChartDataRatings = getPieChartDataRatings(
+      matches,
+      "community_rating"
+    );
+    const pieChartDataPromotion = getPieChartDataPromotion(matches);
+    const results = {
+      matches: matches,
+      promotions: pieChartDataPromotion,
+      ratings: pieChartDataRatings,
+    };
+    return results;
   },
 };

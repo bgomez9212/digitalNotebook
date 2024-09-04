@@ -29,5 +29,7 @@ router.get("/users", controller.checkUsernames);
 //
 router.post("/users", controller.createUser);
 router.delete("/users", controller.deleteUser);
+// user_id - query param
+router.get("/wrestlers/:wrestler_id", controller.getWrestlerMatches);
 
 module.exports = router;

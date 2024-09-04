@@ -14,12 +14,12 @@ export default function ProfileMatchTable({ data, isError, isLoading }) {
           <Text>There seems to be an error..</Text>
         ) : isLoading ? (
           <ActivityIndicator />
-        ) : !data.userRatings.length ? (
+        ) : !data.matches.length ? (
           <Text className="text-grey dark:text-white text-center">
             You haven't rated any matches yet.
           </Text>
         ) : (
-          data.userRatings
+          data.matches
             .slice(0, 5)
             .map((match) => (
               <MatchRow

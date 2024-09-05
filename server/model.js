@@ -300,7 +300,10 @@ module.exports = {
     );
     const userRatings = parseMatchData(rows);
     const pieChartDataPromotion = getPieChartDataPromotion(userRatings);
-    const pieChartDataRatings = getPieChartDataRatings(userRatings);
+    const pieChartDataRatings = getPieChartDataRatings(
+      userRatings,
+      "user_rating"
+    );
     const results = {
       matches: userRatings,
       promotions: pieChartDataPromotion,

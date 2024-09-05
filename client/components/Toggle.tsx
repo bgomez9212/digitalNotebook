@@ -5,14 +5,14 @@ export default function Toggle({ option1, option2, toggleFn, currentOption }) {
   const translation = useRef(
     new Animated.Value(currentOption === option1.toLowerCase() ? 0 : 49.5)
   ).current;
-  const toggleDark = () => {
+  const toggleOption1 = () => {
     currentOption === option1.toLowerCase() && toggleFn();
     Animated.timing(translation, {
       toValue: 49.6,
       useNativeDriver: true,
     }).start();
   };
-  const toggleLight = () => {
+  const toggleOption2 = () => {
     currentOption === option2.toLowerCase() && toggleFn();
     Animated.timing(translation, {
       toValue: 0,
@@ -42,10 +42,10 @@ export default function Toggle({ option1, option2, toggleFn, currentOption }) {
         style={{ height: 29, width: 100, borderRadius: 5, columnGap: 15 }}
         className="absolute border border-lightGrey2 flex flex-row justify-center items-center"
       >
-        <Pressable onPress={toggleLight}>
+        <Pressable onPress={toggleOption2}>
           <Text className="font-medium dark:opacity-50">{option1}</Text>
         </Pressable>
-        <Pressable onPress={toggleDark}>
+        <Pressable onPress={toggleOption1}>
           <Text className="font-medium opacity-50 dark:opacity-100">
             {option2}
           </Text>

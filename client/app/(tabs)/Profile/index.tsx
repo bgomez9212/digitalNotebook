@@ -34,7 +34,12 @@ export default function index() {
       nestedScrollEnabled={true}
       className="bg-white2 dark:bg-darkGrey"
     >
-      <Profile data={data} isError={isError} isLoading={isLoading} />
+      <Profile
+        data={data}
+        isError={isError}
+        isLoading={isLoading}
+        profileType={"user"}
+      />
     </ScrollView>
   );
 }

@@ -1,9 +1,16 @@
 import { View, Text, TouchableOpacity } from "react-native";
 import { ActivityIndicator } from "react-native-paper";
 import MatchRow from "./MatchRow";
-import { router } from "expo-router";
+import { router, usePathname } from "expo-router";
 
-export default function ProfileMatchTable({ data, isError, isLoading }) {
+export default function ProfileMatchTable({
+  data,
+  isError,
+  isLoading,
+  profileType,
+}) {
+  const pathToExtendedRatings =
+    profileType === "user" ? "./Profile/RatingsExtended" : "./RatingsExtended";
   return (
     <View>
       <Text className="text-xl text-grey dark:text-white underline my-5 font-medium text-center">
@@ -31,7 +38,7 @@ export default function ProfileMatchTable({ data, isError, isLoading }) {
             ))
         )}
         <TouchableOpacity
-          onPress={() => router.push(`./Profile/RatingsExtended`)}
+          onPress={() => router.push(pathToExtendedRatings)}
           className="py-3"
         >
           <Text className="text-blue font-bold underline text-center">

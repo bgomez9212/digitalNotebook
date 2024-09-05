@@ -2,7 +2,9 @@ import { router } from "expo-router";
 import { Dimensions, TouchableOpacity, View, Text } from "react-native";
 import { PieChart } from "react-native-chart-kit";
 
-export default function ProfilePieChart({ data, sortBy }) {
+export default function ProfilePieChart({ data, sortBy, profileType }) {
+  const pathToExtendedRatings =
+    profileType === "user" ? "./Profile/RatingsExtended" : "./RatingsExtended";
   const screenWidth = Dimensions.get("window").width;
   const chartConfig = {
     backgroundGradientFrom: "#1E2923",
@@ -39,7 +41,7 @@ export default function ProfilePieChart({ data, sortBy }) {
               <TouchableOpacity
                 onPress={() =>
                   router.push({
-                    pathname: "/(tabs)/Profile/RatingsExtended",
+                    pathname: pathToExtendedRatings,
                     params: { promotionName: promotion.promotionName },
                   })
                 }
@@ -95,7 +97,7 @@ export default function ProfilePieChart({ data, sortBy }) {
               <TouchableOpacity
                 onPress={() =>
                   router.push({
-                    pathname: "/(tabs)/wrestlers/RatingsExtended",
+                    pathname: pathToExtendedRatings,
                     params: { rating: ratingObj.rating },
                   })
                 }

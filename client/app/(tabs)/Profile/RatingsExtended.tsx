@@ -57,21 +57,26 @@ export default function RatingsExtended() {
         }
       };
 
+      let filteredResults = { ...data };
       if (selectedPromotions.length) {
-        data.matches = data.matches.filter((matchObj) =>
+        filteredResults.matches = data.matches.filter((matchObj) =>
           selectedPromotions.includes(matchObj.promotion)
         );
       }
 
       sortParams.sortBy === "userRatings"
-        ? data.matches?.sort((a, b) => compare(a, b, "user_rating"))
+        ? filteredResults.matches?.sort((a, b) => compare(a, b, "user_rating"))
         : sortParams.sortBy === "communityRatings"
-          ? data.matches?.sort((a, b) => compare(a, b, "community_rating"))
+          ? filteredResults.matches?.sort((a, b) =>
+              compare(a, b, "community_rating")
+            )
           : sortParams.sortBy === "eventDate"
-            ? data.matches?.sort((a, b) => compare(a, b, "date"))
-            : data.matches?.sort((a, b) => compare(a, b, "rating_date"));
+            ? filteredResults.matches?.sort((a, b) => compare(a, b, "date"))
+            : filteredResults.matches?.sort((a, b) =>
+                compare(a, b, "rating_date")
+              );
 
-      return data;
+      return filteredResults;
     },
     [changeParams]
   );

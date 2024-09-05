@@ -2,19 +2,18 @@ import axios from "axios";
 
 export async function getEvent(eventId, uid) {
   return axios
-    .get(`${process.env.API_EVENT}`, {
-      params: {
-        event_id: eventId,
-        user_id: uid,
-      },
+    .get(`/events/${eventId}`, {
+      params: { user_id: uid },
+      baseURL: process.env.SERVER,
     })
     .then((res) => res.data);
 }
 
 export async function getRecentEvents(numOfResults) {
   return axios
-    .get(`${process.env.API_RECENT_EVENTS}`, {
-      params: { numOfResults: numOfResults },
+    .get(`/events/recent`, {
+      params: { number: numOfResults },
+      baseURL: process.env.SERVER,
     })
     .then((res) => res.data);
 }

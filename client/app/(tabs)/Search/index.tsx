@@ -5,7 +5,6 @@ import {
   TouchableWithoutFeedback,
   View,
 } from "react-native";
-import DropdownComponent from "../../../components/DropDown";
 import { useState } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { ActivityIndicator } from "react-native-paper";
@@ -14,7 +13,7 @@ import { getSearchResults } from "../../../api/search";
 import StyledTextInput from "../../../components/StyledTextInput";
 import { getAuth } from "firebase/auth";
 import SearchDropdown from "../../../components/SearchDropdown";
-export default function Profile() {
+export default function Search() {
   const [userSearch, setUserSearch] = useState({
     searchParam: null,
     searchText: "",
@@ -25,12 +24,6 @@ export default function Profile() {
   function setSearchParam(selectedParam) {
     setUserSearch({ ...userSearch, searchParam: selectedParam });
   }
-
-  const dropdownData = [
-    { label: "Matches", value: "matches" },
-    { label: "Event", value: "events" },
-    { label: "Championship", value: "championships" },
-  ];
 
   const { data, isFetching, isError, refetch } = useQuery({
     queryKey: ["searchResults"],
@@ -46,7 +39,6 @@ export default function Profile() {
             <SearchDropdown
               searchParam={userSearch.searchParam}
               setSearchParam={setSearchParam}
-              dropdownData={dropdownData}
             />
           </View>
           <StyledTextInput
@@ -55,10 +47,12 @@ export default function Profile() {
               userSearch.searchParam === "matches"
                 ? "enter a comma separated list of participants"
                 : userSearch.searchParam === "events"
-                  ? "enter an event name"
+                  ? "search by event name"
                   : userSearch.searchParam === "championships"
-                    ? "enter a championship name"
-                    : "search"
+                    ? "search by championship name"
+                    : userSearch.searchParam === "wrestlers"
+                      ? "search by name"
+                      : "search"
             }
             changeFn={(text) =>
               setUserSearch({ ...userSearch, searchText: text })
@@ -82,7 +76,7 @@ export default function Profile() {
         ) : isError ? (
           <Text className="text-white">There seems to be an error</Text>
         ) : (
-          <SearchResults data={data} />
+          <SearchResults data={data} error={isError} />
         )}
       </View>
     </TouchableWithoutFeedback>

@@ -32,7 +32,7 @@ export default function StarView({
         <Text className="text-grey dark:text-white text-right">{`${rating} (${rating_count})`}</Text>
       </View>
     ) : (
-      <View className="w-full flex items-end">
+      <View className="flex items-end">
         <Text className="text-grey dark:text-white pt-1">No ratings yet</Text>
       </View>
     );

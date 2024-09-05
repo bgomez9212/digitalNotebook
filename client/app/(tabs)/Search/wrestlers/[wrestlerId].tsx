@@ -2,15 +2,18 @@ import { ScrollView, Text, View } from "react-native";
 import { useQuery } from "@tanstack/react-query";
 import { ActivityIndicator } from "react-native-paper";
 import { getAuth } from "firebase/auth";
-import { getUserRatings } from "../../../api/users";
-import Profile from "../../../components/Profile";
+import Profile from "../../../../components/Profile";
+import { useLocalSearchParams } from "expo-router";
+import getWrestlerData from "../../../../api/wrestlers";
 
-export default function index() {
+export default function WrestlerPage() {
   const auth = getAuth();
   const { uid } = auth.currentUser;
+  const { wrestlerId, wrestler_name } = useLocalSearchParams();
   const { data, isError, isLoading } = useQuery({
-    queryKey: ["userRatings"],
-    queryFn: () => getUserRatings(uid),
+    queryKey: ["wrestlerRating"],
+    queryFn: () => getWrestlerData(wrestlerId, uid),
+    enabled: !!wrestlerId,
   });
 
   if (isError) {
@@ -38,7 +41,7 @@ export default function index() {
         data={data}
         isError={isError}
         isLoading={isLoading}
-        profileType={"user"}
+        profileType={"wrestler"}
       />
     </ScrollView>
   );

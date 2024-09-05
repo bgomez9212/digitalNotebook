@@ -6,7 +6,6 @@ import { useColorScheme } from "nativewind";
 const DropdownComponent = ({ searchParam, setSearchParam, data }) => {
   const [isFocus, setIsFocus] = useState(false);
   const { colorScheme } = useColorScheme();
-
   return (
     <View className="w-full mt-3">
       <Dropdown

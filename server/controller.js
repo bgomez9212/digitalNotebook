@@ -4,7 +4,7 @@ module.exports = {
   getEvent: async (req, res) => {
     try {
       const result = await model.getEvent(
-        req.query.event_id,
+        req.params.event_id,
         req.query.user_id
       );
       res.status(200).send(result[0]);
@@ -14,7 +14,7 @@ module.exports = {
   },
   getRecentEvents: async (req, res) => {
     try {
-      const result = await model.getRecentEvents(req.query.numOfResults);
+      const result = await model.getRecentEvents(req.query.number);
       res.status(200).send(result);
     } catch (err) {
       res.status(400).send(err);
@@ -23,7 +23,7 @@ module.exports = {
   getTopRatedMatches: async (req, res) => {
     try {
       const result = await model.getTopRatedMatches(
-        req.query.numOfMatches,
+        req.query.number,
         req.query.user_id
       );
       res.status(200).send(result);
@@ -31,18 +31,18 @@ module.exports = {
       res.status(404).send(err);
     }
   },
-  getMatchInfo: async (req, res) => {
+  getUsersRatedMatches: async (req, res) => {
     try {
-      const result = await model.getMatchInfo(req.query.match_id);
-      res.status(200).send(result[0]);
+      const results = await model.getUsersRatedMatches(req.params.user_id);
+      res.send(results).status(200);
     } catch (err) {
-      res.status(400).send(err);
+      res.send(err).status(500);
     }
   },
   postRating: async (req, res) => {
     try {
       const result = await model.postRating(
-        req.body.match_id,
+        req.params.match_id,
         req.body.user_id,
         req.body.rating
       );
@@ -51,22 +51,11 @@ module.exports = {
       res.status(400).send(err);
     }
   },
-  getUserRating: async (req, res) => {
-    try {
-      const result = await model.getUserRating(
-        req.query.user_id,
-        req.query.match_id
-      );
-      res.status(200).send(result);
-    } catch (err) {
-      res.status(400).send(err);
-    }
-  },
   deleteUserRating: async (req, res) => {
     try {
       const result = await model.deleteUserRating(
-        req.query.user_id,
-        req.query.match_id
+        req.params.match_id,
+        req.body.user_id
       );
       res.sendStatus(204);
     } catch (err) {
@@ -83,14 +72,6 @@ module.exports = {
       res.send(result).status(200);
     } catch (err) {
       res.status(500).send(err);
-    }
-  },
-  getUsersRatedMatches: async (req, res) => {
-    try {
-      const results = await model.getUsersRatedMatches(req.query.user_id);
-      res.send(results).status(200);
-    } catch (err) {
-      res.send(err).status(500);
     }
   },
   getPromotions: async (req, res) => {
@@ -122,7 +103,7 @@ module.exports = {
   },
   getUsername: async (req, res) => {
     try {
-      const results = await model.getUsername(req.query.user_id);
+      const results = await model.getUsername(req.params.user_id);
       res.send(results).status(200);
     } catch (err) {
       res.send(err).status(500);
@@ -131,7 +112,7 @@ module.exports = {
   editUsername: async (req, res) => {
     try {
       const results = await model.editUsername(
-        req.body.user_id,
+        req.params.user_id,
         req.body.username
       );
       res.send(results).status(200);
@@ -163,6 +144,17 @@ module.exports = {
           .status(500)
           .send({ error: "An error occurred while posting the event" });
       }
+    }
+  },
+  getWrestlerMatches: async (req, res) => {
+    try {
+      const results = await model.getWrestlerMatches(
+        req.params.wrestler_id,
+        req.query.user_id
+      );
+      res.send(results).status(200);
+    } catch (err) {
+      res.send(err).status(500);
     }
   },
 };

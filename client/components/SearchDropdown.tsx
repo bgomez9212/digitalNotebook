@@ -3,21 +3,18 @@ import { useRef, useState } from "react";
 import { Animated, Pressable, Text, View } from "react-native";
 import AntDesign from "@expo/vector-icons/AntDesign";
 
-export default function SearchDropdown({
-  searchParam,
-  setSearchParam,
-  dropdownData,
-}) {
+export default function SearchDropdown({ searchParam, setSearchParam }) {
   const translation = useRef(new Animated.Value(1)).current;
   const [parentHeight, setParentHeight] = useState(40);
   const [displayed, setDisplayed] = useState(false);
   const { colorScheme } = useColorScheme();
+  const dropdownData = ["matches", "events", "championships", "wrestlers"];
 
   function handleClick() {
     if (!displayed) {
       setDisplayed(true);
       Animated.timing(translation, {
-        toValue: 5,
+        toValue: 6.3,
         useNativeDriver: true,
       }).start();
     } else {
@@ -48,7 +45,6 @@ export default function SearchDropdown({
           backgroundColor: colorScheme === "dark" ? "#222222" : "white",
           transform: [{ scaleY: translation }],
           transformOrigin: "top",
-          borderRadius: 5,
         }}
       />
       <View style={{ zIndex: 50, width: `${100}%` }}></View>
@@ -87,16 +83,17 @@ export default function SearchDropdown({
           <Pressable
             key={i}
             style={{
-              borderBottomWidth: i === 2 ? 0 : 0.5,
+              borderBottomWidth: i === 3 ? 0 : 0.5,
               borderBottomColor: "#6f6b74",
               height: 53,
               display: "flex",
               justifyContent: "center",
             }}
-            onPress={() => selectSearchParam(dropdownOption.value)}
+            onPress={() => selectSearchParam(dropdownOption)}
           >
             <Text className="text-grey dark:text-white text-center">
-              {dropdownOption.label}
+              {dropdownOption.charAt(0).toUpperCase() +
+                dropdownOption?.slice(1)}
             </Text>
           </Pressable>
         ))}

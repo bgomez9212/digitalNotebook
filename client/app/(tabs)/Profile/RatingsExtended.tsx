@@ -48,7 +48,7 @@ export default function RatingsExtended() {
   const selectedPromotionsDisplay = useRef([]);
 
   const sortAndFilterRatings = useCallback(
-    (userRatings) => {
+    (data) => {
       const compare = (a, b, key) => {
         if (sortParams.sortOrder === "ASC") {
           return a[key] >= b[key] ? 1 : -1;
@@ -56,38 +56,39 @@ export default function RatingsExtended() {
           return a[key] <= b[key] ? 1 : -1;
         }
       };
+
+      let filteredResults = { ...data };
       if (selectedPromotions.length) {
-        userRatings = userRatings.filter((matchObj) =>
+        filteredResults.matches = data.matches.filter((matchObj) =>
           selectedPromotions.includes(matchObj.promotion)
         );
       }
 
-      return sortParams.sortBy === "userRatings"
-        ? userRatings?.sort((a, b) => compare(a, b, "user_rating"))
+      sortParams.sortBy === "userRatings"
+        ? filteredResults.matches?.sort((a, b) => compare(a, b, "user_rating"))
         : sortParams.sortBy === "communityRatings"
-          ? userRatings?.sort((a, b) => compare(a, b, "community_rating"))
+          ? filteredResults.matches?.sort((a, b) =>
+              compare(a, b, "community_rating")
+            )
           : sortParams.sortBy === "eventDate"
-            ? userRatings?.sort((a, b) => compare(a, b, "date"))
-            : userRatings?.sort((a, b) => compare(a, b, "rating_date"));
+            ? filteredResults.matches?.sort((a, b) => compare(a, b, "date"))
+            : filteredResults.matches?.sort((a, b) =>
+                compare(a, b, "rating_date")
+              );
+
+      return filteredResults;
     },
     [changeParams]
   );
 
-  const {
-    data: userRatings,
-    isError,
-    isFetching,
-  } = useQuery({
+  const { data, isError, isFetching } = useQuery({
     queryKey: ["userRatings"],
     queryFn: () => getUserRatings(user.uid),
     select: sortAndFilterRatings,
   });
 
   const promotions = useRef(
-    userRatings
-      .map((ratings) => ratings.promotion)
-      .filter((value, index, array) => array.indexOf(value) === index)
-      .sort()
+    data?.promotions.map((promotion) => promotion.promotionName).sort()
   );
 
   useEffect(() => {
@@ -112,7 +113,7 @@ export default function RatingsExtended() {
   }
 
   const bottomSheetModalRef = useRef<BottomSheetModal>(null);
-  const snapPoints = useMemo(() => ["25%", "60%"], []);
+  const snapPoints = useMemo(() => ["60%"], []);
   const handlePresentModalPress = useCallback(() => {
     bottomSheetModalRef.current?.present();
     bottomSheetModalRef.current?.close();
@@ -173,7 +174,7 @@ export default function RatingsExtended() {
             <FlatList
               showsVerticalScrollIndicator={false}
               className="w-[95%]"
-              data={userRatings}
+              data={data?.matches}
               renderItem={({ item }) => (
                 <MatchRow
                   match={item}
@@ -186,7 +187,7 @@ export default function RatingsExtended() {
           )}
           <BottomSheetModal
             ref={bottomSheetModalRef}
-            index={1}
+            index={0}
             snapPoints={snapPoints}
             style={{
               borderWidth: 1,

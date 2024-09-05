@@ -20,11 +20,6 @@ export default function ProfilePieChart({ data, sortBy, profileType }) {
     return (
       <View>
         <PieChart
-          style={{
-            display: "flex",
-            justifyContent: "center",
-            alignItems: "center",
-          }}
           data={data}
           width={screenWidth}
           height={screenWidth}

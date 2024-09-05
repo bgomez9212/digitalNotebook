@@ -1,14 +1,20 @@
 import { Animated, Pressable, Text, View } from "react-native";
 import { useRef } from "react";
 
-export default function Toggle({ option1, option2, toggleFn, currentOption }) {
+export default function Toggle({
+  option1,
+  option2,
+  toggleFn,
+  currentOption,
+  width,
+}) {
   const translation = useRef(
-    new Animated.Value(currentOption === option1.toLowerCase() ? 0 : 49.5)
+    new Animated.Value(currentOption === option1.toLowerCase() ? 0 : width / 2)
   ).current;
   const toggleOption1 = () => {
     currentOption === option1.toLowerCase() && toggleFn();
     Animated.timing(translation, {
-      toValue: 49.6,
+      toValue: width / 2,
       useNativeDriver: true,
     }).start();
   };
@@ -23,13 +29,13 @@ export default function Toggle({ option1, option2, toggleFn, currentOption }) {
   return (
     <View>
       <View
-        style={{ height: 29, width: 100, borderRadius: 5 }}
-        className="flex justify-center bg-lightGrey rounded border border-lightGrey2"
+        style={{ height: 29, width: width, borderRadius: 5 }}
+        className="flex justify-center bg-lightGrey rounded border border-lightGrey"
       >
         <Animated.View
           style={{
             height: 29,
-            width: 49.5,
+            width: width / 2 - 1,
             backgroundColor: "white",
             transform: [{ translateX: translation }],
             justifyContent: "center",
@@ -39,14 +45,31 @@ export default function Toggle({ option1, option2, toggleFn, currentOption }) {
         ></Animated.View>
       </View>
       <View
-        style={{ height: 29, width: 100, borderRadius: 5, columnGap: 15 }}
-        className="absolute border border-lightGrey2 flex flex-row justify-center items-center"
+        style={{ height: 29, width: width, borderRadius: 5 }}
+        className="absolute border border-lightGrey2 flex flex-row items-center"
       >
-        <Pressable onPress={toggleOption2}>
-          <Text className="font-medium dark:opacity-50">{option1}</Text>
+        <Pressable style={{ width: width / 2 }} onPress={toggleOption2}>
+          <Text
+            style={{
+              opacity: currentOption === option2.toLowerCase() ? 0.5 : 1,
+            }}
+            className="font-medium text-center"
+          >
+            {option1}
+          </Text>
         </Pressable>
-        <Pressable onPress={toggleOption1}>
-          <Text className="font-medium opacity-50 dark:opacity-100">
+        <Pressable
+          style={{
+            width: width / 2,
+          }}
+          onPress={toggleOption1}
+        >
+          <Text
+            style={{
+              opacity: currentOption === option1.toLowerCase() ? 0.5 : 1,
+            }}
+            className="font-medium text-center"
+          >
             {option2}
           </Text>
         </Pressable>

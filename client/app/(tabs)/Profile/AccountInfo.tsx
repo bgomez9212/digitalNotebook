@@ -377,6 +377,7 @@ export default function AccountInfo() {
               option2={"Dark"}
               toggleFn={toggleColorScheme}
               currentOption={colorScheme}
+              width={100}
             />
           </View>
         </View>

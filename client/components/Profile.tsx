@@ -18,12 +18,13 @@ export default function Profile({ data, isError, isLoading, profileType }) {
       nestedScrollEnabled={true}
       className="bg-white2 dark:bg-darkGrey"
     >
-      <View className="flex-1 bg-white2 dark:bg-darkGrey items-center">
+      <View className="flex-1 bg-white2 dark:bg-darkGrey items-center pt-5">
         <Toggle
-          option1={"promotions"}
-          option2={"ratings"}
+          option1={"Promotions"}
+          option2={"Ratings"}
           toggleFn={togglePieChart}
           currentOption={pieChart}
+          width={175}
         />
         <ProfilePieChart
           data={data[pieChart]}

@@ -52,12 +52,18 @@ export default function RatingsExtended() {
     setSortByParams({ ...sortByParams, sortBy: newValue });
   }
 
+  function changeSortOrder(newValue) {
+    setSortByParams({ ...sortByParams, order: newValue });
+  }
+
   const sortRadios = [
     "Rating Date",
     "Event Date",
     "My Ratings",
     "Community Ratings",
   ];
+
+  const sortOrderRadios = ["Asc", "Desc"];
 
   const sortOrder = [
     { label: "Desc", value: "DESC" },
@@ -156,7 +162,7 @@ export default function RatingsExtended() {
   }
 
   const bottomSheetModalRef = useRef<BottomSheetModal>(null);
-  const snapPoints = useMemo(() => ["80%"], []);
+  const snapPoints = useMemo(() => ["70%"], []);
   const handlePresentModalPress = useCallback(() => {
     bottomSheetModalRef.current?.present();
     bottomSheetModalRef.current?.close();
@@ -250,6 +256,7 @@ export default function RatingsExtended() {
                 justifyContent: "center",
                 alignItems: "center",
                 height: "100%",
+                rowGap: 15,
               }}
             >
               <BottomModalCheckbox
@@ -268,47 +275,14 @@ export default function RatingsExtended() {
                 values={sortRadios}
                 changeValue={changeSortBy}
                 currentValue={sortByParams.sortBy}
+                rowTitle={"Sort By"}
               />
-              {/* <BottomModalRow
-                checkboxArr={sortRadios}
-                selectedCheckboxArr={sort}
-              /> */}
-              {/* <View className="flex flex-row w-[75%] justify-between mb-5">
-                <RadioButton.Group
-                  onValueChange={(newValue) =>
-                    setSortParams({ ...sortParams, sortBy: newValue })
-                  }
-                  value={sortParams.sortBy}
-                >
-                  <Text>Sort By:</Text>
-                  {sortRadios.map((param) => (
-                    <View
-                      key={param.value}
-                      className="flex-row border-b justify-between items-center"
-                    >
-                      <Text>{param.label}</Text>
-                      <RadioButton value={param.value} />
-                    </View>
-                  ))}
-                </RadioButton.Group>
-                <RadioButton.Group
-                  onValueChange={(newValue) =>
-                    setSortParams({ ...sortParams, sortOrder: newValue })
-                  }
-                  value={sortParams.sortOrder}
-                >
-                  <Text>Sort Order:</Text>
-                  {sortOrder.map((param) => (
-                    <View
-                      key={param.value}
-                      className="flex-row border-b justify-between items-center"
-                    >
-                      <Text>{param.label}</Text>
-                      <RadioButton value={param.value} />
-                    </View>
-                  ))}
-                </RadioButton.Group>
-              </View> */}
+              <BottomModalRadio
+                values={sortOrderRadios}
+                changeValue={changeSortOrder}
+                currentValue={sortByParams.order}
+                rowTitle={"Sort Order"}
+              />
               <LandingButton
                 // fn={changeSearchClick}
                 fn={() => console.log("hello")}

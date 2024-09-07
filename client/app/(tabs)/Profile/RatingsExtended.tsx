@@ -26,7 +26,6 @@ export default function RatingsExtended() {
     rating: string;
   };
   const { colorScheme } = useColorScheme();
-  console.log(rating);
 
   const [sortParams, setSortParams] = useState({
     sortBy: "ratingDate",
@@ -64,14 +63,7 @@ export default function RatingsExtended() {
   const [selectedPromotions, setSelectedPromotions] = useState([]);
   const selectedPromotionsDisplay = useRef([]);
 
-  const [selectedRatings, setSelectedRatings] = useState([
-    "0",
-    "1",
-    "2",
-    "3",
-    "4",
-    "5",
-  ]);
+  const [selectedRatings, setSelectedRatings] = useState([]);
   const selectedRatingsDisplay = useRef([]);
 
   const sortAndFilterRatings = useCallback(
@@ -90,7 +82,6 @@ export default function RatingsExtended() {
           selectedPromotions.includes(matchObj.promotion)
         );
       }
-
       if (selectedRatings.length) {
         filteredResults.matches = filteredResults.matches.filter((matchObj) =>
           selectedRatings.includes(matchObj.user_rating.toString()[0])
@@ -136,9 +127,11 @@ export default function RatingsExtended() {
 
     if (rating) {
       setSelectedRatings([rating]);
+      setChangeParams(!changeParams);
       selectedRatingsDisplay.current = [rating];
     } else {
-      selectedRatingsDisplay.current = [selectedRatings];
+      setSelectedRatings(["0", "1", "2", "3", "4", "5"]);
+      selectedRatingsDisplay.current = [["0", "1", "2", "3", "4", "5"]];
     }
   }, []);
 
@@ -154,10 +147,12 @@ export default function RatingsExtended() {
 
   function selectRating(rating) {
     if (selectedRatings.includes(rating)) {
-      setSelectedRatings(selectedRatings.filter((item) => item !== rating));
+      setSelectedRatings(
+        selectedRatings.filter((item) => item !== rating).sort((a, b) => a - b)
+      );
     } else {
       setSelectedRatings((prevArr) =>
-        [...prevArr, rating].sort((a, b) => (a < b ? a : b))
+        [...prevArr, rating].sort((a, b) => a - b)
       );
     }
   }

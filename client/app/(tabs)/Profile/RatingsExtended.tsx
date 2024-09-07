@@ -53,7 +53,6 @@ export default function RatingsExtended() {
 
   const sortOrderRadios = ["Asc", "Desc"];
 
-  const [selectedPromotions, setSelectedPromotions] = useState([]);
   const selectedPromotionsDisplay = useRef([]);
 
   const [selectedRatings, setSelectedRatings] = useState([]);
@@ -70,9 +69,9 @@ export default function RatingsExtended() {
       };
 
       let filteredResults = { ...data };
-      if (selectedPromotions.length) {
+      if (sortByParams.promotions.length) {
         filteredResults.matches = filteredResults.matches.filter((matchObj) =>
-          selectedPromotions.includes(matchObj.promotion)
+          sortByParams.promotions.includes(matchObj.promotion)
         );
       }
       if (selectedRatings.length) {
@@ -110,11 +109,11 @@ export default function RatingsExtended() {
 
   useEffect(() => {
     if (promotionName) {
-      setSelectedPromotions([promotionName]);
+      setSortByParams({ ...sortByParams, promotions: [promotionName] });
       setChangeParams(!changeParams);
       selectedPromotionsDisplay.current = [promotionName];
     } else {
-      setSelectedPromotions(promotions.current);
+      setSortByParams({ ...sortByParams, promotions: promotions.current });
       selectedPromotionsDisplay.current = promotions.current;
     }
 
@@ -129,12 +128,18 @@ export default function RatingsExtended() {
   }, []);
 
   function selectPromotion(promotion) {
-    if (selectedPromotions.includes(promotion)) {
-      setSelectedPromotions(
-        selectedPromotions.filter((item) => item !== promotion)
-      );
+    if (sortByParams.promotions.includes(promotion)) {
+      setSortByParams({
+        ...sortByParams,
+        promotions: sortByParams.promotions.filter(
+          (item) => item !== promotion
+        ),
+      });
     } else {
-      setSelectedPromotions((prevArr) => [...prevArr, promotion]);
+      setSortByParams({
+        ...sortByParams,
+        promotions: [...sortByParams.promotions, promotion],
+      });
     }
   }
 
@@ -159,7 +164,7 @@ export default function RatingsExtended() {
 
   function changeSearchClick() {
     selectedRatingsDisplay.current = selectedRatings;
-    selectedPromotionsDisplay.current = selectedPromotions;
+    selectedPromotionsDisplay.current = sortByParams.promotions;
     setChangeParams(!changeParams);
     bottomSheetModalRef.current?.close();
   }
@@ -248,7 +253,7 @@ export default function RatingsExtended() {
               />
               <BottomModalCheckbox
                 checkboxArr={promotions.current}
-                selectedCheckboxArr={selectedPromotions}
+                selectedCheckboxArr={sortByParams.promotions}
                 selectFn={selectPromotion}
                 rowTitle={"Promotions"}
               />

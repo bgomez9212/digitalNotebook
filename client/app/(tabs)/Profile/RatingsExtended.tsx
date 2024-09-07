@@ -27,13 +27,6 @@ export default function RatingsExtended() {
   };
   const { colorScheme } = useColorScheme();
 
-  const [sortParams, setSortParams] = useState({
-    sortBy: "ratingDate",
-    sortByLabel: "Rating Date",
-    sortOrder: "DESC",
-    sortOrderLabel: "Desc",
-  });
-  // used to trigger re-sort
   const [changeParams, setChangeParams] = useState(false);
 
   const [sortByParams, setSortByParams] = useState({
@@ -186,7 +179,7 @@ export default function RatingsExtended() {
           <View className="flex flex-row w-[98%] justify-between items-center py-2 border-b border-lightGrey dark:border-grey px-1">
             <View className="w-4/5">
               <Text className="text-grey dark:text-white font-medium">
-                Sorted By: {sortParams.sortByLabel}, {sortParams.sortOrderLabel}
+                Sorted By: {sortByParams.sortBy}, {sortByParams.order}
               </Text>
               <Text className="text-grey dark:text-white font-medium mt-1">
                 Promotions:{" "}

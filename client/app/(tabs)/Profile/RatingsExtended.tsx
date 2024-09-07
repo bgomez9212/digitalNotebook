@@ -11,7 +11,7 @@ import {
   BottomSheetModalProvider,
 } from "@gorhom/bottom-sheet";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
-import { ActivityIndicator, RadioButton } from "react-native-paper";
+import { ActivityIndicator } from "react-native-paper";
 import LandingButton from "../../../components/LandingButton";
 import { useLocalSearchParams } from "expo-router";
 import { useColorScheme } from "nativewind";
@@ -21,9 +21,12 @@ import BottomModalRadio from "../../../components/BottomModalRadio";
 export default function RatingsExtended() {
   const auth = getAuth();
   const user = auth.currentUser;
-  const { promotionName, rating } = useLocalSearchParams();
+  const { promotionName, rating } = useLocalSearchParams() as {
+    promotionName: string;
+    rating: string;
+  };
   const { colorScheme } = useColorScheme();
-  // console.log(rating);
+  console.log(rating);
 
   const [sortParams, setSortParams] = useState({
     sortBy: "ratingDate",
@@ -33,13 +36,6 @@ export default function RatingsExtended() {
   });
   // used to trigger re-sort
   const [changeParams, setChangeParams] = useState(false);
-
-  // const sortRadios = [
-  //   { label: "Rating Date", value: "ratingDate" },
-  //   { label: "Event Date", value: "eventDate" },
-  //   { label: "My Ratings", value: "userRatings" },
-  //   { label: "Community Ratings", value: "communityRatings" },
-  // ];
 
   const [sortByParams, setSortByParams] = useState({
     sortBy: "Rating Date",
@@ -65,11 +61,6 @@ export default function RatingsExtended() {
 
   const sortOrderRadios = ["Asc", "Desc"];
 
-  const sortOrder = [
-    { label: "Desc", value: "DESC" },
-    { label: "Asc", value: "ASC" },
-  ];
-
   const [selectedPromotions, setSelectedPromotions] = useState([]);
   const selectedPromotionsDisplay = useRef([]);
 
@@ -82,10 +73,11 @@ export default function RatingsExtended() {
     "5",
   ]);
   const selectedRatingsDisplay = useRef([]);
+
   const sortAndFilterRatings = useCallback(
     (data) => {
       const compare = (a, b, key) => {
-        if (sortParams.sortOrder === "ASC") {
+        if (sortByParams.order === "Asc") {
           return a[key] >= b[key] ? 1 : -1;
         } else {
           return a[key] <= b[key] ? 1 : -1;
@@ -94,18 +86,24 @@ export default function RatingsExtended() {
 
       let filteredResults = { ...data };
       if (selectedPromotions.length) {
-        filteredResults.matches = data.matches.filter((matchObj) =>
+        filteredResults.matches = filteredResults.matches.filter((matchObj) =>
           selectedPromotions.includes(matchObj.promotion)
         );
       }
 
-      sortParams.sortBy === "userRatings"
+      if (selectedRatings.length) {
+        filteredResults.matches = filteredResults.matches.filter((matchObj) =>
+          selectedRatings.includes(matchObj.user_rating.toString()[0])
+        );
+      }
+
+      sortByParams.sortBy === "User Ratings"
         ? filteredResults.matches?.sort((a, b) => compare(a, b, "user_rating"))
-        : sortParams.sortBy === "communityRatings"
+        : sortByParams.sortBy === "Community Ratings"
           ? filteredResults.matches?.sort((a, b) =>
               compare(a, b, "community_rating")
             )
-          : sortParams.sortBy === "eventDate"
+          : sortByParams.sortBy === "Event Date"
             ? filteredResults.matches?.sort((a, b) => compare(a, b, "date"))
             : filteredResults.matches?.sort((a, b) =>
                 compare(a, b, "rating_date")
@@ -136,9 +134,12 @@ export default function RatingsExtended() {
       selectedPromotionsDisplay.current = promotions.current;
     }
 
-    // if (rating) {
-    //   setSelectedRatings([rating])
-    // }
+    if (rating) {
+      setSelectedRatings([rating]);
+      selectedRatingsDisplay.current = [rating];
+    } else {
+      selectedRatingsDisplay.current = [selectedRatings];
+    }
   }, []);
 
   function selectPromotion(promotion) {
@@ -168,20 +169,12 @@ export default function RatingsExtended() {
     bottomSheetModalRef.current?.close();
   }, []);
 
-  // function changeSearchClick() {
-  //   setSortParams({
-  //     ...sortParams,
-  //     sortByLabel: sortRadios.filter(
-  //       (param) => param.value === sortParams.sortBy
-  //     )[0].label,
-  //     sortOrderLabel: sortOrder.filter(
-  //       (param) => param.value === sortParams.sortOrder
-  //     )[0].label,
-  //   });
-  //   selectedPromotionsDisplay.current = selectedPromotions;
-  //   setChangeParams(!changeParams);
-  //   bottomSheetModalRef.current?.close();
-  // }
+  function changeSearchClick() {
+    selectedRatingsDisplay.current = selectedRatings;
+    selectedPromotionsDisplay.current = selectedPromotions;
+    setChangeParams(!changeParams);
+    bottomSheetModalRef.current?.close();
+  }
 
   if (isError) {
     return (
@@ -284,8 +277,8 @@ export default function RatingsExtended() {
                 rowTitle={"Sort Order"}
               />
               <LandingButton
-                // fn={changeSearchClick}
-                fn={() => console.log("hello")}
+                fn={changeSearchClick}
+                // fn={() => console.log("hello")}
                 text="Search"
                 disabled={false}
                 color="blue"

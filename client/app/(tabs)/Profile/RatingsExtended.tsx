@@ -19,6 +19,7 @@ import BottomModalCheckbox from "../../../components/BottomModalCheckbox";
 import BottomModalRadio from "../../../components/BottomModalRadio";
 
 export default function RatingsExtended() {
+  const modalMargin = "10%";
   const auth = getAuth();
   const user = auth.currentUser;
   const { promotionName, rating } = useLocalSearchParams() as {
@@ -54,8 +55,6 @@ export default function RatingsExtended() {
   const sortOrderRadios = ["Asc", "Desc"];
 
   const selectedPromotionsDisplay = useRef([]);
-
-  const [selectedRatings, setSelectedRatings] = useState([]);
   const selectedRatingsDisplay = useRef([]);
 
   const sortAndFilterRatings = useCallback(
@@ -74,9 +73,9 @@ export default function RatingsExtended() {
           sortByParams.promotions.includes(matchObj.promotion)
         );
       }
-      if (selectedRatings.length) {
+      if (sortByParams.ratings.length) {
         filteredResults.matches = filteredResults.matches.filter((matchObj) =>
-          selectedRatings.includes(matchObj.user_rating.toString()[0])
+          sortByParams.ratings.includes(matchObj.user_rating.toString()[0])
         );
       }
 
@@ -108,23 +107,29 @@ export default function RatingsExtended() {
   );
 
   useEffect(() => {
+    let updatedParams = { ...sortByParams };
+
     if (promotionName) {
-      setSortByParams({ ...sortByParams, promotions: [promotionName] });
-      setChangeParams(!changeParams);
+      updatedParams = { ...updatedParams, promotions: [promotionName] };
       selectedPromotionsDisplay.current = [promotionName];
     } else {
-      setSortByParams({ ...sortByParams, promotions: promotions.current });
+      updatedParams = { ...updatedParams, promotions: promotions.current };
       selectedPromotionsDisplay.current = promotions.current;
     }
 
     if (rating) {
-      setSelectedRatings([rating]);
-      setChangeParams(!changeParams);
+      updatedParams = { ...updatedParams, ratings: [rating] };
       selectedRatingsDisplay.current = [rating];
     } else {
-      setSelectedRatings(["0", "1", "2", "3", "4", "5"]);
+      updatedParams = {
+        ...updatedParams,
+        ratings: ["0", "1", "2", "3", "4", "5"],
+      };
       selectedRatingsDisplay.current = [["0", "1", "2", "3", "4", "5"]];
     }
+
+    setSortByParams(updatedParams);
+    setChangeParams(!changeParams);
   }, []);
 
   function selectPromotion(promotion) {
@@ -144,14 +149,18 @@ export default function RatingsExtended() {
   }
 
   function selectRating(rating) {
-    if (selectedRatings.includes(rating)) {
-      setSelectedRatings(
-        selectedRatings.filter((item) => item !== rating).sort((a, b) => a - b)
-      );
+    if (sortByParams.ratings.includes(rating)) {
+      setSortByParams({
+        ...sortByParams,
+        ratings: sortByParams.ratings
+          .filter((item) => item !== rating)
+          .sort((a, b) => a - b),
+      });
     } else {
-      setSelectedRatings((prevArr) =>
-        [...prevArr, rating].sort((a, b) => a - b)
-      );
+      setSortByParams({
+        ...sortByParams,
+        ratings: [...sortByParams.ratings, rating].sort((a, b) => a - b),
+      });
     }
   }
 
@@ -163,7 +172,7 @@ export default function RatingsExtended() {
   }, []);
 
   function changeSearchClick() {
-    selectedRatingsDisplay.current = selectedRatings;
+    selectedRatingsDisplay.current = sortByParams.ratings;
     selectedPromotionsDisplay.current = sortByParams.promotions;
     setChangeParams(!changeParams);
     bottomSheetModalRef.current?.close();
@@ -243,11 +252,12 @@ export default function RatingsExtended() {
                 alignItems: "center",
                 height: "100%",
                 rowGap: 15,
+                marginHorizontal: modalMargin,
               }}
             >
               <BottomModalCheckbox
                 checkboxArr={["0", "1", "2", "3", "4", "5"]}
-                selectedCheckboxArr={selectedRatings}
+                selectedCheckboxArr={sortByParams.ratings}
                 selectFn={selectRating}
                 rowTitle={"Ratings"}
               />
@@ -271,11 +281,11 @@ export default function RatingsExtended() {
               />
               <LandingButton
                 fn={changeSearchClick}
-                // fn={() => console.log("hello")}
-                text="Search"
+                text="Show Results"
                 disabled={false}
                 color="blue"
                 loading={false}
+                width="full"
               />
             </BottomSheetView>
           </BottomSheetModal>

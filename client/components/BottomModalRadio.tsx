@@ -8,7 +8,7 @@ export default function BottomModalRadio({
   rowTitle,
 }) {
   return (
-    <View className="w-[75%] flex-row flex-wrap">
+    <View className="flex-row flex-wrap">
       <View className="w-full">
         <Text className="mb-1 font-bold">{rowTitle}:</Text>
       </View>

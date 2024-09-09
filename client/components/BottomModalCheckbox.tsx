@@ -8,7 +8,7 @@ export default function BottomModalCheckbox({
   rowTitle,
 }) {
   return (
-    <View className="flex flex-row w-[75%] flex-wrap justify-between">
+    <View className="flex flex-row flex-wrap justify-between">
       <View className="w-full">
         <Text className="mb-1 font-bold">{rowTitle}:</Text>
       </View>

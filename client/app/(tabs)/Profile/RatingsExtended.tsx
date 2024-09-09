@@ -243,7 +243,7 @@ export default function RatingsExtended() {
               borderTopLeftRadius: 10,
               borderTopRightRadius: 10,
               shadowColor: "grey",
-              shadowOpacity: 1,
+              shadowOpacity: colorScheme === "dark" ? 0 : 1,
             }}
             backgroundStyle={{
               backgroundColor: colorScheme === "dark" ? "#303030" : "white",

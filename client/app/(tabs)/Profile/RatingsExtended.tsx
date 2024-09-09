@@ -240,9 +240,13 @@ export default function RatingsExtended() {
             index={0}
             snapPoints={snapPoints}
             style={{
-              borderWidth: 1,
               borderTopLeftRadius: 10,
               borderTopRightRadius: 10,
+              shadowColor: "grey",
+              shadowOpacity: colorScheme === "dark" ? 0 : 1,
+            }}
+            backgroundStyle={{
+              backgroundColor: colorScheme === "dark" ? "#303030" : "white",
             }}
           >
             <BottomSheetView

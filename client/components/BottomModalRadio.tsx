@@ -10,7 +10,9 @@ export default function BottomModalRadio({
   return (
     <View className="flex-row flex-wrap">
       <View className="w-full">
-        <Text className="mb-1 font-bold">{rowTitle}:</Text>
+        <Text className="mb-1 font-bold text-darkGrey dark:text-white">
+          {rowTitle}:
+        </Text>
       </View>
       {values.map((param) => (
         <TouchableOpacity
@@ -19,8 +21,8 @@ export default function BottomModalRadio({
           onPress={() => changeValue(param)}
           style={{ width: 146 }}
         >
-          <Text>{param}</Text>
-          <View className="border h-3 w-3 rounded-lg ml-2 flex justify-center items-center">
+          <Text className="text-darkGrey dark:text-white">{param}</Text>
+          <View className="border dark:border-white h-3 w-3 rounded-lg ml-2 flex justify-center items-center">
             <View
               className={`w-3/4 h-3/4 rounded-lg ${currentValue === param ? "bg-blue" : ""}`}
             />

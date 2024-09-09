@@ -244,6 +244,9 @@ export default function RatingsExtended() {
               borderTopLeftRadius: 10,
               borderTopRightRadius: 10,
             }}
+            backgroundStyle={{
+              backgroundColor: colorScheme === "dark" ? "#303030" : "white",
+            }}
           >
             <BottomSheetView
               style={{

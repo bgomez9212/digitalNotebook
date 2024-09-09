@@ -11,46 +11,56 @@ import {
   BottomSheetModalProvider,
 } from "@gorhom/bottom-sheet";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
-import { ActivityIndicator, RadioButton } from "react-native-paper";
+import { ActivityIndicator } from "react-native-paper";
 import LandingButton from "../../../components/LandingButton";
 import { useLocalSearchParams } from "expo-router";
 import { useColorScheme } from "nativewind";
-import Checkbox from "expo-checkbox";
+import BottomModalCheckbox from "../../../components/BottomModalCheckbox";
+import BottomModalRadio from "../../../components/BottomModalRadio";
 
 export default function RatingsExtended() {
+  const modalMargin = "10%";
   const auth = getAuth();
   const user = auth.currentUser;
-  const { promotionName } = useLocalSearchParams();
+  const { promotionName, rating } = useLocalSearchParams() as {
+    promotionName: string;
+    rating: string;
+  };
   const { colorScheme } = useColorScheme();
 
-  const [sortParams, setSortParams] = useState({
-    sortBy: "ratingDate",
-    sortByLabel: "Rating Date",
-    sortOrder: "DESC",
-    sortOrderLabel: "Desc",
-  });
-  // used to trigger re-sort
   const [changeParams, setChangeParams] = useState(false);
 
+  const [sortByParams, setSortByParams] = useState({
+    sortBy: "Rating Date",
+    order: "Desc",
+    promotions: [],
+    ratings: [],
+  });
+
+  function changeSortBy(newValue) {
+    setSortByParams({ ...sortByParams, sortBy: newValue });
+  }
+
+  function changeSortOrder(newValue) {
+    setSortByParams({ ...sortByParams, order: newValue });
+  }
+
   const sortRadios = [
-    { label: "Rating Date", value: "ratingDate" },
-    { label: "Event Date", value: "eventDate" },
-    { label: "My Ratings", value: "userRatings" },
-    { label: "Community Ratings", value: "communityRatings" },
+    "Rating Date",
+    "Event Date",
+    "My Ratings",
+    "Community Ratings",
   ];
 
-  const sortOrder = [
-    { label: "Desc", value: "DESC" },
-    { label: "Asc", value: "ASC" },
-  ];
+  const sortOrderRadios = ["Asc", "Desc"];
 
-  const [selectedPromotions, setSelectedPromotions] = useState([]);
   const selectedPromotionsDisplay = useRef([]);
+  const selectedRatingsDisplay = useRef([]);
 
   const sortAndFilterRatings = useCallback(
     (data) => {
       const compare = (a, b, key) => {
-        if (sortParams.sortOrder === "ASC") {
+        if (sortByParams.order === "Asc") {
           return a[key] >= b[key] ? 1 : -1;
         } else {
           return a[key] <= b[key] ? 1 : -1;
@@ -58,19 +68,24 @@ export default function RatingsExtended() {
       };
 
       let filteredResults = { ...data };
-      if (selectedPromotions.length) {
-        filteredResults.matches = data.matches.filter((matchObj) =>
-          selectedPromotions.includes(matchObj.promotion)
+      if (sortByParams.promotions.length) {
+        filteredResults.matches = filteredResults.matches.filter((matchObj) =>
+          sortByParams.promotions.includes(matchObj.promotion)
+        );
+      }
+      if (sortByParams.ratings.length) {
+        filteredResults.matches = filteredResults.matches.filter((matchObj) =>
+          sortByParams.ratings.includes(matchObj.user_rating.toString()[0])
         );
       }
 
-      sortParams.sortBy === "userRatings"
+      sortByParams.sortBy === "User Ratings"
         ? filteredResults.matches?.sort((a, b) => compare(a, b, "user_rating"))
-        : sortParams.sortBy === "communityRatings"
+        : sortByParams.sortBy === "Community Ratings"
           ? filteredResults.matches?.sort((a, b) =>
               compare(a, b, "community_rating")
             )
-          : sortParams.sortBy === "eventDate"
+          : sortByParams.sortBy === "Event Date"
             ? filteredResults.matches?.sort((a, b) => compare(a, b, "date"))
             : filteredResults.matches?.sort((a, b) =>
                 compare(a, b, "rating_date")
@@ -92,44 +107,73 @@ export default function RatingsExtended() {
   );
 
   useEffect(() => {
+    let updatedParams = { ...sortByParams };
+
     if (promotionName) {
-      setSelectedPromotions([promotionName]);
-      setChangeParams(!changeParams);
+      updatedParams = { ...updatedParams, promotions: [promotionName] };
       selectedPromotionsDisplay.current = [promotionName];
     } else {
-      setSelectedPromotions(promotions.current);
+      updatedParams = { ...updatedParams, promotions: promotions.current };
       selectedPromotionsDisplay.current = promotions.current;
     }
+
+    if (rating) {
+      updatedParams = { ...updatedParams, ratings: [rating] };
+      selectedRatingsDisplay.current = [rating];
+    } else {
+      updatedParams = {
+        ...updatedParams,
+        ratings: ["0", "1", "2", "3", "4", "5"],
+      };
+      selectedRatingsDisplay.current = [["0", "1", "2", "3", "4", "5"]];
+    }
+
+    setSortByParams(updatedParams);
+    setChangeParams(!changeParams);
   }, []);
 
   function selectPromotion(promotion) {
-    if (selectedPromotions.includes(promotion)) {
-      setSelectedPromotions(
-        selectedPromotions.filter((item) => item !== promotion)
-      );
+    if (sortByParams.promotions.includes(promotion)) {
+      setSortByParams({
+        ...sortByParams,
+        promotions: sortByParams.promotions.filter(
+          (item) => item !== promotion
+        ),
+      });
     } else {
-      setSelectedPromotions((prevArr) => [...prevArr, promotion]);
+      setSortByParams({
+        ...sortByParams,
+        promotions: [...sortByParams.promotions, promotion],
+      });
+    }
+  }
+
+  function selectRating(rating) {
+    if (sortByParams.ratings.includes(rating)) {
+      setSortByParams({
+        ...sortByParams,
+        ratings: sortByParams.ratings
+          .filter((item) => item !== rating)
+          .sort((a, b) => a - b),
+      });
+    } else {
+      setSortByParams({
+        ...sortByParams,
+        ratings: [...sortByParams.ratings, rating].sort((a, b) => a - b),
+      });
     }
   }
 
   const bottomSheetModalRef = useRef<BottomSheetModal>(null);
-  const snapPoints = useMemo(() => ["60%"], []);
+  const snapPoints = useMemo(() => ["70%"], []);
   const handlePresentModalPress = useCallback(() => {
     bottomSheetModalRef.current?.present();
     bottomSheetModalRef.current?.close();
   }, []);
 
   function changeSearchClick() {
-    setSortParams({
-      ...sortParams,
-      sortByLabel: sortRadios.filter(
-        (param) => param.value === sortParams.sortBy
-      )[0].label,
-      sortOrderLabel: sortOrder.filter(
-        (param) => param.value === sortParams.sortOrder
-      )[0].label,
-    });
-    selectedPromotionsDisplay.current = selectedPromotions;
+    selectedRatingsDisplay.current = sortByParams.ratings;
+    selectedPromotionsDisplay.current = sortByParams.promotions;
     setChangeParams(!changeParams);
     bottomSheetModalRef.current?.close();
   }
@@ -149,12 +193,18 @@ export default function RatingsExtended() {
           <View className="flex flex-row w-[98%] justify-between items-center py-2 border-b border-lightGrey dark:border-grey px-1">
             <View className="w-4/5">
               <Text className="text-grey dark:text-white font-medium">
-                Sorted By: {sortParams.sortByLabel}, {sortParams.sortOrderLabel}
+                Sorted By: {sortByParams.sortBy}, {sortByParams.order}
               </Text>
               <Text className="text-grey dark:text-white font-medium mt-1">
                 Promotions:{" "}
                 {selectedPromotionsDisplay.current
                   ? `${selectedPromotionsDisplay.current.join(", ")}`
+                  : ""}
+              </Text>
+              <Text className="text-grey dark:text-white font-medium mt-1">
+                Ratings:{" "}
+                {selectedRatingsDisplay.current
+                  ? `${selectedRatingsDisplay.current.join(", ")}`
                   : ""}
               </Text>
             </View>
@@ -201,63 +251,41 @@ export default function RatingsExtended() {
                 justifyContent: "center",
                 alignItems: "center",
                 height: "100%",
+                rowGap: 15,
+                marginHorizontal: modalMargin,
               }}
             >
-              <View className="flex flex-row w-[75%] flex-wrap mb-4 justify-between">
-                {promotions.current.map((promotion) => (
-                  <View key={promotion} className="flex flex-row mr-3 my-1">
-                    <Checkbox
-                      className="mr-1"
-                      value={selectedPromotions.includes(promotion)}
-                      color={"#477CB9"}
-                      onValueChange={() => selectPromotion(promotion)}
-                    />
-                    <Text key={promotion}>{promotion}</Text>
-                  </View>
-                ))}
-              </View>
-              <View className="flex flex-row w-[75%] justify-between mb-5">
-                <RadioButton.Group
-                  onValueChange={(newValue) =>
-                    setSortParams({ ...sortParams, sortBy: newValue })
-                  }
-                  value={sortParams.sortBy}
-                >
-                  <Text>Sort By:</Text>
-                  {sortRadios.map((param) => (
-                    <View
-                      key={param.value}
-                      className="flex-row border-b justify-between items-center"
-                    >
-                      <Text>{param.label}</Text>
-                      <RadioButton value={param.value} />
-                    </View>
-                  ))}
-                </RadioButton.Group>
-                <RadioButton.Group
-                  onValueChange={(newValue) =>
-                    setSortParams({ ...sortParams, sortOrder: newValue })
-                  }
-                  value={sortParams.sortOrder}
-                >
-                  <Text>Sort Order:</Text>
-                  {sortOrder.map((param) => (
-                    <View
-                      key={param.value}
-                      className="flex-row border-b justify-between items-center"
-                    >
-                      <Text>{param.label}</Text>
-                      <RadioButton value={param.value} />
-                    </View>
-                  ))}
-                </RadioButton.Group>
-              </View>
+              <BottomModalCheckbox
+                checkboxArr={["0", "1", "2", "3", "4", "5"]}
+                selectedCheckboxArr={sortByParams.ratings}
+                selectFn={selectRating}
+                rowTitle={"Ratings"}
+              />
+              <BottomModalCheckbox
+                checkboxArr={promotions.current}
+                selectedCheckboxArr={sortByParams.promotions}
+                selectFn={selectPromotion}
+                rowTitle={"Promotions"}
+              />
+              <BottomModalRadio
+                values={sortRadios}
+                changeValue={changeSortBy}
+                currentValue={sortByParams.sortBy}
+                rowTitle={"Sort By"}
+              />
+              <BottomModalRadio
+                values={sortOrderRadios}
+                changeValue={changeSortOrder}
+                currentValue={sortByParams.order}
+                rowTitle={"Sort Order"}
+              />
               <LandingButton
                 fn={changeSearchClick}
-                text="Search"
+                text="Show Results"
                 disabled={false}
                 color="blue"
                 loading={false}
+                width="full"
               />
             </BottomSheetView>
           </BottomSheetModal>

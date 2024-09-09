@@ -45,6 +45,38 @@ export default function RatingsExtended() {
     setSortByParams({ ...sortByParams, order: newValue });
   }
 
+  function selectPromotion(promotion) {
+    if (sortByParams.promotions.includes(promotion)) {
+      setSortByParams({
+        ...sortByParams,
+        promotions: sortByParams.promotions.filter(
+          (item) => item !== promotion
+        ),
+      });
+    } else {
+      setSortByParams({
+        ...sortByParams,
+        promotions: [...sortByParams.promotions, promotion],
+      });
+    }
+  }
+
+  function selectRating(rating) {
+    if (sortByParams.ratings.includes(rating)) {
+      setSortByParams({
+        ...sortByParams,
+        ratings: sortByParams.ratings
+          .filter((item) => item !== rating)
+          .sort((a, b) => a - b),
+      });
+    } else {
+      setSortByParams({
+        ...sortByParams,
+        ratings: [...sortByParams.ratings, rating].sort((a, b) => a - b),
+      });
+    }
+  }
+
   const sortRadios = [
     "Rating Date",
     "Event Date",
@@ -79,7 +111,7 @@ export default function RatingsExtended() {
         );
       }
 
-      sortByParams.sortBy === "User Ratings"
+      sortByParams.sortBy === "My Ratings"
         ? filteredResults.matches?.sort((a, b) => compare(a, b, "user_rating"))
         : sortByParams.sortBy === "Community Ratings"
           ? filteredResults.matches?.sort((a, b) =>
@@ -131,38 +163,6 @@ export default function RatingsExtended() {
     setSortByParams(updatedParams);
     setChangeParams(!changeParams);
   }, []);
-
-  function selectPromotion(promotion) {
-    if (sortByParams.promotions.includes(promotion)) {
-      setSortByParams({
-        ...sortByParams,
-        promotions: sortByParams.promotions.filter(
-          (item) => item !== promotion
-        ),
-      });
-    } else {
-      setSortByParams({
-        ...sortByParams,
-        promotions: [...sortByParams.promotions, promotion],
-      });
-    }
-  }
-
-  function selectRating(rating) {
-    if (sortByParams.ratings.includes(rating)) {
-      setSortByParams({
-        ...sortByParams,
-        ratings: sortByParams.ratings
-          .filter((item) => item !== rating)
-          .sort((a, b) => a - b),
-      });
-    } else {
-      setSortByParams({
-        ...sortByParams,
-        ratings: [...sortByParams.ratings, rating].sort((a, b) => a - b),
-      });
-    }
-  }
 
   const bottomSheetModalRef = useRef<BottomSheetModal>(null);
   const snapPoints = useMemo(() => ["70%"], []);

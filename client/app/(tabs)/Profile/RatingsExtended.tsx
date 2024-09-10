@@ -199,7 +199,7 @@ export default function RatingsExtended() {
   }, []);
 
   const bottomSheetModalRef = useRef<BottomSheetModal>(null);
-  const snapPoints = useMemo(() => ["30%", "35%", "60%"], []);
+  const snapPoints = useMemo(() => ["30%", "35%", "50%", "60%"], []);
   const handlePresentModalPress = useCallback(() => {
     bottomSheetModalRef.current?.present();
     bottomSheetModalRef.current?.close();
@@ -223,8 +223,10 @@ export default function RatingsExtended() {
       bottomSheetModalRef.current?.snapToIndex(0);
     } else if (modalTitle.includes("Ratings")) {
       bottomSheetModalRef.current?.snapToIndex(1);
-    } else {
+    } else if (modalTitle === "Promotions") {
       bottomSheetModalRef.current?.snapToIndex(2);
+    } else {
+      bottomSheetModalRef.current?.snapToIndex(3);
     }
   }
 
@@ -273,7 +275,7 @@ export default function RatingsExtended() {
       )}
       <BottomSheetModal
         ref={bottomSheetModalRef}
-        index={2}
+        index={3}
         snapPoints={snapPoints}
         style={{
           borderTopLeftRadius: 10,

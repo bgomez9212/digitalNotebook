@@ -3,9 +3,20 @@ import { useQuery } from "@tanstack/react-query";
 import { getUserRatings } from "../../../api/users";
 import { getAuth } from "firebase/auth";
 import MatchRow from "../../../components/MatchRow";
-import { useCallback, useEffect, useMemo, useRef, useState } from "react";
+import {
+  forwardRef,
+  useCallback,
+  useEffect,
+  useMemo,
+  useRef,
+  useState,
+} from "react";
 import Ionicons from "@expo/vector-icons/Ionicons";
-import { BottomSheetModal, BottomSheetView } from "@gorhom/bottom-sheet";
+import {
+  BottomSheetBackdrop,
+  BottomSheetModal,
+  BottomSheetView,
+} from "@gorhom/bottom-sheet";
 import { ActivityIndicator, Button } from "react-native-paper";
 import LandingButton from "../../../components/LandingButton";
 import { useLocalSearchParams } from "expo-router";
@@ -14,6 +25,7 @@ import LandingLink from "../../../components/LandingLink";
 import BottomModalRow from "../../../components/BottomModalRow";
 import AntDesign from "@expo/vector-icons/AntDesign";
 import BottomModalSelect from "../../../components/BottomModalSelect";
+import { useSharedValue } from "react-native-reanimated";
 
 export default function RatingsExtended() {
   const modalMargin = "5%";
@@ -81,7 +93,7 @@ export default function RatingsExtended() {
         ...sortByParams,
         communityRatings: sortByParams.communityRatings
           .filter((item) => item !== rating)
-          .sort((a, b) => a - b),
+          .sort((a: any, b: any) => a - b),
       });
     } else {
       setSortByParams({
@@ -187,7 +199,7 @@ export default function RatingsExtended() {
   }, []);
 
   const bottomSheetModalRef = useRef<BottomSheetModal>(null);
-  const snapPoints = useMemo(() => ["60%"], []);
+  const snapPoints = useMemo(() => ["30%", "35%", "60%"], []);
   const handlePresentModalPress = useCallback(() => {
     bottomSheetModalRef.current?.present();
     bottomSheetModalRef.current?.close();
@@ -205,6 +217,15 @@ export default function RatingsExtended() {
   const [modalDisplay, setModalDisplay] = useState("main");
   function changeModalDisplay(modalTitle) {
     setModalDisplay(modalTitle);
+    if (modalTitle === "Sort By") {
+      bottomSheetModalRef.current?.snapToIndex(1);
+    } else if (modalTitle === "Sort Order") {
+      bottomSheetModalRef.current?.snapToIndex(0);
+    } else if (modalTitle.includes("Ratings")) {
+      bottomSheetModalRef.current?.snapToIndex(1);
+    } else {
+      bottomSheetModalRef.current?.snapToIndex(2);
+    }
   }
 
   if (isError) {
@@ -220,23 +241,6 @@ export default function RatingsExtended() {
   return (
     <View className="flex-1 bg-white dark:bg-darkGrey items-center">
       <View className="flex flex-row w-[98%] justify-between items-center py-2 border-b border-lightGrey dark:border-grey px-1">
-        {/* <View className="w-4/5">
-          <Text className="text-grey dark:text-white font-medium">
-            Sorted By: {sortByParams.sortBy}, {sortByParams.order}
-          </Text>
-          <Text className="text-grey dark:text-white font-medium mt-1">
-            Promotions:{" "}
-            {selectedPromotionsDisplay.current
-              ? `${selectedPromotionsDisplay.current.join(", ")}`
-              : ""}
-          </Text>
-          <Text className="text-grey dark:text-white font-medium mt-1">
-            Your Ratings:{" "}
-            {selectedUserRatingsDisplay.current
-              ? `${selectedUserRatingsDisplay.current.join(", ")}`
-              : ""}
-          </Text>
-        </View> */}
         <TouchableOpacity onPress={handlePresentModalPress}>
           <Ionicons
             name="options"
@@ -269,7 +273,7 @@ export default function RatingsExtended() {
       )}
       <BottomSheetModal
         ref={bottomSheetModalRef}
-        index={0}
+        index={2}
         snapPoints={snapPoints}
         style={{
           borderTopLeftRadius: 10,
@@ -288,7 +292,7 @@ export default function RatingsExtended() {
                 name="arrowleft"
                 size={24}
                 color="white"
-                onPress={() => setModalDisplay("main")}
+                onPress={() => changeModalDisplay("main")}
                 style={{ marginRight: 10 }}
               />
             )}

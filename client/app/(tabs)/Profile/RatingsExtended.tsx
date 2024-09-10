@@ -5,12 +5,7 @@ import { getAuth } from "firebase/auth";
 import MatchRow from "../../../components/MatchRow";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import Ionicons from "@expo/vector-icons/Ionicons";
-import {
-  BottomSheetModal,
-  BottomSheetView,
-  BottomSheetModalProvider,
-} from "@gorhom/bottom-sheet";
-import { GestureHandlerRootView } from "react-native-gesture-handler";
+import { BottomSheetModal, BottomSheetView } from "@gorhom/bottom-sheet";
 import { ActivityIndicator, Button } from "react-native-paper";
 import LandingButton from "../../../components/LandingButton";
 import { useLocalSearchParams } from "expo-router";
@@ -19,6 +14,7 @@ import BottomModalCheckbox from "../../../components/BottomModalCheckbox";
 import BottomModalRadio from "../../../components/BottomModalRadio";
 import LandingLink from "../../../components/LandingLink";
 import BottomModalRow from "../../../components/BottomModalRow";
+import AntDesign from "@expo/vector-icons/AntDesign";
 
 export default function RatingsExtended() {
   const modalMargin = "5%";
@@ -238,7 +234,6 @@ export default function RatingsExtended() {
         ref={bottomSheetModalRef}
         index={0}
         snapPoints={snapPoints}
-        // enableDynamicSizing={true}
         style={{
           borderTopLeftRadius: 10,
           borderTopRightRadius: 10,
@@ -250,7 +245,20 @@ export default function RatingsExtended() {
         }}
       >
         <View className="flex flex-row items-center justify-between border-b border-grey px-[5%] pt-6 pb-5">
-          <Text className="text-white text-lg font-semibold">Filters</Text>
+          <View className="flex flex-row items-center">
+            {modalDisplay !== "main" && (
+              <AntDesign
+                name="arrowleft"
+                size={24}
+                color="white"
+                onPress={() => setModalDisplay("main")}
+                style={{ marginRight: 10 }}
+              />
+            )}
+            <Text className="text-white text-lg font-semibold">
+              {modalDisplay !== "main" ? `${modalDisplay}` : "Filters"}
+            </Text>
+          </View>
           <LandingLink text="Reset" fn={() => console.log("reset")} />
         </View>
         {modalDisplay === "main" && (
@@ -344,6 +352,7 @@ export default function RatingsExtended() {
               selectedCheckboxArr={sortByParams.promotions}
               selectFn={selectPromotion}
               rowTitle={"Promotions"}
+              changeSearchClick={changeSearchClick}
             />
           </BottomSheetView>
         )}
@@ -354,6 +363,7 @@ export default function RatingsExtended() {
               selectedCheckboxArr={sortByParams.ratings}
               selectFn={selectRating}
               rowTitle={"Ratings"}
+              changeSearchClick={changeSearchClick}
             />
           </BottomSheetView>
         )}

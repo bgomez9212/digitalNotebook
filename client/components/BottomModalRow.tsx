@@ -16,7 +16,7 @@ export default function BottomModalRow({
     <View
       className={`flex flex-row justify-between items-center w-full py-3 ${hideBottomBorder ? "" : "border-b border-grey"}`}
     >
-      <View>
+      <View className="w-[80%]">
         <Text className="mb-1 text-white font-medium">{title}</Text>
         <Text className="text-blue font-bold">
           {Array.isArray(sortParams) ? sortParams.join(", ") : sortParams}

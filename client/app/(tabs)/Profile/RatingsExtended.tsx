@@ -17,9 +17,10 @@ import { useLocalSearchParams } from "expo-router";
 import { useColorScheme } from "nativewind";
 import BottomModalCheckbox from "../../../components/BottomModalCheckbox";
 import BottomModalRadio from "../../../components/BottomModalRadio";
+import LandingLink from "../../../components/LandingLink";
 
 export default function RatingsExtended() {
-  const modalMargin = "10%";
+  const modalMargin = "5%";
   const auth = getAuth();
   const user = auth.currentUser;
   const { promotionName, rating } = useLocalSearchParams() as {
@@ -243,17 +244,20 @@ export default function RatingsExtended() {
           backgroundColor: colorScheme === "dark" ? "#303030" : "white",
         }}
       >
+        <View className="flex flex-row items-center justify-between border-b border-grey px-[5%] pt-6 pb-5">
+          <Text className="text-white text-lg font-semibold">Filters</Text>
+          <LandingLink text="Reset" fn={() => console.log("reset")} />
+        </View>
         <BottomSheetView
           style={{
             display: "flex",
             justifyContent: "center",
             alignItems: "center",
-            height: "100%",
             rowGap: 15,
             marginHorizontal: modalMargin,
           }}
         >
-          <BottomModalCheckbox
+          {/* <BottomModalCheckbox
             checkboxArr={["0", "1", "2", "3", "4", "5"]}
             selectedCheckboxArr={sortByParams.ratings}
             selectFn={selectRating}
@@ -276,7 +280,7 @@ export default function RatingsExtended() {
             changeValue={changeSortOrder}
             currentValue={sortByParams.order}
             rowTitle={"Sort Order"}
-          />
+          /> */}
           <LandingButton
             fn={changeSearchClick}
             text="Show Results"

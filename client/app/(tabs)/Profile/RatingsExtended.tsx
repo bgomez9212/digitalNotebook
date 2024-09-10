@@ -10,8 +10,6 @@ import { ActivityIndicator, Button } from "react-native-paper";
 import LandingButton from "../../../components/LandingButton";
 import { useLocalSearchParams } from "expo-router";
 import { useColorScheme } from "nativewind";
-import BottomModalCheckbox from "../../../components/BottomModalCheckbox";
-import BottomModalRadio from "../../../components/BottomModalRadio";
 import LandingLink from "../../../components/LandingLink";
 import BottomModalRow from "../../../components/BottomModalRow";
 import AntDesign from "@expo/vector-icons/AntDesign";
@@ -31,7 +29,8 @@ export default function RatingsExtended() {
     sortBy: "Rating Date",
     order: "Desc",
     promotions: [],
-    ratings: [],
+    userRatings: [],
+    communityRatings: ["0", "1", "2", "3", "4", "5"],
   });
 
   function changeSortBy(newValue) {
@@ -58,33 +57,52 @@ export default function RatingsExtended() {
     }
   }
 
-  function selectRating(rating) {
-    if (sortByParams.ratings.includes(rating)) {
+  function selectUserRating(rating) {
+    if (sortByParams.userRatings.includes(rating)) {
       setSortByParams({
         ...sortByParams,
-        ratings: sortByParams.ratings
+        userRatings: sortByParams.userRatings
           .filter((item) => item !== rating)
           .sort((a, b) => a - b),
       });
     } else {
       setSortByParams({
         ...sortByParams,
-        ratings: [...sortByParams.ratings, rating].sort((a, b) => a - b),
+        userRatings: [...sortByParams.userRatings, rating].sort(
+          (a, b) => a - b
+        ),
       });
     }
   }
 
-  const sortRadios = [
-    "Rating Date",
-    "Event Date",
-    "My Ratings",
-    "Community Ratings",
-  ];
-
-  const sortOrderRadios = ["Asc", "Desc"];
+  function selectCommunityRating(rating) {
+    if (sortByParams.communityRatings.includes(rating)) {
+      setSortByParams({
+        ...sortByParams,
+        communityRatings: sortByParams.communityRatings
+          .filter((item) => item !== rating)
+          .sort((a, b) => a - b),
+      });
+    } else {
+      setSortByParams({
+        ...sortByParams,
+        communityRatings: [...sortByParams.communityRatings, rating].sort(
+          (a, b) => a - b
+        ),
+      });
+    }
+  }
 
   const selectedPromotionsDisplay = useRef([]);
-  const selectedRatingsDisplay = useRef([]);
+  const selectedUserRatingsDisplay = useRef([]);
+  const selectedCommunityRatingsDisplay = useRef([
+    "0",
+    "1",
+    "2",
+    "3",
+    "4",
+    "5",
+  ]);
 
   const sortAndFilterRatings = useCallback(
     (data) => {
@@ -102,9 +120,16 @@ export default function RatingsExtended() {
           sortByParams.promotions.includes(matchObj.promotion)
         );
       }
-      if (sortByParams.ratings.length) {
+      if (sortByParams.userRatings.length) {
         filteredResults.matches = filteredResults.matches.filter((matchObj) =>
-          sortByParams.ratings.includes(matchObj.user_rating.toString()[0])
+          sortByParams.userRatings.includes(matchObj.user_rating.toString()[0])
+        );
+      }
+      if (sortByParams.communityRatings.length) {
+        filteredResults.matches = filteredResults.matches.filter((matchObj) =>
+          sortByParams.communityRatings.includes(
+            matchObj.community_rating.toString()[0]
+          )
         );
       }
 
@@ -147,14 +172,14 @@ export default function RatingsExtended() {
     }
 
     if (rating) {
-      updatedParams = { ...updatedParams, ratings: [rating] };
-      selectedRatingsDisplay.current = [rating];
+      updatedParams = { ...updatedParams, userRatings: [rating] };
+      selectedUserRatingsDisplay.current = [rating];
     } else {
       updatedParams = {
         ...updatedParams,
-        ratings: ["0", "1", "2", "3", "4", "5"],
+        userRatings: ["0", "1", "2", "3", "4", "5"],
       };
-      selectedRatingsDisplay.current = [["0", "1", "2", "3", "4", "5"]];
+      selectedUserRatingsDisplay.current = [["0", "1", "2", "3", "4", "5"]];
     }
 
     setSortByParams(updatedParams);
@@ -162,16 +187,18 @@ export default function RatingsExtended() {
   }, []);
 
   const bottomSheetModalRef = useRef<BottomSheetModal>(null);
-  const snapPoints = useMemo(() => ["51%"], []);
+  const snapPoints = useMemo(() => ["60%"], []);
   const handlePresentModalPress = useCallback(() => {
     bottomSheetModalRef.current?.present();
     bottomSheetModalRef.current?.close();
   }, []);
 
   function changeSearchClick() {
-    selectedRatingsDisplay.current = sortByParams.ratings;
+    selectedUserRatingsDisplay.current = sortByParams.userRatings;
+    selectedCommunityRatingsDisplay.current = sortByParams.communityRatings;
     selectedPromotionsDisplay.current = sortByParams.promotions;
     setChangeParams(!changeParams);
+    setModalDisplay("main");
     bottomSheetModalRef.current?.close();
   }
 
@@ -183,7 +210,9 @@ export default function RatingsExtended() {
   if (isError) {
     return (
       <View className="flex-1 bg-white dark:bg-darkGrey justify-center items-center">
-        <Text>There seems to be an error. Please try again later.</Text>
+        <Text className="dark:text-white">
+          There seems to be an error. Please try again later.
+        </Text>
       </View>
     );
   }
@@ -191,7 +220,7 @@ export default function RatingsExtended() {
   return (
     <View className="flex-1 bg-white dark:bg-darkGrey items-center">
       <View className="flex flex-row w-[98%] justify-between items-center py-2 border-b border-lightGrey dark:border-grey px-1">
-        <View className="w-4/5">
+        {/* <View className="w-4/5">
           <Text className="text-grey dark:text-white font-medium">
             Sorted By: {sortByParams.sortBy}, {sortByParams.order}
           </Text>
@@ -202,12 +231,12 @@ export default function RatingsExtended() {
               : ""}
           </Text>
           <Text className="text-grey dark:text-white font-medium mt-1">
-            Ratings:{" "}
-            {selectedRatingsDisplay.current
-              ? `${selectedRatingsDisplay.current.join(", ")}`
+            Your Ratings:{" "}
+            {selectedUserRatingsDisplay.current
+              ? `${selectedUserRatingsDisplay.current.join(", ")}`
               : ""}
           </Text>
-        </View>
+        </View> */}
         <TouchableOpacity onPress={handlePresentModalPress}>
           <Ionicons
             name="options"
@@ -219,6 +248,13 @@ export default function RatingsExtended() {
       {isFetching ? (
         <View className="flex-1 justify-center items-center">
           <ActivityIndicator color="#477CB9" />
+        </View>
+      ) : data?.matches.length === 0 ? (
+        <View className="flex-1 bg-white dark:bg-darkGrey justify-center items-center">
+          <Text className="dark:text-white text-center">
+            No matches match your parameters. {"\n"} Please adjust your
+            parameters and try again.
+          </Text>
         </View>
       ) : (
         <FlatList
@@ -287,8 +323,13 @@ export default function RatingsExtended() {
               fn={changeModalDisplay}
             />
             <BottomModalRow
-              title="Ratings"
-              sortParams={sortByParams.ratings}
+              title="Your Ratings"
+              sortParams={sortByParams.userRatings}
+              fn={changeModalDisplay}
+            />
+            <BottomModalRow
+              title="Community Ratings"
+              sortParams={sortByParams.communityRatings}
               fn={changeModalDisplay}
               hideBottomBorder={true}
             />
@@ -305,7 +346,12 @@ export default function RatingsExtended() {
         {modalDisplay === "Sort By" && (
           <BottomSheetView>
             <BottomModalSelect
-              options={sortRadios}
+              options={[
+                "Rating Date",
+                "Event Date",
+                "My Ratings",
+                "Community Ratings",
+              ]}
               selectFn={changeSortBy}
               selectedOptions={sortByParams.sortBy}
               changeSearchClick={changeSearchClick}
@@ -316,7 +362,7 @@ export default function RatingsExtended() {
         {modalDisplay === "Sort Order" && (
           <BottomSheetView>
             <BottomModalSelect
-              options={sortOrderRadios}
+              options={["Asc", "Desc"]}
               selectFn={changeSortOrder}
               selectedOptions={sortByParams.order}
               changeSearchClick={changeSearchClick}
@@ -334,12 +380,22 @@ export default function RatingsExtended() {
             />
           </BottomSheetView>
         )}
-        {modalDisplay === "Ratings" && (
+        {modalDisplay === "Your Ratings" && (
           <BottomSheetView>
             <BottomModalSelect
               options={["0", "1", "2", "3", "4", "5"]}
-              selectedOptions={sortByParams.ratings}
-              selectFn={selectRating}
+              selectedOptions={sortByParams.userRatings}
+              selectFn={selectUserRating}
+              changeSearchClick={changeSearchClick}
+            />
+          </BottomSheetView>
+        )}
+        {modalDisplay === "Community Ratings" && (
+          <BottomSheetView>
+            <BottomModalSelect
+              options={["0", "1", "2", "3", "4", "5"]}
+              selectedOptions={sortByParams.communityRatings}
+              selectFn={selectCommunityRating}
               changeSearchClick={changeSearchClick}
             />
           </BottomSheetView>

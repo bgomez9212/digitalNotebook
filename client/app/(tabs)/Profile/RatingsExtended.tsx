@@ -187,114 +187,106 @@ export default function RatingsExtended() {
   }
 
   return (
-    <GestureHandlerRootView>
-      <BottomSheetModalProvider>
-        <View className="flex-1 bg-white dark:bg-darkGrey items-center">
-          <View className="flex flex-row w-[98%] justify-between items-center py-2 border-b border-lightGrey dark:border-grey px-1">
-            <View className="w-4/5">
-              <Text className="text-grey dark:text-white font-medium">
-                Sorted By: {sortByParams.sortBy}, {sortByParams.order}
-              </Text>
-              <Text className="text-grey dark:text-white font-medium mt-1">
-                Promotions:{" "}
-                {selectedPromotionsDisplay.current
-                  ? `${selectedPromotionsDisplay.current.join(", ")}`
-                  : ""}
-              </Text>
-              <Text className="text-grey dark:text-white font-medium mt-1">
-                Ratings:{" "}
-                {selectedRatingsDisplay.current
-                  ? `${selectedRatingsDisplay.current.join(", ")}`
-                  : ""}
-              </Text>
-            </View>
-            <TouchableOpacity onPress={handlePresentModalPress}>
-              <Ionicons
-                name="options"
-                size={24}
-                color={colorScheme === "light" ? "black" : "white"}
-              />
-            </TouchableOpacity>
-          </View>
-          {isFetching ? (
-            <View className="flex-1 justify-center items-center">
-              <ActivityIndicator color="#477CB9" />
-            </View>
-          ) : (
-            <FlatList
-              showsVerticalScrollIndicator={false}
-              className="w-[95%]"
-              data={data?.matches}
-              renderItem={({ item }) => (
-                <MatchRow
-                  match={item}
-                  display="Search"
-                  hideBottomBorder={false}
-                />
-              )}
-              keyExtractor={(item) => item.match_id}
-            />
-          )}
-          <BottomSheetModal
-            ref={bottomSheetModalRef}
-            index={0}
-            snapPoints={snapPoints}
-            style={{
-              borderTopLeftRadius: 10,
-              borderTopRightRadius: 10,
-              shadowColor: "grey",
-              shadowOpacity: colorScheme === "dark" ? 0 : 1,
-            }}
-            backgroundStyle={{
-              backgroundColor: colorScheme === "dark" ? "#303030" : "white",
-            }}
-          >
-            <BottomSheetView
-              style={{
-                display: "flex",
-                justifyContent: "center",
-                alignItems: "center",
-                height: "100%",
-                rowGap: 15,
-                marginHorizontal: modalMargin,
-              }}
-            >
-              <BottomModalCheckbox
-                checkboxArr={["0", "1", "2", "3", "4", "5"]}
-                selectedCheckboxArr={sortByParams.ratings}
-                selectFn={selectRating}
-                rowTitle={"Ratings"}
-              />
-              <BottomModalCheckbox
-                checkboxArr={promotions.current}
-                selectedCheckboxArr={sortByParams.promotions}
-                selectFn={selectPromotion}
-                rowTitle={"Promotions"}
-              />
-              <BottomModalRadio
-                values={sortRadios}
-                changeValue={changeSortBy}
-                currentValue={sortByParams.sortBy}
-                rowTitle={"Sort By"}
-              />
-              <BottomModalRadio
-                values={sortOrderRadios}
-                changeValue={changeSortOrder}
-                currentValue={sortByParams.order}
-                rowTitle={"Sort Order"}
-              />
-              <LandingButton
-                fn={changeSearchClick}
-                text="Show Results"
-                disabled={false}
-                color="blue"
-                loading={false}
-                width="full"
-              />
-            </BottomSheetView>
-          </BottomSheetModal>
+    <View className="flex-1 bg-white dark:bg-darkGrey items-center">
+      <View className="flex flex-row w-[98%] justify-between items-center py-2 border-b border-lightGrey dark:border-grey px-1">
+        <View className="w-4/5">
+          <Text className="text-grey dark:text-white font-medium">
+            Sorted By: {sortByParams.sortBy}, {sortByParams.order}
+          </Text>
+          <Text className="text-grey dark:text-white font-medium mt-1">
+            Promotions:{" "}
+            {selectedPromotionsDisplay.current
+              ? `${selectedPromotionsDisplay.current.join(", ")}`
+              : ""}
+          </Text>
+          <Text className="text-grey dark:text-white font-medium mt-1">
+            Ratings:{" "}
+            {selectedRatingsDisplay.current
+              ? `${selectedRatingsDisplay.current.join(", ")}`
+              : ""}
+          </Text>
         </View>
-      </BottomSheetModalProvider>
-    </GestureHandlerRootView>
+        <TouchableOpacity onPress={handlePresentModalPress}>
+          <Ionicons
+            name="options"
+            size={24}
+            color={colorScheme === "light" ? "black" : "white"}
+          />
+        </TouchableOpacity>
+      </View>
+      {isFetching ? (
+        <View className="flex-1 justify-center items-center">
+          <ActivityIndicator color="#477CB9" />
+        </View>
+      ) : (
+        <FlatList
+          showsVerticalScrollIndicator={false}
+          className="w-[95%]"
+          data={data?.matches}
+          renderItem={({ item }) => (
+            <MatchRow match={item} display="Search" hideBottomBorder={false} />
+          )}
+          keyExtractor={(item) => item.match_id}
+        />
+      )}
+      <BottomSheetModal
+        ref={bottomSheetModalRef}
+        index={0}
+        snapPoints={snapPoints}
+        style={{
+          borderTopLeftRadius: 10,
+          borderTopRightRadius: 10,
+          shadowColor: "grey",
+          shadowOpacity: colorScheme === "dark" ? 0 : 1,
+        }}
+        backgroundStyle={{
+          backgroundColor: colorScheme === "dark" ? "#303030" : "white",
+        }}
+      >
+        <BottomSheetView
+          style={{
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+            height: "100%",
+            rowGap: 15,
+            marginHorizontal: modalMargin,
+          }}
+        >
+          <BottomModalCheckbox
+            checkboxArr={["0", "1", "2", "3", "4", "5"]}
+            selectedCheckboxArr={sortByParams.ratings}
+            selectFn={selectRating}
+            rowTitle={"Ratings"}
+          />
+          <BottomModalCheckbox
+            checkboxArr={promotions.current}
+            selectedCheckboxArr={sortByParams.promotions}
+            selectFn={selectPromotion}
+            rowTitle={"Promotions"}
+          />
+          <BottomModalRadio
+            values={sortRadios}
+            changeValue={changeSortBy}
+            currentValue={sortByParams.sortBy}
+            rowTitle={"Sort By"}
+          />
+          <BottomModalRadio
+            values={sortOrderRadios}
+            changeValue={changeSortOrder}
+            currentValue={sortByParams.order}
+            rowTitle={"Sort Order"}
+          />
+          <LandingButton
+            fn={changeSearchClick}
+            text="Show Results"
+            disabled={false}
+            color="blue"
+            loading={false}
+            width="full"
+          />
+        </BottomSheetView>
+      </BottomSheetModal>
+    </View>
   );
 }

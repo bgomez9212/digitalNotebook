@@ -11,13 +11,14 @@ import {
   BottomSheetModalProvider,
 } from "@gorhom/bottom-sheet";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
-import { ActivityIndicator } from "react-native-paper";
+import { ActivityIndicator, Button } from "react-native-paper";
 import LandingButton from "../../../components/LandingButton";
 import { useLocalSearchParams } from "expo-router";
 import { useColorScheme } from "nativewind";
 import BottomModalCheckbox from "../../../components/BottomModalCheckbox";
 import BottomModalRadio from "../../../components/BottomModalRadio";
 import LandingLink from "../../../components/LandingLink";
+import BottomModalRow from "../../../components/BottomModalRow";
 
 export default function RatingsExtended() {
   const modalMargin = "5%";
@@ -28,9 +29,7 @@ export default function RatingsExtended() {
     rating: string;
   };
   const { colorScheme } = useColorScheme();
-
   const [changeParams, setChangeParams] = useState(false);
-
   const [sortByParams, setSortByParams] = useState({
     sortBy: "Rating Date",
     order: "Desc",
@@ -166,7 +165,7 @@ export default function RatingsExtended() {
   }, []);
 
   const bottomSheetModalRef = useRef<BottomSheetModal>(null);
-  const snapPoints = useMemo(() => ["70%"], []);
+  const snapPoints = useMemo(() => ["51%"], []);
   const handlePresentModalPress = useCallback(() => {
     bottomSheetModalRef.current?.present();
     bottomSheetModalRef.current?.close();
@@ -177,6 +176,11 @@ export default function RatingsExtended() {
     selectedPromotionsDisplay.current = sortByParams.promotions;
     setChangeParams(!changeParams);
     bottomSheetModalRef.current?.close();
+  }
+
+  const [modalDisplay, setModalDisplay] = useState("main");
+  function changeModalDisplay(modalTitle) {
+    setModalDisplay(modalTitle);
   }
 
   if (isError) {
@@ -234,6 +238,7 @@ export default function RatingsExtended() {
         ref={bottomSheetModalRef}
         index={0}
         snapPoints={snapPoints}
+        // enableDynamicSizing={true}
         style={{
           borderTopLeftRadius: 10,
           borderTopRightRadius: 10,
@@ -248,16 +253,37 @@ export default function RatingsExtended() {
           <Text className="text-white text-lg font-semibold">Filters</Text>
           <LandingLink text="Reset" fn={() => console.log("reset")} />
         </View>
-        <BottomSheetView
-          style={{
-            display: "flex",
-            justifyContent: "center",
-            alignItems: "center",
-            rowGap: 15,
-            marginHorizontal: modalMargin,
-          }}
-        >
-          {/* <BottomModalCheckbox
+        {modalDisplay === "main" && (
+          <BottomSheetView
+            style={{
+              display: "flex",
+              justifyContent: "center",
+              alignItems: "center",
+              marginHorizontal: modalMargin,
+            }}
+          >
+            <BottomModalRow
+              title="Sort By"
+              sortParams={sortByParams.sortBy}
+              fn={changeModalDisplay}
+            />
+            <BottomModalRow
+              title="Sort Order"
+              sortParams={sortByParams.order}
+              fn={changeModalDisplay}
+            />
+            <BottomModalRow
+              title="Promotions"
+              sortParams={sortByParams.promotions}
+              fn={changeModalDisplay}
+            />
+            <BottomModalRow
+              title="Ratings"
+              sortParams={sortByParams.ratings}
+              fn={changeModalDisplay}
+              hideBottomBorder={true}
+            />
+            {/* <BottomModalCheckbox
             checkboxArr={["0", "1", "2", "3", "4", "5"]}
             selectedCheckboxArr={sortByParams.ratings}
             selectFn={selectRating}
@@ -281,15 +307,56 @@ export default function RatingsExtended() {
             currentValue={sortByParams.order}
             rowTitle={"Sort Order"}
           /> */}
-          <LandingButton
-            fn={changeSearchClick}
-            text="Show Results"
-            disabled={false}
-            color="blue"
-            loading={false}
-            width="full"
-          />
-        </BottomSheetView>
+            <LandingButton
+              fn={changeSearchClick}
+              text="Show Results"
+              disabled={false}
+              color="blue"
+              loading={false}
+              width="full"
+            />
+          </BottomSheetView>
+        )}
+        {modalDisplay === "Sort By" && (
+          <BottomSheetView>
+            <BottomModalRadio
+              values={sortRadios}
+              changeValue={changeSortBy}
+              currentValue={sortByParams.sortBy}
+              rowTitle={"Sort By"}
+            />
+          </BottomSheetView>
+        )}
+        {modalDisplay === "Sort Order" && (
+          <BottomSheetView>
+            <BottomModalRadio
+              values={sortOrderRadios}
+              changeValue={changeSortOrder}
+              currentValue={sortByParams.order}
+              rowTitle={"Sort Order"}
+            />
+          </BottomSheetView>
+        )}
+        {modalDisplay === "Promotions" && (
+          <BottomSheetView>
+            <BottomModalCheckbox
+              checkboxArr={promotions.current}
+              selectedCheckboxArr={sortByParams.promotions}
+              selectFn={selectPromotion}
+              rowTitle={"Promotions"}
+            />
+          </BottomSheetView>
+        )}
+        {modalDisplay === "Ratings" && (
+          <BottomSheetView>
+            <BottomModalCheckbox
+              checkboxArr={["0", "1", "2", "3", "4", "5"]}
+              selectedCheckboxArr={sortByParams.ratings}
+              selectFn={selectRating}
+              rowTitle={"Ratings"}
+            />
+          </BottomSheetView>
+        )}
       </BottomSheetModal>
     </View>
   );

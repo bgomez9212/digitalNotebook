@@ -15,6 +15,7 @@ import BottomModalRadio from "../../../components/BottomModalRadio";
 import LandingLink from "../../../components/LandingLink";
 import BottomModalRow from "../../../components/BottomModalRow";
 import AntDesign from "@expo/vector-icons/AntDesign";
+import BottomModalSelect from "../../../components/BottomModalSelect";
 
 export default function RatingsExtended() {
   const modalMargin = "5%";
@@ -291,30 +292,6 @@ export default function RatingsExtended() {
               fn={changeModalDisplay}
               hideBottomBorder={true}
             />
-            {/* <BottomModalCheckbox
-            checkboxArr={["0", "1", "2", "3", "4", "5"]}
-            selectedCheckboxArr={sortByParams.ratings}
-            selectFn={selectRating}
-            rowTitle={"Ratings"}
-          />
-          <BottomModalCheckbox
-            checkboxArr={promotions.current}
-            selectedCheckboxArr={sortByParams.promotions}
-            selectFn={selectPromotion}
-            rowTitle={"Promotions"}
-          />
-          <BottomModalRadio
-            values={sortRadios}
-            changeValue={changeSortBy}
-            currentValue={sortByParams.sortBy}
-            rowTitle={"Sort By"}
-          />
-          <BottomModalRadio
-            values={sortOrderRadios}
-            changeValue={changeSortOrder}
-            currentValue={sortByParams.order}
-            rowTitle={"Sort Order"}
-          /> */}
             <LandingButton
               fn={changeSearchClick}
               text="Show Results"
@@ -327,42 +304,42 @@ export default function RatingsExtended() {
         )}
         {modalDisplay === "Sort By" && (
           <BottomSheetView>
-            <BottomModalRadio
-              values={sortRadios}
-              changeValue={changeSortBy}
-              currentValue={sortByParams.sortBy}
-              rowTitle={"Sort By"}
+            <BottomModalSelect
+              options={sortRadios}
+              selectFn={changeSortBy}
+              selectedOptions={sortByParams.sortBy}
+              changeSearchClick={changeSearchClick}
+              isRadio={true}
             />
           </BottomSheetView>
         )}
         {modalDisplay === "Sort Order" && (
           <BottomSheetView>
-            <BottomModalRadio
-              values={sortOrderRadios}
-              changeValue={changeSortOrder}
-              currentValue={sortByParams.order}
-              rowTitle={"Sort Order"}
+            <BottomModalSelect
+              options={sortOrderRadios}
+              selectFn={changeSortOrder}
+              selectedOptions={sortByParams.order}
+              changeSearchClick={changeSearchClick}
+              isRadio={true}
             />
           </BottomSheetView>
         )}
         {modalDisplay === "Promotions" && (
           <BottomSheetView>
-            <BottomModalCheckbox
-              checkboxArr={promotions.current}
-              selectedCheckboxArr={sortByParams.promotions}
+            <BottomModalSelect
+              options={promotions.current}
+              selectedOptions={sortByParams.promotions}
               selectFn={selectPromotion}
-              rowTitle={"Promotions"}
               changeSearchClick={changeSearchClick}
             />
           </BottomSheetView>
         )}
         {modalDisplay === "Ratings" && (
           <BottomSheetView>
-            <BottomModalCheckbox
-              checkboxArr={["0", "1", "2", "3", "4", "5"]}
-              selectedCheckboxArr={sortByParams.ratings}
+            <BottomModalSelect
+              options={["0", "1", "2", "3", "4", "5"]}
+              selectedOptions={sortByParams.ratings}
               selectFn={selectRating}
-              rowTitle={"Ratings"}
               changeSearchClick={changeSearchClick}
             />
           </BottomSheetView>

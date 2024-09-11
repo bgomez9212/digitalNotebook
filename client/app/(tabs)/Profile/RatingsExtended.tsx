@@ -26,6 +26,8 @@ import BottomModalRow from "../../../components/BottomModalRow";
 import AntDesign from "@expo/vector-icons/AntDesign";
 import BottomModalSelect from "../../../components/BottomModalSelect";
 import { useSharedValue } from "react-native-reanimated";
+import { ScrollView } from "react-native-gesture-handler";
+import HorizontalScrollElement from "../../../components/HorizontalScrollElement";
 
 export default function RatingsExtended() {
   const modalMargin = "5%";
@@ -115,7 +117,13 @@ export default function RatingsExtended() {
     "4",
     "5",
   ]);
-
+  const sortOptions = [
+    "Sort By",
+    "Promotions",
+    "Your Ratings",
+    "Community Ratings",
+    "Sort Order",
+  ];
   const sortAndFilterRatings = useCallback(
     (data) => {
       const compare = (a, b, key) => {
@@ -243,13 +251,22 @@ export default function RatingsExtended() {
   return (
     <View className="flex-1 bg-white dark:bg-darkGrey items-center">
       <View className="flex flex-row w-[98%] justify-between items-center py-2 border-b border-lightGrey dark:border-grey px-1">
-        <TouchableOpacity onPress={handlePresentModalPress}>
+        <TouchableOpacity onPress={handlePresentModalPress} className="mr-3">
           <Ionicons
             name="options"
             size={24}
             color={colorScheme === "light" ? "black" : "white"}
           />
         </TouchableOpacity>
+        <ScrollView horizontal={true} showsHorizontalScrollIndicator={false}>
+          {sortOptions.map((option) => (
+            <HorizontalScrollElement
+              key={option}
+              sortParam={option}
+              clickFn={changeModalDisplay}
+            />
+          ))}
+        </ScrollView>
       </View>
       {isFetching ? (
         <View className="flex-1 justify-center items-center">

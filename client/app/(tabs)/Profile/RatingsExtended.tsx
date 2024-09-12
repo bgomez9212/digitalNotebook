@@ -3,20 +3,9 @@ import { useQuery } from "@tanstack/react-query";
 import { getUserRatings } from "../../../api/users";
 import { getAuth } from "firebase/auth";
 import MatchRow from "../../../components/MatchRow";
-import {
-  forwardRef,
-  useCallback,
-  useEffect,
-  useMemo,
-  useRef,
-  useState,
-} from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import Ionicons from "@expo/vector-icons/Ionicons";
-import {
-  BottomSheetBackdrop,
-  BottomSheetModal,
-  BottomSheetView,
-} from "@gorhom/bottom-sheet";
+import { BottomSheetModal, BottomSheetView } from "@gorhom/bottom-sheet";
 import { ActivityIndicator, Button } from "react-native-paper";
 import LandingButton from "../../../components/LandingButton";
 import { useLocalSearchParams } from "expo-router";
@@ -25,7 +14,6 @@ import LandingLink from "../../../components/LandingLink";
 import BottomModalRow from "../../../components/BottomModalRow";
 import AntDesign from "@expo/vector-icons/AntDesign";
 import BottomModalSelect from "../../../components/BottomModalSelect";
-import { useSharedValue } from "react-native-reanimated";
 import { ScrollView } from "react-native-gesture-handler";
 import HorizontalScrollElement from "../../../components/HorizontalScrollElement";
 
@@ -46,6 +34,7 @@ export default function RatingsExtended() {
     userRatings: [],
     communityRatings: ["0", "1", "2", "3", "4", "5"],
   });
+  const [modalDisplay, setModalDisplay] = useState("hidden");
 
   function changeSortBy(newValue) {
     setSortByParams({ ...sortByParams, sortBy: newValue });
@@ -124,6 +113,7 @@ export default function RatingsExtended() {
     "Community Ratings",
     "Sort Order",
   ];
+
   const sortAndFilterRatings = useCallback(
     (data) => {
       const compare = (a, b, key) => {
@@ -208,10 +198,6 @@ export default function RatingsExtended() {
 
   const bottomSheetModalRef = useRef<BottomSheetModal>(null);
   const snapPoints = useMemo(() => ["30%", "35%", "50%", "60%"], []);
-  const handlePresentModalPress = useCallback(() => {
-    bottomSheetModalRef.current?.present();
-    bottomSheetModalRef.current?.close();
-  }, []);
 
   function changeSearchClick() {
     selectedUserRatingsDisplay.current = sortByParams.userRatings;
@@ -222,7 +208,12 @@ export default function RatingsExtended() {
     bottomSheetModalRef.current?.close();
   }
 
-  const [modalDisplay, setModalDisplay] = useState("main");
+  const handlePresentModalPress = useCallback(() => {
+    bottomSheetModalRef.current?.present();
+    setModalDisplay("main");
+    bottomSheetModalRef.current?.close();
+  }, []);
+
   function changeModalDisplay(modalTitle) {
     setModalDisplay(modalTitle);
     if (modalTitle === "Sort By") {
@@ -236,6 +227,23 @@ export default function RatingsExtended() {
     } else {
       bottomSheetModalRef.current?.snapToIndex(3);
     }
+  }
+
+  function horizontalScrollClickHandler(option) {
+    changeModalDisplay(option);
+    bottomSheetModalRef.current?.present();
+  }
+
+  function decideSnapPoint() {
+    return modalDisplay === "hidden"
+      ? -1
+      : modalDisplay === "main"
+        ? 3
+        : modalDisplay === "Promotions"
+          ? 2
+          : modalDisplay === "Sort Order"
+            ? 0
+            : 1;
   }
 
   if (isError) {
@@ -258,12 +266,12 @@ export default function RatingsExtended() {
             color={colorScheme === "light" ? "black" : "white"}
           />
         </TouchableOpacity>
-        <ScrollView horizontal={true} showsHorizontalScrollIndicator={false}>
+        <ScrollView horizontal showsHorizontalScrollIndicator={false}>
           {sortOptions.map((option) => (
             <HorizontalScrollElement
               key={option}
               sortParam={option}
-              clickFn={changeModalDisplay}
+              clickFn={horizontalScrollClickHandler}
             />
           ))}
         </ScrollView>
@@ -292,7 +300,7 @@ export default function RatingsExtended() {
       )}
       <BottomSheetModal
         ref={bottomSheetModalRef}
-        index={3}
+        index={decideSnapPoint()}
         snapPoints={snapPoints}
         style={{
           borderTopLeftRadius: 10,

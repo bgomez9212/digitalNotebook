@@ -21,7 +21,7 @@ export default function RatingsExtended() {
   const modalMargin = "5%";
   const { colorScheme } = useColorScheme();
   const [changeParams, setChangeParams] = useState(false);
-  const [sortByParams, setSortByParams] = useState({
+  const [sortParams, setSortParams] = useState({
     "Sort By": ["Rating Date"],
     Promotions: [],
     "Your Ratings": [],
@@ -31,41 +31,41 @@ export default function RatingsExtended() {
   const [modalDisplay, setModalDisplay] = useState("hidden");
 
   function changeSortBy(newValue) {
-    setSortByParams({ ...sortByParams, "Sort By": [newValue] });
+    setSortParams({ ...sortParams, "Sort By": [newValue] });
   }
 
   function changeSortOrder(newValue) {
-    setSortByParams({ ...sortByParams, ["Sort Order"]: [newValue] });
+    setSortParams({ ...sortParams, ["Sort Order"]: [newValue] });
   }
 
   function selectPromotion(promotion) {
-    if (sortByParams["Promotions"].includes(promotion)) {
-      setSortByParams({
-        ...sortByParams,
-        Promotions: sortByParams["Promotions"].filter(
+    if (sortParams["Promotions"].includes(promotion)) {
+      setSortParams({
+        ...sortParams,
+        Promotions: sortParams["Promotions"].filter(
           (item) => item !== promotion
         ),
       });
     } else {
-      setSortByParams({
-        ...sortByParams,
-        Promotions: [...sortByParams["Promotions"], promotion],
+      setSortParams({
+        ...sortParams,
+        Promotions: [...sortParams["Promotions"], promotion],
       });
     }
   }
 
   function selectUserRating(rating) {
-    if (sortByParams["Your Ratings"].includes(rating)) {
-      setSortByParams({
-        ...sortByParams,
-        "Your Ratings": sortByParams["Your Ratings"]
+    if (sortParams["Your Ratings"].includes(rating)) {
+      setSortParams({
+        ...sortParams,
+        "Your Ratings": sortParams["Your Ratings"]
           .filter((item) => item !== rating)
           .sort((a, b) => a - b),
       });
     } else {
-      setSortByParams({
-        ...sortByParams,
-        "Your Ratings": [...sortByParams["Your Ratings"], rating].sort(
+      setSortParams({
+        ...sortParams,
+        "Your Ratings": [...sortParams["Your Ratings"], rating].sort(
           (a, b) => a - b
         ),
       });
@@ -73,20 +73,19 @@ export default function RatingsExtended() {
   }
 
   function selectCommunityRating(rating) {
-    if (sortByParams["Community Ratings"].includes(rating)) {
-      setSortByParams({
-        ...sortByParams,
-        "Community Ratings": sortByParams["Community Ratings"]
+    if (sortParams["Community Ratings"].includes(rating)) {
+      setSortParams({
+        ...sortParams,
+        "Community Ratings": sortParams["Community Ratings"]
           .filter((item) => item !== rating)
           .sort((a: any, b: any) => a - b),
       });
     } else {
-      setSortByParams({
-        ...sortByParams,
-        "Community Ratings": [
-          ...sortByParams["Community Ratings"],
-          rating,
-        ].sort((a, b) => a - b),
+      setSortParams({
+        ...sortParams,
+        "Community Ratings": [...sortParams["Community Ratings"], rating].sort(
+          (a, b) => a - b
+        ),
       });
     }
   }
@@ -105,7 +104,7 @@ export default function RatingsExtended() {
   const sortAndFilterRatings = useCallback(
     (data) => {
       const compare = (a, b, key) => {
-        if (sortByParams["Sort Order"][0] === "Asc") {
+        if (sortParams["Sort Order"][0] === "Asc") {
           return a[key] >= b[key] ? 1 : -1;
         } else {
           return a[key] <= b[key] ? 1 : -1;
@@ -113,33 +112,33 @@ export default function RatingsExtended() {
       };
 
       let filteredResults = { ...data };
-      if (sortByParams["Promotions"].length) {
+      if (sortParams["Promotions"].length) {
         filteredResults.matches = filteredResults.matches.filter((matchObj) =>
-          sortByParams["Promotions"].includes(matchObj.promotion)
+          sortParams["Promotions"].includes(matchObj.promotion)
         );
       }
-      if (sortByParams["Your Ratings"].length) {
+      if (sortParams["Your Ratings"].length) {
         filteredResults.matches = filteredResults.matches.filter((matchObj) =>
-          sortByParams["Your Ratings"].includes(
+          sortParams["Your Ratings"].includes(
             matchObj.user_rating.toString()[0]
           )
         );
       }
-      if (sortByParams["Community Ratings"].length) {
+      if (sortParams["Community Ratings"].length) {
         filteredResults.matches = filteredResults.matches.filter((matchObj) =>
-          sortByParams["Community Ratings"].includes(
+          sortParams["Community Ratings"].includes(
             matchObj.community_rating.toString()[0]
           )
         );
       }
 
-      sortByParams["Sort By"][0] === "My Ratings"
+      sortParams["Sort By"][0] === "My Ratings"
         ? filteredResults.matches?.sort((a, b) => compare(a, b, "user_rating"))
-        : sortByParams["Sort By"][0] === "Community Ratings"
+        : sortParams["Sort By"][0] === "Community Ratings"
           ? filteredResults.matches?.sort((a, b) =>
               compare(a, b, "community_rating")
             )
-          : sortByParams["Sort By"][0] === "Event Date"
+          : sortParams["Sort By"][0] === "Event Date"
             ? filteredResults.matches?.sort((a, b) => compare(a, b, "date"))
             : filteredResults.matches?.sort((a, b) =>
                 compare(a, b, "rating_date")
@@ -168,7 +167,7 @@ export default function RatingsExtended() {
   );
 
   useEffect(() => {
-    let updatedParams = { ...sortByParams };
+    let updatedParams = { ...sortParams };
 
     if (promotionName) {
       updatedParams = { ...updatedParams, Promotions: [promotionName] };
@@ -189,7 +188,7 @@ export default function RatingsExtended() {
       selectedUserRatingsDisplay.current = [["0", "1", "2", "3", "4", "5"]];
     }
 
-    setSortByParams(updatedParams);
+    setSortParams(updatedParams);
     setChangeParams(!changeParams);
   }, []);
 
@@ -197,9 +196,9 @@ export default function RatingsExtended() {
   const snapPoints = useMemo(() => ["30%", "35%", "50%", "60%"], []);
 
   function changeSearchClick() {
-    selectedUserRatingsDisplay.current = sortByParams["Your Ratings"];
-    selectedCommunityRatingsDisplay.current = sortByParams["Community Ratings"];
-    selectedPromotionsDisplay.current = sortByParams["Promotions"];
+    selectedUserRatingsDisplay.current = sortParams["Your Ratings"];
+    selectedCommunityRatingsDisplay.current = sortParams["Community Ratings"];
+    selectedPromotionsDisplay.current = sortParams["Promotions"];
     setChangeParams(!changeParams);
     setModalDisplay("hidden");
     bottomSheetModalRef.current?.close();
@@ -267,14 +266,14 @@ export default function RatingsExtended() {
           />
         </TouchableOpacity>
         <ScrollView horizontal showsHorizontalScrollIndicator={false}>
-          {Object.keys(sortByParams).map((option) => (
+          {Object.keys(sortParams).map((option) => (
             <HorizontalScrollElement
               key={option}
               sortParam={
-                sortByParams[option].length > 1 ? option : sortByParams[option]
+                sortParams[option].length > 1 ? option : sortParams[option]
               }
               clickFn={horizontalScrollClickHandler}
-              numOfParams={sortByParams[option].length}
+              numOfParams={sortParams[option].length}
               modalName={option}
             />
           ))}
@@ -344,27 +343,27 @@ export default function RatingsExtended() {
           >
             <BottomModalRow
               title="Sort By"
-              sortParams={sortByParams["Sort By"]}
+              sortParams={sortParams["Sort By"]}
               fn={changeModalDisplay}
             />
             <BottomModalRow
               title="Sort Order"
-              sortParams={sortByParams["Sort Order"]}
+              sortParams={sortParams["Sort Order"]}
               fn={changeModalDisplay}
             />
             <BottomModalRow
               title="Promotions"
-              sortParams={sortByParams["Promotions"]}
+              sortParams={sortParams["Promotions"]}
               fn={changeModalDisplay}
             />
             <BottomModalRow
               title="Your Ratings"
-              sortParams={sortByParams["Your Ratings"]}
+              sortParams={sortParams["Your Ratings"]}
               fn={changeModalDisplay}
             />
             <BottomModalRow
               title="Community Ratings"
-              sortParams={sortByParams["Community Ratings"]}
+              sortParams={sortParams["Community Ratings"]}
               fn={changeModalDisplay}
               hideBottomBorder={true}
             />
@@ -388,7 +387,7 @@ export default function RatingsExtended() {
                 "Community Ratings",
               ]}
               selectFn={changeSortBy}
-              selectedOptions={sortByParams["Sort By"]}
+              selectedOptions={sortParams["Sort By"]}
               changeSearchClick={changeSearchClick}
               isRadio={true}
             />
@@ -399,7 +398,7 @@ export default function RatingsExtended() {
             <BottomModalSelect
               options={["Asc", "Desc"]}
               selectFn={changeSortOrder}
-              selectedOptions={sortByParams["Sort Order"]}
+              selectedOptions={sortParams["Sort Order"]}
               changeSearchClick={changeSearchClick}
               isRadio={true}
             />
@@ -409,7 +408,7 @@ export default function RatingsExtended() {
           <BottomSheetView>
             <BottomModalSelect
               options={promotions.current}
-              selectedOptions={sortByParams["Promotions"]}
+              selectedOptions={sortParams["Promotions"]}
               selectFn={selectPromotion}
               changeSearchClick={changeSearchClick}
             />
@@ -419,7 +418,7 @@ export default function RatingsExtended() {
           <BottomSheetView>
             <BottomModalSelect
               options={["0", "1", "2", "3", "4", "5"]}
-              selectedOptions={sortByParams["Your Ratings"]}
+              selectedOptions={sortParams["Your Ratings"]}
               selectFn={selectUserRating}
               changeSearchClick={changeSearchClick}
             />
@@ -429,7 +428,7 @@ export default function RatingsExtended() {
           <BottomSheetView>
             <BottomModalSelect
               options={["0", "1", "2", "3", "4", "5"]}
-              selectedOptions={sortByParams["Community Ratings"]}
+              selectedOptions={sortParams["Community Ratings"]}
               selectFn={selectCommunityRating}
               changeSearchClick={changeSearchClick}
             />

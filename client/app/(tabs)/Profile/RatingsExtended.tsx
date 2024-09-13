@@ -29,7 +29,7 @@ export default function RatingsExtended() {
     "Sort Order": ["Desc"],
   });
   const [modalDisplay, setModalDisplay] = useState("hidden");
-
+  const paramsRef = useRef({ ...sortParams });
   function changeSortBy(newValue) {
     setSortParams({ ...sortParams, "Sort By": [newValue] });
   }
@@ -89,17 +89,6 @@ export default function RatingsExtended() {
       });
     }
   }
-
-  const selectedPromotionsDisplay = useRef([]);
-  const selectedUserRatingsDisplay = useRef([]);
-  const selectedCommunityRatingsDisplay = useRef([
-    "0",
-    "1",
-    "2",
-    "3",
-    "4",
-    "5",
-  ]);
 
   const sortAndFilterRatings = useCallback(
     (data) => {
@@ -171,21 +160,21 @@ export default function RatingsExtended() {
 
     if (promotionName) {
       updatedParams = { ...updatedParams, Promotions: [promotionName] };
-      selectedPromotionsDisplay.current = [promotionName];
+      paramsRef.current.Promotions = [promotionName];
     } else {
       updatedParams = { ...updatedParams, Promotions: promotions.current };
-      selectedPromotionsDisplay.current = promotions.current;
+      paramsRef.current.Promotions = promotions.current;
     }
 
     if (rating) {
       updatedParams = { ...updatedParams, "Your Ratings": [rating] };
-      selectedUserRatingsDisplay.current = [rating];
+      paramsRef.current["Your Ratings"] = [rating];
     } else {
       updatedParams = {
         ...updatedParams,
         "Your Ratings": ["0", "1", "2", "3", "4", "5"],
       };
-      selectedUserRatingsDisplay.current = [["0", "1", "2", "3", "4", "5"]];
+      paramsRef.current["Your Ratings"] = ["0", "1", "2", "3", "4", "5"];
     }
 
     setSortParams(updatedParams);
@@ -196,9 +185,7 @@ export default function RatingsExtended() {
   const snapPoints = useMemo(() => ["30%", "35%", "50%", "60%"], []);
 
   function changeSearchClick() {
-    selectedUserRatingsDisplay.current = sortParams["Your Ratings"];
-    selectedCommunityRatingsDisplay.current = sortParams["Community Ratings"];
-    selectedPromotionsDisplay.current = sortParams["Promotions"];
+    paramsRef.current = { ...sortParams };
     setChangeParams(!changeParams);
     setModalDisplay("hidden");
     bottomSheetModalRef.current?.close();
@@ -242,9 +229,6 @@ export default function RatingsExtended() {
             ? 0
             : 1;
   }
-
-  console.log(modalDisplay);
-
   if (isError) {
     return (
       <View className="flex-1 bg-white dark:bg-darkGrey justify-center items-center">
@@ -270,10 +254,12 @@ export default function RatingsExtended() {
             <HorizontalScrollElement
               key={option}
               sortParam={
-                sortParams[option].length > 1 ? option : sortParams[option]
+                paramsRef.current[option].length > 1
+                  ? option
+                  : paramsRef.current[option]
               }
               clickFn={horizontalScrollClickHandler}
-              numOfParams={sortParams[option].length}
+              numOfParams={paramsRef.current[option].length}
               modalName={option}
             />
           ))}

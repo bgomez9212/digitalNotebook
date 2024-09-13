@@ -31,11 +31,11 @@ export default function RatingsExtended() {
   const [modalDisplay, setModalDisplay] = useState("hidden");
 
   function changeSortBy(newValue) {
-    setSortByParams({ ...sortByParams, "Sort By": newValue });
+    setSortByParams({ ...sortByParams, "Sort By": [newValue] });
   }
 
   function changeSortOrder(newValue) {
-    setSortByParams({ ...sortByParams, ["Sort Order"]: newValue });
+    setSortByParams({ ...sortByParams, ["Sort Order"]: [newValue] });
   }
 
   function selectPromotion(promotion) {

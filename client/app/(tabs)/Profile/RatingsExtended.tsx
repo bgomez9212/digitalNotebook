@@ -229,6 +229,25 @@ export default function RatingsExtended() {
             ? 0
             : 1;
   }
+
+  function resetFilters() {
+    setSortParams({
+      "Sort By": ["Rating Date"],
+      Promotions: promotionName ? [promotionName] : promotions.current,
+      "Your Ratings": rating ? [rating] : ["0", "1", "2", "3", "4", "5"],
+      "Community Ratings": ["0", "1", "2", "3", "4", "5"],
+      "Sort Order": ["Desc"],
+    });
+    paramsRef.current = {
+      "Sort By": ["Rating Date"],
+      Promotions: promotionName ? [promotionName] : promotions.current,
+      "Your Ratings": rating ? [rating] : ["0", "1", "2", "3", "4", "5"],
+      "Community Ratings": ["0", "1", "2", "3", "4", "5"],
+      "Sort Order": ["Desc"],
+    };
+    setChangeParams(!changeParams);
+  }
+
   if (isError) {
     return (
       <View className="flex-1 bg-white dark:bg-darkGrey justify-center items-center">
@@ -267,12 +286,18 @@ export default function RatingsExtended() {
               modalName={option}
             />
           ))}
-          <TouchableOpacity className="flex items-center justify-center pr-2 border-r border-lightGrey dark:border-grey">
+          <TouchableOpacity
+            onPress={handlePresentModalPress}
+            className="flex items-center justify-center pr-2 border-r border-lightGrey dark:border-grey"
+          >
             <Text className="text-grey dark:text-white text-lg font-medium">
               All Filters
             </Text>
           </TouchableOpacity>
-          <TouchableOpacity className="flex items-center justify-center pl-2">
+          <TouchableOpacity
+            onPress={resetFilters}
+            className="flex items-center justify-center pl-2"
+          >
             <Text className="text-grey dark:text-white text-lg font-medium">
               Reset
             </Text>
@@ -330,7 +355,7 @@ export default function RatingsExtended() {
               {modalDisplay !== "main" ? `${modalDisplay}` : "Filters"}
             </Text>
           </View>
-          <LandingLink text="Reset" fn={() => console.log("reset")} />
+          <LandingLink text="Reset" fn={resetFilters} />
         </View>
         {modalDisplay === "main" && (
           <BottomSheetView

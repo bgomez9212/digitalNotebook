@@ -13,7 +13,7 @@ export default function HorizontalScrollElement({
   modalName: string;
 }) {
   return (
-    <View className="flex flex-row mr-3 my-1">
+    <View className="flex flex-row mr-3">
       <Pressable
         className="bg-blue border border-blue px-4 rounded-2xl flex flex-row items-center"
         onPress={() => clickFn(modalName)}

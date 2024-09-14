@@ -249,7 +249,11 @@ export default function RatingsExtended() {
             color={colorScheme === "light" ? "black" : "white"}
           />
         </TouchableOpacity>
-        <ScrollView horizontal showsHorizontalScrollIndicator={false}>
+        <ScrollView
+          horizontal
+          showsHorizontalScrollIndicator={false}
+          className="my-1"
+        >
           {Object.keys(sortParams).map((option) => (
             <HorizontalScrollElement
               key={option}
@@ -263,6 +267,16 @@ export default function RatingsExtended() {
               modalName={option}
             />
           ))}
+          <TouchableOpacity className="flex items-center justify-center pr-2 border-r border-lightGrey dark:border-grey">
+            <Text className="text-grey dark:text-white text-lg font-medium">
+              All Filters
+            </Text>
+          </TouchableOpacity>
+          <TouchableOpacity className="flex items-center justify-center pl-2">
+            <Text className="text-grey dark:text-white text-lg font-medium">
+              Reset
+            </Text>
+          </TouchableOpacity>
         </ScrollView>
       </View>
       {isFetching ? (

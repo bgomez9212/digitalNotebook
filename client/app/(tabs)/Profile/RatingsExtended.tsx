@@ -340,7 +340,7 @@ export default function RatingsExtended() {
           backgroundColor: colorScheme === "dark" ? "#303030" : "white",
         }}
       >
-        <View className="flex flex-row items-center justify-between border-b border-grey px-[5%] pt-6 pb-5">
+        <View className="flex flex-row items-center justify-between border-b border-lightGrey dark:border-grey px-[5%] pt-6 pb-5">
           <View className="flex flex-row items-center">
             {modalDisplay !== "main" && (
               <AntDesign
@@ -351,7 +351,7 @@ export default function RatingsExtended() {
                 style={{ marginRight: 10 }}
               />
             )}
-            <Text className="text-white text-lg font-semibold">
+            <Text className="text-grey dark:text-white text-lg font-semibold">
               {modalDisplay !== "main" ? `${modalDisplay}` : "Filters"}
             </Text>
           </View>

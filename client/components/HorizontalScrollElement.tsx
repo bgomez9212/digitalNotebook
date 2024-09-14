@@ -18,12 +18,12 @@ export default function HorizontalScrollElement({
         className="bg-blue border border-blue px-4 rounded-2xl flex flex-row items-center"
         onPress={() => clickFn(modalName)}
       >
-        <Text className="text-darkGrey dark:text-white text-lg">
-          {sortParam}
-        </Text>
+        <Text className="text-white text-lg font-medium">{sortParam}</Text>
         {numOfParams > 1 && (
-          <View className="bg-grey ml-1 p-1 px-2 rounded-xl">
-            <Text className="text-white">{numOfParams}</Text>
+          <View className="bg-white dark:bg-grey ml-1 p-1 px-2 rounded-xl">
+            <Text className="text-grey dark:text-white text-xs font-medium">
+              {numOfParams}
+            </Text>
           </View>
         )}
         <AntDesign

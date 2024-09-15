@@ -3,7 +3,11 @@ import { useQuery } from "@tanstack/react-query";
 import { getAuth } from "firebase/auth";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import Ionicons from "@expo/vector-icons/Ionicons";
-import { BottomSheetModal, BottomSheetView } from "@gorhom/bottom-sheet";
+import {
+  BottomSheetBackdrop,
+  BottomSheetModal,
+  BottomSheetView,
+} from "@gorhom/bottom-sheet";
 import { ActivityIndicator, Button } from "react-native-paper";
 import { useLocalSearchParams } from "expo-router";
 import { useColorScheme } from "nativewind";
@@ -248,6 +252,20 @@ export default function RatingsExtended() {
     setChangeParams(!changeParams);
   }
 
+  const renderBackdrop = useCallback(
+    (props) => (
+      <BottomSheetBackdrop
+        {...props}
+        appearsOnIndex={0}
+        disappearsOnIndex={-1}
+        animatedIndex={{
+          value: 0,
+        }}
+      />
+    ),
+    []
+  );
+
   if (isError) {
     return (
       <View className="flex-1 bg-white dark:bg-darkGrey justify-center items-center">
@@ -339,6 +357,7 @@ export default function RatingsExtended() {
         backgroundStyle={{
           backgroundColor: colorScheme === "dark" ? "#303030" : "white",
         }}
+        backdropComponent={renderBackdrop}
       >
         <View className="flex flex-row items-center justify-between border-b border-lightGrey dark:border-grey px-[5%] pt-6 pb-5">
           <View className="flex flex-row items-center">

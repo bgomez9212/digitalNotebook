@@ -14,10 +14,12 @@ export default function BottomModalRow({
 }) {
   return (
     <View
-      className={`flex flex-row justify-between items-center w-full py-3 ${hideBottomBorder ? "" : "border-b border-grey"}`}
+      className={`flex flex-row justify-between items-center w-full py-3 ${hideBottomBorder ? "" : "border-b border-lightGrey dark:border-grey"}`}
     >
       <View className="w-[80%]">
-        <Text className="mb-1 text-white font-medium">{title}</Text>
+        <Text className="mb-1 text-grey dark:text-white font-medium">
+          {title}
+        </Text>
         <Text className="text-blue font-bold">
           {Array.isArray(sortParams) ? sortParams.join(", ") : sortParams}
         </Text>

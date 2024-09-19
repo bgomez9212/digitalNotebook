@@ -16,16 +16,18 @@ export default function BottomModalSelect({
   isRadio?: boolean;
 }) {
   return (
-    <View className="flex flex-row flex-wrap mx-[5%] mt-5">
-      {options.map((sortParam) => (
-        <BottomModalSelectElement
-          key={sortParam}
-          sortParam={sortParam}
-          selectFn={selectFn}
-          isSelected={selectedOptions.includes(sortParam)}
-          isRadio={isRadio}
-        />
-      ))}
+    <View className="mx-[5%] mt-5">
+      <View className="flex flex-row flex-wrap mb-3">
+        {options.map((sortParam) => (
+          <BottomModalSelectElement
+            key={sortParam}
+            sortParam={sortParam}
+            selectFn={selectFn}
+            isSelected={selectedOptions.includes(sortParam)}
+            isRadio={isRadio}
+          />
+        ))}
+      </View>
       <LandingButton
         fn={changeSearchClick}
         text="Show Results"

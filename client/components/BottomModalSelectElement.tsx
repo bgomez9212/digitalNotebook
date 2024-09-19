@@ -24,7 +24,7 @@ export default function BottomModalSelectElement({
           {!isRadio && (
             <>
               {" "}
-              <AntDesign name="check" size={20} color="white" />{" "}
+              <AntDesign name="check" size={20} color="white" />
             </>
           )}
         </Text>
@@ -41,12 +41,7 @@ export default function BottomModalSelectElement({
           {!isRadio && (
             <>
               {" "}
-              <Entypo
-                name="plus"
-                size={20}
-                color="white"
-                style={{ borderWidth: 1 }}
-              />
+              <Entypo name="plus" size={20} color="white" />
             </>
           )}
         </Text>

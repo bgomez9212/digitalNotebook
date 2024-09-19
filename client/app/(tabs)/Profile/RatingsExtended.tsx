@@ -186,7 +186,7 @@ export default function RatingsExtended() {
   }, []);
 
   const bottomSheetModalRef = useRef<BottomSheetModal>(null);
-  const snapPoints = useMemo(() => ["30%", "35%", "50%", "60%"], []);
+  const snapPoints = useMemo(() => ["30%", "35%", "45%", "60%"], []);
 
   function changeSearchClick() {
     paramsRef.current = { ...sortParams };
@@ -354,6 +354,7 @@ export default function RatingsExtended() {
           shadowColor: "grey",
           shadowOpacity: colorScheme === "dark" ? 0 : 1,
         }}
+        onDismiss={() => setSortParams({ ...paramsRef.current })}
         backgroundStyle={{
           backgroundColor: colorScheme === "dark" ? "#303030" : "white",
         }}

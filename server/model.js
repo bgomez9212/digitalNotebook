@@ -176,9 +176,7 @@ module.exports = {
         TO_CHAR(events.date, 'YYYY-MM-DD') AS date,
         promotions.name AS promotion_name,
         venues.name AS venue_name,
-        venues.city,
-        venues.state,
-        venues.country,
+        venues.location,
         ROUND(AVG(ratings.rating) :: numeric, 2) AS avg_rating
       FROM events
       JOIN promotions ON events.promotion_id = promotions.id
@@ -190,7 +188,7 @@ module.exports = {
         GROUP BY event_id
       ) AS ratings ON events.id = ratings.event_id
       WHERE events.id = $1
-      GROUP BY events.title, events.date, promotions.name, venues.name, venues.city, venues,state, venues.country`,
+      GROUP BY events.title, events.date, promotions.name, venues.name, venues.location`,
       [eventId]
     );
     const { rows: matches } = await pool.query(

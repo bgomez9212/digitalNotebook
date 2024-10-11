@@ -8,18 +8,40 @@
     "icon": "./assets/app-icon.png",
     "userInterfaceStyle": "automatic",
     "splash": {
-      "image": "./assets/Notebook-dark.png",
+      "image": "./assets/Notebook-light.png",
       "resizeMode": "contain",
-      "backgroundColor": "#000000"
+      "backgroundColor": "#ffffff",
+      "dark": {
+        "backgroundColor": "#000000",
+        "image": "./assets/Notebook-dark.png"
+      }
     },
     "assetBundlePatterns": ["**/*"],
     "ios": {
-      "supportsTablet": true
+      "supportsTablet": true,
+      "splash": {
+        "image": "./assets/Notebook-light.png",
+        "resizeMode": "contain",
+        "backgroundColor": "#ffffff",
+        "dark": {
+          "backgroundColor": "#000000",
+          "image": "./assets/Notebook-dark.png"
+        }
+      }
     },
     "android": {
       "adaptiveIcon": {
         "foregroundImage": "./assets/app-icon.png",
         "backgroundColor": "#ffffff"
+      },
+      "splash": {
+        "image": "./assets/Notebook-light.png",
+        "resizeMode": "contain",
+        "backgroundColor": "#ffffff",
+        "dark": {
+          "backgroundColor": "#000000",
+          "image": "./assets/Notebook-dark.png"
+        }
       }
     },
     "web": {

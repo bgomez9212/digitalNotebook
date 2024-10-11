@@ -77,7 +77,7 @@ export default function EventComponent() {
             {event.venue_name}
           </Text>
           <Text className="text-grey dark:text-white pb-2">
-            {event.city}, {event.state} ({event.country})
+            {event.location}
           </Text>
           <Text
             className={`text-lg shadow ${setColorToDisplay(event.avg_rating)}`}

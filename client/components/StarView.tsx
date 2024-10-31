@@ -49,7 +49,7 @@ export default function StarView({
             >
               <View className="h-full flex flex-row">
                 <View
-                  className={`bg-yellow h-full`}
+                  className={`bg-starYellow h-full`}
                   style={{ width: `${starPercentage}%` }}
                 />
                 <View className={`bg-grey w-[100%] h-full`} />

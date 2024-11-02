@@ -805,6 +805,6 @@ module.exports = {
       `,
       [user_id]
     );
-    return rows.map((obj) => obj.name);
+    return rows.map((obj) => obj.name).sort();
   },
 };

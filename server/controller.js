@@ -159,7 +159,7 @@ module.exports = {
   },
   getUserPromotions: async (req, res) => {
     try {
-      const results = await model.getUserPromotions(req.params.user_id);
+      const results = await model.getUserPromotions(req.query.user_id);
       res.send(results).status(200);
     } catch (err) {
       res.send(err).status(500);

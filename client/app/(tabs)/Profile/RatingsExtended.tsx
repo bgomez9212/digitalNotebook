@@ -8,7 +8,7 @@ import {
   BottomSheetModal,
   BottomSheetView,
 } from "@gorhom/bottom-sheet";
-import { ActivityIndicator, Button } from "react-native-paper";
+import { ActivityIndicator } from "react-native-paper";
 import { useLocalSearchParams } from "expo-router";
 import { useColorScheme } from "nativewind";
 import AntDesign from "@expo/vector-icons/AntDesign";
@@ -20,6 +20,7 @@ import LandingLink from "../../../components/LandingLink";
 import BottomModalRow from "../../../components/BottomModalRow";
 import LandingButton from "../../../components/LandingButton";
 import BottomModalSelect from "../../../components/BottomModalSelect";
+import { getUserPromotions } from "../../../api/promotions";
 
 export default function RatingsExtended() {
   const modalMargin = "5%";
@@ -155,9 +156,10 @@ export default function RatingsExtended() {
     select: sortAndFilterRatings,
   });
 
-  const promotions = useRef(
-    data?.promotions.map((promotion) => promotion.promotionName).sort()
-  );
+  const { data: promotions2 } = useQuery({
+    queryKey: ["userPromotions"],
+    queryFn: () => getUserPromotions(user.uid),
+  });
 
   useEffect(() => {
     let updatedParams = { ...sortParams };
@@ -166,8 +168,8 @@ export default function RatingsExtended() {
       updatedParams = { ...updatedParams, Promotions: [promotionName] };
       paramsRef.current.Promotions = [promotionName];
     } else {
-      updatedParams = { ...updatedParams, Promotions: promotions.current };
-      paramsRef.current.Promotions = promotions.current;
+      updatedParams = { ...updatedParams, Promotions: promotions2 };
+      paramsRef.current.Promotions = promotions2;
     }
 
     if (rating) {
@@ -237,14 +239,14 @@ export default function RatingsExtended() {
   function resetFilters() {
     setSortParams({
       "Sort By": ["Rating Date"],
-      Promotions: promotionName ? [promotionName] : promotions.current,
+      Promotions: promotionName ? [promotionName] : promotions2,
       "Your Ratings": rating ? [rating] : ["0", "1", "2", "3", "4", "5"],
       "Community Ratings": ["0", "1", "2", "3", "4", "5"],
       "Sort Order": ["Desc"],
     });
     paramsRef.current = {
       "Sort By": ["Rating Date"],
-      Promotions: promotionName ? [promotionName] : promotions.current,
+      Promotions: promotionName ? [promotionName] : promotions2,
       "Your Ratings": rating ? [rating] : ["0", "1", "2", "3", "4", "5"],
       "Community Ratings": ["0", "1", "2", "3", "4", "5"],
       "Sort Order": ["Desc"],
@@ -452,7 +454,7 @@ export default function RatingsExtended() {
         {modalDisplay === "Promotions" && (
           <BottomSheetView>
             <BottomModalSelect
-              options={promotions.current}
+              options={promotions2}
               selectedOptions={sortParams["Promotions"]}
               selectFn={selectPromotion}
               changeSearchClick={changeSearchClick}

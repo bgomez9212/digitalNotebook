@@ -156,7 +156,7 @@ export default function RatingsExtended() {
     select: sortAndFilterRatings,
   });
 
-  const { data: promotions2 } = useQuery({
+  const { data: promotions } = useQuery({
     queryKey: ["userPromotions"],
     queryFn: () => getUserPromotions(user.uid),
   });
@@ -168,8 +168,8 @@ export default function RatingsExtended() {
       updatedParams = { ...updatedParams, Promotions: [promotionName] };
       paramsRef.current.Promotions = [promotionName];
     } else {
-      updatedParams = { ...updatedParams, Promotions: promotions2 };
-      paramsRef.current.Promotions = promotions2;
+      updatedParams = { ...updatedParams, Promotions: promotions };
+      paramsRef.current.Promotions = promotions;
     }
 
     if (rating) {
@@ -239,14 +239,14 @@ export default function RatingsExtended() {
   function resetFilters() {
     setSortParams({
       "Sort By": ["Rating Date"],
-      Promotions: promotionName ? [promotionName] : promotions2,
+      Promotions: promotionName ? [promotionName] : promotions,
       "Your Ratings": rating ? [rating] : ["0", "1", "2", "3", "4", "5"],
       "Community Ratings": ["0", "1", "2", "3", "4", "5"],
       "Sort Order": ["Desc"],
     });
     paramsRef.current = {
       "Sort By": ["Rating Date"],
-      Promotions: promotionName ? [promotionName] : promotions2,
+      Promotions: promotionName ? [promotionName] : promotions,
       "Your Ratings": rating ? [rating] : ["0", "1", "2", "3", "4", "5"],
       "Community Ratings": ["0", "1", "2", "3", "4", "5"],
       "Sort Order": ["Desc"],
@@ -454,7 +454,7 @@ export default function RatingsExtended() {
         {modalDisplay === "Promotions" && (
           <BottomSheetView>
             <BottomModalSelect
-              options={promotions2}
+              options={promotions}
               selectedOptions={sortParams["Promotions"]}
               selectFn={selectPromotion}
               changeSearchClick={changeSearchClick}

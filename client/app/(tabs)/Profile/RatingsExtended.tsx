@@ -150,7 +150,12 @@ export default function RatingsExtended() {
     rating: string;
   };
 
-  const { data, isError, isFetching } = useQuery({
+  const {
+    data,
+    isError,
+    isFetching,
+    error: ratingsError,
+  } = useQuery({
     queryKey: ["userRatings"],
     queryFn: () => getUserRatings(user.uid),
     select: sortAndFilterRatings,
@@ -166,11 +171,22 @@ export default function RatingsExtended() {
 
     if (promotionName) {
       updatedParams = { ...updatedParams, Promotions: [promotionName] };
-      paramsRef.current.Promotions = [promotionName];
     } else {
-      updatedParams = { ...updatedParams, Promotions: promotions };
-      paramsRef.current.Promotions = promotions;
+      if (promotions) {
+        for (let promotion of updatedParams.Promotions) {
+          if (promotions.indexOf(promotion) < 0) {
+            console.log(promotions.indexOf(promotion));
+            updatedParams.Promotions = updatedParams.Promotions.filter(
+              (item) => item !== promotion
+            );
+          }
+        }
+        if (!updatedParams.Promotions.length) {
+          updatedParams = { ...updatedParams, Promotions: promotions };
+        }
+      }
     }
+    paramsRef.current.Promotions = updatedParams.Promotions;
 
     if (rating) {
       updatedParams = { ...updatedParams, "Your Ratings": [rating] };
@@ -182,10 +198,10 @@ export default function RatingsExtended() {
       };
       paramsRef.current["Your Ratings"] = ["0", "1", "2", "3", "4", "5"];
     }
-
+    console.log("useEffect ran");
     setSortParams(updatedParams);
     setChangeParams(!changeParams);
-  }, []);
+  }, [promotions]);
 
   const bottomSheetModalRef = useRef<BottomSheetModal>(null);
   const snapPoints = useMemo(() => ["30%", "35%", "45%", "60%"], []);
@@ -271,8 +287,8 @@ export default function RatingsExtended() {
   if (isError) {
     return (
       <View className="flex-1 bg-white dark:bg-darkGrey justify-center items-center">
-        <Text className="dark:text-white">
-          There seems to be an error. Please try again later.
+        <Text className="dark:text-white text-center">
+          {`There seems to be an error. Please try again later. ${ratingsError}`}
         </Text>
       </View>
     );

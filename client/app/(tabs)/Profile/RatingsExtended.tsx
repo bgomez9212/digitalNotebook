@@ -25,7 +25,10 @@ import { getUserPromotions } from "../../../api/promotions";
 export default function RatingsExtended() {
   const modalMargin = "5%";
   const { colorScheme } = useColorScheme();
-  const [changeParams, setChangeParams] = useState(false);
+  const [modalUtilities, setModalUtilities] = useState({
+    changeParams: false,
+    modalDisplay: "hidden",
+  });
   const [sortParams, setSortParams] = useState({
     "Sort By": ["Rating Date"],
     Promotions: [],
@@ -33,7 +36,6 @@ export default function RatingsExtended() {
     "Community Ratings": ["0", "1", "2", "3", "4", "5"],
     "Sort Order": ["Desc"],
   });
-  const [modalDisplay, setModalDisplay] = useState("hidden");
   const paramsRef = useRef({ ...sortParams });
   function changeSortBy(newValue) {
     setSortParams({ ...sortParams, "Sort By": [newValue] });
@@ -140,7 +142,7 @@ export default function RatingsExtended() {
 
       return filteredResults;
     },
-    [changeParams]
+    [modalUtilities.changeParams]
   );
 
   const auth = getAuth();
@@ -198,9 +200,11 @@ export default function RatingsExtended() {
       };
       paramsRef.current["Your Ratings"] = ["0", "1", "2", "3", "4", "5"];
     }
-    console.log("useEffect ran");
     setSortParams(updatedParams);
-    setChangeParams(!changeParams);
+    setModalUtilities({
+      ...modalUtilities,
+      changeParams: !modalUtilities.changeParams,
+    });
   }, [promotions]);
 
   const bottomSheetModalRef = useRef<BottomSheetModal>(null);
@@ -208,19 +212,21 @@ export default function RatingsExtended() {
 
   function changeSearchClick() {
     paramsRef.current = { ...sortParams };
-    setChangeParams(!changeParams);
-    setModalDisplay("hidden");
+    setModalUtilities({
+      changeParams: !modalUtilities.changeParams,
+      modalDisplay: "hidden",
+    });
     bottomSheetModalRef.current?.close();
   }
 
   const handlePresentModalPress = useCallback(() => {
     bottomSheetModalRef.current?.present();
-    setModalDisplay("main");
+    setModalUtilities({ ...modalUtilities, modalDisplay: "main" });
     bottomSheetModalRef.current?.close();
   }, []);
 
   function changeModalDisplay(modalTitle) {
-    setModalDisplay(modalTitle);
+    setModalUtilities({ ...modalUtilities, modalDisplay: modalTitle });
 
     if (modalTitle === "Sort By") {
       bottomSheetModalRef.current?.snapToIndex(1);
@@ -241,13 +247,13 @@ export default function RatingsExtended() {
   }
 
   function decideSnapPoint() {
-    return modalDisplay === "hidden"
+    return modalUtilities.modalDisplay === "hidden"
       ? -1
-      : modalDisplay === "main"
+      : modalUtilities.modalDisplay === "main"
         ? 3
-        : modalDisplay === "Promotions"
+        : modalUtilities.modalDisplay === "Promotions"
           ? 2
-          : modalDisplay === "Sort Order"
+          : modalUtilities.modalDisplay === "Sort Order"
             ? 0
             : 1;
   }
@@ -267,7 +273,10 @@ export default function RatingsExtended() {
       "Community Ratings": ["0", "1", "2", "3", "4", "5"],
       "Sort Order": ["Desc"],
     };
-    setChangeParams(!changeParams);
+    setModalUtilities({
+      ...modalUtilities,
+      changeParams: !modalUtilities.changeParams,
+    });
   }
 
   const renderBackdrop = useCallback(
@@ -347,8 +356,8 @@ export default function RatingsExtended() {
       ) : data?.matches.length === 0 ? (
         <View className="flex-1 bg-white dark:bg-darkGrey justify-center items-center">
           <Text className="dark:text-white text-center">
-            No matches match your parameters. {"\n"} Please adjust your
-            parameters and try again.
+            No matches match your search. {"\n"} Please adjust your parameters
+            and try again.
           </Text>
         </View>
       ) : (
@@ -380,7 +389,7 @@ export default function RatingsExtended() {
       >
         <View className="flex flex-row items-center justify-between border-b border-lightGrey dark:border-grey px-[5%] pt-6 pb-5">
           <View className="flex flex-row items-center">
-            {modalDisplay !== "main" && (
+            {modalUtilities.modalDisplay !== "main" && (
               <AntDesign
                 name="arrowleft"
                 size={24}
@@ -390,12 +399,14 @@ export default function RatingsExtended() {
               />
             )}
             <Text className="text-grey dark:text-white text-lg font-semibold">
-              {modalDisplay !== "main" ? `${modalDisplay}` : "Filters"}
+              {modalUtilities.modalDisplay !== "main"
+                ? `${modalUtilities.modalDisplay}`
+                : "Filters"}
             </Text>
           </View>
           <LandingLink text="Reset" fn={resetFilters} />
         </View>
-        {modalDisplay === "main" && (
+        {modalUtilities.modalDisplay === "main" && (
           <BottomSheetView
             style={{
               display: "flex",
@@ -440,7 +451,7 @@ export default function RatingsExtended() {
             />
           </BottomSheetView>
         )}
-        {modalDisplay === "Sort By" && (
+        {modalUtilities.modalDisplay === "Sort By" && (
           <BottomSheetView>
             <BottomModalSelect
               options={[
@@ -456,7 +467,7 @@ export default function RatingsExtended() {
             />
           </BottomSheetView>
         )}
-        {modalDisplay === "Sort Order" && (
+        {modalUtilities.modalDisplay === "Sort Order" && (
           <BottomSheetView>
             <BottomModalSelect
               options={["Asc", "Desc"]}
@@ -467,7 +478,7 @@ export default function RatingsExtended() {
             />
           </BottomSheetView>
         )}
-        {modalDisplay === "Promotions" && (
+        {modalUtilities.modalDisplay === "Promotions" && (
           <BottomSheetView>
             <BottomModalSelect
               options={promotions}
@@ -477,7 +488,7 @@ export default function RatingsExtended() {
             />
           </BottomSheetView>
         )}
-        {modalDisplay === "Your Ratings" && (
+        {modalUtilities.modalDisplay === "Your Ratings" && (
           <BottomSheetView>
             <BottomModalSelect
               options={["0", "1", "2", "3", "4", "5"]}
@@ -487,7 +498,7 @@ export default function RatingsExtended() {
             />
           </BottomSheetView>
         )}
-        {modalDisplay === "Community Ratings" && (
+        {modalUtilities.modalDisplay === "Community Ratings" && (
           <BottomSheetView>
             <BottomModalSelect
               options={["0", "1", "2", "3", "4", "5"]}

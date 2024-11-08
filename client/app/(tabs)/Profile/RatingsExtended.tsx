@@ -8,7 +8,7 @@ import {
   BottomSheetModal,
   BottomSheetView,
 } from "@gorhom/bottom-sheet";
-import { ActivityIndicator, Button } from "react-native-paper";
+import { ActivityIndicator } from "react-native-paper";
 import { useLocalSearchParams } from "expo-router";
 import { useColorScheme } from "nativewind";
 import AntDesign from "@expo/vector-icons/AntDesign";
@@ -20,11 +20,15 @@ import LandingLink from "../../../components/LandingLink";
 import BottomModalRow from "../../../components/BottomModalRow";
 import LandingButton from "../../../components/LandingButton";
 import BottomModalSelect from "../../../components/BottomModalSelect";
+import { getUserPromotions } from "../../../api/promotions";
 
 export default function RatingsExtended() {
   const modalMargin = "5%";
   const { colorScheme } = useColorScheme();
-  const [changeParams, setChangeParams] = useState(false);
+  const [modalUtilities, setModalUtilities] = useState({
+    changeParams: false,
+    modalDisplay: "hidden",
+  });
   const [sortParams, setSortParams] = useState({
     "Sort By": ["Rating Date"],
     Promotions: [],
@@ -32,7 +36,6 @@ export default function RatingsExtended() {
     "Community Ratings": ["0", "1", "2", "3", "4", "5"],
     "Sort Order": ["Desc"],
   });
-  const [modalDisplay, setModalDisplay] = useState("hidden");
   const paramsRef = useRef({ ...sortParams });
   function changeSortBy(newValue) {
     setSortParams({ ...sortParams, "Sort By": [newValue] });
@@ -139,7 +142,7 @@ export default function RatingsExtended() {
 
       return filteredResults;
     },
-    [changeParams]
+    [modalUtilities.changeParams]
   );
 
   const auth = getAuth();
@@ -149,26 +152,43 @@ export default function RatingsExtended() {
     rating: string;
   };
 
-  const { data, isError, isFetching } = useQuery({
+  const {
+    data,
+    isError,
+    isFetching,
+    error: ratingsError,
+  } = useQuery({
     queryKey: ["userRatings"],
     queryFn: () => getUserRatings(user.uid),
     select: sortAndFilterRatings,
   });
 
-  const promotions = useRef(
-    data?.promotions.map((promotion) => promotion.promotionName).sort()
-  );
+  const { data: promotions } = useQuery({
+    queryKey: ["userPromotions"],
+    queryFn: () => getUserPromotions(user.uid),
+  });
 
   useEffect(() => {
     let updatedParams = { ...sortParams };
 
     if (promotionName) {
       updatedParams = { ...updatedParams, Promotions: [promotionName] };
-      paramsRef.current.Promotions = [promotionName];
     } else {
-      updatedParams = { ...updatedParams, Promotions: promotions.current };
-      paramsRef.current.Promotions = promotions.current;
+      if (promotions) {
+        for (let promotion of updatedParams.Promotions) {
+          if (promotions.indexOf(promotion) < 0) {
+            console.log(promotions.indexOf(promotion));
+            updatedParams.Promotions = updatedParams.Promotions.filter(
+              (item) => item !== promotion
+            );
+          }
+        }
+        if (!updatedParams.Promotions.length) {
+          updatedParams = { ...updatedParams, Promotions: promotions };
+        }
+      }
     }
+    paramsRef.current.Promotions = updatedParams.Promotions;
 
     if (rating) {
       updatedParams = { ...updatedParams, "Your Ratings": [rating] };
@@ -180,29 +200,33 @@ export default function RatingsExtended() {
       };
       paramsRef.current["Your Ratings"] = ["0", "1", "2", "3", "4", "5"];
     }
-
     setSortParams(updatedParams);
-    setChangeParams(!changeParams);
-  }, []);
+    setModalUtilities({
+      ...modalUtilities,
+      changeParams: !modalUtilities.changeParams,
+    });
+  }, [promotions]);
 
   const bottomSheetModalRef = useRef<BottomSheetModal>(null);
   const snapPoints = useMemo(() => ["30%", "35%", "45%", "60%"], []);
 
   function changeSearchClick() {
     paramsRef.current = { ...sortParams };
-    setChangeParams(!changeParams);
-    setModalDisplay("hidden");
+    setModalUtilities({
+      changeParams: !modalUtilities.changeParams,
+      modalDisplay: "hidden",
+    });
     bottomSheetModalRef.current?.close();
   }
 
   const handlePresentModalPress = useCallback(() => {
     bottomSheetModalRef.current?.present();
-    setModalDisplay("main");
+    setModalUtilities({ ...modalUtilities, modalDisplay: "main" });
     bottomSheetModalRef.current?.close();
   }, []);
 
   function changeModalDisplay(modalTitle) {
-    setModalDisplay(modalTitle);
+    setModalUtilities({ ...modalUtilities, modalDisplay: modalTitle });
 
     if (modalTitle === "Sort By") {
       bottomSheetModalRef.current?.snapToIndex(1);
@@ -223,13 +247,13 @@ export default function RatingsExtended() {
   }
 
   function decideSnapPoint() {
-    return modalDisplay === "hidden"
+    return modalUtilities.modalDisplay === "hidden"
       ? -1
-      : modalDisplay === "main"
+      : modalUtilities.modalDisplay === "main"
         ? 3
-        : modalDisplay === "Promotions"
+        : modalUtilities.modalDisplay === "Promotions"
           ? 2
-          : modalDisplay === "Sort Order"
+          : modalUtilities.modalDisplay === "Sort Order"
             ? 0
             : 1;
   }
@@ -237,19 +261,22 @@ export default function RatingsExtended() {
   function resetFilters() {
     setSortParams({
       "Sort By": ["Rating Date"],
-      Promotions: promotionName ? [promotionName] : promotions.current,
+      Promotions: promotionName ? [promotionName] : promotions,
       "Your Ratings": rating ? [rating] : ["0", "1", "2", "3", "4", "5"],
       "Community Ratings": ["0", "1", "2", "3", "4", "5"],
       "Sort Order": ["Desc"],
     });
     paramsRef.current = {
       "Sort By": ["Rating Date"],
-      Promotions: promotionName ? [promotionName] : promotions.current,
+      Promotions: promotionName ? [promotionName] : promotions,
       "Your Ratings": rating ? [rating] : ["0", "1", "2", "3", "4", "5"],
       "Community Ratings": ["0", "1", "2", "3", "4", "5"],
       "Sort Order": ["Desc"],
     };
-    setChangeParams(!changeParams);
+    setModalUtilities({
+      ...modalUtilities,
+      changeParams: !modalUtilities.changeParams,
+    });
   }
 
   const renderBackdrop = useCallback(
@@ -269,8 +296,8 @@ export default function RatingsExtended() {
   if (isError) {
     return (
       <View className="flex-1 bg-white dark:bg-darkGrey justify-center items-center">
-        <Text className="dark:text-white">
-          There seems to be an error. Please try again later.
+        <Text className="dark:text-white text-center">
+          {`There seems to be an error. Please try again later. ${ratingsError}`}
         </Text>
       </View>
     );
@@ -329,8 +356,8 @@ export default function RatingsExtended() {
       ) : data?.matches.length === 0 ? (
         <View className="flex-1 bg-white dark:bg-darkGrey justify-center items-center">
           <Text className="dark:text-white text-center">
-            No matches match your parameters. {"\n"} Please adjust your
-            parameters and try again.
+            No matches match your search. {"\n"} Please adjust your parameters
+            and try again.
           </Text>
         </View>
       ) : (
@@ -362,7 +389,7 @@ export default function RatingsExtended() {
       >
         <View className="flex flex-row items-center justify-between border-b border-lightGrey dark:border-grey px-[5%] pt-6 pb-5">
           <View className="flex flex-row items-center">
-            {modalDisplay !== "main" && (
+            {modalUtilities.modalDisplay !== "main" && (
               <AntDesign
                 name="arrowleft"
                 size={24}
@@ -372,12 +399,14 @@ export default function RatingsExtended() {
               />
             )}
             <Text className="text-grey dark:text-white text-lg font-semibold">
-              {modalDisplay !== "main" ? `${modalDisplay}` : "Filters"}
+              {modalUtilities.modalDisplay !== "main"
+                ? `${modalUtilities.modalDisplay}`
+                : "Filters"}
             </Text>
           </View>
           <LandingLink text="Reset" fn={resetFilters} />
         </View>
-        {modalDisplay === "main" && (
+        {modalUtilities.modalDisplay === "main" && (
           <BottomSheetView
             style={{
               display: "flex",
@@ -422,7 +451,7 @@ export default function RatingsExtended() {
             />
           </BottomSheetView>
         )}
-        {modalDisplay === "Sort By" && (
+        {modalUtilities.modalDisplay === "Sort By" && (
           <BottomSheetView>
             <BottomModalSelect
               options={[
@@ -438,7 +467,7 @@ export default function RatingsExtended() {
             />
           </BottomSheetView>
         )}
-        {modalDisplay === "Sort Order" && (
+        {modalUtilities.modalDisplay === "Sort Order" && (
           <BottomSheetView>
             <BottomModalSelect
               options={["Asc", "Desc"]}
@@ -449,17 +478,17 @@ export default function RatingsExtended() {
             />
           </BottomSheetView>
         )}
-        {modalDisplay === "Promotions" && (
+        {modalUtilities.modalDisplay === "Promotions" && (
           <BottomSheetView>
             <BottomModalSelect
-              options={promotions.current}
+              options={promotions}
               selectedOptions={sortParams["Promotions"]}
               selectFn={selectPromotion}
               changeSearchClick={changeSearchClick}
             />
           </BottomSheetView>
         )}
-        {modalDisplay === "Your Ratings" && (
+        {modalUtilities.modalDisplay === "Your Ratings" && (
           <BottomSheetView>
             <BottomModalSelect
               options={["0", "1", "2", "3", "4", "5"]}
@@ -469,7 +498,7 @@ export default function RatingsExtended() {
             />
           </BottomSheetView>
         )}
-        {modalDisplay === "Community Ratings" && (
+        {modalUtilities.modalDisplay === "Community Ratings" && (
           <BottomSheetView>
             <BottomModalSelect
               options={["0", "1", "2", "3", "4", "5"]}

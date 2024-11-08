@@ -794,4 +794,17 @@ module.exports = {
     };
     return results;
   },
+  getUserPromotions: async (user_id) => {
+    const { rows } = await pool.query(
+      `
+      SELECT DISTINCT promotions.name FROM ratings
+      JOIN matches on ratings.match_id = matches.id
+      JOIN events on event_id = events.id
+      JOIN promotions on promotion_id = promotions.id
+      where user_id = $1;
+      `,
+      [user_id]
+    );
+    return rows.map((obj) => obj.name).sort();
+  },
 };

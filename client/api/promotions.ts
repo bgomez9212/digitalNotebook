@@ -17,3 +17,12 @@ export async function getPromotions() {
     .get(`/promotions`, { baseURL: process.env.SERVER })
     .then((res) => res.data);
 }
+
+export async function getUserPromotions(user_id) {
+  return axios
+    .get("/ratings/:user_id/promotions", {
+      params: { user_id: user_id },
+      baseURL: process.env.SERVER,
+    })
+    .then((res) => res.data);
+}

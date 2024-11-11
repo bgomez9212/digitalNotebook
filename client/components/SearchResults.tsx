@@ -57,7 +57,7 @@ export default function SearchResults({ data, error }) {
           <RefreshControl
             refreshing={refreshing}
             onRefresh={() =>
-              queryClient.invalidateQueries({ queryKey: ["ratingData"] })
+              queryClient.invalidateQueries({ queryKey: ["searchResults"] })
             }
             tintColor="#fff"
           />

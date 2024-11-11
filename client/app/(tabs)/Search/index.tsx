@@ -27,7 +27,6 @@ export default function Search() {
 
   const { data, isFetching, isError, refetch } = useQuery({
     queryKey: ["searchResults"],
-    enabled: false,
     queryFn: () =>
       getSearchResults(userSearch.searchParam, userSearch.searchText, uid),
   });

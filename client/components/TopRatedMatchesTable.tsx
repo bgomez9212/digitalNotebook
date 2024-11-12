@@ -20,13 +20,13 @@ export default function TopRatedMatchesTable() {
 
   if (isFetching || error) {
     return (
-      <View className="bg-white dark:bg-grey w-[95%] my-12 rounded-md">
-        <View className="items-center justify-center py-3 border-b border-lightGrey dark:border-darkGrey">
+      <View className="bg-white dark:bg-grey w-[95%] my-12 rounded-md px-2">
+        <View className="items-center justify-center py-3 border-b border-lightGrey dark:border-darkGrey ">
           <Text className="text-grey dark:text-white font-bold text-lg">
             Top Matches of the Last 30 Days
           </Text>
         </View>
-        <View className="justify-center items-center">
+        <View className="h-96 justify-center items-center">
           {isFetching ? (
             <ActivityIndicator color="#477CB9" />
           ) : (

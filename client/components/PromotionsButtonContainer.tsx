@@ -16,15 +16,17 @@ export default function PromotionsButtonsContainer() {
     queryFn: () => getPromotions(),
   });
 
-  if (isFetching) {
-    return <ActivityIndicator color="#477CB9" />;
-  }
-
-  if (isError) {
+  if (isFetching || isError) {
     return (
-      <Text className="text-grey dark:text-white">
-        There was a problem getting promotions
-      </Text>
+      <View className="mb-12">
+        {isFetching ? (
+          <ActivityIndicator color="#477CB9" />
+        ) : (
+          <Text className="text-grey dark:text-white">
+            There was a problem getting promotions
+          </Text>
+        )}
+      </View>
     );
   }
 

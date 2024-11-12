@@ -15,11 +15,10 @@ export default function RecentEventTable() {
     queryFn: () => getRecentEvents(5),
   });
 
-  // if (isPending) return 'Loading...'
   if (isPending || error) {
     return (
-      <View className="bg-white dark:bg-grey w-[95%] mt-12 rounded-md">
-        <View className="items-center justify-center py-3 border-b-2">
+      <View className="bg-white dark:bg-grey w-[95%] mt-12 rounded-md px-2">
+        <View className="items-center justify-center py-3 border-b border-lightGrey dark:border-darkGrey ">
           <Text className="text-grey dark:text-white font-bold text-lg">
             Most Recent Shows
           </Text>

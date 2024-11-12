@@ -177,7 +177,6 @@ export default function RatingsExtended() {
       if (promotions) {
         for (let promotion of updatedParams.Promotions) {
           if (promotions.indexOf(promotion) < 0) {
-            console.log(promotions.indexOf(promotion));
             updatedParams.Promotions = updatedParams.Promotions.filter(
               (item) => item !== promotion
             );

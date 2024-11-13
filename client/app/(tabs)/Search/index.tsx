@@ -25,7 +25,7 @@ export default function Search() {
     setUserSearch({ ...userSearch, searchParam: selectedParam });
   }
 
-  const { data, isFetching, isError, refetch } = useQuery({
+  const { data, isError, refetch } = useQuery({
     queryKey: ["searchResults"],
     queryFn: () =>
       getSearchResults(userSearch.searchParam, userSearch.searchText, uid),
@@ -70,9 +70,7 @@ export default function Search() {
             </TouchableOpacity>
           </View>
         </View>
-        {isFetching ? (
-          <ActivityIndicator color="#477CB9" />
-        ) : isError ? (
+        {isError ? (
           <Text className="text-white">There seems to be an error</Text>
         ) : (
           <SearchResults data={data} error={isError} />

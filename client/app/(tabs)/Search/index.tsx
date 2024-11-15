@@ -17,6 +17,7 @@ export default function Search() {
   const [userSearch, setUserSearch] = useState({
     searchParam: null,
     searchText: "",
+    resultsLoading: false,
   });
   const auth = getAuth();
   const { uid } = auth.currentUser;
@@ -25,11 +26,19 @@ export default function Search() {
     setUserSearch({ ...userSearch, searchParam: selectedParam });
   }
 
-  const { data, isError, refetch } = useQuery({
+  let { data, isError, refetch } = useQuery({
     queryKey: ["searchResults"],
     queryFn: () =>
       getSearchResults(userSearch.searchParam, userSearch.searchText, uid),
   });
+
+  async function handleSubmit() {
+    Keyboard.dismiss();
+    setUserSearch({ ...userSearch, resultsLoading: true });
+    await refetch();
+    setUserSearch({ ...userSearch, resultsLoading: false });
+  }
+
   return (
     <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
       <View className="flex-1 bg-white2 dark:bg-darkGrey w-full pt-12 items-center">
@@ -60,10 +69,7 @@ export default function Search() {
           <View>
             <TouchableOpacity
               className={`w-full mt-2 bg-blue h-10 justify-center items-center rounded-md ${!userSearch.searchParam || !userSearch.searchText ? "opacity-50" : ""}`}
-              onPress={() => {
-                Keyboard.dismiss();
-                refetch();
-              }}
+              onPress={handleSubmit}
               disabled={!userSearch.searchParam || !userSearch.searchText}
             >
               <Text className="text-lg font-bold text-white">Submit</Text>
@@ -72,6 +78,10 @@ export default function Search() {
         </View>
         {isError ? (
           <Text className="text-white">There seems to be an error</Text>
+        ) : userSearch.resultsLoading ? (
+          <View>
+            <ActivityIndicator color="#477CB9" />
+          </View>
         ) : (
           <SearchResults data={data} error={isError} />
         )}

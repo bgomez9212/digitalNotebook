@@ -57,12 +57,12 @@ export default function SearchResults({ data, error }) {
         refreshControl={
           <RefreshControl
             refreshing={refreshing}
-            onRefresh={() => {
+            onRefresh={async () => {
               setRefreshing(true);
-              setTimeout(() => {
-                queryClient.invalidateQueries({ queryKey: ["searchResults"] });
-                setRefreshing(false);
-              }, 500);
+              await queryClient.invalidateQueries({
+                queryKey: ["searchResults"],
+              });
+              setRefreshing(false);
             }}
             tintColor="#fff"
           />

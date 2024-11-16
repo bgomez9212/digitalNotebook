@@ -3,9 +3,10 @@ import EventRow from "./EventRow";
 import MatchRow from "./MatchRow";
 import { useQueryClient } from "@tanstack/react-query";
 import WrestlerRow from "./WrestlerRow";
+import { useState } from "react";
 
 export default function SearchResults({ data, error }) {
-  const refreshing = false;
+  const [refreshing, setRefreshing] = useState(false);
   const queryClient = useQueryClient();
 
   if (!data) {
@@ -56,9 +57,13 @@ export default function SearchResults({ data, error }) {
         refreshControl={
           <RefreshControl
             refreshing={refreshing}
-            onRefresh={() =>
-              queryClient.invalidateQueries({ queryKey: ["searchResults"] })
-            }
+            onRefresh={async () => {
+              setRefreshing(true);
+              await queryClient.invalidateQueries({
+                queryKey: ["searchResults"],
+              });
+              setRefreshing(false);
+            }}
             tintColor="#fff"
           />
         }

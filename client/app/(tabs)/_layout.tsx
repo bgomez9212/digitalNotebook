@@ -15,6 +15,9 @@ export default function Layout() {
         },
         tabBarActiveTintColor: blue,
         tabBarShowLabel: false,
+        tabBarStyle: {
+          paddingTop: 10,
+        },
       }}
       backBehavior="history"
     >

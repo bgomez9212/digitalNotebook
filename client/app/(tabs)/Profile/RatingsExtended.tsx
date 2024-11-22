@@ -20,7 +20,6 @@ import LandingLink from "../../../components/LandingLink";
 import BottomModalRow from "../../../components/BottomModalRow";
 import LandingButton from "../../../components/LandingButton";
 import BottomModalSelect from "../../../components/BottomModalSelect";
-import { getUserPromotions } from "../../../api/promotions";
 
 export default function RatingsExtended() {
   const modalMargin = "5%";
@@ -29,6 +28,7 @@ export default function RatingsExtended() {
     changeParams: false,
     modalDisplay: "hidden",
   });
+
   const [sortParams, setSortParams] = useState({
     "Sort By": ["Rating Date"],
     Promotions: [],
@@ -36,7 +36,9 @@ export default function RatingsExtended() {
     "Community Ratings": ["0", "1", "2", "3", "4", "5"],
     "Sort Order": ["Desc"],
   });
+
   const paramsRef = useRef({ ...sortParams });
+
   function changeSortBy(newValue) {
     setSortParams({ ...sortParams, "Sort By": [newValue] });
   }
@@ -163,12 +165,12 @@ export default function RatingsExtended() {
     select: sortAndFilterRatings,
   });
 
-  const { data: promotions } = useQuery({
-    queryKey: ["userPromotions"],
-    queryFn: () => getUserPromotions(user.uid),
-  });
+  const promotions = data.promotions.map(
+    (promotionObj) => promotionObj.promotionName
+  );
 
   useEffect(() => {
+    console.log("useEffect ran");
     let updatedParams = { ...sortParams };
 
     if (promotionName) {
@@ -204,7 +206,7 @@ export default function RatingsExtended() {
       ...modalUtilities,
       changeParams: !modalUtilities.changeParams,
     });
-  }, [promotions]);
+  }, [data.promotions]);
 
   const bottomSheetModalRef = useRef<BottomSheetModal>(null);
   const snapPoints = useMemo(() => ["30%", "35%", "45%", "60%"], []);

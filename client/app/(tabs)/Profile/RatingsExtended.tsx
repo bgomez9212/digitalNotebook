@@ -31,10 +31,11 @@ export default function RatingsExtended() {
 
   const [sortParams, setSortParams] = useState({
     "Sort By": ["Rating Date"],
+    "Sort Order": ["Desc"],
     Promotions: [],
     "Your Ratings": [],
     "Community Ratings": ["0", "1", "2", "3", "4", "5"],
-    "Sort Order": ["Desc"],
+    Years: [],
   });
 
   const paramsRef = useRef({ ...sortParams });
@@ -170,7 +171,6 @@ export default function RatingsExtended() {
   );
 
   useEffect(() => {
-    console.log("useEffect ran");
     let updatedParams = { ...sortParams };
 
     if (promotionName) {
@@ -262,17 +262,19 @@ export default function RatingsExtended() {
   function resetFilters() {
     setSortParams({
       "Sort By": ["Rating Date"],
+      "Sort Order": ["Desc"],
       Promotions: promotionName ? [promotionName] : promotions,
       "Your Ratings": rating ? [rating] : ["0", "1", "2", "3", "4", "5"],
       "Community Ratings": ["0", "1", "2", "3", "4", "5"],
-      "Sort Order": ["Desc"],
+      Years: [],
     });
     paramsRef.current = {
       "Sort By": ["Rating Date"],
+      "Sort Order": ["Desc"],
       Promotions: promotionName ? [promotionName] : promotions,
       "Your Ratings": rating ? [rating] : ["0", "1", "2", "3", "4", "5"],
       "Community Ratings": ["0", "1", "2", "3", "4", "5"],
-      "Sort Order": ["Desc"],
+      Years: [],
     };
     setModalUtilities({
       ...modalUtilities,

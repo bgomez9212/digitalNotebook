@@ -320,6 +320,9 @@ module.exports = {
       matches: userRatings,
       promotions: pieChartDataPromotion,
       ratings: pieChartDataRatings,
+      years: [
+        ...new Set(userRatings.map((match) => match.date.slice(0, 4))),
+      ].sort(),
     };
     return results;
   },

@@ -12,7 +12,6 @@ router.post("/events", controller.postEvent);
 router.get("/matches/topRated", controller.getTopRatedMatches);
 
 router.get("/ratings/:user_id", controller.getUsersRatedMatches);
-router.get("/ratings/:user_id/promotions", controller.getUserPromotions);
 // body includes user_id and rating
 router.post("/ratings/:match_id", controller.postRating);
 // body includes user_id

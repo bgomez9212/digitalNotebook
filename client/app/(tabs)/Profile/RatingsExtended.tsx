@@ -20,7 +20,6 @@ import LandingLink from "../../../components/LandingLink";
 import BottomModalRow from "../../../components/BottomModalRow";
 import LandingButton from "../../../components/LandingButton";
 import BottomModalSelect from "../../../components/BottomModalSelect";
-import { getUserPromotions } from "../../../api/promotions";
 
 export default function RatingsExtended() {
   const modalMargin = "5%";
@@ -29,14 +28,18 @@ export default function RatingsExtended() {
     changeParams: false,
     modalDisplay: "hidden",
   });
+
   const [sortParams, setSortParams] = useState({
     "Sort By": ["Rating Date"],
+    "Sort Order": ["Desc"],
     Promotions: [],
+    Years: [],
     "Your Ratings": [],
     "Community Ratings": ["0", "1", "2", "3", "4", "5"],
-    "Sort Order": ["Desc"],
   });
+
   const paramsRef = useRef({ ...sortParams });
+
   function changeSortBy(newValue) {
     setSortParams({ ...sortParams, "Sort By": [newValue] });
   }
@@ -57,6 +60,20 @@ export default function RatingsExtended() {
       setSortParams({
         ...sortParams,
         Promotions: [...sortParams["Promotions"], promotion],
+      });
+    }
+  }
+
+  function selectYear(year) {
+    if (sortParams["Years"].includes(year)) {
+      setSortParams({
+        ...sortParams,
+        Years: sortParams["Years"].filter((item) => item !== year),
+      });
+    } else {
+      setSortParams({
+        ...sortParams,
+        Years: [...sortParams["Years"], year],
       });
     }
   }
@@ -108,11 +125,13 @@ export default function RatingsExtended() {
       };
 
       let filteredResults = { ...data };
+
       if (sortParams["Promotions"].length) {
         filteredResults.matches = filteredResults.matches.filter((matchObj) =>
           sortParams["Promotions"].includes(matchObj.promotion)
         );
       }
+
       if (sortParams["Your Ratings"].length) {
         filteredResults.matches = filteredResults.matches.filter((matchObj) =>
           sortParams["Your Ratings"].includes(
@@ -120,11 +139,18 @@ export default function RatingsExtended() {
           )
         );
       }
+
       if (sortParams["Community Ratings"].length) {
         filteredResults.matches = filteredResults.matches.filter((matchObj) =>
           sortParams["Community Ratings"].includes(
             matchObj.community_rating.toString()[0]
           )
+        );
+      }
+
+      if (sortParams["Years"].length) {
+        filteredResults.matches = filteredResults.matches.filter((matchObj) =>
+          sortParams["Years"].includes(matchObj.date.slice(0, 4))
         );
       }
 
@@ -163,10 +189,9 @@ export default function RatingsExtended() {
     select: sortAndFilterRatings,
   });
 
-  const { data: promotions } = useQuery({
-    queryKey: ["userPromotions"],
-    queryFn: () => getUserPromotions(user.uid),
-  });
+  const promotions = data.promotions.map(
+    (promotionObj) => promotionObj.promotionName
+  );
 
   useEffect(() => {
     let updatedParams = { ...sortParams };
@@ -199,12 +224,16 @@ export default function RatingsExtended() {
       };
       paramsRef.current["Your Ratings"] = ["0", "1", "2", "3", "4", "5"];
     }
+
+    updatedParams.Years = data.years;
+    paramsRef.current.Years = data.years;
+
     setSortParams(updatedParams);
     setModalUtilities({
       ...modalUtilities,
       changeParams: !modalUtilities.changeParams,
     });
-  }, [promotions]);
+  }, [data.promotions]);
 
   const bottomSheetModalRef = useRef<BottomSheetModal>(null);
   const snapPoints = useMemo(() => ["30%", "35%", "45%", "60%"], []);
@@ -260,17 +289,19 @@ export default function RatingsExtended() {
   function resetFilters() {
     setSortParams({
       "Sort By": ["Rating Date"],
+      "Sort Order": ["Desc"],
       Promotions: promotionName ? [promotionName] : promotions,
+      Years: data.years,
       "Your Ratings": rating ? [rating] : ["0", "1", "2", "3", "4", "5"],
       "Community Ratings": ["0", "1", "2", "3", "4", "5"],
-      "Sort Order": ["Desc"],
     });
     paramsRef.current = {
       "Sort By": ["Rating Date"],
+      "Sort Order": ["Desc"],
       Promotions: promotionName ? [promotionName] : promotions,
+      Years: data.years,
       "Your Ratings": rating ? [rating] : ["0", "1", "2", "3", "4", "5"],
       "Community Ratings": ["0", "1", "2", "3", "4", "5"],
-      "Sort Order": ["Desc"],
     };
     setModalUtilities({
       ...modalUtilities,
@@ -438,6 +469,11 @@ export default function RatingsExtended() {
               title="Community Ratings"
               sortParams={sortParams["Community Ratings"]}
               fn={changeModalDisplay}
+            />
+            <BottomModalRow
+              title="Years"
+              sortParams={sortParams["Years"]}
+              fn={changeModalDisplay}
               hideBottomBorder={true}
             />
             <LandingButton
@@ -503,6 +539,16 @@ export default function RatingsExtended() {
               options={["0", "1", "2", "3", "4", "5"]}
               selectedOptions={sortParams["Community Ratings"]}
               selectFn={selectCommunityRating}
+              changeSearchClick={changeSearchClick}
+            />
+          </BottomSheetView>
+        )}
+        {modalUtilities.modalDisplay === "Years" && (
+          <BottomSheetView>
+            <BottomModalSelect
+              options={data.years}
+              selectedOptions={sortParams["Years"]}
+              selectFn={selectYear}
               changeSearchClick={changeSearchClick}
             />
           </BottomSheetView>

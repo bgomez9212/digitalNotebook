@@ -19,7 +19,7 @@ export async function getTopMatches({
 }
 
 export async function addRating(ratingObj: {
-  matchId: number;
+  matchId: string;
   uid: string;
   rating: number;
 }) {
@@ -38,7 +38,7 @@ export async function addRating(ratingObj: {
 
 export async function deleteRating(ratingInfo: {
   uid: string;
-  match_id: number;
+  match_id: string;
 }) {
   await axios
     .delete(`/ratings/${ratingInfo.match_id}`, {

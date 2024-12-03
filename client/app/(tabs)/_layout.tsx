@@ -1,20 +1,17 @@
-import { Tabs, usePathname } from "expo-router";
+import { Tabs } from "expo-router";
 import { Entypo } from "@expo/vector-icons";
 import { FontAwesome } from "@expo/vector-icons";
 import { Ionicons } from "@expo/vector-icons";
-const blue = "#477CB9";
+
 export default function Layout() {
   return (
     <Tabs
       screenOptions={{
-        headerStyle: {
-          backgroundColor: blue,
-        },
-        headerTitleStyle: {
-          color: "white",
-        },
-        tabBarActiveTintColor: blue,
+        tabBarActiveTintColor: "#477CB9",
         tabBarShowLabel: false,
+        tabBarStyle: {
+          paddingTop: 10,
+        },
       }}
       backBehavior="history"
     >

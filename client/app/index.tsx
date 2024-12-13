@@ -6,7 +6,7 @@ export default function index() {
   return colorScheme === "dark" ? (
     <View className="flex-1 justify-center items-center bg-black">
       <Image
-        source={require("../assets/Notebook-dark.png")}
+        source={require("../assets/suplex-logo.png")}
         resizeMode="contain"
         className="w-full"
       />
@@ -14,7 +14,7 @@ export default function index() {
   ) : (
     <View className="flex-1 justify-center items-center bg-white">
       <Image
-        source={require("../assets/Notebook-light.png")}
+        source={require("../assets/suplex-logo.png")}
         resizeMode="contain"
         className="w-full"
       />

@@ -96,8 +96,8 @@ export default function Landing() {
   });
 
   const [debouncedUsername] = useDebounce(watch("signupUsername"), 400);
-  const darkPhoto = require("../assets/Notebook-dark.png");
-  const lightPhoto = require("../assets/Notebook-light.png");
+  const darkPhoto = require("../assets/suplex-logo.png");
+  const lightPhoto = require("../assets/suplex-logo.png");
   let icon = colorScheme === "dark" ? darkPhoto : lightPhoto;
   const { data: userId } = useQuery({
     queryKey: ["userId", debouncedUsername],

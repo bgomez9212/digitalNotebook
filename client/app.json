@@ -8,7 +8,7 @@
     "icon": "./assets/app-icon.png",
     "userInterfaceStyle": "automatic",
     "splash": {
-      "image": "./assets/Notebook-light.png",
+      "image": "./assets/suplex-logo.png",
       "resizeMode": "contain",
       "backgroundColor": "#ffffff",
       "dark": {
@@ -20,7 +20,7 @@
     "ios": {
       "supportsTablet": true,
       "splash": {
-        "image": "./assets/Notebook-light.png",
+        "image": "./assets/suplex-logo.png",
         "resizeMode": "contain",
         "backgroundColor": "#ffffff",
         "dark": {

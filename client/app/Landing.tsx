@@ -114,12 +114,12 @@ export default function Landing() {
     >
       <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
         <View data-testid="landing-page" className="bg-white dark:bg-black">
-          <View className="h-[60%] items-center justify-center">
+          <View className="h-[55%] items-center justify-center">
             <Image source={icon} resizeMode="contain" className="w-[90%]" />
           </View>
           {uiState.displaySignup ? (
-            <View className="items-center justify-start">
-              <View>
+            <View className="flex h-1/2 w-full items-center">
+              <View className="w-3/4">
                 <Controller
                   control={control}
                   render={({ field: { onChange, value } }) => (
@@ -178,6 +178,7 @@ export default function Landing() {
                   fn={handleSubmit(onSignup)}
                   text={"SIGN UP"}
                   loading={uiState.loading}
+                  width="full"
                 />
                 {uiState.signUpError && (
                   <Text className="text-red mt-1 text-base border w-60 text-center">
@@ -199,7 +200,7 @@ export default function Landing() {
             </View>
           ) : (
             <View className="flex h-1/2 w-full items-center">
-              <View className="w-3/4 border">
+              <View className="w-3/4">
                 <Controller
                   control={control}
                   rules={{

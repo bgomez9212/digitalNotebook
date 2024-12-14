@@ -6,7 +6,7 @@ import { useEffect } from "react";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
 import { BottomSheetModalProvider } from "@gorhom/bottom-sheet";
 const queryClient = new QueryClient();
-const blue = "#477CB9";
+const blue = "#618BCB";
 
 export default function Layout() {
   useEffect(() => {

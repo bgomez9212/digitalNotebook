@@ -113,11 +113,8 @@ export default function Landing() {
       className="flex-1"
     >
       <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
-        <View
-          data-testid="landing-page"
-          className="h-full bg-white dark:bg-black"
-        >
-          <View className="items-center justify-center h-[61%]">
+        <View data-testid="landing-page" className="bg-white dark:bg-black">
+          <View className="h-[60%] items-center justify-center">
             <Image source={icon} resizeMode="contain" className="w-[90%]" />
           </View>
           {uiState.displaySignup ? (
@@ -201,8 +198,8 @@ export default function Landing() {
               />
             </View>
           ) : (
-            <View className="flex justify-start items-center flex-2">
-              <View>
+            <View className="flex h-1/2 w-full items-center">
+              <View className="w-3/4 border">
                 <Controller
                   control={control}
                   rules={{
@@ -236,6 +233,7 @@ export default function Landing() {
                   fn={handleSubmit(onLogin)}
                   text={"LOGIN"}
                   loading={uiState.loading}
+                  width="full"
                 />
                 {uiState.loginError && (
                   <Text className="text-red my-3 text-center text-base">

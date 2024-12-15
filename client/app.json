@@ -1,9 +1,9 @@
 {
   "expo": {
-    "name": "The Notebook",
-    "slug": "the-notebook",
-    "scheme": "digitalnotebook",
-    "version": "1.0.0",
+    "name": "Suplex",
+    "slug": "suplex",
+    "scheme": "suplex",
+    "version": "0.0.7",
     "orientation": "portrait",
     "icon": "./assets/app-icon.png",
     "userInterfaceStyle": "automatic",
@@ -13,10 +13,12 @@
       "backgroundColor": "#ffffff",
       "dark": {
         "backgroundColor": "#000000",
-        "image": "./assets/Notebook-dark.png"
+        "image": "./assets/suplex-logo.png"
       }
     },
-    "assetBundlePatterns": ["**/*"],
+    "assetBundlePatterns": [
+      "**/*"
+    ],
     "ios": {
       "supportsTablet": true,
       "splash": {
@@ -27,7 +29,8 @@
           "backgroundColor": "#000000",
           "image": "./assets/suplex-logo.png"
         }
-      }
+      },
+      "bundleIdentifier": "com.earthdeparture.suplex"
     },
     "android": {
       "adaptiveIcon": {
@@ -42,25 +45,28 @@
           "backgroundColor": "#000000",
           "image": "./assets/suplex-logo.png"
         }
-      }
+      },
+      "package": "com.earthdeparture.suplex"
     },
     "web": {
       "favicon": "./assets/favicon.png"
     },
-    "plugins": ["expo-router"],
+    "plugins": [
+      "expo-router"
+    ],
     "extra": {
       "router": {
         "origin": false
       },
       "eas": {
-        "projectId": "e0da2f50-50bc-4097-91ac-96786de50716"
+        "projectId": "2f74e5b7-77f4-4803-96bb-3401e024cfaf"
       }
     },
     "runtimeVersion": {
       "policy": "appVersion"
     },
     "updates": {
-      "url": "https://u.expo.dev/e0da2f50-50bc-4097-91ac-96786de50716"
+      "url": "https://u.expo.dev/2f74e5b7-77f4-4803-96bb-3401e024cfaf"
     },
     "newArchEnabled": true
   }

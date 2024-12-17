@@ -56,7 +56,6 @@ export default function AccountInfo() {
     currentPasswordDeactivate: "",
   });
   const [debouncedUsername] = useDebounce(inputValues.username, 500);
-
   const { data: userId } = useQuery({
     queryKey: ["userId", debouncedUsername],
     queryFn: () => getUserId(debouncedUsername),
@@ -218,7 +217,7 @@ export default function AccountInfo() {
                 !inputValues.confirmUsername ||
                 !inputValues.username ||
                 inputValues.username !== inputValues.confirmUsername ||
-                (userId && userId.length)
+                userId?.id
               }
               width="full"
             />

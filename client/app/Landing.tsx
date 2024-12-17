@@ -96,8 +96,8 @@ export default function Landing() {
   });
 
   const [debouncedUsername] = useDebounce(watch("signupUsername"), 400);
-  const darkPhoto = require("../assets/Notebook-dark.png");
-  const lightPhoto = require("../assets/Notebook-light.png");
+  const darkPhoto = require("../assets/suplex-logo.png");
+  const lightPhoto = require("../assets/suplex-logo.png");
   let icon = colorScheme === "dark" ? darkPhoto : lightPhoto;
   const { data: userId } = useQuery({
     queryKey: ["userId", debouncedUsername],
@@ -113,16 +113,13 @@ export default function Landing() {
       className="flex-1"
     >
       <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
-        <View
-          data-testid="landing-page"
-          className="h-full bg-white dark:bg-black"
-        >
-          <View className="items-center justify-center h-[61%]">
+        <View data-testid="landing-page" className="bg-white dark:bg-black">
+          <View className="h-[55%] items-center justify-center">
             <Image source={icon} resizeMode="contain" className="w-[90%]" />
           </View>
           {uiState.displaySignup ? (
-            <View className="items-center justify-start">
-              <View>
+            <View className="flex h-1/2 w-full items-center">
+              <View className="w-3/4">
                 <Controller
                   control={control}
                   render={({ field: { onChange, value } }) => (
@@ -181,6 +178,7 @@ export default function Landing() {
                   fn={handleSubmit(onSignup)}
                   text={"SIGN UP"}
                   loading={uiState.loading}
+                  width="full"
                 />
                 {uiState.signUpError && (
                   <Text className="text-red mt-1 text-base border w-60 text-center">
@@ -201,8 +199,8 @@ export default function Landing() {
               />
             </View>
           ) : (
-            <View className="flex justify-start items-center flex-2">
-              <View>
+            <View className="flex h-1/2 w-full items-center">
+              <View className="w-3/4">
                 <Controller
                   control={control}
                   rules={{
@@ -236,6 +234,7 @@ export default function Landing() {
                   fn={handleSubmit(onLogin)}
                   text={"LOGIN"}
                   loading={uiState.loading}
+                  width="full"
                 />
                 {uiState.loginError && (
                   <Text className="text-red my-3 text-center text-base">

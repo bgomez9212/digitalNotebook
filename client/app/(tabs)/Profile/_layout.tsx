@@ -6,7 +6,7 @@ import { TouchableOpacity } from "react-native";
 import { FontAwesome } from "@expo/vector-icons";
 import React from "react";
 import { useColorScheme } from "nativewind";
-const blue = "#477CB9";
+const blue = "#618BCB";
 export const unstable_settings = {
   initialRouteName: "index",
 };

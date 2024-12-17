@@ -1,5 +1,5 @@
 import { Stack, useGlobalSearchParams } from "expo-router";
-const blue = "#477CB9";
+const blue = "#618BCB";
 export default function Layout() {
   const { event_title, wrestler_name } = useGlobalSearchParams() as {
     event_title: string;

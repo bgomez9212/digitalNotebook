@@ -3,7 +3,7 @@
     "name": "Suplex",
     "slug": "suplex",
     "scheme": "suplex",
-    "version": "0.0.7",
+    "version": "0.7.1",
     "orientation": "portrait",
     "icon": "./assets/app-icon.png",
     "userInterfaceStyle": "automatic",
@@ -16,9 +16,7 @@
         "image": "./assets/suplex-logo.png"
       }
     },
-    "assetBundlePatterns": [
-      "**/*"
-    ],
+    "assetBundlePatterns": ["**/*"],
     "ios": {
       "supportsTablet": true,
       "splash": {
@@ -51,9 +49,7 @@
     "web": {
       "favicon": "./assets/favicon.png"
     },
-    "plugins": [
-      "expo-router"
-    ],
+    "plugins": ["expo-router"],
     "extra": {
       "router": {
         "origin": false

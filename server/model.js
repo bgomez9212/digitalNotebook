@@ -94,12 +94,12 @@ const pieChartColorsPromotions = {
 };
 
 const pieChartColorsRatings = {
-  0: "#F0F0F0",
-  1: "#D2D2D2",
-  2: "#B8BBBE",
-  3: "#8A8D90",
-  4: "#6A6E73",
-  5: "#F0AB00",
+  0: "#222222",
+  1: "#FF0000",
+  2: "#FF6600",
+  3: "#CC9900",
+  4: "#669900",
+  5: "#119900",
 };
 
 function getPieChartDataPromotion(data) {

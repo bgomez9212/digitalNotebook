@@ -24,27 +24,17 @@ export default function MatchRow({
         }
       >
         <View className="flex flex-col w-full">
-          {match.event_title && (
-            <View className="w-full flex-row justify-between items-start">
-              <Text className="text-grey dark:text-white italic w-5/8">
-                {match.event_title}
-              </Text>
-              <Text className="text-grey dark:text-white italic">
-                {match.date}
-              </Text>
-            </View>
-          )}
-          {match.championships && (
-            <View>
-              <Text className="text-gold text-sm text-center pt-2 shadow dark:shadow-none">
-                {match.championships}
-              </Text>
-            </View>
-          )}
           <View className="py-2">
-            <Text className="text-grey dark:text-white text-lg">
+            <Text className="text-grey dark:text-white text-xl font-bold">
               {match.participants}
             </Text>
+            {match.championships && (
+              <View>
+                <Text className="text-gold text-sm text-center pt-2 shadow dark:shadow-none">
+                  {match.championships}
+                </Text>
+              </View>
+            )}
           </View>
           <View
             className={`flex flex-row ${match.user_rating !== null ? "justify-between" : "justify-end"}`}
@@ -56,6 +46,16 @@ export default function MatchRow({
               rating_count={match.rating_count}
             />
           </View>
+          {match.event_title && (
+            <View className="w-full flex-row justify-between items-start">
+              <Text className="text-grey dark:text-white italic w-5/8">
+                {match.event_title}
+              </Text>
+              <Text className="text-grey dark:text-white italic">
+                {match.date}
+              </Text>
+            </View>
+          )}
         </View>
       </TouchableOpacity>
     );

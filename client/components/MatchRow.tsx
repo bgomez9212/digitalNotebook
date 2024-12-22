@@ -74,6 +74,28 @@ export default function MatchRow({
         }
       >
         <View className="flex flex-col w-full">
+          <View className="pb-2">
+            <Text className="text-grey dark:text-white text-xl font-bold">
+              {match.participants}
+            </Text>
+          </View>
+          {match.championships && (
+            <View>
+              <Text className="text-gold text-sm shadow dark:shadow-none pb-2">
+                {match.championships}
+              </Text>
+            </View>
+          )}
+          <View
+            className={`flex flex-row ${match.user_rating !== null ? "justify-between" : "justify-end"} py-2`}
+          >
+            <StarView display={"User"} rating={match.user_rating} />
+            <StarView
+              display="Total"
+              rating={match.community_rating}
+              rating_count={match.rating_count}
+            />
+          </View>
           {match.event_title && (
             <View className="w-full flex-row items-start pb-2">
               <Text className="text-grey dark:text-white italic flex-1">
@@ -84,28 +106,6 @@ export default function MatchRow({
               </Text>
             </View>
           )}
-          {match.championships && (
-            <View>
-              <Text className="text-gold text-sm text-center shadow dark:shadow-none pb-2">
-                {match.championships}
-              </Text>
-            </View>
-          )}
-          <View className="pb-2">
-            <Text className="text-grey dark:text-white text-lg">
-              {match.participants}
-            </Text>
-          </View>
-          <View
-            className={`flex flex-row ${match.user_rating !== null ? "justify-between" : "justify-end"}`}
-          >
-            <StarView display={"User"} rating={match.user_rating} />
-            <StarView
-              display="Total"
-              rating={match.community_rating}
-              rating_count={match.rating_count}
-            />
-          </View>
         </View>
       </TouchableOpacity>
     );

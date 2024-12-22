@@ -30,14 +30,14 @@ export default function MatchRow({
             </Text>
             {match.championships && (
               <View>
-                <Text className="text-gold text-sm text-center pt-2 shadow dark:shadow-none">
+                <Text className="text-gold text-sm pt-2 shadow dark:shadow-none">
                   {match.championships}
                 </Text>
               </View>
             )}
           </View>
           <View
-            className={`flex flex-row ${match.user_rating !== null ? "justify-between" : "justify-end"}`}
+            className={`flex flex-row ${match.user_rating !== null ? "justify-between" : "justify-end"} py-2`}
           >
             <StarView display={"User"} rating={match.user_rating} />
             <StarView
@@ -47,8 +47,8 @@ export default function MatchRow({
             />
           </View>
           {match.event_title && (
-            <View className="w-full flex-row justify-between items-start">
-              <Text className="text-grey dark:text-white italic w-5/8">
+            <View className="w-full flex-row justify-between items-start pt-2">
+              <Text className="text-grey dark:text-white italic w-1/2">
                 {match.event_title}
               </Text>
               <Text className="text-grey dark:text-white italic">

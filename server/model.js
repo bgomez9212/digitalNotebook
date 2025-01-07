@@ -514,7 +514,7 @@ module.exports = {
   },
   getPromotions: async () => {
     const { rows: promotions } = await pool.query(
-      `SELECT id, name FROM promotions`
+      `SELECT id, name, full_name FROM promotions`
     );
     return promotions;
   },

@@ -45,7 +45,7 @@ export default function Layout() {
       <Stack.Screen
         name="[eventId]"
         options={{
-          title: event_title,
+          title: event_title || "",
           headerStyle: { backgroundColor: blue },
           headerTitleStyle: { color: "white" },
           headerTintColor: "white",

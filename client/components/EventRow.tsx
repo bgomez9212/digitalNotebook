@@ -54,6 +54,14 @@ export default function EventRow({
         className="w-full flex flex-row py-2 border-lightGrey dark:border-darkGrey border-b"
       >
         <View className="py-2 flex flex-row w-full items-center justify-between">
+          <View className="w-3/4">
+            <Text className="text-grey dark:text-white text-xl font-bold">
+              {event.title}
+            </Text>
+            <Text className="text-grey dark:text-white font-medium italic pt-1">
+              {event.date}
+            </Text>
+          </View>
           <View className="w-1/4 h-11">
             <Image
               style={{
@@ -70,16 +78,6 @@ export default function EventRow({
               }}
               source={photoLibrary[event.promotion_name]}
             />
-          </View>
-          <View className="w-1/3 justify-center">
-            <Text className="text-center text-grey dark:text-white font-medium">
-              {event.title}
-            </Text>
-          </View>
-          <View className="w-1/4 justify-center items-end">
-            <Text className="text-grey dark:text-white font-medium">
-              {event.date}
-            </Text>
           </View>
         </View>
       </TouchableOpacity>

@@ -31,7 +31,7 @@ export default function PromotionsButtonsContainer() {
   }
 
   return (
-    <View className="bg-white dark:bg-grey w-[95%] rounded-md px-2">
+    <View className="bg-white dark:bg-grey w-[95%] rounded-md px-2 mb-12">
       <View className="justify-center py-3 border-b border-lightGrey dark:border-darkGrey">
         <Text className="text-grey dark:text-white font-bold text-lg">
           Promotions

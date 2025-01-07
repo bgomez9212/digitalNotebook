@@ -24,30 +24,20 @@ export default function MatchRow({
         }
       >
         <View className="flex flex-col w-full">
-          {match.event_title && (
-            <View className="w-full flex-row justify-between items-start">
-              <Text className="text-grey dark:text-white italic w-5/8">
-                {match.event_title}
-              </Text>
-              <Text className="text-grey dark:text-white italic">
-                {match.date}
-              </Text>
-            </View>
-          )}
-          {match.championships && (
-            <View>
-              <Text className="text-gold text-sm text-center pt-2 shadow dark:shadow-none">
-                {match.championships}
-              </Text>
-            </View>
-          )}
           <View className="py-2">
-            <Text className="text-grey dark:text-white text-lg">
+            <Text className="text-grey dark:text-white text-xl font-bold">
               {match.participants}
             </Text>
+            {match.championships && (
+              <View>
+                <Text className="text-gold text-sm pt-2 shadow dark:shadow-none">
+                  {match.championships}
+                </Text>
+              </View>
+            )}
           </View>
           <View
-            className={`flex flex-row ${match.user_rating !== null ? "justify-between" : "justify-end"}`}
+            className={`flex flex-row ${match.user_rating !== null ? "justify-between" : "justify-end"} py-2`}
           >
             <StarView display={"User"} rating={match.user_rating} />
             <StarView
@@ -56,6 +46,16 @@ export default function MatchRow({
               rating_count={match.rating_count}
             />
           </View>
+          {match.event_title && (
+            <View className="w-full flex-row justify-between items-start pt-2">
+              <Text className="text-grey dark:text-white italic w-1/2">
+                {match.event_title}
+              </Text>
+              <Text className="text-grey dark:text-white italic">
+                {match.date}
+              </Text>
+            </View>
+          )}
         </View>
       </TouchableOpacity>
     );
@@ -74,6 +74,28 @@ export default function MatchRow({
         }
       >
         <View className="flex flex-col w-full">
+          <View className="pb-2">
+            <Text className="text-grey dark:text-white text-xl font-bold">
+              {match.participants}
+            </Text>
+          </View>
+          {match.championships && (
+            <View>
+              <Text className="text-gold text-sm shadow dark:shadow-none pb-2">
+                {match.championships}
+              </Text>
+            </View>
+          )}
+          <View
+            className={`flex flex-row ${match.user_rating !== null ? "justify-between" : "justify-end"} py-2`}
+          >
+            <StarView display={"User"} rating={match.user_rating} />
+            <StarView
+              display="Total"
+              rating={match.community_rating}
+              rating_count={match.rating_count}
+            />
+          </View>
           {match.event_title && (
             <View className="w-full flex-row items-start pb-2">
               <Text className="text-grey dark:text-white italic flex-1">
@@ -84,28 +106,6 @@ export default function MatchRow({
               </Text>
             </View>
           )}
-          {match.championships && (
-            <View>
-              <Text className="text-gold text-sm text-center shadow dark:shadow-none pb-2">
-                {match.championships}
-              </Text>
-            </View>
-          )}
-          <View className="pb-2">
-            <Text className="text-grey dark:text-white text-lg">
-              {match.participants}
-            </Text>
-          </View>
-          <View
-            className={`flex flex-row ${match.user_rating !== null ? "justify-between" : "justify-end"}`}
-          >
-            <StarView display={"User"} rating={match.user_rating} />
-            <StarView
-              display="Total"
-              rating={match.community_rating}
-              rating_count={match.rating_count}
-            />
-          </View>
         </View>
       </TouchableOpacity>
     );

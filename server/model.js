@@ -514,7 +514,15 @@ module.exports = {
   },
   getPromotions: async () => {
     const { rows: promotions } = await pool.query(
-      `SELECT id, name FROM promotions`
+      `
+      SELECT promotion_id AS id,
+      COUNT(*),
+      promotions.full_name,
+      promotions.name
+      FROM events
+      JOIN promotions
+      ON promotions.id = promotion_id
+      GROUP BY promotion_id, promotions.full_name, promotions.name`
     );
     return promotions;
   },

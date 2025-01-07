@@ -13,9 +13,15 @@ export default function ProfileMatchTable({
     profileType === "user" ? "./Profile/RatingsExtended" : "./RatingsExtended";
   return (
     <View>
-      <Text className="text-xl text-grey dark:text-white underline my-5 font-medium text-center">
-        Most Recently Rated
-      </Text>
+      {profileType === "user" ? (
+        <Text className="text-xl text-grey dark:text-white underline my-5 font-medium text-center">
+          Most Recently Rated
+        </Text>
+      ) : (
+        <Text className="text-xl text-grey dark:text-white underline my-5 font-medium text-center">
+          Most Recent Matches
+        </Text>
+      )}
       <View className="bg-white dark:bg-grey w-[95%] rounded-md px-2 mb-5">
         {isError ? (
           <Text>There seems to be an error..</Text>

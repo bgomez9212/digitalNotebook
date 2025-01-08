@@ -222,16 +222,27 @@ module.exports = {
   },
   getRecentEvents: async (number) => {
     const { rows: results } = await pool.query(
-      `SELECT
-        events.id AS id,
-        events.title,
-        TO_CHAR(events.date, 'YYYY-MM-DD') AS date,
-        events.venue_id,
-        promotions.name AS promotion_name
+      `
+      SELECT
+      events.id,
+      events.title,
+      events.date,
+      ROUND(AVG(ratings.rating)::numeric, 2),
+      promotions.name AS promotion_name
+      FROM events
+      LEFT OUTER JOIN matches ON matches.event_id = events.id
+      LEFT OUTER JOIN ratings ON ratings.match_id = matches.id
+      JOIN promotions ON events.promotion_id = promotions.id
+      WHERE events.id IN (
+      SELECT
+        events.id AS id
       FROM events
       JOIN promotions ON promotions.id = events.promotion_id
       ORDER BY date DESC, id DESC
-      LIMIT $1;`,
+      LIMIT 5)
+      GROUP BY events.id, promotions.name
+      ORDER BY events.date DESC;
+      `,
       [number]
     );
     return results;

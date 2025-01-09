@@ -57,7 +57,7 @@ export default function EventRow({
         <View className="py-2 flex flex-row w-full items-center justify-between">
           <View className="w-3/4">
             <Text className="text-grey dark:text-white text-xl font-bold">
-              {event.title}
+              {event.promotion_name} {event.title}
             </Text>
             <Text className="text-grey dark:text-white font-medium italic pt-1">
               {event.date}

@@ -96,24 +96,22 @@ export default function EventRow({
     return (
       <TouchableOpacity
         onPress={openEvent}
-        className="w-full flex flex-row py-2 border-b border-lightGrey dark:border-grey"
+        className="w-full flex flex-row py-2 border-lightGrey dark:border-darkGrey border-b"
       >
         <View className="py-2 flex flex-row w-full items-center justify-between">
-          <View className="w-1/4">
-            <Text
-              className={`text-center text-grey dark:text-white font-medium ${setColorToDisplay(event.avg_rating)}`}
-            >
-              {event.avg_rating || "-"}
-            </Text>
-          </View>
-          <View className="w-1/3 justify-center">
-            <Text className="text-center text-grey dark:text-white font-medium">
+          <View className="w-3/4">
+            <Text className="text-grey dark:text-white text-xl font-bold">
               {event.title}
             </Text>
-          </View>
-          <View className="w-1/4 justify-center items-end">
-            <Text className="text-grey dark:text-white font-medium">
+            <Text className="text-grey dark:text-white font-medium italic pt-1">
               {event.date}
+            </Text>
+          </View>
+          <View>
+            <Text
+              className={`${setColorToDisplay(event.avg_rating)} text-xl font-bold`}
+            >
+              {event.avg_rating}
             </Text>
           </View>
         </View>

@@ -2,6 +2,7 @@ import { router, usePathname } from "expo-router";
 import { TouchableOpacity, View, Text, Image } from "react-native";
 import { photoLibrary } from "../assets";
 import { shadows, whiteShadows } from "../types/types";
+import StarView from "./StarView";
 
 export default function EventRow({
   event,
@@ -61,6 +62,13 @@ export default function EventRow({
             <Text className="text-grey dark:text-white font-medium italic pt-1">
               {event.date}
             </Text>
+            {event.avg_rating ? (
+              <Text className={`${setColorToDisplay(event.avg_rating)} pt-1`}>
+                {event.avg_rating}
+              </Text>
+            ) : (
+              <Text>-</Text>
+            )}
           </View>
           <View className="w-1/4 h-11">
             <Image

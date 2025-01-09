@@ -226,8 +226,8 @@ module.exports = {
       SELECT
       events.id,
       events.title,
-      events.date,
-      ROUND(AVG(ratings.rating)::numeric, 2),
+      TO_CHAR(events.date, 'YYYY-MM-DD') AS date,
+      ROUND(AVG(ratings.rating)::numeric, 2) AS avg_rating,
       promotions.name AS promotion_name
       FROM events
       LEFT OUTER JOIN matches ON matches.event_id = events.id
@@ -239,7 +239,7 @@ module.exports = {
       FROM events
       JOIN promotions ON promotions.id = events.promotion_id
       ORDER BY date DESC, id DESC
-      LIMIT 5)
+      LIMIT $1)
       GROUP BY events.id, promotions.name
       ORDER BY events.date DESC;
       `,

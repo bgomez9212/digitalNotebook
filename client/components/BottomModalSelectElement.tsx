@@ -19,7 +19,7 @@ export default function BottomModalSelectElement({
         className="bg-blue border border-blue px-4 rounded-2xl mb-1"
         onPress={() => selectFn(sortParam)}
       >
-        <Text className="text-darkGrey dark:text-white text-lg">
+        <Text className="text-darkGrey dark:text-darkWhite text-lg">
           {sortParam}
           {!isRadio && (
             <>
@@ -36,7 +36,7 @@ export default function BottomModalSelectElement({
         className="border dark:border-white px-4 rounded-2xl mb-1"
         onPress={() => selectFn(sortParam)}
       >
-        <Text className="text-darkGrey dark:text-white text-lg">
+        <Text className="text-darkGrey dark:text-darkWhite text-lg">
           {sortParam}
           {!isRadio && (
             <>

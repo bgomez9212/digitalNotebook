@@ -19,7 +19,9 @@ export default function WrestlerRow({
       className="border border-grey dark:border-white rounded-md mb-1 p-5 flex flex-row items-center justify-between"
       style={{ height: 70 }}
     >
-      <Text className="text-lg text-grey dark:text-white">{wrestler.name}</Text>
+      <Text className="text-lg text-grey dark:text-darkWhite">
+        {wrestler.name}
+      </Text>
       <StarView
         rating={wrestler.rating}
         rating_count={Number(wrestler.rating_count)}

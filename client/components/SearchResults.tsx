@@ -24,7 +24,7 @@ export default function SearchResults({ data, error }) {
   if (!data.results.length) {
     return (
       <View>
-        <Text className="text-grey dark:text-white">No results</Text>
+        <Text className="text-grey dark:text-darkWhite">No results</Text>
       </View>
     );
   }

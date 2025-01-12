@@ -18,7 +18,7 @@ export default function WrestlerPage() {
 
   if (isError) {
     return (
-      <View className="flex-1 bg-white2 dark:bg-darkGrey justify-center items-center">
+      <View className="flex-1 bg-darkWhite dark:bg-darkGrey justify-center items-center">
         <Text>Error</Text>
       </View>
     );
@@ -26,7 +26,7 @@ export default function WrestlerPage() {
 
   if (isLoading) {
     return (
-      <View className="flex-1 bg-white2 dark:bg-darkGrey justify-center items-center">
+      <View className="flex-1 bg-darkWhite dark:bg-darkGrey justify-center items-center">
         <ActivityIndicator color="#477CB9" />
       </View>
     );
@@ -35,7 +35,7 @@ export default function WrestlerPage() {
   return (
     <ScrollView
       nestedScrollEnabled={true}
-      className="bg-white2 dark:bg-darkGrey"
+      className="bg-darkWhite dark:bg-darkGrey"
     >
       <Profile
         data={data}

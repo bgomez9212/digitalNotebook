@@ -90,10 +90,10 @@ export default function RatingModal() {
     <View className="flex-1 items-center justify-center bg-white dark:bg-darkGrey pb-10">
       <View className="w-[80%]">
         <Text className="text-gold pb-3">{championships}</Text>
-        <Text className="text-grey dark:text-white text-xl pb-3">
+        <Text className="text-grey dark:text-darkWhite text-xl pb-3">
           {participants}
         </Text>
-        <Text className="text-grey dark:text-white pb-3">
+        <Text className="text-grey dark:text-darkWhite pb-3">
           From {promotion} {event_title}
         </Text>
         <View
@@ -144,7 +144,7 @@ export default function RatingModal() {
             <Picker.Item label="5" value={5} color={dropdownFontColor} />
           </Picker>
           <View className="py-4">
-            <Text className="text-grey dark:text-white">
+            <Text className="text-grey dark:text-darkWhite">
               Rate this match {rating} star
               {rating === 0 ? "s" : rating <= 1 ? "" : "s"}
             </Text>

@@ -16,9 +16,9 @@ export default function Profile({ data, isError, isLoading, profileType }) {
   return (
     <ScrollView
       nestedScrollEnabled={true}
-      className="bg-white2 dark:bg-darkGrey"
+      className="bg-darkWhite dark:bg-darkGrey"
     >
-      <View className="flex-1 bg-white2 dark:bg-darkGrey items-center pt-5">
+      <View className="flex-1 bg-darkWhite dark:bg-darkGrey items-center pt-5">
         <Toggle
           option1={"Promotions"}
           option2={"Ratings"}

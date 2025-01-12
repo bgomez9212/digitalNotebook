@@ -48,7 +48,7 @@ export default function ProfilePieChart({ data, sortBy, profileType }) {
                   style={{ backgroundColor: promotion.color }}
                 ></View>
                 <Text
-                  className="text-grey dark:text-white"
+                  className="text-grey dark:text-darkWhite"
                   key={promotion.promotionName}
                 >
                   {`${promotion.promotionName} (${promotion.matchCount})`}
@@ -59,7 +59,7 @@ export default function ProfilePieChart({ data, sortBy, profileType }) {
         ) : null}
 
         {!data.length && (
-          <Text className="text-grey dark:text-white">
+          <Text className="text-grey dark:text-darkWhite">
             This pie chart will fill when you have rated some matches
           </Text>
         )}
@@ -104,7 +104,7 @@ export default function ProfilePieChart({ data, sortBy, profileType }) {
                   style={{ backgroundColor: ratingObj.color }}
                 ></View>
                 <Text
-                  className="text-grey dark:text-white"
+                  className="text-grey dark:text-darkWhite"
                   key={ratingObj.rating}
                 >
                   {`${ratingObj.rating} (${ratingObj.matchCount})`}
@@ -115,7 +115,7 @@ export default function ProfilePieChart({ data, sortBy, profileType }) {
         ) : null}
 
         {!data.length && (
-          <Text className="text-grey dark:text-white">
+          <Text className="text-grey dark:text-darkWhite">
             This pie chart will fill when you have rated some matches
           </Text>
         )}

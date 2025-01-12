@@ -17,7 +17,7 @@ export default function BottomModalRow({
       className={`flex flex-row justify-between items-center w-full py-3 ${hideBottomBorder ? "" : "border-b border-lightGrey dark:border-grey"}`}
     >
       <View className="w-[80%]">
-        <Text className="mb-1 text-grey dark:text-white font-medium">
+        <Text className="mb-1 text-grey dark:text-darkWhite font-medium">
           {title}
         </Text>
         <Text className="text-blue font-bold">

@@ -37,7 +37,7 @@ export default function ResetPasswordModal() {
         <View className="flex-1 bg-white dark:bg-darkGrey items-center justify-center">
           {uiState.success ? (
             <View className="items-center justify-center">
-              <Text className="text-grey dark:text-white text-2xl mb-5">
+              <Text className="text-grey dark:text-darkWhite text-2xl mb-5">
                 Email Sent!
               </Text>
               <LandingLink fn={() => router.back()} text={"close"} />

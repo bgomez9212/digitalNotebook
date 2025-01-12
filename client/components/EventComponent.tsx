@@ -69,14 +69,16 @@ export default function EventComponent() {
           source={photoLibrary[event.promotion_name]}
         />
         <View className="mt-8 items-center">
-          <Text className="text-grey dark:text-white text-3xl text-center pb-2 mx-2">
+          <Text className="text-grey dark:text-darkWhite text-3xl text-center pb-2 mx-2">
             {event.title}
           </Text>
-          <Text className="text-grey dark:text-white pb-2">{event.date}</Text>
-          <Text className="text-grey dark:text-white pb-2">
+          <Text className="text-grey dark:text-darkWhite pb-2">
+            {event.date}
+          </Text>
+          <Text className="text-grey dark:text-darkWhite pb-2">
             {event.venue_name}
           </Text>
-          <Text className="text-grey dark:text-white pb-2">
+          <Text className="text-grey dark:text-darkWhite pb-2">
             {event.location}
           </Text>
           <Text

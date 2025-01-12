@@ -175,7 +175,7 @@ export default function AccountInfo() {
 
   return (
     <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
-      <View className="flex-1 bg-white2 dark:bg-darkGrey p-3 items-center justify-between pb-10">
+      <View className="flex-1 bg-darkWhite dark:bg-darkGrey p-3 items-center justify-between pb-10">
         <View>
           <AccountDropdown
             setting={"Username"}
@@ -187,7 +187,7 @@ export default function AccountInfo() {
             }
             display={uiState.showChangeUsername}
           >
-            <Text className="text-grey dark:text-white text-lg">
+            <Text className="text-grey dark:text-darkWhite text-lg">
               {username}
             </Text>
             <StyledTextInput
@@ -237,7 +237,7 @@ export default function AccountInfo() {
               })
             }
           >
-            <Text className="text-grey dark:text-white text-lg">
+            <Text className="text-grey dark:text-darkWhite text-lg">
               {user.email}
             </Text>
             <StyledTextInput
@@ -370,7 +370,9 @@ export default function AccountInfo() {
             )}
           </AccountDropdown>
           <View className="flex flex-row items-center justify-between px-2 bg-white dark:bg-grey py-2 rounded-md">
-            <Text className="text-grey dark:text-white font-bold">Theme</Text>
+            <Text className="text-grey dark:text-darkWhite font-bold">
+              Theme
+            </Text>
             <Toggle
               option1={"Light"}
               option2={"Dark"}

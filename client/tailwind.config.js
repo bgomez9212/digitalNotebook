@@ -22,7 +22,7 @@ module.exports = {
       yellow: "#CC9900",
       orange: "#FF6600",
       red: "#FF0000",
-      white2: "#f2f2f2",
+      darkWhite: "#F2F2F2",
       placeholder: "#45414b",
     },
   },

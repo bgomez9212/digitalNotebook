@@ -66,7 +66,7 @@ export default function SearchDropdown({ searchParam, setSearchParam }) {
           onPress={handleClick}
         >
           <Text
-            className={`${searchParam ? "text-grey dark:text-white" : "text-placeholder"} font-medium`}
+            className={`${searchParam ? "text-grey dark:text-darkWhite" : "text-placeholder"} font-medium`}
           >
             {searchParam?.charAt(0).toUpperCase() + searchParam?.slice(1) ||
               "Search By"}
@@ -91,7 +91,7 @@ export default function SearchDropdown({ searchParam, setSearchParam }) {
             }}
             onPress={() => selectSearchParam(dropdownOption)}
           >
-            <Text className="text-grey dark:text-white text-center">
+            <Text className="text-grey dark:text-darkWhite text-center">
               {dropdownOption.charAt(0).toUpperCase() +
                 dropdownOption?.slice(1)}
             </Text>

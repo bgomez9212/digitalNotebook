@@ -22,7 +22,7 @@ export default function TopRatedMatchesTable() {
     return (
       <View className="bg-white dark:bg-grey w-[95%] my-12 rounded-md px-2">
         <View className="items-center justify-center py-3 border-b border-lightGrey dark:border-darkGrey ">
-          <Text className="text-grey dark:text-white font-bold text-lg">
+          <Text className="text-grey dark:text-darkWhite font-bold text-lg">
             Top Matches of the Last 30 Days
           </Text>
         </View>
@@ -30,7 +30,7 @@ export default function TopRatedMatchesTable() {
           {isFetching ? (
             <ActivityIndicator color="#477CB9" />
           ) : (
-            <Text className="text-grey dark:text-white">
+            <Text className="text-grey dark:text-darkWhite">
               Error getting the top matches
             </Text>
           )}
@@ -42,7 +42,7 @@ export default function TopRatedMatchesTable() {
   return (
     <View className="bg-white dark:bg-grey w-[95%] my-12 rounded-md px-2">
       <View className=" py-3 border-b border-lightGrey dark:border-darkGrey">
-        <Text className=" text-grey dark:text-white font-bold text-lg">
+        <Text className=" text-grey dark:text-darkWhite font-bold text-lg">
           Top Matches
         </Text>
       </View>

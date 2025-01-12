@@ -25,7 +25,7 @@ export default function MatchRow({
       >
         <View className="flex flex-col w-full">
           <View className="py-2">
-            <Text className="text-grey dark:text-white text-xl font-bold">
+            <Text className="text-grey dark:text-darkWhite text-xl font-bold">
               {match.participants}
             </Text>
             {match.championships && (
@@ -48,10 +48,10 @@ export default function MatchRow({
           </View>
           {match.event_title && (
             <View className="w-full flex-row justify-between items-start pt-2">
-              <Text className="text-grey dark:text-white italic w-1/2">
+              <Text className="text-grey dark:text-darkWhite italic w-1/2">
                 {match.event_title}
               </Text>
-              <Text className="text-grey dark:text-white italic">
+              <Text className="text-grey dark:text-darkWhite italic">
                 {match.date}
               </Text>
             </View>
@@ -75,7 +75,7 @@ export default function MatchRow({
       >
         <View className="flex flex-col w-full">
           <View className="pb-2">
-            <Text className="text-grey dark:text-white text-xl font-bold">
+            <Text className="text-grey dark:text-darkWhite text-xl font-bold">
               {match.participants}
             </Text>
           </View>
@@ -98,10 +98,10 @@ export default function MatchRow({
           </View>
           {match.event_title && (
             <View className="w-full flex-row items-start pb-2">
-              <Text className="text-grey dark:text-white italic flex-1">
+              <Text className="text-grey dark:text-darkWhite italic flex-1">
                 {match.event_title}
               </Text>
-              <Text className="text-grey dark:text-white italic flex-1 text-right">
+              <Text className="text-grey dark:text-darkWhite italic flex-1 text-right">
                 {match.date}
               </Text>
             </View>
@@ -132,7 +132,7 @@ export default function MatchRow({
             </View>
           )}
           <View className="py-2">
-            <Text className="text-grey dark:text-white text-lg">
+            <Text className="text-grey dark:text-darkWhite text-lg">
               {match.participants}
             </Text>
           </View>

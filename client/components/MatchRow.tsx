@@ -18,7 +18,7 @@ export default function MatchRow({
         key={match.match_id}
         onPress={() =>
           router.navigate({
-            pathname: "../../RatingModal",
+            pathname: "/RatingModal",
             params: match,
           })
         }
@@ -68,7 +68,7 @@ export default function MatchRow({
         key={match.match_id}
         onPress={() =>
           router.navigate({
-            pathname: "../../RatingModal",
+            pathname: "/RatingModal",
             params: match,
           })
         }
@@ -118,7 +118,7 @@ export default function MatchRow({
         key={match.match_id}
         onPress={() =>
           router.navigate({
-            pathname: "../../RatingModal",
+            pathname: "/RatingModal",
             params: match,
           })
         }

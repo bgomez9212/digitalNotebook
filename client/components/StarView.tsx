@@ -29,11 +29,13 @@ export default function StarView({
             </View>
           </MaskedView>
         </View>
-        <Text className="text-grey dark:text-white text-right">{`${rating} (${rating_count})`}</Text>
+        <Text className="text-grey dark:text-darkWhite text-right">{`${rating} (${rating_count})`}</Text>
       </View>
     ) : (
       <View className="flex items-end">
-        <Text className="text-grey dark:text-white pt-1">No ratings yet</Text>
+        <Text className="text-grey dark:text-darkWhite pt-1">
+          No ratings yet
+        </Text>
       </View>
     );
   }
@@ -56,7 +58,7 @@ export default function StarView({
               </View>
             </MaskedView>
           </View>
-          <Text className="text-grey dark:text-white pt-1 pl-1">{`${Number(rating) === 0 ? "Dud" : rating}`}</Text>
+          <Text className="text-grey dark:text-darkWhite pt-1 pl-1">{`${Number(rating) === 0 ? "Dud" : rating}`}</Text>
         </View>
       )
     );

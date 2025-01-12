@@ -21,7 +21,7 @@ export default function HorizontalScrollElement({
         <Text className="text-white text-lg font-medium">{sortParam}</Text>
         {numOfParams > 1 && (
           <View className="bg-white dark:bg-grey ml-1 p-1 px-2 rounded-xl">
-            <Text className="text-grey dark:text-white text-xs font-medium">
+            <Text className="text-grey dark:text-darkWhite text-xs font-medium">
               {numOfParams}
             </Text>
           </View>

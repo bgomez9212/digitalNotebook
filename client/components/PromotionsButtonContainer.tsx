@@ -22,7 +22,7 @@ export default function PromotionsButtonsContainer() {
         {isFetching ? (
           <ActivityIndicator color="#477CB9" />
         ) : (
-          <Text className="text-grey dark:text-white">
+          <Text className="text-grey dark:text-darkWhite">
             There was a problem getting promotions
           </Text>
         )}
@@ -33,7 +33,7 @@ export default function PromotionsButtonsContainer() {
   return (
     <View className="bg-white dark:bg-grey w-[95%] rounded-md px-2 mb-12">
       <View className="justify-center py-3 border-b border-lightGrey dark:border-darkGrey">
-        <Text className="text-grey dark:text-white font-bold text-lg">
+        <Text className="text-grey dark:text-darkWhite font-bold text-lg">
           Promotions
         </Text>
       </View>
@@ -50,8 +50,12 @@ export default function PromotionsButtonsContainer() {
         >
           <View className="py-2 flex flex-row w-full items-center justify-between">
             <View className="w-1/2">
-              <Text className="text-xl font-bold">{promotion.full_name}</Text>
-              <Text className="italic pt-1">{promotion.count} events</Text>
+              <Text className="text-xl font-bold text-grey dark:text-darkWhite">
+                {promotion.full_name}
+              </Text>
+              <Text className="italic pt-1 dark:text-darkWhite">
+                {promotion.count} events
+              </Text>
             </View>
             <View className="h-14">
               <Image

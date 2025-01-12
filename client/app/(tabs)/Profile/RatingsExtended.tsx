@@ -326,7 +326,7 @@ export default function RatingsExtended() {
   if (isError) {
     return (
       <View className="flex-1 bg-white dark:bg-darkGrey justify-center items-center">
-        <Text className="dark:text-white text-center">
+        <Text className="dark:text-darkWhite text-center">
           {`There seems to be an error. Please try again later. ${ratingsError}`}
         </Text>
       </View>
@@ -365,7 +365,7 @@ export default function RatingsExtended() {
             onPress={handlePresentModalPress}
             className="flex items-center justify-center pr-2 border-r border-lightGrey dark:border-grey"
           >
-            <Text className="text-grey dark:text-white text-lg font-medium">
+            <Text className="text-grey dark:text-darkWhite text-lg font-medium">
               All Filters
             </Text>
           </TouchableOpacity>
@@ -373,7 +373,7 @@ export default function RatingsExtended() {
             onPress={resetFilters}
             className="flex items-center justify-center pl-2"
           >
-            <Text className="text-grey dark:text-white text-lg font-medium">
+            <Text className="text-grey dark:text-darkWhite text-lg font-medium">
               Reset
             </Text>
           </TouchableOpacity>
@@ -385,7 +385,7 @@ export default function RatingsExtended() {
         </View>
       ) : data?.matches.length === 0 ? (
         <View className="flex-1 bg-white dark:bg-darkGrey justify-center items-center">
-          <Text className="dark:text-white text-center">
+          <Text className="dark:text-darkWhite text-center">
             No matches match your search. {"\n"} Please adjust your parameters
             and try again.
           </Text>
@@ -428,7 +428,7 @@ export default function RatingsExtended() {
                 style={{ marginRight: 10 }}
               />
             )}
-            <Text className="text-grey dark:text-white text-lg font-semibold">
+            <Text className="text-grey dark:text-darkWhite text-lg font-semibold">
               {modalUtilities.modalDisplay !== "main"
                 ? `${modalUtilities.modalDisplay}`
                 : "Filters"}

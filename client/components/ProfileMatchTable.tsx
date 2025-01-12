@@ -14,11 +14,11 @@ export default function ProfileMatchTable({
   return (
     <View>
       {profileType === "user" ? (
-        <Text className="text-xl text-grey dark:text-white underline my-5 font-medium text-center">
+        <Text className="text-xl text-grey dark:text-darkWhite underline my-5 font-medium text-center">
           Most Recently Rated
         </Text>
       ) : (
-        <Text className="text-xl text-grey dark:text-white underline my-5 font-medium text-center">
+        <Text className="text-xl text-grey dark:text-darkWhite underline my-5 font-medium text-center">
           Most Recent Matches
         </Text>
       )}
@@ -28,7 +28,7 @@ export default function ProfileMatchTable({
         ) : isLoading ? (
           <ActivityIndicator />
         ) : !data.matches.length ? (
-          <Text className="text-grey dark:text-white text-center">
+          <Text className="text-grey dark:text-darkWhite text-center">
             You haven't rated any matches yet.
           </Text>
         ) : (

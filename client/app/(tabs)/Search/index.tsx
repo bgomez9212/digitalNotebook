@@ -41,7 +41,7 @@ export default function Search() {
 
   return (
     <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
-      <View className="flex-1 bg-white2 dark:bg-darkGrey w-full pt-12 items-center">
+      <View className="flex-1 bg-darkWhite dark:bg-darkGrey w-full pt-12 items-center">
         <View className="w-[90%] mb-5 z-50">
           <View style={{ height: 40, zIndex: 40, marginTop: 10 }}>
             <SearchDropdown

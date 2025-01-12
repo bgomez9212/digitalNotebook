@@ -56,10 +56,10 @@ export default function EventRow({
       >
         <View className="py-2 flex flex-row w-full items-center justify-between">
           <View className="w-3/4">
-            <Text className="text-grey dark:text-white text-xl font-bold">
+            <Text className="text-grey dark:text-darkWhite text-xl font-bold">
               {event.promotion_name} {event.title}
             </Text>
-            <Text className="text-grey dark:text-white font-medium italic pt-1">
+            <Text className="text-grey dark:text-darkWhite font-medium italic pt-1">
               {event.date}
             </Text>
             {event.avg_rating ? (
@@ -96,14 +96,14 @@ export default function EventRow({
     return (
       <TouchableOpacity
         onPress={openEvent}
-        className="w-full flex flex-row py-2 border-lightGrey dark:border-darkGrey border-b"
+        className={`w-full flex flex-row py-2 border-lightGrey dark:border-grey ${hideBorder ? "" : "border-b"}`}
       >
         <View className="py-2 flex flex-row w-full items-center justify-between">
           <View className="w-3/4">
-            <Text className="text-grey dark:text-white text-xl font-bold">
+            <Text className="text-grey dark:text-darkWhite text-xl font-bold">
               {event.title}
             </Text>
-            <Text className="text-grey dark:text-white font-medium italic pt-1">
+            <Text className="text-grey dark:text-darkWhite font-medium italic pt-1">
               {event.date}
             </Text>
           </View>

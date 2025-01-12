@@ -27,7 +27,7 @@ export default function Promotions() {
   if (isError) {
     return (
       <View className="flex-1 bg-white dark:bg-darkGrey justify-center items-center">
-        <Text className="text-grey dark:text-white">
+        <Text className="text-grey dark:text-darkWhite">
           There seems to be a problem
         </Text>
       </View>

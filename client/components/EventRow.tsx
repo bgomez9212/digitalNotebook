@@ -96,7 +96,7 @@ export default function EventRow({
     return (
       <TouchableOpacity
         onPress={openEvent}
-        className="w-full flex flex-row py-2 border-lightGrey dark:border-darkGrey border-b"
+        className={`w-full flex flex-row py-2 border-lightGrey dark:border-grey ${hideBorder ? "" : "border-b"}`}
       >
         <View className="py-2 flex flex-row w-full items-center justify-between">
           <View className="w-3/4">

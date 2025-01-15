@@ -43,26 +43,23 @@ export default function ResetPasswordModal() {
               <LandingLink fn={() => router.back()} text={"close"} />
             </View>
           ) : (
-            <View className="items-center justify-center">
-              <View className="w-3/4 pb-2">
-                <Text className="text-center">
-                  Enter your email and we'll send password reset instructions
-                </Text>
-              </View>
-              <View>
-                <StyledTextInput
-                  inputValue={email}
-                  label={"email"}
-                  changeFn={(text) => setEmail(text)}
-                />
-                <LandingButton
-                  fn={resetPassword}
-                  text={"Reset Password"}
-                  disabled={false}
-                  loading={uiState.loading}
-                />
-              </View>
-              <View className="pt-2">
+            <View className="w-3/4 justify-center">
+              <Text className="text-center">
+                Enter your email and we'll send password reset instructions
+              </Text>
+              <StyledTextInput
+                inputValue={email}
+                label={"email"}
+                changeFn={(text) => setEmail(text)}
+              />
+              <LandingButton
+                fn={resetPassword}
+                text={"Reset Password"}
+                disabled={false}
+                loading={uiState.loading}
+                width="full"
+              />
+              <View className="w-full items-center">
                 <LandingLink fn={() => router.back()} text={"cancel"} />
               </View>
             </View>

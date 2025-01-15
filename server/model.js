@@ -500,7 +500,8 @@ module.exports = {
             wrestlers.name as name,
             ts_rank(to_tsvector(wrestlers.name), to_tsquery($1)) as rank,
             AVG(ratings.rating) AS rating,
-            COUNT(ratings.rating) AS rating_count
+            COUNT(ratings.rating) AS rating_count,
+            COUNT(matches.id) AS match_count
           FROM
             wrestlers
           LEFT JOIN participants ON participants.wrestler_id = wrestlers.id

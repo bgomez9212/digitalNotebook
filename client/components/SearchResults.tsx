@@ -28,6 +28,7 @@ export default function SearchResults({ data, error }) {
       </View>
     );
   }
+
   if (data.results.length && data.search_param === "events") {
     return (
       <FlatList
@@ -44,6 +45,7 @@ export default function SearchResults({ data, error }) {
       />
     );
   }
+
   if (
     data.results.length &&
     (data.search_param === "championships" || data.search_param === "matches")
@@ -77,6 +79,7 @@ export default function SearchResults({ data, error }) {
       />
     );
   }
+
   if (data.results.length && data.search_param === "wrestlers") {
     return (
       <FlatList

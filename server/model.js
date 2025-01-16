@@ -420,7 +420,7 @@ module.exports = {
           wrestlers.name AS wrestler_name,
           participants.team AS participants,
           championships.name AS championship_name,
-          ROUND(AVG(ratings.rating)::numeric, 2) as rating,
+          ROUND(AVG(ratings.rating)::numeric, 2) as community_rating,
           (SELECT COUNT(*) FROM ratings WHERE ratings.match_id = participants.match_id) AS rating_count
           FROM participants
           JOIN wrestlers ON participants.wrestler_id = wrestlers.id

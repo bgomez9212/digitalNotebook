@@ -32,4 +32,6 @@ router.delete("/users", controller.deleteUser);
 // user_id - query param
 router.get("/wrestlers/:wrestler_id", controller.getWrestlerMatches);
 
+router.get("/info", controller.getInfo);
+
 module.exports = router;

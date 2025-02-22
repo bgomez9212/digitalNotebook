@@ -817,4 +817,17 @@ module.exports = {
     };
     return results;
   },
+  getInfo: async () => {
+    try {
+      const { rows } = await pool.query(
+        `SELECT
+          ( SELECT COUNT(id) FROM events ) AS events,
+          ( SELECT COUNT(id) FROM wrestlers ) AS wrestlers,
+          ( SELECT count(id) FROM matches ) AS matches`
+      );
+      return rows;
+    } catch (err) {
+      throw err;
+    }
+  },
 };

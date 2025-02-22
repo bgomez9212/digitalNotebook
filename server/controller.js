@@ -157,4 +157,12 @@ module.exports = {
       res.send(err).status(500);
     }
   },
+  getInfo: async (req, res) => {
+    try {
+      const results = await model.getInfo();
+      res.send(results).status(200);
+    } catch (err) {
+      res.send(err).status(500);
+    }
+  },
 };

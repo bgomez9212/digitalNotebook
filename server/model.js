@@ -421,7 +421,8 @@ module.exports = {
           participants.team AS participants,
           championships.name AS championship_name,
           ROUND(AVG(ratings.rating)::numeric, 2) as community_rating,
-          (SELECT COUNT(*) FROM ratings WHERE ratings.match_id = participants.match_id) AS rating_count
+          (SELECT COUNT(*) FROM ratings WHERE ratings.match_id = participants.match_id) AS rating_count,
+          (SELECT rating FROM ratings WHERE user_id = $2 AND match_id = participants.match_id) AS user_rating
           FROM participants
           JOIN wrestlers ON participants.wrestler_id = wrestlers.id
           JOIN matches ON matches.id = participants.match_id
@@ -437,7 +438,7 @@ module.exports = {
             )
           GROUP BY participants.match_id, matches.event_id, wrestlers.name, participants.team, championships.name, rating_count, events.title, events.date, promotions.name
           ORDER BY date DESC, match_id, team;`,
-          [search_text]
+          [search_text, user_id]
         );
         const data = {
           search_param: search_param,

@@ -87,9 +87,11 @@ export default function MatchRow({
             </View>
           )}
           <View
-            className={`flex flex-row ${match.user_rating !== null ? "justify-between" : "justify-end"} py-2`}
+            className={`flex flex-row ${match.user_rating ? "justify-between" : "justify-end"} py-2`}
           >
-            <StarView display={"User"} rating={match.user_rating} />
+            {match.user_rating && (
+              <StarView display={"User"} rating={match.user_rating} />
+            )}
             <StarView
               display="Total"
               rating={match.community_rating}

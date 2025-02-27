@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "test": "jest --coverage",
     "server": "npx nodemon --watch . server/index.js"
   },
   "author": "",
@@ -17,5 +17,8 @@
     "nodemon": "^3.1.0",
     "pg": "^8.11.3",
     "pg-pool": "^3.6.1"
+  },
+  "devDependencies": {
+    "jest": "^29.7.0"
   }
 }

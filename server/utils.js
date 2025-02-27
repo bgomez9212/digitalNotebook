@@ -13,6 +13,7 @@ function parseParticipantArr(arr) {
 }
 
 function formatData(obj) {
+  console.log(obj);
   const matchObj = { ...obj };
   matchObj.championships = obj.championships.join(" & ");
   matchObj.participants = obj.participants

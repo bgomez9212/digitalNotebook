@@ -128,7 +128,7 @@ function getPieChartDataPromotion(data) {
 }
 
 function getPieChartDataRatings(data, ratingType) {
-  if (!data?.length) {
+  if (!data?.length || !ratingType) {
     return [
       {
         rating: "you have not rated matches",
@@ -139,20 +139,18 @@ function getPieChartDataRatings(data, ratingType) {
   }
   let ratingCount = { 0: 0, 1: 0, 2: 0, 3: 0, 4: 0, 5: 0 };
   for (let matchObj of data) {
-    if (matchObj[ratingType] !== null) {
-      if (matchObj[ratingType] < 1) {
-        ratingCount["0"] += 1;
-      } else if (matchObj[ratingType] < 2) {
-        ratingCount["1"] += 1;
-      } else if (matchObj[ratingType] < 3) {
-        ratingCount["2"] += 1;
-      } else if (matchObj[ratingType] < 4) {
-        ratingCount["3"] += 1;
-      } else if (matchObj[ratingType] < 5) {
-        ratingCount["4"] += 1;
-      } else {
-        ratingCount["5"] += 1;
-      }
+    if (matchObj[ratingType] < 1) {
+      ratingCount["0"] += 1;
+    } else if (matchObj[ratingType] < 2) {
+      ratingCount["1"] += 1;
+    } else if (matchObj[ratingType] < 3) {
+      ratingCount["2"] += 1;
+    } else if (matchObj[ratingType] < 4) {
+      ratingCount["3"] += 1;
+    } else if (matchObj[ratingType] < 5) {
+      ratingCount["4"] += 1;
+    } else {
+      ratingCount["5"] += 1;
     }
   }
 

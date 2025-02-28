@@ -196,58 +196,16 @@ describe("getPieChartDataPromotion", () => {
     expect(
       getPieChartDataPromotion([
         {
-          match_id: 671,
-          event_id: 131,
-          event_title: "Battle Of The Belts XII",
           promotion: "AEW",
-          participants:
-            "Claudio Castagnoli, PAC & Wheeler Yuta vs. Alex Reynolds, Evil Uno & John Silver",
-          championships: "AEW World Trios Title",
-          date: "2024-10-19",
-          user_rating: 2,
-          community_rating: "2.00",
-          rating_count: 1,
-          rating_date: "2025-02-24T08:00:00.000Z",
         },
         {
-          match_id: 605,
-          event_id: 120,
-          event_title: "NXT #753",
           promotion: "WWE",
-          participants: "Roxanne Perez vs. Giulia",
-          championships: "WWE NXT Women's Title",
-          date: "2023-10-01",
-          user_rating: 0,
-          community_rating: "0.00",
-          rating_count: 1,
-          rating_date: "2024-11-21T08:00:00.000Z",
         },
         {
-          match_id: 621,
-          event_id: 123,
-          event_title: "Super Viernes",
           promotion: "CMLL",
-          participants:
-            "Mercurio, Pequeno Olimpico & Pequeno Violencia vs. Angelito, Kaligua & Pequeno Magia",
-          championships: "",
-          date: "2023-10-04",
-          user_rating: 1,
-          community_rating: "1.00",
-          rating_count: 1,
-          rating_date: "2024-11-21T08:00:00.000Z",
         },
         {
-          match_id: 679,
-          event_id: 132,
-          event_title: "Dynamite #263",
           promotion: "AEW",
-          participants: "Christian Cage vs. Jay White",
-          championships: "",
-          date: "2024-10-16",
-          user_rating: 4,
-          community_rating: "4.00",
-          rating_count: 1,
-          rating_date: "2024-11-11T08:00:00.000Z",
         },
       ])
     ).toStrictEqual([
@@ -265,6 +223,86 @@ describe("getPieChartDataPromotion", () => {
         promotionName: "CMLL",
         matchCount: 1,
         color: "#003f91",
+      },
+    ]);
+  });
+});
+
+describe("getPieChartDataRatings", () => {
+  test("returns array indicating there is no data", () => {
+    expect(getPieChartDataRatings([])).toStrictEqual([
+      {
+        rating: "you have not rated matches",
+        matchCount: 1,
+        color: "white",
+      },
+    ]);
+  });
+  test("returns expected data", () => {
+    expect(
+      getPieChartDataRatings(
+        [
+          {
+            user_rating: 0,
+            community_rating: "0.00",
+          },
+          {
+            user_rating: 1,
+            community_rating: "1.00",
+          },
+          {
+            user_rating: 2,
+            community_rating: "2.00",
+          },
+          {
+            user_rating: 3,
+            community_rating: "3.00",
+          },
+          {
+            user_rating: 4,
+            community_rating: "4.00",
+          },
+          {
+            user_rating: 5,
+            community_rating: "5.00",
+          },
+          {
+            user_rating: 3,
+            community_rating: "3.00",
+          },
+        ],
+        "user_rating"
+      )
+    ).toStrictEqual([
+      {
+        rating: "0",
+        matchCount: 1,
+        color: "#222222",
+      },
+      {
+        rating: "1",
+        matchCount: 1,
+        color: "#FF0000",
+      },
+      {
+        rating: "2",
+        matchCount: 1,
+        color: "#FF6600",
+      },
+      {
+        rating: "3",
+        matchCount: 2,
+        color: "#CC9900",
+      },
+      {
+        rating: "4",
+        matchCount: 1,
+        color: "#669900",
+      },
+      {
+        rating: "5",
+        matchCount: 1,
+        color: "#119900",
       },
     ]);
   });

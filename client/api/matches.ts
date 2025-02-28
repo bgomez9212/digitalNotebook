@@ -1,6 +1,6 @@
 import axios from "axios";
 
-export async function getTopMatches(numOfMatches: number, uid: string) {
+export async function getTopMatches(uid: string, numOfMatches?: number) {
   return axios
     .get(`/matches/topRated`, {
       params: {

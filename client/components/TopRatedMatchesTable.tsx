@@ -15,7 +15,7 @@ export default function TopRatedMatchesTable() {
     data: matches,
   } = useQuery({
     queryKey: ["topMatches"],
-    queryFn: () => getTopMatches(5, uid),
+    queryFn: () => getTopMatches(uid),
   });
 
   if (isFetching || error) {

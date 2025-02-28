@@ -12,7 +12,7 @@ export default function RecentEventTable() {
     data: events,
   } = useQuery({
     queryKey: ["recentEvents"],
-    queryFn: () => getRecentEvents(5),
+    queryFn: () => getRecentEvents(),
   });
 
   if (isPending || error) {

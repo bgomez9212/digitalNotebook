@@ -62,7 +62,7 @@ module.exports = {
     eventInfo[0].matches = parseMatchData(matches);
     return eventInfo;
   },
-  getRecentEvents: async (number) => {
+  getRecentEvents: async (number = 5) => {
     const { rows: results } = await pool.query(
       `
       SELECT
@@ -89,7 +89,7 @@ module.exports = {
     );
     return results;
   },
-  getTopRatedMatches: async (number, user_id) => {
+  getTopRatedMatches: async (number = 5, user_id) => {
     let today = new Date();
     let lastMonth = new Date(today.setDate(today.getDate() - 30));
     try {

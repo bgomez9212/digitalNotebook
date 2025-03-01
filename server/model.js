@@ -194,7 +194,7 @@ module.exports = {
     );
     return results;
   },
-  getSearchResults: async (search_param, search_text, user_id) => {
+  getSearchResults: async (search_param, query, user_id) => {
     try {
       if (search_param === "events") {
         const { rows: results } = await pool.query(
@@ -218,7 +218,7 @@ module.exports = {
           GROUP BY events.id, events.title, events.date, venues.name, promotions.name
           ORDER BY events.date DESC;
           `,
-          [search_text]
+          [query]
         );
         const data = { search_param: search_param, results: results };
         return data;
@@ -244,14 +244,14 @@ module.exports = {
           WHERE promotions.name ILIKE $1
           GROUP BY events.id, venues.name, promotions.name
           ORDER BY date DESC`,
-          [search_text]
+          [query]
         );
         const data = { search_param: search_param, results: events };
         return data;
       }
       if (search_param === "championships") {
-        if (search_text.indexOf("’") > -1) {
-          search_text = search_text.split("’").join("'");
+        if (query.indexOf("’") > -1) {
+          query = query.split("’").join("'");
         }
         const { rows: results } = await pool.query(
           `SELECT
@@ -280,7 +280,7 @@ module.exports = {
             )
           GROUP BY participants.match_id, matches.event_id, wrestlers.name, participants.team, championships.name, rating_count, events.title, events.date, promotions.name
           ORDER BY date DESC, match_id, team;`,
-          [search_text, user_id]
+          [query, user_id]
         );
         const data = {
           search_param: search_param,
@@ -289,7 +289,7 @@ module.exports = {
         return data;
       }
       if (search_param === "matches") {
-        const wrestlersArr = search_text
+        const wrestlersArr = query
           .split(",")
           .map((wrestler) => wrestler.trim())
           .map((wrestler) => `%${wrestler}%`);
@@ -335,7 +335,7 @@ module.exports = {
         return data;
       }
       if (search_param === "wrestlers") {
-        const wrestlerQuery = search_text.split(" ").join("|");
+        const wrestlerQuery = query.split(" ").join("|");
         const { rows: results } = await pool.query(
           `
           SELECT

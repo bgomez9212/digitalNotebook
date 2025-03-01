@@ -16,7 +16,7 @@ router.get("/ratings/:user_id", controller.getUsersRatedMatches);
 router.post("/ratings/:match_id", controller.postRating);
 // body includes user_id
 router.delete("/ratings/:match_id", controller.deleteUserRating);
-// query params - search_param, search_text, user_id
+// query params - search_param, query, user_id
 router.get("/search", controller.getSearchResults);
 
 router.get("/promotions", controller.getPromotions);

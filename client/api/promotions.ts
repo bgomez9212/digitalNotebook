@@ -5,7 +5,7 @@ export async function getPromotion(promotionName) {
     .get(`/search`, {
       params: {
         search_param: "promotions",
-        search_text: promotionName,
+        query: promotionName,
       },
       baseURL: process.env.SERVER,
     })

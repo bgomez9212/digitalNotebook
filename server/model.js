@@ -241,7 +241,7 @@ module.exports = {
               JOIN ratings ON matches.id = ratings.match_id
               GROUP BY event_id
           ) AS ratings ON events.id = ratings.event_id
-          WHERE promotions.name ILIKE $1
+          WHERE promotions.name ILIKE $1 OR promotions.full_name ILIKE $1
           GROUP BY events.id, venues.name, promotions.name
           ORDER BY date DESC`,
           [query]

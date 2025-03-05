@@ -19,3 +19,5 @@ app.use("/api", router);
 app.listen(process.env.PORT, "0.0.0.0", () => {
   console.log(`Server running`);
 });
+
+module.exports = app;

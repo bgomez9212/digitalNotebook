@@ -9,7 +9,7 @@ export async function getEvent(eventId, uid) {
     .then((res) => res.data);
 }
 
-export async function getRecentEvents(numOfResults) {
+export async function getRecentEvents(numOfResults?: number) {
   return axios
     .get(`/events/recent`, {
       params: { number: numOfResults },

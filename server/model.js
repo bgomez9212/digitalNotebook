@@ -1,172 +1,14 @@
 const pool = require("./db.js");
 
-function parseParticipantArr(arr) {
-  let str = "";
-  for (let i = 0; i < arr.length; i++) {
-    if (i === arr.length - 1) {
-      str += `${arr[i]}`;
-    } else if (i === arr.length - 2) {
-      str += `${arr[i]} & `;
-    } else {
-      str += `${arr[i]}, `;
-    }
-  }
-  return str;
-}
-
-function formatData(obj) {
-  const matchObj = { ...obj };
-  matchObj.championships = obj.championships.join(" & ");
-  matchObj.participants = obj.participants
-    .map((participantsList, i) => parseParticipantArr(participantsList))
-    .join(" vs. ");
-  return matchObj;
-}
-
-function parseMatchData(matchArr) {
-  if (!matchArr.length) {
-    return [];
-  }
-  let matchesArr = [];
-  const matchObj = {
-    match_id: matchArr[0].match_id,
-    event_id: matchArr[0].event_id,
-    event_title: matchArr[0].event_title,
-    promotion: matchArr[0].promotion_name,
-    participants: [],
-    championships: [],
-    date: matchArr[0].date,
-    user_rating: matchArr[0].user_rating,
-    community_rating: matchArr[0].community_rating,
-    rating_count: matchArr[0].rating_count,
-    rating_date: matchArr[0].rating_date,
-  };
-
-  for (const [i, partObj] of matchArr.entries()) {
-    if (partObj.match_id !== matchObj.match_id) {
-      matchesArr.push({ ...matchObj });
-      matchObj.match_id = partObj.match_id;
-      matchObj.event_id = partObj.event_id;
-      matchObj.event_title = partObj.event_title;
-      matchObj.participants = [];
-      matchObj.championships = [];
-      matchObj.date = partObj.date;
-      matchObj.promotion = partObj.promotion_name;
-      matchObj.user_rating = partObj.user_rating;
-      matchObj.community_rating = partObj.community_rating;
-      matchObj.rating_count = partObj.rating_count;
-      matchObj.rating_date = partObj.rating_date;
-    }
-    if (!matchObj.participants[partObj.participants]) {
-      matchObj.participants[partObj.participants] = [];
-    }
-    if (
-      !matchObj.participants[partObj.participants].includes(
-        partObj.wrestler_name
-      )
-    ) {
-      matchObj.participants[partObj.participants].push(partObj.wrestler_name);
-    }
-
-    if (!matchObj.championships.flat().includes(partObj.championship_name)) {
-      matchObj.championships.push(partObj.championship_name);
-    }
-
-    if (i === matchArr.length - 1) {
-      matchesArr.push({ ...matchObj });
-    }
-  }
-
-  return matchesArr.map((match) => formatData(match));
-}
-
-const pieChartColorsPromotions = {
-  AEW: "#C5AB57",
-  AJPW: "#e41c1c",
-  CMLL: "#003f91",
-  DDT: "#bb08f7",
-  "Dragon Gate": "#ff8300",
-  NJPW: "#3da9dc",
-  NOAH: "#049B3C",
-  ROH: "#080404",
-  TNA: "#f0e60d",
-  WWE: "#737474",
-};
-
-const pieChartColorsRatings = {
-  0: "#222222",
-  1: "#FF0000",
-  2: "#FF6600",
-  3: "#CC9900",
-  4: "#669900",
-  5: "#119900",
-};
-
-function getPieChartDataPromotion(data) {
-  if (!data?.length) {
-    return [
-      {
-        promotionName: "you have not rated matches",
-        matchCount: 1,
-        color: "white",
-      },
-    ];
-  }
-  let promotionCount = {};
-  for (let matchObj of data) {
-    if (!promotionCount[matchObj.promotion]) {
-      promotionCount[matchObj.promotion] = 1;
-    } else {
-      promotionCount[matchObj.promotion] += 1;
-    }
-  }
-
-  return Object.keys(promotionCount).map((promotionName) => {
-    return {
-      promotionName: promotionName,
-      matchCount: promotionCount[promotionName],
-      color: pieChartColorsPromotions[promotionName],
-    };
-  });
-}
-
-function getPieChartDataRatings(data, ratingType) {
-  if (!data?.length) {
-    return [
-      {
-        rating: "you have not rated matches",
-        matchCount: 1,
-        color: "white",
-      },
-    ];
-  }
-  let ratingCount = { 0: 0, 1: 0, 2: 0, 3: 0, 4: 0, 5: 0 };
-  for (let matchObj of data) {
-    if (matchObj[ratingType] !== null) {
-      if (matchObj[ratingType] < 1) {
-        ratingCount["0"] += 1;
-      } else if (matchObj[ratingType] < 2) {
-        ratingCount["1"] += 1;
-      } else if (matchObj[ratingType] < 3) {
-        ratingCount["2"] += 1;
-      } else if (matchObj[ratingType] < 4) {
-        ratingCount["3"] += 1;
-      } else if (matchObj[ratingType] < 5) {
-        ratingCount["4"] += 1;
-      } else {
-        ratingCount["5"] += 1;
-      }
-    }
-  }
-
-  return Object.keys(ratingCount).map((rating) => {
-    return {
-      rating: rating,
-      matchCount: ratingCount[rating],
-      color: pieChartColorsRatings[rating],
-    };
-  });
-}
+const {
+  parseParticipantArr,
+  formatData,
+  parseMatchData,
+  pieChartColorsPromotions,
+  pieChartColorsRatings,
+  getPieChartDataPromotion,
+  getPieChartDataRatings,
+} = require("./utils.js");
 
 module.exports = {
   getEvent: async (eventId, user_id) => {
@@ -220,7 +62,7 @@ module.exports = {
     eventInfo[0].matches = parseMatchData(matches);
     return eventInfo;
   },
-  getRecentEvents: async (number) => {
+  getRecentEvents: async (number = 5) => {
     const { rows: results } = await pool.query(
       `
       SELECT
@@ -247,7 +89,7 @@ module.exports = {
     );
     return results;
   },
-  getTopRatedMatches: async (number, user_id) => {
+  getTopRatedMatches: async (number = 5, user_id) => {
     let today = new Date();
     let lastMonth = new Date(today.setDate(today.getDate() - 30));
     try {
@@ -352,7 +194,7 @@ module.exports = {
     );
     return results;
   },
-  getSearchResults: async (search_param, search_text, user_id) => {
+  getSearchResults: async (search_param, query, user_id) => {
     try {
       if (search_param === "events") {
         const { rows: results } = await pool.query(
@@ -376,7 +218,7 @@ module.exports = {
           GROUP BY events.id, events.title, events.date, venues.name, promotions.name
           ORDER BY events.date DESC;
           `,
-          [search_text]
+          [query]
         );
         const data = { search_param: search_param, results: results };
         return data;
@@ -399,17 +241,17 @@ module.exports = {
               JOIN ratings ON matches.id = ratings.match_id
               GROUP BY event_id
           ) AS ratings ON events.id = ratings.event_id
-          WHERE promotions.name ILIKE $1
+          WHERE promotions.name ILIKE $1 OR promotions.full_name ILIKE $1
           GROUP BY events.id, venues.name, promotions.name
           ORDER BY date DESC`,
-          [search_text]
+          [query]
         );
         const data = { search_param: search_param, results: events };
         return data;
       }
       if (search_param === "championships") {
-        if (search_text.indexOf("’") > -1) {
-          search_text = search_text.split("’").join("'");
+        if (query.indexOf("’") > -1) {
+          query = query.split("’").join("'");
         }
         const { rows: results } = await pool.query(
           `SELECT
@@ -438,7 +280,7 @@ module.exports = {
             )
           GROUP BY participants.match_id, matches.event_id, wrestlers.name, participants.team, championships.name, rating_count, events.title, events.date, promotions.name
           ORDER BY date DESC, match_id, team;`,
-          [search_text, user_id]
+          [query, user_id]
         );
         const data = {
           search_param: search_param,
@@ -447,7 +289,7 @@ module.exports = {
         return data;
       }
       if (search_param === "matches") {
-        const wrestlersArr = search_text
+        const wrestlersArr = query
           .split(",")
           .map((wrestler) => wrestler.trim())
           .map((wrestler) => `%${wrestler}%`);
@@ -493,7 +335,7 @@ module.exports = {
         return data;
       }
       if (search_param === "wrestlers") {
-        const wrestlerQuery = search_text.split(" ").join("|");
+        const wrestlerQuery = query.split(" ").join("|");
         const { rows: results } = await pool.query(
           `
           SELECT

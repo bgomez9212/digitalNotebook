@@ -13,7 +13,7 @@
       "backgroundColor": "#ffffff",
       "dark": {
         "backgroundColor": "#000000",
-        "image": "./assets/suplex-logo.png"
+        "image": "./assets/suplex-logo-dark.png"
       }
     },
     "assetBundlePatterns": ["**/*"],

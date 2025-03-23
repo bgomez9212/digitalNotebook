@@ -4,6 +4,7 @@ const cors = require("cors");
 const router = require("./router.js");
 const dotenv = require("dotenv").config();
 const { slowDown } = require("express-slow-down");
+const apiKeyMiddleware = require("./apiKeyMiddleware");
 
 const limiter = slowDown({
   delayAfter: 0,
@@ -13,7 +14,7 @@ const limiter = slowDown({
 // app.use(limiter);
 app.use(cors());
 app.use(express.json());
-
+app.use(apiKeyMiddleware);
 app.use("/api", router);
 
 app.listen(process.env.PORT, "0.0.0.0", () => {

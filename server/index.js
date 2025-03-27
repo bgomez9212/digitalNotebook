@@ -14,13 +14,15 @@ app.use("/*", (req, res) => {
       method: req.method,
       url: `http://localhost:3000/api${req._parsedUrl.pathname}`,
       params: req.query,
+      data: req.body,
     })
       .then((response) => res.json(response.data))
       .catch((err) =>
         res.status(err.response.status).json(err.response.data.error)
       );
   } catch (err) {
-    console.log("an error has occured");
+    console.error(err);
+    res.status(500).json("An internal error has occured");
   }
 });
 

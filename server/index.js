@@ -15,8 +15,10 @@ app.use("/*", (req, res) => {
       url: `http://localhost:3000/api${req._parsedUrl.pathname}`,
       params: req.query,
     })
-      .then((response) => res.send(response.data))
-      .catch((err) => console.error(err));
+      .then((response) => res.json(response.data))
+      .catch((err) =>
+        res.status(err.response.status).json(err.response.data.error)
+      );
   } catch (err) {
     console.log("an error has occured");
   }

@@ -19,7 +19,7 @@ export async function addRating(ratingObj: {
 }) {
   await axios
     .post(
-      `/ratings/${ratingObj.matchId}`,
+      `/matches/${ratingObj.matchId}/ratings`,
       {
         user_id: ratingObj.uid,
         rating: ratingObj.rating,
@@ -35,7 +35,7 @@ export async function deleteRating(ratingInfo: {
   match_id: string;
 }) {
   await axios
-    .delete(`/ratings/${ratingInfo.match_id}`, {
+    .delete(`/matches/${ratingInfo.match_id}/ratings`, {
       data: {
         user_id: ratingInfo.uid,
       },

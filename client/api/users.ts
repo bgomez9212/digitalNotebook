@@ -11,7 +11,7 @@ export async function getUserId(userName) {
 
 export async function getUserRatings(userUid) {
   return axios
-    .get(`/ratings/${userUid}`, {
+    .get(`/users/${userUid}/ratings`, {
       baseURL: process.env.SERVER,
     })
     .then((res) => res.data);

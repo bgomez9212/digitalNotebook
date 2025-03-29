@@ -11,7 +11,7 @@ app.use("/*", (req, res) => {
   try {
     axios({
       method: req.method,
-      url: `http://localhost:3000/api${req._parsedUrl.pathname}`,
+      url: `https://${process.env.API_URL}${req._parsedUrl.pathname}`,
       params: { ...req.query, apiKey: process.env.API_KEY },
       data: req.body,
     })

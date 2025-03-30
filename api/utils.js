@@ -88,6 +88,7 @@ const pieChartColorsPromotions = {
   ROH: "#080404",
   TNA: "#f0e60d",
   WWE: "#737474",
+  none: "FFFFFF",
 };
 
 const pieChartColorsRatings = {
@@ -103,9 +104,9 @@ function getPieChartDataPromotion(data) {
   if (!data?.length) {
     return [
       {
-        promotionName: "you have not rated matches",
+        promotionName: "none",
         matchCount: 1,
-        color: "white",
+        color: "#FFFFFF",
       },
     ];
   }
@@ -131,9 +132,9 @@ function getPieChartDataRatings(data, ratingType) {
   if (!data?.length || !ratingType) {
     return [
       {
-        rating: "you have not rated matches",
+        rating: "none",
         matchCount: 1,
-        color: "white",
+        color: "#FFFFFF",
       },
     ];
   }

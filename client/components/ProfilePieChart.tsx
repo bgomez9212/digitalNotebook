@@ -15,7 +15,7 @@ export default function ProfilePieChart({ data, sortBy, profileType }) {
     barPercentage: 0.5,
     useShadowColorFromDataset: false,
   };
-  console.log(data[0].promotionName);
+
   if (sortBy === "promotions") {
     return (
       <View>

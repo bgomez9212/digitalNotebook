@@ -43,14 +43,16 @@ export default function ProfileMatchTable({
               />
             ))
         )}
-        <TouchableOpacity
-          onPress={() => router.push(pathToExtendedRatings)}
-          className="py-3"
-        >
-          <Text className="text-blue font-bold underline text-center">
-            See More
-          </Text>
-        </TouchableOpacity>
+        {data.matches.length > 0 && (
+          <TouchableOpacity
+            onPress={() => router.push(pathToExtendedRatings)}
+            className="py-3"
+          >
+            <Text className="text-blue font-bold underline text-center">
+              See More
+            </Text>
+          </TouchableOpacity>
+        )}
       </View>
     </View>
   );

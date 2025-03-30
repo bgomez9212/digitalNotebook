@@ -15,7 +15,7 @@ export default function ProfilePieChart({ data, sortBy, profileType }) {
     barPercentage: 0.5,
     useShadowColorFromDataset: false,
   };
-
+  console.log(data[0].promotionName);
   if (sortBy === "promotions") {
     return (
       <View>
@@ -30,9 +30,13 @@ export default function ProfilePieChart({ data, sortBy, profileType }) {
           hasLegend={false}
           center={[screenWidth - 300, 0]}
         />
-        {data?.length ? (
-          <View className="flex-row mb-10 flex-wrap justify-between">
-            {data.map((promotion) => (
+        <View className="flex-row mb-10 flex-wrap justify-between">
+          {data[0].promotionName === "none" ? (
+            <View className="w-full flex items-center justify-center">
+              <Text>Rate some matches!</Text>
+            </View>
+          ) : (
+            data.map((promotion) => (
               <TouchableOpacity
                 onPress={() =>
                   router.push({
@@ -54,15 +58,9 @@ export default function ProfilePieChart({ data, sortBy, profileType }) {
                   {`${promotion.promotionName} (${promotion.matchCount})`}
                 </Text>
               </TouchableOpacity>
-            ))}
-          </View>
-        ) : null}
-
-        {!data.length && (
-          <Text className="text-grey dark:text-darkWhite">
-            This pie chart will fill when you have rated some matches
-          </Text>
-        )}
+            ))
+          )}
+        </View>
       </View>
     );
   }
@@ -86,9 +84,13 @@ export default function ProfilePieChart({ data, sortBy, profileType }) {
           hasLegend={false}
           center={[screenWidth - 300, 0]}
         />
-        {data?.length ? (
-          <View className="flex-row mb-10 flex-wrap justify-between">
-            {data.map((ratingObj) => (
+        <View className="flex-row mb-10 flex-wrap justify-between">
+          {data[0].rating === "none" ? (
+            <View className="w-full flex items-center justify-center">
+              <Text>Rate some matches!</Text>
+            </View>
+          ) : (
+            data.map((ratingObj) => (
               <TouchableOpacity
                 onPress={() =>
                   router.push({
@@ -110,15 +112,9 @@ export default function ProfilePieChart({ data, sortBy, profileType }) {
                   {`${ratingObj.rating} (${ratingObj.matchCount})`}
                 </Text>
               </TouchableOpacity>
-            ))}
-          </View>
-        ) : null}
-
-        {!data.length && (
-          <Text className="text-grey dark:text-darkWhite">
-            This pie chart will fill when you have rated some matches
-          </Text>
-        )}
+            ))
+          )}
+        </View>
       </View>
     );
   }

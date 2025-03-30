@@ -11,14 +11,15 @@ app.use("/*", (req, res) => {
   try {
     axios({
       method: req.method,
-      url: `https://${process.env.API_URL}${req._parsedUrl.pathname}`,
+      url: `${process.env.API_URL}${req._parsedUrl.pathname}`,
       params: { ...req.query, apiKey: process.env.API_KEY },
       data: req.body,
     })
       .then((response) => res.json(response.data))
-      .catch((err) =>
-        res.status(err.response.status).json(err.response.data.error)
-      );
+      .catch((err) => {
+        console.error(err);
+        res.status(err.response.status).json(err.response.data.error);
+      });
   } catch (err) {
     console.error(err);
     res.status(500).json("An internal error has occured");

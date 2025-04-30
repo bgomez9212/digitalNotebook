@@ -32,9 +32,7 @@ export default function BottomModalSelect({
         fn={changeSearchClick}
         text="Show Results"
         disabled={false}
-        color="blue"
         loading={false}
-        width="full"
       />
     </View>
   );

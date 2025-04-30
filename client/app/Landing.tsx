@@ -178,7 +178,6 @@ export default function Landing() {
                   fn={handleSubmit(onSignup)}
                   text={"SIGN UP"}
                   loading={uiState.loading}
-                  width="full"
                 />
                 {uiState.signUpError && (
                   <Text className="text-red mt-1 text-base border w-60 text-center">
@@ -234,7 +233,6 @@ export default function Landing() {
                   fn={handleSubmit(onLogin)}
                   text={"LOGIN"}
                   loading={uiState.loading}
-                  width="full"
                 />
                 {uiState.loginError && (
                   <Text className="text-red my-3 text-center text-base">

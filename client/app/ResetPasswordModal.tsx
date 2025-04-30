@@ -57,7 +57,6 @@ export default function ResetPasswordModal() {
                 text={"Reset Password"}
                 disabled={false}
                 loading={uiState.loading}
-                width="full"
               />
               <View className="w-full items-center">
                 <LandingLink fn={() => router.back()} text={"cancel"} />

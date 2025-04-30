@@ -33,7 +33,7 @@ export default function ProfilePieChart({ data, sortBy, profileType }) {
         <View className="flex-row mb-10 flex-wrap justify-between">
           {data[0].promotionName === "none" ? (
             <View className="w-full flex items-center justify-center">
-              <Text>Rate some matches!</Text>
+              <Text className="dark:text-white">Rate some matches!</Text>
             </View>
           ) : (
             data.map((promotion) => (
@@ -87,7 +87,7 @@ export default function ProfilePieChart({ data, sortBy, profileType }) {
         <View className="flex-row mb-10 flex-wrap justify-between">
           {data[0].rating === "none" ? (
             <View className="w-full flex items-center justify-center">
-              <Text>Rate some matches!</Text>
+              <Text className="dark:text-white">Rate some matches!</Text>
             </View>
           ) : (
             data.map((ratingObj) => (

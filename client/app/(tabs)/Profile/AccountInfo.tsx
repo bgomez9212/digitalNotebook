@@ -219,7 +219,6 @@ export default function AccountInfo() {
                 inputValues.username !== inputValues.confirmUsername ||
                 userId?.id
               }
-              width="full"
             />
             {uiState.usernameError && (
               <Text className="text-red text-center">
@@ -271,7 +270,6 @@ export default function AccountInfo() {
                 !inputValues.currentPasswordEmail
               }
               loading={uiState.emailLoading}
-              width="full"
             />
             {uiState.emailError && (
               <Text className="text-red text-center">{uiState.emailError}</Text>
@@ -312,7 +310,6 @@ export default function AccountInfo() {
               }
             />
             <LandingButton
-              width="full"
               text="Change Password"
               fn={changePassword}
               loading={uiState.passwordLoading}
@@ -357,7 +354,6 @@ export default function AccountInfo() {
             />
             <LandingButton
               color="red"
-              width="full"
               fn={deleteAccount}
               text="Deactivate"
               disabled={!inputValues.currentPasswordDeactivate}

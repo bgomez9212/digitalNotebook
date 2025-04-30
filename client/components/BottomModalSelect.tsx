@@ -33,7 +33,6 @@ export default function BottomModalSelect({
         text="Show Results"
         disabled={false}
         loading={false}
-        width="full"
       />
     </View>
   );

@@ -481,7 +481,6 @@ export default function RatingsExtended() {
               text="Show Results"
               disabled={false}
               loading={false}
-              width="full"
             />
           </BottomSheetView>
         )}

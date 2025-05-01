@@ -1,7 +1,19 @@
 import { TextInput } from "react-native-paper";
 import { useColorScheme } from "nativewind";
 
-export default function StyledTextInput({ inputValue, label, changeFn }) {
+type StyledTextInputProps = {
+  inputValue: string;
+  label: string;
+  changeFn: (string: string) => void;
+  autofill?: boolean;
+};
+
+export default function StyledTextInput({
+  inputValue,
+  label,
+  changeFn,
+  autofill,
+}: StyledTextInputProps) {
   const { colorScheme } = useColorScheme();
   return (
     <TextInput
@@ -13,8 +25,8 @@ export default function StyledTextInput({ inputValue, label, changeFn }) {
       activeOutlineColor="#477CB9"
       textColor={colorScheme === "light" ? "black" : "white"}
       autoCapitalize="none"
+      textContentType={autofill ? "password" : "oneTimeCode"}
       secureTextEntry={label.includes("password") ? true : false}
-      textContentType="oneTimeCode"
     />
   );
 }

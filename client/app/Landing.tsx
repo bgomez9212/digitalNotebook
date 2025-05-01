@@ -1,9 +1,7 @@
 import {
   View,
   Image,
-  KeyboardAvoidingView,
   TouchableWithoutFeedback,
-  Platform,
   Keyboard,
   Text,
 } from "react-native";
@@ -22,6 +20,7 @@ import { useDebounce } from "use-debounce";
 import { createUser, getUserId } from "../api/users";
 import StyledTextInput from "../components/StyledTextInput";
 import { useColorScheme } from "nativewind";
+import { KeyboardAvoidingView } from "react-native-keyboard-controller";
 
 type uiStateTypes = {
   displaySignup: boolean;
@@ -108,10 +107,7 @@ export default function Landing() {
   const onLogin = (data) => login(data);
   const onSignup = (data) => signup(data);
   return (
-    <KeyboardAvoidingView
-      behavior={Platform.OS === "ios" ? "padding" : "height"}
-      className="flex-1"
-    >
+    <KeyboardAvoidingView behavior={"padding"}>
       <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
         <View data-testid="landing-page" className="bg-white dark:bg-black">
           <View className="h-[55%] items-center justify-center">
@@ -210,6 +206,7 @@ export default function Landing() {
                       inputValue={value}
                       label={"email"}
                       changeFn={onChange}
+                      autofill={true}
                     />
                   )}
                   name="loginEmail"
@@ -224,6 +221,7 @@ export default function Landing() {
                       inputValue={value}
                       label={"password"}
                       changeFn={onChange}
+                      autofill={true}
                     />
                   )}
                   name="loginPassword"

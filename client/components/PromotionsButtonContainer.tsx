@@ -22,8 +22,8 @@ export default function PromotionsButtonsContainer() {
         {isFetching ? (
           <ActivityIndicator color="#477CB9" />
         ) : (
-          <Text className="text-grey dark:text-darkWhite">
-            There was a problem getting promotions
+          <Text className="text-grey dark:text-darkWhite text-center">
+            There was an getting promotions. Please try again later.
           </Text>
         )}
       </View>

@@ -18,11 +18,21 @@ app.use("/*", (req, res) => {
       .then((response) => res.json(response.data))
       .catch((err) => {
         console.error(err);
-        res.status(err.response.status).json(err.response.data.error);
+        if (err.response) {
+          res
+            .status(err.response.status || 500)
+            .json(err.response.data?.error || "API error");
+        } else if (err.request) {
+          console.error("No response received:", err.request);
+          res.status(503).json("Service unavailable");
+        } else {
+          console.error("Request setup error:", err.message);
+          res.status(500).json("Request configuration error");
+        }
       });
   } catch (err) {
-    console.error(err);
-    res.status(500).json("An internal error has occured");
+    console.error("Proxy server error:", err);
+    res.status(500).json("An internal error has occurred");
   }
 });
 

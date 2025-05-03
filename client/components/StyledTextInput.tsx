@@ -6,6 +6,7 @@ type StyledTextInputProps = {
   label: string;
   changeFn: (string: string) => void;
   autofill?: boolean;
+  submitFn: () => void;
 };
 
 export default function StyledTextInput({
@@ -13,6 +14,7 @@ export default function StyledTextInput({
   label,
   changeFn,
   autofill,
+  submitFn,
 }: StyledTextInputProps) {
   const { colorScheme } = useColorScheme();
   return (
@@ -27,6 +29,7 @@ export default function StyledTextInput({
       autoCapitalize="none"
       textContentType={autofill ? "password" : "oneTimeCode"}
       secureTextEntry={label.includes("password") ? true : false}
+      onSubmitEditing={submitFn}
     />
   );
 }

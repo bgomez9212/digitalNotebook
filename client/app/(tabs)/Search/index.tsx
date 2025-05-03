@@ -68,6 +68,7 @@ export default function Search() {
               changeFn={(text) =>
                 setUserSearch({ ...userSearch, searchText: text })
               }
+              submitFn={handleSubmit}
             />
             <View>
               <TouchableOpacity
@@ -90,7 +91,7 @@ export default function Search() {
           )}
         </View>
       </TouchableWithoutFeedback>
-      <KeyboardToolbar offset={{ opened: 85 }} />
+      {/* <KeyboardToolbar /> */}
     </>
   );
 }

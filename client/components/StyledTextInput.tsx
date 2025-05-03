@@ -6,7 +6,7 @@ type StyledTextInputProps = {
   label: string;
   changeFn: (string: string) => void;
   autofill?: boolean;
-  submitFn: () => void;
+  submitFn?: () => void;
 };
 
 export default function StyledTextInput({

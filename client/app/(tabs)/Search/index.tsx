@@ -92,7 +92,6 @@ export default function Search() {
           )}
         </View>
       </TouchableWithoutFeedback>
-      {/* <KeyboardToolbar offset={{ opened: 80 }} /> */}
     </>
   );
 }

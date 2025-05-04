@@ -1,4 +1,5 @@
-// KEYBOARDTOOLBAR MAY NEED SOME WORK, STATIC OFFSET VALUE NOT IDEAL
+// keyboard toolbar is a little wonky - hide's behind bottom tab navigation
+// the offset should be set to the same value as the tabs nav height
 import {
   Keyboard,
   TouchableOpacity,
@@ -91,7 +92,7 @@ export default function Search() {
           )}
         </View>
       </TouchableWithoutFeedback>
-      {/* <KeyboardToolbar /> */}
+      {/* <KeyboardToolbar offset={{ opened: 80 }} /> */}
     </>
   );
 }

@@ -26,12 +26,21 @@ export default function ResetPasswordModal() {
 
   async function sendResetEmail() {
     setUiState({ ...uiState, loading: true });
-    await sendPasswordResetEmail(auth, email)
-      .then(() => setUiState({ loading: false, success: true, error: false }))
-      .catch((err) => {
-        setUiState({ ...uiState, error: true });
-        console.log(err);
-      });
+    if (validateEmail(email)) {
+      try {
+        await sendPasswordResetEmail(auth, email);
+        setUiState({ loading: false, success: true, error: false });
+      } catch (err) {
+        if (err.code === "auth/user-not-found") {
+          setUiState({ loading: false, success: true, error: false });
+        } else {
+          setUiState({ ...uiState, error: true });
+          console.log(err.code);
+        }
+      }
+    } else {
+      setUiState({ ...uiState, error: true });
+    }
   }
 
   return (
@@ -59,6 +68,11 @@ export default function ResetPasswordModal() {
                 changeFn={(text) => setEmail(text)}
                 submitFn={sendResetEmail}
               />
+              {uiState.error && (
+                <View>
+                  <Text>Invalid Email</Text>
+                </View>
+              )}
               <LandingButton
                 fn={sendResetEmail}
                 text={"Reset Password"}
@@ -68,11 +82,6 @@ export default function ResetPasswordModal() {
               <View className="w-full items-center">
                 <LandingLink fn={() => router.back()} text={"cancel"} />
               </View>
-              {uiState.error && (
-                <View>
-                  <Text>Invalid Email</Text>
-                </View>
-              )}
             </View>
           )}
         </KeyboardAvoidingView>

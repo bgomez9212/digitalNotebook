@@ -69,8 +69,8 @@ export default function ResetPasswordModal() {
                 submitFn={sendResetEmail}
               />
               {uiState.error && (
-                <View>
-                  <Text>Invalid Email</Text>
+                <View className="w-full flex justify-center items-center pt-1">
+                  <Text className="text-red">Invalid Email</Text>
                 </View>
               )}
               <LandingButton

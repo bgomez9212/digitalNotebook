@@ -4,7 +4,10 @@ import { onAuthStateChanged } from "firebase/auth";
 import { auth } from "../firebase";
 import { useEffect } from "react";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
-import { KeyboardProvider } from "react-native-keyboard-controller";
+import {
+  KeyboardProvider,
+  KeyboardToolbar,
+} from "react-native-keyboard-controller";
 import { BottomSheetModalProvider } from "@gorhom/bottom-sheet";
 const queryClient = new QueryClient();
 const blue = "#618BCB";
@@ -66,6 +69,7 @@ export default function Layout() {
                 }}
               />
             </Stack>
+            <KeyboardToolbar />
           </BottomSheetModalProvider>
         </GestureHandlerRootView>
       </QueryClientProvider>

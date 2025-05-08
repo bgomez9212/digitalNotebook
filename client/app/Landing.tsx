@@ -51,7 +51,7 @@ export default function Landing() {
 
   async function signup(data) {
     setUiState({ ...uiState, loading: true });
-    if (validateEmail(data.email)) {
+    if (validateEmail(data.signupEmail)) {
       try {
         await createUserWithEmailAndPassword(
           firebaseAuth,
@@ -82,7 +82,7 @@ export default function Landing() {
   }
 
   async function login(data) {
-    if (validateEmail(data.email)) {
+    if (validateEmail(data.loginEmail)) {
       setUiState({ ...uiState, loading: true });
       Keyboard.dismiss();
       try {

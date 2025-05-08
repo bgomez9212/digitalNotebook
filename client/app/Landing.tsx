@@ -39,6 +39,11 @@ export default function Landing() {
     signUpError: false,
   });
 
+  function validateEmail(email) {
+    var re = /\S+@\S+\.\S+/;
+    return re.test(email);
+  }
+
   const loginPassword = useRef(null);
   async function signup(data) {
     setUiState({ ...uiState, loading: true });
@@ -65,16 +70,20 @@ export default function Landing() {
   }
 
   async function login(data) {
-    setUiState({ ...uiState, loading: true });
-    Keyboard.dismiss();
-    try {
-      await signInWithEmailAndPassword(
-        firebaseAuth,
-        data.loginEmail,
-        data.loginPassword
-      );
-    } catch (err) {
-      setUiState({ ...uiState, loginError: true });
+    if (validateEmail(data.email)) {
+      setUiState({ ...uiState, loading: true });
+      Keyboard.dismiss();
+      try {
+        await signInWithEmailAndPassword(
+          firebaseAuth,
+          data.loginEmail,
+          data.loginPassword
+        );
+      } catch (err) {
+        setUiState({ ...uiState, loginError: true });
+      }
+    } else {
+      setUiState({ ...uiState, loading: false, loginError: true });
     }
   }
 
@@ -227,6 +236,7 @@ export default function Landing() {
                       changeFn={onChange}
                       autofill={true}
                       reference={loginPassword}
+                      submitFn={handleSubmit(onLogin)}
                     />
                   )}
                   name="loginPassword"

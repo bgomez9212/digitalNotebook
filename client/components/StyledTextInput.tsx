@@ -7,6 +7,18 @@ type StyledTextInputProps = {
   changeFn: (string: string) => void;
   autofill?: boolean;
   submitFn?: () => void;
+  returnKeyType?:
+    | "default"
+    | "go"
+    | "google"
+    | "join"
+    | "next"
+    | "route"
+    | "search"
+    | "send"
+    | "yahoo"
+    | "done"
+    | "emergency-call";
 };
 
 export default function StyledTextInput({
@@ -15,6 +27,7 @@ export default function StyledTextInput({
   changeFn,
   autofill,
   submitFn,
+  returnKeyType,
 }: StyledTextInputProps) {
   const { colorScheme } = useColorScheme();
   return (
@@ -30,6 +43,7 @@ export default function StyledTextInput({
       textContentType={autofill ? "password" : "oneTimeCode"}
       secureTextEntry={label.includes("password") ? true : false}
       onSubmitEditing={submitFn}
+      returnKeyType={returnKeyType}
     />
   );
 }

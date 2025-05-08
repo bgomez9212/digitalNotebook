@@ -45,26 +45,38 @@ export default function Landing() {
   }
 
   const loginPassword = useRef(null);
+  const signupEmail = useRef(null);
+  const signupPassword = useRef(null);
+  const signupConfirmPassword = useRef(null);
+
   async function signup(data) {
     setUiState({ ...uiState, loading: true });
-    try {
-      await createUserWithEmailAndPassword(
-        firebaseAuth,
-        data.signupEmail,
-        data.signupPassword
-      ).then((userCredential) =>
-        createUser(userCredential.user.uid, data.signupUsername)
-      );
-      await signInWithEmailAndPassword(
-        firebaseAuth,
-        data.signupEmail,
-        data.signupPassword
-      );
-    } catch (err) {
+    if (validateEmail(data.email)) {
+      try {
+        await createUserWithEmailAndPassword(
+          firebaseAuth,
+          data.signupEmail,
+          data.signupPassword
+        ).then((userCredential) =>
+          createUser(userCredential.user.uid, data.signupUsername)
+        );
+        await signInWithEmailAndPassword(
+          firebaseAuth,
+          data.signupEmail,
+          data.signupPassword
+        );
+      } catch (err) {
+        setUiState({
+          ...uiState,
+          signUpError: "Unable to sign up with these credentials",
+          loading: false,
+        });
+      }
+    } else {
       setUiState({
         ...uiState,
-        signUpError: "Unable to sign up with these credentials",
         loading: false,
+        signUpError: "Enter a valid email address",
       });
     }
   }
@@ -83,7 +95,11 @@ export default function Landing() {
         setUiState({ ...uiState, loginError: true });
       }
     } else {
-      setUiState({ ...uiState, loading: false, loginError: true });
+      setUiState({
+        ...uiState,
+        loading: false,
+        loginError: "Enter a valid email address",
+      });
     }
   }
 
@@ -117,6 +133,7 @@ export default function Landing() {
 
   const onLogin = (data) => login(data);
   const onSignup = (data) => signup(data);
+
   return (
     <KeyboardAvoidingView behavior={"padding"}>
       <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
@@ -134,6 +151,8 @@ export default function Landing() {
                       inputValue={value}
                       label={"username"}
                       changeFn={onChange}
+                      returnKeyType="next"
+                      submitFn={() => signupEmail.current.focus()}
                     />
                   )}
                   name="signupUsername"
@@ -150,6 +169,9 @@ export default function Landing() {
                       inputValue={value}
                       label={"email"}
                       changeFn={onChange}
+                      reference={signupEmail}
+                      returnKeyType="next"
+                      submitFn={() => signupPassword.current.focus()}
                     />
                   )}
                   name="signupEmail"
@@ -162,6 +184,9 @@ export default function Landing() {
                       inputValue={value}
                       label={"password"}
                       changeFn={onChange}
+                      reference={signupPassword}
+                      returnKeyType="next"
+                      submitFn={() => signupConfirmPassword.current.focus()}
                     />
                   )}
                   name="signupPassword"
@@ -176,21 +201,24 @@ export default function Landing() {
                       inputValue={value}
                       label={"confirm password"}
                       changeFn={onChange}
+                      reference={signupConfirmPassword}
+                      returnKeyType="join"
+                      submitFn={handleSubmit(onSignup)}
                     />
                   )}
                   name="signupPasswordConfirm"
                 />
+                {uiState.signUpError && (
+                  <Text className="mt-1 text-red text-base text-center">
+                    {uiState.signUpError}
+                  </Text>
+                )}
                 <LandingButton
                   disabled={!isDirty || !isValid}
                   fn={handleSubmit(onSignup)}
                   text={"SIGN UP"}
                   loading={uiState.loading}
                 />
-                {uiState.signUpError && (
-                  <Text className="text-red mt-1 text-base border w-60 text-center">
-                    {uiState.signUpError}
-                  </Text>
-                )}
               </View>
               <LandingLink
                 fn={() => {
@@ -237,6 +265,7 @@ export default function Landing() {
                       autofill={true}
                       reference={loginPassword}
                       submitFn={handleSubmit(onLogin)}
+                      returnKeyType="done"
                     />
                   )}
                   name="loginPassword"

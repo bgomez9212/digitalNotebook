@@ -15,7 +15,6 @@ import { getSearchResults } from "../../../api/search";
 import StyledTextInput from "../../../components/StyledTextInput";
 import { getAuth } from "firebase/auth";
 import SearchDropdown from "../../../components/SearchDropdown";
-import { KeyboardToolbar } from "react-native-keyboard-controller";
 export default function Search() {
   const [userSearch, setUserSearch] = useState({
     searchParam: null,
@@ -70,6 +69,7 @@ export default function Search() {
                 setUserSearch({ ...userSearch, searchText: text })
               }
               submitFn={handleSubmit}
+              returnKeyType="search"
             />
             <View>
               <TouchableOpacity

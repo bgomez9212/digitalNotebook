@@ -11,7 +11,7 @@ import {
   createUserWithEmailAndPassword,
   signInWithEmailAndPassword,
 } from "firebase/auth";
-import { useState } from "react";
+import { useRef, useState } from "react";
 import LandingButton from "../components/LandingButton";
 import LandingLink from "../components/LandingLink";
 import { router } from "expo-router";
@@ -39,6 +39,7 @@ export default function Landing() {
     signUpError: false,
   });
 
+  const loginPassword = useRef(null);
   async function signup(data) {
     setUiState({ ...uiState, loading: true });
     try {
@@ -65,6 +66,7 @@ export default function Landing() {
 
   async function login(data) {
     setUiState({ ...uiState, loading: true });
+    Keyboard.dismiss();
     try {
       await signInWithEmailAndPassword(
         firebaseAuth,
@@ -207,6 +209,8 @@ export default function Landing() {
                       label={"email"}
                       changeFn={onChange}
                       autofill={true}
+                      returnKeyType="next"
+                      submitFn={() => loginPassword.current.focus()}
                     />
                   )}
                   name="loginEmail"
@@ -222,6 +226,7 @@ export default function Landing() {
                       label={"password"}
                       changeFn={onChange}
                       autofill={true}
+                      reference={loginPassword}
                     />
                   )}
                   name="loginPassword"

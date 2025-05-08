@@ -1,5 +1,7 @@
 import { TextInput } from "react-native-paper";
 import { useColorScheme } from "nativewind";
+import { RefObject } from "react";
+import { TextInput as RNTextInput } from "react-native";
 
 type StyledTextInputProps = {
   inputValue: string;
@@ -7,6 +9,7 @@ type StyledTextInputProps = {
   changeFn: (string: string) => void;
   autofill?: boolean;
   submitFn?: () => void;
+  reference?: RefObject<RNTextInput>;
   returnKeyType?:
     | "default"
     | "go"
@@ -28,6 +31,7 @@ export default function StyledTextInput({
   autofill,
   submitFn,
   returnKeyType,
+  reference,
 }: StyledTextInputProps) {
   const { colorScheme } = useColorScheme();
   return (
@@ -44,6 +48,7 @@ export default function StyledTextInput({
       secureTextEntry={label.includes("password") ? true : false}
       onSubmitEditing={submitFn}
       returnKeyType={returnKeyType}
+      ref={reference}
     />
   );
 }

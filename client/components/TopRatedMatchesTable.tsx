@@ -21,17 +21,18 @@ export default function TopRatedMatchesTable() {
   if (isFetching || error) {
     return (
       <View className="bg-white dark:bg-grey w-[95%] my-12 rounded-md px-2">
-        <View className="items-center justify-center py-3 border-b border-lightGrey dark:border-darkGrey ">
-          <Text className="text-grey dark:text-darkWhite font-bold text-lg">
-            Top Matches of the Last 30 Days
+        <View className=" py-3 border-b border-lightGrey dark:border-darkGrey">
+          <Text className=" text-grey dark:text-darkWhite font-bold text-lg">
+            Top Matches
           </Text>
         </View>
         <View className="h-96 justify-center items-center">
           {isFetching ? (
             <ActivityIndicator color="#477CB9" />
           ) : (
-            <Text className="text-grey dark:text-darkWhite">
-              Error getting the top matches
+            <Text className="text-grey dark:text-darkWhite text-center">
+              There was an error getting the top rated matches. Please try again
+              later.
             </Text>
           )}
         </View>

@@ -1,40 +1,55 @@
-import {
-  Keyboard,
-  KeyboardAvoidingView,
-  Platform,
-  Text,
-  TouchableWithoutFeedback,
-  View,
-} from "react-native";
+import { Keyboard, Text, TouchableWithoutFeedback, View } from "react-native";
 import { getAuth, sendPasswordResetEmail } from "firebase/auth";
 import { useState } from "react";
 import LandingButton from "../components/LandingButton";
 import LandingLink from "../components/LandingLink";
 import { router } from "expo-router";
 import StyledTextInput from "../components/StyledTextInput";
+import {
+  KeyboardAvoidingView,
+  KeyboardToolbar,
+} from "react-native-keyboard-controller";
 
 export default function ResetPasswordModal() {
   const auth = getAuth();
-  const [email, setEmail] = useState(null);
+  const [email, setEmail] = useState("");
   const [uiState, setUiState] = useState({
     loading: false,
     success: false,
+    error: false,
   });
 
-  async function resetPassword() {
+  function validateEmail(email) {
+    var re = /\S+@\S+\.\S+/;
+    return re.test(email);
+  }
+
+  async function sendResetEmail() {
     setUiState({ ...uiState, loading: true });
-    await sendPasswordResetEmail(auth, email)
-      .then(() => setUiState({ loading: false, success: true }))
-      .catch((err) => console.log(err));
+    if (validateEmail(email)) {
+      try {
+        await sendPasswordResetEmail(auth, email);
+        setUiState({ loading: false, success: true, error: false });
+      } catch (err) {
+        if (err.code === "auth/user-not-found") {
+          setUiState({ loading: false, success: true, error: false });
+        } else {
+          setUiState({ ...uiState, error: true });
+          console.log(err.code);
+        }
+      }
+    } else {
+      setUiState({ ...uiState, error: true });
+    }
   }
 
   return (
-    <KeyboardAvoidingView
-      behavior={Platform.OS === "ios" ? "padding" : "height"}
-      style={{ flex: 1 }}
-    >
+    <>
       <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
-        <View className="flex-1 bg-white dark:bg-darkGrey items-center justify-center">
+        <KeyboardAvoidingView
+          behavior="padding"
+          className="flex-1 bg-white dark:bg-darkGrey items-center justify-center"
+        >
           {uiState.success ? (
             <View className="items-center justify-center">
               <Text className="text-grey dark:text-darkWhite text-2xl mb-5">
@@ -51,11 +66,17 @@ export default function ResetPasswordModal() {
                 inputValue={email}
                 label={"email"}
                 changeFn={(text) => setEmail(text)}
+                submitFn={sendResetEmail}
               />
+              {uiState.error && (
+                <View className="w-full flex justify-center items-center pt-1">
+                  <Text className="text-red">Invalid Email</Text>
+                </View>
+              )}
               <LandingButton
-                fn={resetPassword}
+                fn={sendResetEmail}
                 text={"Reset Password"}
-                disabled={false}
+                disabled={!validateEmail(email)}
                 loading={uiState.loading}
               />
               <View className="w-full items-center">
@@ -63,8 +84,9 @@ export default function ResetPasswordModal() {
               </View>
             </View>
           )}
-        </View>
+        </KeyboardAvoidingView>
       </TouchableWithoutFeedback>
-    </KeyboardAvoidingView>
+      <KeyboardToolbar />
+    </>
   );
 }

@@ -18,7 +18,7 @@ export default function RecentEventTable() {
   if (isPending || error) {
     return (
       <View className="bg-white dark:bg-grey w-[95%] mt-12 rounded-md px-2">
-        <View className="items-center justify-center py-3 border-b border-lightGrey dark:border-darkGrey ">
+        <View className="justify-center py-3 border-b border-lightGrey dark:border-darkGrey ">
           <Text className="text-grey dark:text-darkWhite font-bold text-lg">
             Most Recent Shows
           </Text>
@@ -27,8 +27,9 @@ export default function RecentEventTable() {
           {isPending ? (
             <ActivityIndicator color="#477CB9" />
           ) : (
-            <Text className="text-grey dark:text-darkWhite">
-              Error getting the recent events
+            <Text className="text-grey dark:text-darkWhite text-center">
+              There was an error getting the most recent shows. Please try again
+              later.
             </Text>
           )}
         </View>

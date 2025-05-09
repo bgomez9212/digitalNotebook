@@ -44,6 +44,7 @@
           "image": "./assets/suplex-logo.png"
         }
       },
+      "softwareKeyboardLayoutMode": "pan",
       "package": "com.earthdeparture.suplex"
     },
     "web": {

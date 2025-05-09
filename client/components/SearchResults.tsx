@@ -16,7 +16,9 @@ export default function SearchResults({ data, error }) {
   if (error) {
     return (
       <View>
-        <Text className="text-white">There was an error</Text>
+        <Text className="text-grey dark:text-darkWhite">
+          There was an error
+        </Text>
       </View>
     );
   }

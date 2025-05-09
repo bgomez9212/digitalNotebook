@@ -1,9 +1,7 @@
 import {
   View,
   Image,
-  KeyboardAvoidingView,
   TouchableWithoutFeedback,
-  Platform,
   Keyboard,
   Text,
 } from "react-native";
@@ -13,7 +11,7 @@ import {
   createUserWithEmailAndPassword,
   signInWithEmailAndPassword,
 } from "firebase/auth";
-import { useState } from "react";
+import { useRef, useState } from "react";
 import LandingButton from "../components/LandingButton";
 import LandingLink from "../components/LandingLink";
 import { router } from "expo-router";
@@ -22,6 +20,7 @@ import { useDebounce } from "use-debounce";
 import { createUser, getUserId } from "../api/users";
 import StyledTextInput from "../components/StyledTextInput";
 import { useColorScheme } from "nativewind";
+import { KeyboardAvoidingView } from "react-native-keyboard-controller";
 
 type uiStateTypes = {
   displaySignup: boolean;
@@ -40,40 +39,67 @@ export default function Landing() {
     signUpError: false,
   });
 
+  function validateEmail(email) {
+    var re = /\S+@\S+\.\S+/;
+    return re.test(email);
+  }
+
+  const loginPassword = useRef(null);
+  const signupEmail = useRef(null);
+  const signupPassword = useRef(null);
+  const signupConfirmPassword = useRef(null);
+
   async function signup(data) {
     setUiState({ ...uiState, loading: true });
-    try {
-      await createUserWithEmailAndPassword(
-        firebaseAuth,
-        data.signupEmail,
-        data.signupPassword
-      ).then((userCredential) =>
-        createUser(userCredential.user.uid, data.signupUsername)
-      );
-      await signInWithEmailAndPassword(
-        firebaseAuth,
-        data.signupEmail,
-        data.signupPassword
-      );
-    } catch (err) {
+    if (validateEmail(data.signupEmail)) {
+      try {
+        await createUserWithEmailAndPassword(
+          firebaseAuth,
+          data.signupEmail,
+          data.signupPassword
+        ).then((userCredential) =>
+          createUser(userCredential.user.uid, data.signupUsername)
+        );
+        await signInWithEmailAndPassword(
+          firebaseAuth,
+          data.signupEmail,
+          data.signupPassword
+        );
+      } catch (err) {
+        setUiState({
+          ...uiState,
+          signUpError: "Unable to sign up with these credentials",
+          loading: false,
+        });
+      }
+    } else {
       setUiState({
         ...uiState,
-        signUpError: "Unable to sign up with these credentials",
         loading: false,
+        signUpError: "Enter a valid email address",
       });
     }
   }
 
   async function login(data) {
-    setUiState({ ...uiState, loading: true });
-    try {
-      await signInWithEmailAndPassword(
-        firebaseAuth,
-        data.loginEmail,
-        data.loginPassword
-      );
-    } catch (err) {
-      setUiState({ ...uiState, loginError: true });
+    if (validateEmail(data.loginEmail)) {
+      setUiState({ ...uiState, loading: true });
+      Keyboard.dismiss();
+      try {
+        await signInWithEmailAndPassword(
+          firebaseAuth,
+          data.loginEmail,
+          data.loginPassword
+        );
+      } catch (err) {
+        setUiState({ ...uiState, loginError: true });
+      }
+    } else {
+      setUiState({
+        ...uiState,
+        loading: false,
+        loginError: "Enter a valid email address",
+      });
     }
   }
 
@@ -107,11 +133,9 @@ export default function Landing() {
 
   const onLogin = (data) => login(data);
   const onSignup = (data) => signup(data);
+
   return (
-    <KeyboardAvoidingView
-      behavior={Platform.OS === "ios" ? "padding" : "height"}
-      className="flex-1"
-    >
+    <KeyboardAvoidingView behavior={"padding"}>
       <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
         <View data-testid="landing-page" className="bg-white dark:bg-black">
           <View className="h-[55%] items-center justify-center">
@@ -127,6 +151,8 @@ export default function Landing() {
                       inputValue={value}
                       label={"username"}
                       changeFn={onChange}
+                      returnKeyType="next"
+                      submitFn={() => signupEmail.current.focus()}
                     />
                   )}
                   name="signupUsername"
@@ -143,6 +169,9 @@ export default function Landing() {
                       inputValue={value}
                       label={"email"}
                       changeFn={onChange}
+                      reference={signupEmail}
+                      returnKeyType="next"
+                      submitFn={() => signupPassword.current.focus()}
                     />
                   )}
                   name="signupEmail"
@@ -155,6 +184,9 @@ export default function Landing() {
                       inputValue={value}
                       label={"password"}
                       changeFn={onChange}
+                      reference={signupPassword}
+                      returnKeyType="next"
+                      submitFn={() => signupConfirmPassword.current.focus()}
                     />
                   )}
                   name="signupPassword"
@@ -169,21 +201,24 @@ export default function Landing() {
                       inputValue={value}
                       label={"confirm password"}
                       changeFn={onChange}
+                      reference={signupConfirmPassword}
+                      returnKeyType="join"
+                      submitFn={handleSubmit(onSignup)}
                     />
                   )}
                   name="signupPasswordConfirm"
                 />
+                {uiState.signUpError && (
+                  <Text className="mt-1 text-red text-base text-center">
+                    {uiState.signUpError}
+                  </Text>
+                )}
                 <LandingButton
                   disabled={!isDirty || !isValid}
                   fn={handleSubmit(onSignup)}
                   text={"SIGN UP"}
                   loading={uiState.loading}
                 />
-                {uiState.signUpError && (
-                  <Text className="text-red mt-1 text-base border w-60 text-center">
-                    {uiState.signUpError}
-                  </Text>
-                )}
               </View>
               <LandingLink
                 fn={() => {
@@ -210,6 +245,9 @@ export default function Landing() {
                       inputValue={value}
                       label={"email"}
                       changeFn={onChange}
+                      autofill={true}
+                      returnKeyType="next"
+                      submitFn={() => loginPassword.current.focus()}
                     />
                   )}
                   name="loginEmail"
@@ -224,6 +262,10 @@ export default function Landing() {
                       inputValue={value}
                       label={"password"}
                       changeFn={onChange}
+                      autofill={true}
+                      reference={loginPassword}
+                      submitFn={handleSubmit(onLogin)}
+                      returnKeyType="done"
                     />
                   )}
                   name="loginPassword"

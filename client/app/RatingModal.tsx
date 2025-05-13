@@ -7,7 +7,7 @@ import {
   Platform,
 } from "react-native";
 import { Picker } from "@react-native-picker/picker";
-import { router, useLocalSearchParams } from "expo-router";
+import { router, useLocalSearchParams, usePathname } from "expo-router";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useState } from "react";
 import { getAuth } from "firebase/auth";
@@ -28,6 +28,8 @@ export default function RatingModal() {
     user_rating,
     community_rating,
     rating_count,
+    event_id,
+    sourceRoute,
   }: {
     championships: string;
     event_title: string;
@@ -37,7 +39,22 @@ export default function RatingModal() {
     user_rating: string;
     community_rating: string;
     rating_count: string;
+    event_id: string;
+    sourceRoute?: string;
   } = useLocalSearchParams();
+
+  function openEvent() {
+    router.back();
+    setTimeout(() => {
+      router.push({
+        pathname: `/(tabs)/Search/events/${event_id}`,
+        params: {
+          event_title: event_title,
+        },
+      });
+    }, 300);
+  }
+
   const queryClient = useQueryClient();
   const [rating, setRating] = useState(Number(user_rating) || 2);
   const [showPicker, setShowPicker] = useState(!user_rating);
@@ -93,9 +110,13 @@ export default function RatingModal() {
         <Text className="text-grey dark:text-darkWhite text-xl pb-3">
           {participants}
         </Text>
-        <Text className="text-grey dark:text-darkWhite pb-3">
-          From {promotion} {event_title}
-        </Text>
+        {sourceRoute === "search" ? (
+          <TouchableOpacity onPress={openEvent}>
+            <Text className="text-blue pb-3 w-3/4">{`From ${event_title} >`}</Text>
+          </TouchableOpacity>
+        ) : (
+          <Text className="text-grey dark:text-darkWhite pb-3">{`From ${event_title}`}</Text>
+        )}
         <View
           className={`flex flex-row ${user_rating ? "justify-between" : "justify-end"}`}
         >

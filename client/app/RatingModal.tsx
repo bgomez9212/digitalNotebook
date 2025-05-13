@@ -29,6 +29,7 @@ export default function RatingModal() {
     community_rating,
     rating_count,
     event_id,
+    sourceRoute,
   }: {
     championships: string;
     event_title: string;
@@ -39,9 +40,9 @@ export default function RatingModal() {
     community_rating: string;
     rating_count: string;
     event_id: string;
+    sourceRoute?: string;
   } = useLocalSearchParams();
 
-  const pathname = usePathname();
   function openEvent() {
     router.back();
     setTimeout(() => {
@@ -109,9 +110,13 @@ export default function RatingModal() {
         <Text className="text-grey dark:text-darkWhite text-xl pb-3">
           {participants}
         </Text>
-        <TouchableOpacity onPress={openEvent}>
-          <Text className="text-blue pb-3">{`From ${event_title} >`}</Text>
-        </TouchableOpacity>
+        {sourceRoute === "search" ? (
+          <TouchableOpacity onPress={openEvent}>
+            <Text className="text-blue pb-3 w-3/4">{`From ${event_title} >`}</Text>
+          </TouchableOpacity>
+        ) : (
+          <Text className="text-grey dark:text-darkWhite pb-3">{`From ${event_title}`}</Text>
+        )}
         <View
           className={`flex flex-row ${user_rating ? "justify-between" : "justify-end"}`}
         >

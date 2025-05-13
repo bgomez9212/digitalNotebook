@@ -69,7 +69,7 @@ export default function MatchRow({
         onPress={() =>
           router.navigate({
             pathname: "/RatingModal",
-            params: match,
+            params: { ...match, sourceRoute: "search" },
           })
         }
       >

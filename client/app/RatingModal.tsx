@@ -178,7 +178,7 @@ export default function RatingModal() {
             className="bg-blue w-1/3 h-14 items-center justify-center rounded-md"
           >
             {addRatingPending ? (
-              <ActivityIndicator />
+              <ActivityIndicator color={"white"} />
             ) : (
               <Text className="text-white text-lg">Submit</Text>
             )}
